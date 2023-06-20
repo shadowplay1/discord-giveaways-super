@@ -1,0 +1,16 @@
+.git/
+.husky/
+
+src/
+
+*.bak
+*.sw[nop]
+
+commitlint.config.js
+
+.gitignore
+.npmignore
+
+package-lock.json
+
+giveaways.json
