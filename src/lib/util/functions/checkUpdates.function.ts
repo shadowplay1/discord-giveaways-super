@@ -1,13 +1,13 @@
 import fetch from 'node-fetch'
 
-import { IUpdateState } from '../../types/misc/updateState.interface'
-import { name as packageName, version as packageVersion } from '../../../package.json'
+import { IUpdateState } from '../../../types/misc/updateState.interface'
+import { name as packageName, version as packageVersion } from '../../../../package.json'
 
 /**
  * Checks the latest available module version and compares it with installed one.
  * @returns {IUpdateState} Update checking results
  */
-export async function checkUpdates(): Promise<IUpdateState> {
+export const checkUpdates = async (): Promise<IUpdateState> => {
     const packageData = await fetch(`https://registry.npmjs.com/${packageName}`)
         .then(text => text.json())
 

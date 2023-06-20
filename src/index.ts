@@ -10,10 +10,10 @@ export {
     IGiveawaysConfiguration, IJSONDatabseConfiguration
 } from './types/configurations'
 
-export { checkUpdates } from './lib/util/checkUpdates.function'
+export { checkUpdates } from './lib/util/functions/checkUpdates.function'
 
-export { Emitter } from './lib/util/Emitter'
-export { Logger } from './lib/util/Logger'
-export { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/GiveawaysError'
+export { Emitter } from './lib/util/classes/Emitter'
+export { Logger } from './lib/util/classes/Logger'
+export { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/classes/GiveawaysError'
 
 export { Giveaways } from './Giveaways'

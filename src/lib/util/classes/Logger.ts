@@ -1,5 +1,5 @@
-import { ILoggerColors } from '../../types/misc/colors.interface'
-import { version as packageVersion } from '../../../package.json'
+import { ILoggerColors } from '../../../types/misc/colors.interface'
+import { version as packageVersion } from '../../../../package.json'
 
 /**
  * Logger class.

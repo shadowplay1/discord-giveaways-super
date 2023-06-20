@@ -4,19 +4,20 @@ import { readFile, writeFile } from 'fs/promises'
 import QuickMongo from 'quick-mongo-super'
 import Enmap from 'enmap'
 
-import { Client } from 'discord.js'
+import { Client, GatewayIntentBits, IntentsBitField } from 'discord.js'
 
 import { Database, DatabaseConnectionOptions, IGiveawaysConfiguration } from './types/configurations'
 import { IGiveawaysEvents } from './types/events.interface'
 
 import { DatabaseType } from './types/databaseType.enum'
-import { checkUpdates } from './lib/util/checkUpdates.function'
+import { checkUpdates } from './lib/util/functions/checkUpdates.function'
 
 import { version as packageVersion } from '../package.json'
 
-import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/GiveawaysError'
-import { Logger } from './lib/util/Logger'
-import { Emitter } from './lib/util/Emitter'
+import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/classes/GiveawaysError'
+import { Logger } from './lib/util/classes/Logger'
+import { Emitter } from './lib/util/classes/Emitter'
+import { DatabaseManager } from './lib/managers/DatabaseManager'
 
 
 /**
@@ -44,15 +45,21 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
     /**
      * Module options.
-     * @type {IGiveawaysConfiguration<TDatabase>}
+     * @type {IGiveawaysConfiguration<DatabaseType>}
      */
     public options: IGiveawaysConfiguration<TDatabase>
 
     /**
-     * External database (such as Enmap or MongoDB) if used.
-     * @type {?Database<TDatabase>}
+     * External database instanca (such as Enmap or MongoDB) if used.
+     * @type {?Database<DatabaseType>}
      */
     public db: Database<TDatabase>
+
+    /**
+     * Database Manager.
+     * @type {DatabaseManager}
+     */
+    public database: DatabaseManager<TDatabase>
 
     /**
      * Module logger.
@@ -89,15 +96,21 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         /**
          * Module options.
-         * @type {IGiveawaysConfiguration<TDatabase>}
+         * @type {IGiveawaysConfiguration<DatabaseType>}
          */
         this.options = options
 
         /**
          * External database (such as Enmap or MongoDB) if used.
-         * @type {?Database<TDatabase>}
+         * @type {?Database<DatabaseType>}
          */
         this.db = null as any
+
+        /**
+         * Database Manager.
+         * @type {DatabaseManager}
+         */
+        this.database = null as any
 
         /**
          * Module logger.
@@ -125,6 +138,21 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         // if (!this.client) {
         //     throw new GiveawaysError(GiveawaysErrorCodes.NO_DISCORD_CLIENT)
+        // }
+
+        // const requiredIntents: GatewayIntentBits[] = [
+        //     GatewayIntentBits.Guilds,
+        //     GatewayIntentBits.GuildMembers,
+        //     GatewayIntentBits.GuildMessages,
+        //     GatewayIntentBits.GuildMessageReactions
+        // ]
+
+        // const clientIntents = new IntentsBitField(this.client.options.intents)
+
+        // for (const requiredIntent of requiredIntents) {
+        //     if (!clientIntents.has(requiredIntent)) {
+        //         throw new GiveawaysError(errorMessages.INTENT_MISSING(GatewayIntentBits[requiredIntent]))
+        //     }
         // }
 
         switch (this.options.database) {
@@ -170,13 +198,13 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 this._logger.debug('Connecting to MongoDB...')
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.MONGODB>
-                const mongo = new QuickMongo(databaseOptions)
 
+                const mongo = new QuickMongo(databaseOptions)
                 const connectionStartDate = Date.now()
 
                 await mongo.connect()
-                this.db = mongo as Database<TDatabase>
 
+                this.db = mongo as Database<TDatabase>
                 this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
 
                 break
@@ -196,6 +224,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             }
         }
 
+        this.database = new DatabaseManager(this)
         await this._sendUpdateMessage()
 
         this.emit('ready')

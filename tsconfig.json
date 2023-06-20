@@ -15,6 +15,8 @@
 		"declarationDir": "./types",
 		"sourceMap": true,
 		"esModuleInterop": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
 		"allowSyntheticDefaultImports": true,
 		"skipDefaultLibCheck": true,
 		"resolveJsonModule": true,
