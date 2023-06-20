@@ -59,7 +59,7 @@ export class Logger {
      * @returns {void}
      */
     public info(message: string, color: keyof ILoggerColors = 'cyan'): void {
-        console.log(`${this.colors[color]}[Economy] ${message}${this.colors.reset}`)
+        console.log(`${this.colors[color]}[Giveaways] ${message}${this.colors.reset}`)
     }
 
     /**
@@ -69,7 +69,7 @@ export class Logger {
      * @returns {void}
      */
     public error(message: string, color: keyof ILoggerColors = 'red'): void {
-        console.error(`${this.colors[color]}[Economy - Error] ${message}${this.colors.reset}`)
+        console.error(`${this.colors[color]}[Giveaways - Error] ${message}${this.colors.reset}`)
     }
 
     /**
@@ -80,7 +80,7 @@ export class Logger {
      */
     public debug(message: string, color: keyof ILoggerColors = 'yellow'): void {
         if (!this.debugMode) return
-        console.log(`${this.colors[color]}[Economy] ${message}${this.colors.reset}`)
+        console.log(`${this.colors[color]}[Giveaways] ${message}${this.colors.reset}`)
     }
 
     /**
@@ -90,7 +90,7 @@ export class Logger {
      * @returns {void}
      */
     public warn(message: string, color: keyof ILoggerColors = 'lightyellow'): void {
-        console.log(`${this.colors[color]}[Economy - Warning] ${message}${this.colors.reset}`)
+        console.log(`${this.colors[color]}[Giveaways - Warning] ${message}${this.colors.reset}`)
     }
 
     /**
@@ -116,7 +116,7 @@ export class Logger {
             console.log()
 
             this.warn(
-                'You are using a DEVELOPMENT version of Economy, which provides an early access ' +
+                'You are using a DEVELOPMENT version of Giveaways, which provides an early access ' +
                 'to all the new unfinished features and bug fixes.', 'lightmagenta'
             )
 
@@ -145,7 +145,7 @@ export class Logger {
             )
 
             this.warn(
-                'Please provide the full version of Economy you have installed ' +
+                'Please provide the full version of Giveaways you have installed ' +
                 '(check in your package.json) when asking for support.', 'lightmagenta'
             )
 

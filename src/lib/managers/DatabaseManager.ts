@@ -1,10 +1,10 @@
-import { Database } from '../../types/configurations'
+import { Giveaways } from '../../Giveaways'
 import { DatabaseType } from '../../types/databaseType.enum'
 
 export class DatabaseManager<TDatabase extends DatabaseType> {
-    public db: Database<TDatabase>
+    public giveaways: Giveaways<TDatabase>
 
-    constructor(database: Database<TDatabase>) {
-        this.db = database // TODO: database saving & database methods
+    constructor(giveaways: Giveaways<TDatabase>) {
+        this.giveaways = giveaways // TODO: database saving & database methods
     }
 }

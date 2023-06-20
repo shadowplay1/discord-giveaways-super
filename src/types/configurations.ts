@@ -6,34 +6,34 @@ import QuickMongo from 'quick-mongo-super/typings/src/index'
 import { DatabaseType } from './databaseType.enum'
 
 
-export interface IGiveawaysConfiguration {
+export interface IGiveawaysConfiguration<TDatabaseType extends DatabaseType> {
 
     /**
      * Database type to use.
      * @type {DatabaseType}
      */
-    database: DatabaseType
+    database: TDatabaseType
 
     /**
      * Database connection options based on the choosen database type.
      * @type {DatabaseConnectionOptions<DatabaseType>}
      */
-    connection: DatabaseConnectionOptions<DatabaseType>
+    connection: DatabaseConnectionOptions<TDatabaseType>
 
     /**
      * Determines if debug mode is enabled.
      * @type {boolean}
      */
-    debug: boolean
+    debug?: boolean
 
     /**
      * Updates checker configuration.
-     * @type {Readonly<IUpdateCheckerConfiguration>}
+     * @type {Partial<IUpdateCheckerConfiguration>}
      */
-    updatesChecker?: Readonly<IUpdateCheckerConfiguration>
+    updatesChecker?: Partial<IUpdateCheckerConfiguration>
 }
 
-export interface IJsonDatabseConfiguration {
+export interface IJSONDatabseConfiguration {
 
     /**
      * Full path to a JSON storage file. Default: './giveaways.json'.
@@ -55,13 +55,13 @@ export interface IJsonDatabseConfiguration {
 }
 
 export type DatabaseConnectionOptions<TDatabase extends DatabaseType> =
-    TDatabase extends DatabaseType.JSON ? Readonly<IJsonDatabseConfiguration> :
+    TDatabase extends DatabaseType.JSON ? Partial<IJSONDatabseConfiguration> :
     TDatabase extends DatabaseType.ENMAP ? EnmapOptions<any, any> :
     TDatabase extends DatabaseType.MONGODB ? IMongoConnectionOptions : never
 
 export type Database<TDatabase extends DatabaseType> =
-    TDatabase extends DatabaseType.JSON ? never :
-    TDatabase extends DatabaseType.ENMAP ? Enmap :
+    TDatabase extends DatabaseType.JSON ? null :
+    TDatabase extends DatabaseType.ENMAP ? Enmap<string, any> :
     TDatabase extends DatabaseType.MONGODB ? QuickMongo : never
 
 export interface IUpdateCheckerConfiguration {

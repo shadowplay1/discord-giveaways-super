@@ -7,7 +7,7 @@ export { DatabaseType } from './types/databaseType.enum'
 
 export {
     DatabaseConnectionOptions, IUpdateCheckerConfiguration,
-    IGiveawaysConfiguration, IJsonDatabseConfiguration
+    IGiveawaysConfiguration, IJSONDatabseConfiguration
 } from './types/configurations'
 
 export { checkUpdates } from './lib/util/checkUpdates.function'

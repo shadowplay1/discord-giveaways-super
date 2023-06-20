@@ -1,15 +1,13 @@
 import { EventEmitter } from 'events'
-import { IGiveawaysEvents } from '../../types/events.interface'
-
-const emitter = new EventEmitter({
-    captureRejections: true
-})
 
 /**
  * Giveaways event emitter.
  * @private
  */
-export class Emitter {
+export class Emitter<E extends object> {
+    private _emitter = new EventEmitter({
+        captureRejections: true
+    })
 
     /**
      * Listens to the event.
@@ -17,8 +15,8 @@ export class Emitter {
      * @param {Function} listener Callback function.
      * @returns {Emitter} Emitter instance.
      */
-    on<T extends keyof IGiveawaysEvents>(event: T, listener: (...args: IGiveawaysEvents[T][]) => any): Emitter  {
-        emitter.on(event, listener)
+    on<T extends keyof E>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
+        this._emitter.on(event as string, listener)
         return this
     }
 
@@ -28,8 +26,8 @@ export class Emitter {
      * @param {Function} listener Callback function.
      * @returns {Emitter} Emitter instance.
      */
-    once<T extends keyof IGiveawaysEvents>(event: T, listener: (...args: IGiveawaysEvents[T][]) => any): Emitter  {
-        emitter.once(event, listener)
+    once<T extends keyof E>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
+        this._emitter.once(event as string, listener)
         return this
     }
 
@@ -39,7 +37,7 @@ export class Emitter {
      * @param {any} args Arguments to emit the event with.
      * @returns {boolean} If event emitted successfully: true, otherwise - false.
      */
-    emit<T extends keyof IGiveawaysEvents>(event: T, ...args: IGiveawaysEvents[T][]): boolean {
-        return emitter.emit(event, args)
+    emit<T extends keyof E>(event: T, ...args: E[T][]): boolean {
+        return this._emitter.emit(event as string, args)
     }
 }

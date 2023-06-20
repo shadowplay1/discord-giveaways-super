@@ -19,7 +19,7 @@ export class GiveawaysError extends Error {
          * Error name.
          * @type {string}
          */
-        this.name = 'GiveawaysError'
+        this.name = `GiveawaysError${isErrorCode ? ` [${error}]` : ''}`
 
         /**
          * Error code.
@@ -39,8 +39,8 @@ export enum GiveawaysErrorCodes {
 
 export const errorMessages = {
     UNKNOWN_ERROR: 'Unknown error',
-    UNKNOWN_DATABASE: 'Unknown database type was specified.',
-    NO_DISCORD_CLIENT: 'Discord Client should be specified.',
+    UNKNOWN_DATABASE: 'Unknown database type was specified',
+    NO_DISCORD_CLIENT: 'Discord Client should be specified',
 
     DATABASE_ERROR(databaseType: DatabaseType, errorType?: 'malformed' | 'notFound'): string {
         if (databaseType == DatabaseType.JSON) {

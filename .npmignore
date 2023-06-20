@@ -2,15 +2,21 @@
 .husky/
 
 src/
+data/
 
 *.bak
 *.sw[nop]
 
+.eslintrc.js
 commitlint.config.js
+
+.editorconfig
+.gitattributes
 
 .gitignore
 .npmignore
 
 package-lock.json
+tsconfig.json
 
 giveaways.json

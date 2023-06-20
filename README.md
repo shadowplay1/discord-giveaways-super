@@ -1,12 +1,12 @@
 # Discord Giveaways Super
 
-[![Downloads](https://img.shields.io/npm/dt/discord-economy-super?style=for-the-badge)](https://www.npmjs.com/package/discord-economy-super)
-[![Stable Version](https://img.shields.io/npm/v/discord-economy-super?style=for-the-badge)](https://www.npmjs.com/package/discord-economy-super)
-[![Build Status](https://github.com/shadowplay1/discord-economy-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-economy-super)
+[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
+[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
+[![Build Status](https://github.com/shadowplay1/discord-giveaways-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-giveaways-super)
 
 <b>Discord Giveaways Super</b> - reate and manage giveaways in Discord.
 
-## ❓ | Why Discord Giveaways Super?
+## ❓ | Why **Discord Giveaways Super**?
 <ul>
 <li><b>Clean TypeScript Defenitions 📘</b></li>
 <li><b><a href="https://des-docs.js.org/#/docs/main/1.7.7/general/migrating-to-mongo">MongoDB Support 🍃</a></b></li>
