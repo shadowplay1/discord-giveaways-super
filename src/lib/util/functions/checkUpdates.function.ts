@@ -11,7 +11,7 @@ export const checkUpdates = async (): Promise<IUpdateState> => {
     const packageData = await fetch(`https://registry.npmjs.com/${packageName}`)
         .then(text => text.json())
 
-    const latestVersion = packageData['dist-tags'].latest
+    const latestVersion = packageData['dist-tags']?.latest || '1.0.0'
 
     if (packageVersion == latestVersion) return {
         updated: true,

@@ -1,6 +1,17 @@
+# node_modules
 node_modules/
+
+# build files
 dist/
+
+# testing data
 data/
 
+# backup files
 *.bak
+
+# vim swap files
 *.sw[nop]
+
+# test scripts
+test/

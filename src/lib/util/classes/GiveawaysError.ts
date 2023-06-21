@@ -5,6 +5,11 @@ import { typeOf } from '../functions/typeOf.function'
  * Giveaways error class.
  */
 export class GiveawaysError extends Error {
+
+    /**
+     * Error code.
+     * @type {GiveawaysErrorCodes}
+     */
     public code: GiveawaysErrorCodes
 
     /**
@@ -42,7 +47,9 @@ export enum GiveawaysErrorCodes {
     MODULE_ERROR = 'MODULE_ERROR',
     INTENT_MISSING = 'INTENT_MISSING',
     REQUIRED_ARGUMENT_MISSING = 'REQUIRED_ARGUMENT_MISSING',
-    INVALID_TYPE = 'INVALID_TYPE'
+    REQUIRED_CONFIG_OPTION_MISSING = 'REQUIRED_CONFIG_OPTION_MISSING',
+    INVALID_TYPE = 'INVALID_TYPE',
+    INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE'
 }
 
 export const errorMessages = {
@@ -51,7 +58,6 @@ export const errorMessages = {
     NO_DISCORD_CLIENT: 'Discord Client should be specified.',
 
     DATABASE_ERROR(databaseType: DatabaseType, errorType?: 'malformed' | 'notFound'): string {
-        this
         if (databaseType == DatabaseType.JSON) {
             if (errorType == 'malformed') {
                 return 'Database file is malformed.'
@@ -66,11 +72,15 @@ export const errorMessages = {
     },
 
     INTENT_MISSING(missingIntent: string): string {
-        return `Required intent ${missingIntent} is missing.`
+        return `Required intent "${missingIntent}" is missing.`
     },
 
-    INVALID_TYPE(parameter: string, requiredType: string, received: string): string {
-        return `${parameter} must be a ${requiredType}. Received type: ${typeOf(received)}.`
+    INVALID_TYPE(parameter: string, requiredType: string, receivedType: string): string {
+        return `${parameter} must be a ${requiredType}. Received type: ${typeOf(receivedType)}.`
+    },
+
+    INVALID_TARGET_TYPE(requiredType: string, receivedType: string): string {
+        return `Target must be a ${requiredType}. Received type: ${typeOf(receivedType)}.`
     },
 
     /**
@@ -81,5 +91,9 @@ export const errorMessages = {
      */
     REQUIRED_ARGUMENT_MISSING(parameter: string, method: `${string}.${string}`): string {
         return `${parameter} must be specified in '${method}()' method.`
+    },
+
+    REQUIRED_CONFIG_OPTION_MISSING(requiredConfigOption: string): string {
+        return `Required configuration option "${requiredConfigOption}" is missing.`
     }
 }
