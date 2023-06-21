@@ -196,23 +196,23 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             case DatabaseType.JSON: {
                 this._logger.debug('Checking the database file...')
 
-                const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.JSON>
-                const isFileExists = existsSync(databaseOptions?.path as string)
+                const databaseOptions = this.options.connection as Required<DatabaseConnectionOptions<DatabaseType.JSON>>
+                const isFileExists = existsSync(databaseOptions.path as string)
 
                 if (!isFileExists) {
-                    await writeFile(databaseOptions?.path as string, '{}')
+                    await writeFile(databaseOptions.path as string, '{}')
                 }
 
                 if (databaseOptions.checkDatabase) {
                     try {
                         setInterval(async () => {
-                            const isFileExists = existsSync(databaseOptions?.path as string)
+                            const isFileExists = existsSync(databaseOptions.path as string)
 
                             if (!isFileExists) {
-                                await writeFile(databaseOptions?.path as string, '{}')
+                                await writeFile(databaseOptions.path as string, '{}')
                             }
 
-                            const databaseFile = await readFile(databaseOptions?.path as string, 'utf-8')
+                            const databaseFile = await readFile(databaseOptions.path as string, 'utf-8')
                             JSON.parse(databaseFile)
                         }, databaseOptions.checkCountdown)
                     } catch (err: any) {
@@ -328,19 +328,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         //
     }
 
-    public async restart(): Promise<any> {
-        //
-    }
-
-    public async end(): Promise<any> {
-        //
-    }
-
-    public async forceEnd(): Promise<any> {
-        //
-    }
-
-    public async reroll(): Promise<any> {
+    public async get(): Promise<any> {
         //
     }
 }

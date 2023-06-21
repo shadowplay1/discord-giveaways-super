@@ -42,6 +42,7 @@ module.exports = {
     ignorePatterns: [
         'node_modules/*',
         '.eslintrc.js',
+        'postinstall.js',
         'commitlint.config.js'
     ],
 

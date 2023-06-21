@@ -89,7 +89,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                return database.get(key)
+                return database.get(key) as V
             }
         }
 
@@ -151,7 +151,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                database.set(key, value)
+                database.set(key, value as any)
 
                 return true
             }
@@ -237,7 +237,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                const targetNumber = database.get(key)
+                const targetNumber = database.get(key) as any
 
                 if (isNaN(targetNumber)) {
                     throw new GiveawaysError(
@@ -293,7 +293,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                const targetNumber = database.get(key)
+                const targetNumber = database.get(key) as any
 
                 if (isNaN(targetNumber)) {
                     throw new GiveawaysError(
@@ -302,7 +302,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
                     )
                 }
 
-                database.set(key, targetNumber - numberToSubtract)
+                database.set(key, (targetNumber - numberToSubtract) as any)
                 return true
             }
         }
@@ -383,7 +383,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                const targetArray: any[] = await database.get(key)
+                const targetArray = database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
@@ -393,7 +393,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
                 }
 
                 targetArray.push(value)
-                database.set(key, targetArray)
+                database.set(key, targetArray as any)
 
                 return true
             }
@@ -446,7 +446,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                const targetArray: any[] = await database.get(key)
+                const targetArray = database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
@@ -508,7 +508,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                const targetArray: any[] = await database.get(key)
+                const targetArray = database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(

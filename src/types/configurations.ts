@@ -1,9 +1,8 @@
+import { Mongo, IMongoConnectionOptions } from 'quick-mongo-super/MongoItems'
 import Enmap, { EnmapOptions } from 'enmap'
 
-import { IMongoConnectionOptions } from 'quick-mongo-super/typings/src/interfaces/QuickMongo'
-import QuickMongo from 'quick-mongo-super/typings/src/index'
-
 import { DatabaseType } from './databaseType.enum'
+import { IDatabaseStructure } from './databaseStructure.interface'
 
 export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
 
@@ -122,5 +121,5 @@ export type DatabaseConnectionOptions<TDatabase extends DatabaseType> =
 
 export type Database<TDatabase extends DatabaseType> =
     TDatabase extends DatabaseType.JSON ? null :
-    TDatabase extends DatabaseType.ENMAP ? Enmap<string, any> :
-    TDatabase extends DatabaseType.MONGODB ? QuickMongo : never
+    TDatabase extends DatabaseType.ENMAP ? Enmap<string, IDatabaseStructure> :
+    TDatabase extends DatabaseType.MONGODB ? Mongo<IDatabaseStructure> : never

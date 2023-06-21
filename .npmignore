@@ -4,6 +4,9 @@
 # husky scripts
 .husky/
 
+# dependencies
+node_modules/
+
 # source code
 src/
 
@@ -20,11 +23,11 @@ test/
 *.sw[nop]
 
 # configuration files
-tsconfig.json
+.gitattributes
+.editorconfig
 .eslintrc.js
 commitlint.config.js
-.editorconfig
-.gitattributes
+tsconfig.json
 
 # ignore lists
 .gitignore
