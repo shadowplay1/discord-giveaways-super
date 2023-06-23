@@ -35,6 +35,7 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         this.channel = this._giveaways.client.channels.cache.get(giveaway.channelID) as TextChannel
         this.messageURL = giveaway.messageURL || ''
         this.entries = []
+        this.messageProps = { embed: {} as any, buttons: {} as any }
     }
 
 

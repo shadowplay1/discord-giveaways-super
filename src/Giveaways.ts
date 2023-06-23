@@ -12,6 +12,7 @@ import {
 
 import {
     Database, DatabaseConnectionOptions,
+    IGiveawayEmbedOptions,
     IGiveawayJoinButtonOptions,
     IGiveawayStartOptions, IGiveawaysConfiguration
 } from './types/configurations'
@@ -314,6 +315,19 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
                         if (!userEntry) {
                             giveaway.addEntry(interaction.guild?.id as string, interaction.user.id)
+                            // console.log({ giveaway });
+
+                            const gs = await this.database.get<IGiveaway[]>(`${interaction.guild?.id}.giveaways`)
+
+                            const g = gs.find(
+                                x => x.channelID == interaction.channel?.id &&
+                                    x.guildID == interaction.guild?.id &&
+                                    x.messageID == giveaway.messageID
+                            )
+
+                            g?.entries.push(interaction.user.id)
+
+                            await this._editGiveawayMessage(g as IGiveaway)
 
                             interaction.reply({
                                 content: ':white_check_mark: | You have entered the giveaway!',
@@ -321,6 +335,18 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                             })
                         } else {
                             giveaway.removeEntry(interaction.guild?.id as string, interaction.user.id)
+
+                            const gs = await this.database.get<IGiveaway[]>(`${interaction.guild?.id}.giveaways`)
+
+                            const g = gs.find(
+                                x => x.channelID == interaction.channel?.id &&
+                                    x.guildID == interaction.guild?.id &&
+                                    x.messageID == giveaway.messageID
+                            )
+
+                            g?.entries.splice(g.entries.indexOf(interaction.user.id), 1)
+
+                            await this._editGiveawayMessage(g as any)
 
                             interaction.reply({
                                 content: ':x: | You have left the giveaway!',
@@ -417,42 +443,13 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             this.client.users.cache.get(hostMemberID) as User
         ) : {}
 
-        const {
-            messageContent, title, titleIcon, color,
-            titleIconURL, description, footer,
-            footerIcon, imageURL, thumbnailURL
-        } = embedStrings
-
-        const embed = new EmbedBuilder()
-            .setAuthor({
-                name: title || 'Giveaway',
-                iconURL: titleIcon,
-                url: titleIconURL
-            })
-            .setDescription(description || `**${newGiveaway.prize}** giveaway has started! Press the button below to join!`)
-            .setColor(color || '#d694ff')
-            .setImage(imageURL as string)
-            .setThumbnail(thumbnailURL as string)
-            .setFooter({
-                text: footer || 'Giveaway started',
-                iconURL: footerIcon
-            })
-            .setTimestamp(new Date())
-
-        const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-                new ButtonBuilder({
-                    customId: 'joinGiveawayButton',
-                    label: joinGiveawayButton?.text || 'Join the giveaway',
-                    emoji: joinGiveawayButton?.emoji || '🎉',
-                    style: joinGiveawayButton?.style as any || ButtonStyle.Primary
-                })
-            )
-
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 
+        const embed = this._buildGiveawayEmbed(newGiveaway, embedStrings)
+        const buttonsRow = this._buildButtonsRow(joinGiveawayButton as IGiveawayJoinButtonOptions)
+
         const message = await channel.send({
-            content: messageContent,
+            content: embedStrings.messageContent,
             embeds: [embed],
             components: [buttonsRow]
         })
@@ -498,5 +495,67 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         }
 
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
+    }
+
+    private _buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions): EmbedBuilder {
+        const embedStrings = newEmbedStrings || giveaway.messageProps?.embed as IGiveawayEmbedOptions
+        console.log({ embedStrings: embedStrings })
+
+        const {
+            title, titleIcon, color,
+            titleIconURL, description, footer,
+            footerIcon, imageURL, thumbnailURL
+        } = embedStrings
+
+        const embed = new EmbedBuilder()
+            .setAuthor({
+                name: title || 'Giveaway',
+                iconURL: titleIcon,
+                url: titleIconURL
+            })
+            .setDescription(description || `**${giveaway.prize}** giveaway has started! Press the button below to join!`)
+            .setColor(color || '#d694ff')
+            .setImage(imageURL as string)
+            .setThumbnail(thumbnailURL as string)
+            .setFooter({
+                text: footer || 'Giveaway started',
+                iconURL: footerIcon
+            })
+            .setTimestamp(new Date())
+
+        return embed
+    }
+
+    private _buildButtonsRow(joinGiveawayButton: IGiveawayJoinButtonOptions): ActionRowBuilder<ButtonBuilder> {
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder({
+                    customId: 'joinGiveawayButton',
+                    label: joinGiveawayButton?.text || 'Join the giveaway',
+                    emoji: joinGiveawayButton?.emoji || '🎉',
+                    style: joinGiveawayButton?.style as any || ButtonStyle.Primary
+                })
+            )
+
+        return buttonsRow
+    }
+
+    private async _editGiveawayMessage(
+        giveaway: IGiveaway
+    ): Promise<void> {
+        console.log({ giveaway });
+        const embedStrings = giveaway.messageProps?.embed as IGiveawayEmbedOptions
+        const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
+
+        const embed = this._buildGiveawayEmbed(giveaway)
+        const buttonsRow = this._buildButtonsRow(giveaway.messageProps?.buttons.joinGiveawayButton as IGiveawayJoinButtonOptions)
+
+        const message = await channel.messages.fetch(giveaway.messageID)
+
+        await message.edit({
+            content: embedStrings.messageContent,
+            embeds: [embed],
+            components: [buttonsRow]
+        })
     }
 }
