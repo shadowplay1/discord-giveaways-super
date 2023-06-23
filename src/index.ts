@@ -1,8 +1,8 @@
-export { If } from './types/misc/If.type'
+export { If, Optional, FindCallback, MapCallback } from './types/misc/utils'
 export { ILoggerColors } from './types/misc/colors.interface'
 export { IUpdateState } from './types/misc/updateState.interface'
 
-export { IGiveawaysEvents } from './types/events.interface'
+export { IGiveawaysEvents } from './types/giveawaysEvents.interface'
 export { DatabaseType } from './types/databaseType.enum'
 
 export {

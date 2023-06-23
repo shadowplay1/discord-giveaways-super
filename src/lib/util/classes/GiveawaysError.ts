@@ -17,7 +17,7 @@ export class GiveawaysError extends Error {
      * @param {GiveawaysErrorCodes} errorCode Error code to throw.
      */
     public constructor(error: GiveawaysErrorCodes | string, errorCode?: GiveawaysErrorCodes) {
-        const isErrorCode = (errorMessages as any)[error] || errorCode
+        const isErrorCode = (errorMessages as any)[error]
 
         super(isErrorCode ? (errorMessages as any)[error] : error)
 
@@ -27,7 +27,7 @@ export class GiveawaysError extends Error {
          */
         this.name = `GiveawaysError${isErrorCode
             ? ` [${error}]`
-            : errorCode ? ` [${error}]` : ''}`
+            : errorCode ? ` [${errorCode}]` : ''}`
 
         /**
          * Error code.
@@ -80,7 +80,8 @@ export const errorMessages = {
     },
 
     INVALID_TARGET_TYPE(requiredType: string, receivedType: string): string {
-        return `Target must be a ${requiredType}. Received type: ${typeOf(receivedType)}.`
+        return `Target must be ${requiredType.toLowerCase().startsWith('a') ? 'an' : 'a'} ${requiredType}. ` +
+            `Received type: ${typeOf(receivedType)}.`
     },
 
     /**

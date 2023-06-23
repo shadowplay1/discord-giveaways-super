@@ -1,8 +1,12 @@
+import { ButtonStyle, ColorResolvable, User } from 'discord.js'
+
 import { Mongo, IMongoConnectionOptions } from 'quick-mongo-super/MongoItems'
 import Enmap, { EnmapOptions } from 'enmap'
 
 import { DatabaseType } from './databaseType.enum'
 import { IDatabaseStructure } from './databaseStructure.interface'
+
+import { IGiveaway } from '../lib/giveaway.interface'
 
 export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
 
@@ -108,6 +112,25 @@ export interface IJSONDatabseConfiguration {
      */
     checkCountdown: number
 }
+
+export interface IGiveawayStartOptions {
+    joinGiveawayButton: Partial<IGiveawayJoinButtonOptions>
+    defineEmbedStrings(giveaway: IGiveaway, giveawayHost: User): IGiveawayEmbedOptions
+}
+
+export interface IGiveawayJoinButtonOptions {
+    text: string
+    emoji: string
+    style: ButtonStyle
+}
+
+export type IGiveawayEmbedOptions = Partial<
+    Record<
+        'messageContent' | 'title' | 'titleIcon' |
+        'titleIconURL' | 'description' | 'footer' |
+        'footerIcon' | 'thumbnailURL' | 'imageURL', string
+    > & { color: ColorResolvable }
+>
 
 export type IGiveawaysConfigurationWithoutDatabase = Omit<
     Required<IGiveawaysConfiguration<DatabaseType.JSON>>,

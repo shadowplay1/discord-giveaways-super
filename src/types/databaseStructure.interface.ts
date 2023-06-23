@@ -1,5 +1,7 @@
-import { IGiveaway } from '../lib/Giveaway'
+import { IGiveaway } from '../lib/giveaway.interface'
 
 export interface IDatabaseStructure {
-    [guildID: string]: IGiveaway[]
+    [guildID: string]: {
+        giveaways: IGiveaway[]
+    }
 }

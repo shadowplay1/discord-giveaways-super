@@ -52,6 +52,8 @@ module.exports = {
             'never'
         ],
 
+        '@typescript-eslint/no-extra-semi': 'warn',
+
         'no-plusplus': 'off',
         'implicit-arrow-linebreak': 'off',
         'operator-linebreak': 'off',

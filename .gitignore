@@ -1,6 +1,9 @@
 # dependencies
 node_modules/
 
+# vscode
+.vscode/
+
 # build files
 dist/
 

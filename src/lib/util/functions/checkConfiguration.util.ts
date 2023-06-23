@@ -98,7 +98,5 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     output.database = configurationToCheck.database
     output.connection = configurationToCheck.connection
 
-    console.log({ output })
-
     return output as IGiveawaysConfiguration<TDatabaseType>
 }

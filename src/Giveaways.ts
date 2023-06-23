@@ -4,10 +4,19 @@ import { readFile, writeFile } from 'fs/promises'
 import QuickMongo from 'quick-mongo-super'
 import Enmap from 'enmap'
 
-import { Client, GatewayIntentBits, IntentsBitField } from 'discord.js'
+import {
+    ActionRowBuilder, ButtonBuilder, ButtonStyle,
+    Client, EmbedBuilder, GatewayIntentBits,
+    IntentsBitField, TextChannel, User
+} from 'discord.js'
 
-import { Database, DatabaseConnectionOptions, IGiveawaysConfiguration } from './types/configurations'
-import { IGiveawaysEvents } from './types/events.interface'
+import {
+    Database, DatabaseConnectionOptions,
+    IGiveawayJoinButtonOptions,
+    IGiveawayStartOptions, IGiveawaysConfiguration
+} from './types/configurations'
+
+import { IGiveawaysEvents } from './types/giveawaysEvents.interface'
 
 import { DatabaseType } from './types/databaseType.enum'
 import { checkUpdates } from './lib/util/functions/checkUpdates.function'
@@ -15,11 +24,17 @@ import { checkUpdates } from './lib/util/functions/checkUpdates.function'
 import { version as packageVersion } from '../package.json'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/classes/GiveawaysError'
+
 import { Logger } from './lib/util/classes/Logger'
 import { Emitter } from './lib/util/classes/Emitter'
-import { DatabaseManager } from './lib/managers/DatabaseManager'
-import { checkConfiguration } from './lib/util/functions/checkConfiguration.util'
 
+import { DatabaseManager } from './lib/managers/DatabaseManager'
+
+import { checkConfiguration } from './lib/util/functions/checkConfiguration.util'
+import { FindCallback, Optional } from './types/misc/utils'
+
+import { Giveaway } from './lib/Giveaway'
+import { IGiveaway } from './lib/giveaway.interface'
 
 /**
  * Main Giveaways class.
@@ -87,7 +102,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
          * Module ready state.
          * @type {boolean}
          */
-        this.ready = true
+        this.ready = false
 
         /**
          * Module version.
@@ -126,7 +141,6 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
          */
         this.database = null as any
 
-        this.ready = false
         this._init()
     }
 
@@ -156,11 +170,15 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             )
         }
 
-        if (!Object.keys(DatabaseType).includes(this.options.database)) {
+        const isDatabaseCorrect = Object.keys(DatabaseType)
+            .map(databaseType => databaseType.toLowerCase())
+            .includes(this.options.database.toLowerCase())
+
+        if (!isDatabaseCorrect) {
             throw new GiveawaysError(
                 errorMessages.INVALID_TYPE(
-                    'database',
-                    'value from DatabaseType enum: either "JSON", "MONGODB" or "Enmap".',
+                    '"database"',
+                    'value from "DatabaseType" enum: either "JSON", "MONGODB" or "Enmap"',
                     typeof this.options.database
                 ),
                 GiveawaysErrorCodes.INVALID_TYPE
@@ -273,10 +291,46 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.database = new DatabaseManager(this)
         await this._sendUpdateMessage()
 
-        this.emit('ready')
-        this._logger.debug('Giveaways module is ready!', 'lightgreen')
+        this._logger.debug('Waiting for client to be ready...')
 
-        this.ready = true
+        this.client.on('ready', () => {
+            this._logger.debug('Giveaways module is ready!', 'lightgreen')
+
+            this.emit('ready')
+            this.ready = true
+        })
+
+        this.client.on('interactionCreate', async interaction => {
+            if (interaction.isButton()) {
+                if (interaction.customId == 'joinGiveawayButton') {
+                    const interactionMessage = interaction.message
+
+                    const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
+
+                    if (giveaway) {
+                        const userEntry = giveaway.raw.entries.find(entryUser => entryUser == interaction.user.id)
+                        console.log({ giveaway: giveaway.entries, rawGiveaway: giveaway.raw.entries, userEntry })
+
+                        if (!userEntry) {
+                            giveaway.addEntry(interaction.guild?.id as string, interaction.user.id)
+
+                            interaction.reply({
+                                content: ':white_check_mark: | You have entered the giveaway!',
+                                ephemeral: true
+                            })
+                        } else {
+                            giveaway.removeEntry(interaction.guild?.id as string, interaction.user.id)
+
+                            interaction.reply({
+                                content: ':x: | You have left the giveaway!',
+                                ephemeral: true
+                            })
+                        }
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -324,11 +378,125 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     }
 
 
-    public async start(): Promise<any> {
-        //
+    /**
+     * Starts the giveaway.
+     * @param giveawayOptions Giveaway options.
+     * @returns {Promise<Giveaway>} Created giveaway instance.
+     */
+    public async start(
+        giveawayOptions: Optional<
+            Omit<
+                IGiveaway, 'id' | 'endTimestamp' | 'messageID' | 'messageURL' | 'entries'>,
+            'time' | 'winnersCount'
+        > &
+            Partial<IGiveawayStartOptions>
+    ): Promise<Giveaway> {
+        const {
+            channelID, guildID, hostMemberID,
+            prize, time, winnersCount,
+            defineEmbedStrings, joinGiveawayButton
+        } = giveawayOptions
+
+        const guildGiveaways = await this.getGuildGiveaways(guildID)
+
+        const newGiveaway: IGiveaway = {
+            id: ((guildGiveaways.at(-1)?.id || 0) as number) + 1,
+            hostMemberID,
+            guildID,
+            channelID,
+            messageID: '123',
+            prize,
+            endTimestamp: 0,
+            time: time || '1d',
+            winnersCount: winnersCount || 1,
+            entries: []
+        }
+
+        const embedStrings = defineEmbedStrings ? defineEmbedStrings(
+            newGiveaway,
+            this.client.users.cache.get(hostMemberID) as User
+        ) : {}
+
+        const {
+            messageContent, title, titleIcon, color,
+            titleIconURL, description, footer,
+            footerIcon, imageURL, thumbnailURL
+        } = embedStrings
+
+        const embed = new EmbedBuilder()
+            .setAuthor({
+                name: title || 'Giveaway',
+                iconURL: titleIcon,
+                url: titleIconURL
+            })
+            .setDescription(description || `**${newGiveaway.prize}** giveaway has started! Press the button below to join!`)
+            .setColor(color || '#d694ff')
+            .setImage(imageURL as string)
+            .setThumbnail(thumbnailURL as string)
+            .setFooter({
+                text: footer || 'Giveaway started',
+                iconURL: footerIcon
+            })
+            .setTimestamp(new Date())
+
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder({
+                    customId: 'joinGiveawayButton',
+                    label: joinGiveawayButton?.text || 'Join the giveaway',
+                    emoji: joinGiveawayButton?.emoji || '🎉',
+                    style: joinGiveawayButton?.style as any || ButtonStyle.Primary
+                })
+            )
+
+        const channel = this.client.channels.cache.get(channelID) as TextChannel
+
+        const message = await channel.send({
+            content: messageContent,
+            embeds: [embed],
+            components: [buttonsRow]
+        })
+
+        newGiveaway.messageID = message.id
+        newGiveaway.messageURL = message.url
+
+        newGiveaway.messageProps = {
+            embed: embedStrings,
+            buttons: {
+                joinGiveawayButton: joinGiveawayButton as Partial<IGiveawayJoinButtonOptions>,
+                rerollButton: {} as any,
+                goToMessageButton: {} as any
+            }
+        }
+
+        this.database.push(`${guildID}.giveaways`, newGiveaway)
+        return new Giveaway(this, newGiveaway)
     }
 
-    public async get(): Promise<any> {
-        //
+    public async find(cb: FindCallback<Giveaway>): Promise<Giveaway> {
+        const giveaways = await this.getAll()
+        const giveaway = giveaways.find(cb)
+
+        return giveaway as Giveaway
+    }
+
+    public async getGuildGiveaways(guildID: string): Promise<Giveaway[]> {
+        const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+        return giveaways.map(giveaway => new Giveaway(this, giveaway))
+    }
+
+    public async getAll(): Promise<Giveaway[]> {
+        const giveaways: IGiveaway[] = []
+        const guildIDs = await this.database.getKeys()
+
+        for (const guildID of guildIDs.filter(guildID => !isNaN(parseInt(guildID)))) {
+            const databaseGiveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+
+            for (const databaseGiveaway of databaseGiveaways) {
+                giveaways.push(databaseGiveaway)
+            }
+        }
+
+        return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 }
