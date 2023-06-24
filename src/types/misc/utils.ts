@@ -1,3 +1,9 @@
+export interface IUpdateState {
+    updated: boolean
+    installedVersion: string
+    availableVersion: string
+}
+
 export type If<T extends boolean,
     IfTrue,
     IfFalse = null

@@ -30,6 +30,12 @@ export interface IGiveaway {
      * Giveaway end timestamp.
      * @type {number}
      */
+    startTimestamp: number
+
+    /**
+     * Giveaway end timestamp.
+     * @type {number}
+     */
     endTimestamp: number
 
     /**
@@ -63,10 +69,16 @@ export interface IGiveaway {
     guildID: string
 
     /**
+     * Number of giveaway entries.
+     * @type {number}
+     */
+    entries: number
+
+    /**
      * Array of user IDs of users that entered the giveaway.
      * @type {string[]}
      */
-    entries: string[]
+    entriesArray: string[]
 
     /**
      * Message data properties for embeds and buttons.
@@ -79,3 +91,5 @@ export interface IGiveawayMessageProps {
     embed: IGiveawayEmbedOptions
     buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayJoinButtonOptions>>
 }
+
+export type GiveawayWithoutEntriesArray = Omit<Record<keyof IGiveaway, string>, 'entriesArray'>

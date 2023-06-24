@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-import { IUpdateState } from '../../../types/misc/updateState.interface'
+import { IUpdateState } from '../../../types/misc/utils'
 import { name as packageName, version as packageVersion } from '../../../../package.json'
 
 /**

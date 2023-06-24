@@ -37,6 +37,8 @@ import { FindCallback, Optional } from './types/misc/utils'
 import { Giveaway } from './lib/Giveaway'
 import { IGiveaway } from './lib/giveaway.interface'
 
+import { giveawayTemplate, replaceGiveawayKeys } from './structures/giveawayTemplate'
+
 /**
  * Main Giveaways class.
  */
@@ -49,19 +51,19 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     public client: Client<boolean>
 
     /**
-     * Module ready state.
+     * Giveaways ready state.
      * @type {boolean}
      */
     public ready: boolean
 
     /**
-     * Module version.
+     * Giveaways version.
      * @type {string}
      */
     public version: string
 
     /**
-     * Module options.
+     * Giveaways options.
      * @type {IGiveawaysConfiguration<DatabaseType>}
      */
     public options: IGiveawaysConfiguration<TDatabase>
@@ -151,7 +153,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
      * @private
      */
     private async _init(): Promise<void> {
-        this._logger.debug('Economy starting process launched.', 'lightgreen')
+        this._logger.debug('Giveaways starting process launched.', 'lightgreen')
 
         if (!this.client) {
             throw new GiveawaysError(GiveawaysErrorCodes.NO_DISCORD_CLIENT)
@@ -297,8 +299,8 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.client.on('ready', () => {
             this._logger.debug('Giveaways module is ready!', 'lightgreen')
 
-            this.emit('ready')
             this.ready = true
+            this.emit('ready', this)
         })
 
         this.client.on('interactionCreate', async interaction => {
@@ -309,49 +311,36 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                     const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
+                    console.log({ giveaway });
+
+
                     if (giveaway) {
-                        const userEntry = giveaway.raw.entries.find(entryUser => entryUser == interaction.user.id)
-                        console.log({ giveaway: giveaway.entries, rawGiveaway: giveaway.raw.entries, userEntry })
+                        const userEntry = giveaway.raw.entriesArray.find(entryUser => entryUser == interaction.user.id)
 
                         if (!userEntry) {
-                            giveaway.addEntry(interaction.guild?.id as string, interaction.user.id)
-                            // console.log({ giveaway });
-
-                            const gs = await this.database.get<IGiveaway[]>(`${interaction.guild?.id}.giveaways`)
-
-                            const g = gs.find(
-                                x => x.channelID == interaction.channel?.id &&
-                                    x.guildID == interaction.guild?.id &&
-                                    x.messageID == giveaway.messageID
+                            const newGiveaway = await giveaway.addEntry(
+                                interaction.guild?.id as string,
+                                interaction.user.id
                             )
-
-                            g?.entries.push(interaction.user.id)
-
-                            await this._editGiveawayMessage(g as IGiveaway)
 
                             interaction.reply({
                                 content: ':white_check_mark: | You have entered the giveaway!',
                                 ephemeral: true
                             })
+
+                            this._editGiveawayMessage(newGiveaway)
                         } else {
-                            giveaway.removeEntry(interaction.guild?.id as string, interaction.user.id)
-
-                            const gs = await this.database.get<IGiveaway[]>(`${interaction.guild?.id}.giveaways`)
-
-                            const g = gs.find(
-                                x => x.channelID == interaction.channel?.id &&
-                                    x.guildID == interaction.guild?.id &&
-                                    x.messageID == giveaway.messageID
+                            const newGiveaway = await giveaway.removeEntry(
+                                interaction.guild?.id as string,
+                                interaction.user.id
                             )
-
-                            g?.entries.splice(g.entries.indexOf(interaction.user.id), 1)
-
-                            await this._editGiveawayMessage(g as any)
 
                             interaction.reply({
                                 content: ':x: | You have left the giveaway!',
                                 ephemeral: true
                             })
+
+                            this._editGiveawayMessage(newGiveaway)
                         }
                     }
                 }
@@ -412,7 +401,9 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     public async start(
         giveawayOptions: Optional<
             Omit<
-                IGiveaway, 'id' | 'endTimestamp' | 'messageID' | 'messageURL' | 'entries'>,
+                IGiveaway,
+                'id' | 'startTimestamp' | 'endTimestamp' | 'messageID' | 'messageURL' | 'entries' | 'entriesArray'
+            >,
             'time' | 'winnersCount'
         > &
             Partial<IGiveawayStartOptions>
@@ -430,16 +421,22 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             hostMemberID,
             guildID,
             channelID,
-            messageID: '123',
+            messageID: '',
             prize,
+            startTimestamp: Date.now(),
             endTimestamp: 0,
             time: time || '1d',
             winnersCount: winnersCount || 1,
-            entries: []
+            entries: 0,
+            entriesArray: []
         }
 
+
+        console.log(replaceGiveawayKeys('id: {id}, prize: {prize}', newGiveaway))
+
+
         const embedStrings = defineEmbedStrings ? defineEmbedStrings(
-            newGiveaway,
+            giveawayTemplate as any,
             this.client.users.cache.get(hostMemberID) as User
         ) : {}
 
@@ -466,6 +463,8 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             }
         }
 
+        console.log({ embedStrings })
+
         this.database.push(`${guildID}.giveaways`, newGiveaway)
         return new Giveaway(this, newGiveaway)
     }
@@ -479,6 +478,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
     public async getGuildGiveaways(guildID: string): Promise<Giveaway[]> {
         const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+        // console.log({ guildGiveawaysProps: giveaways.map(giveaway => new Giveaway(this, giveaway)).map(x => x.messageProps) })
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
@@ -498,8 +498,12 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     }
 
     private _buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions): EmbedBuilder {
-        const embedStrings = newEmbedStrings || giveaway.messageProps?.embed as IGiveawayEmbedOptions
-        console.log({ embedStrings: embedStrings })
+        const embedStrings = newEmbedStrings ? { ...newEmbedStrings } : { ...giveaway.messageProps?.embed } as IGiveawayEmbedOptions
+
+        for (const stringKey in embedStrings) {
+            const strings = embedStrings as { [key: string]: string }
+            strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway)
+        }
 
         const {
             title, titleIcon, color,
@@ -513,7 +517,10 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 iconURL: titleIcon,
                 url: titleIconURL
             })
-            .setDescription(description || `**${giveaway.prize}** giveaway has started! Press the button below to join!`)
+            .setDescription(
+                description || `**${giveaway.prize}** giveaway has started with **${giveaway.entries}** entries! ` +
+                'Press the button below to join!'
+            )
             .setColor(color || '#d694ff')
             .setImage(imageURL as string)
             .setThumbnail(thumbnailURL as string)
@@ -543,7 +550,6 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     private async _editGiveawayMessage(
         giveaway: IGiveaway
     ): Promise<void> {
-        console.log({ giveaway });
         const embedStrings = giveaway.messageProps?.embed as IGiveawayEmbedOptions
         const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
 

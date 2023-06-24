@@ -115,7 +115,7 @@ export interface IJSONDatabseConfiguration {
 
 export interface IGiveawayStartOptions {
     joinGiveawayButton: Partial<IGiveawayJoinButtonOptions>
-    defineEmbedStrings(giveaway: IGiveaway, giveawayHost: User): IGiveawayEmbedOptions
+    defineEmbedStrings(giveaway: Omit<IGiveaway, 'entriesArray'>, giveawayHost: User): IGiveawayEmbedOptions
 }
 
 export interface IGiveawayJoinButtonOptions {
