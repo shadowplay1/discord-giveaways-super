@@ -1,7 +1,7 @@
 import { User, TextChannel, Guild } from 'discord.js'
 
 import { Giveaways } from '../Giveaways'
-import { IGiveaway, IGiveawayMessageProps } from './giveaway.interface'
+import { GiveawayState, IGiveaway, IGiveawayMessageProps } from './giveaway.interface'
 
 export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
     private _giveaways: Giveaways<any>
@@ -10,6 +10,7 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
     public id: number
     public prize: string
     public time: string
+    public state: GiveawayState
     public winnersCount: number
     public startTimestamp: number
     public endTimestamp: number
@@ -29,6 +30,7 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         this.id = giveaway.id
         this.prize = giveaway.prize
         this.time = giveaway.time
+        this.state = giveaway.state
         this.winnersCount = giveaway.winnersCount
         this.startTimestamp = giveaway.startTimestamp
         this.endTimestamp = giveaway.endTimestamp
@@ -69,9 +71,8 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         giveaway.entries = giveaway.entries + 1
 
         this.sync(giveaway)
-        console.log(this.entries, this.raw.entries)
-
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
+
         return giveaway
     }
 
@@ -83,9 +84,8 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         giveaway.entries = giveaway.entries - 1
 
         this.sync(giveaway)
-        console.log(this.entries, this.raw.entries)
-
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
+
         return giveaway
     }
 
@@ -119,7 +119,7 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
 
     /**
      * Converts the Giveaway instance to a plain object representation.
-     * @returns Plain object representation of Giveaway instance.
+     * @returns {IGiveaway} Plain object representation of Giveaway instance.
      */
     public toJSON(): IGiveaway {
         return this.raw

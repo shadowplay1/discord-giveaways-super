@@ -1,18 +1,25 @@
-export { If, Optional, FindCallback, MapCallback } from './types/misc/utils'
-export { ILoggerColors } from './types/misc/colors.interface'
+export * from './types/misc/utils'
+export * from './types/misc/colors.interface'
 
-export { IGiveawaysEvents } from './types/giveawaysEvents.interface'
-export { DatabaseType } from './types/databaseType.enum'
+export * from './lib/managers/DatabaseManager'
 
-export {
-    DatabaseConnectionOptions, IUpdateCheckerConfiguration,
-    IGiveawaysConfiguration, IJSONDatabseConfiguration
-} from './types/configurations'
+export * from './types/configurations'
+export * from './types/giveawaysEvents.interface'
+export * from './types/databaseStructure.interface'
 
-export { checkUpdates } from './lib/util/functions/checkUpdates.function'
+export * from './types/databaseType.enum'
 
-export { Emitter } from './lib/util/classes/Emitter'
-export { Logger } from './lib/util/classes/Logger'
-export { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './lib/util/classes/GiveawaysError'
+export * from './structures/defaultConfig'
+export * from './structures/giveawayTemplate'
 
-export { Giveaways } from './Giveaways'
+export * from './lib/util/functions/checkConfiguration.util'
+export * from './lib/util/functions/checkUpdates.function'
+export * from './lib/util/functions/typeOf.function'
+
+export * from './lib/util/classes/Logger'
+export * from './lib/util/classes/JSONParser'
+export * from './lib/util/classes/Emitter'
+export * from './lib/util/classes/GiveawaysError'
+
+export * from './Giveaways'
+export * from './lib/giveaway.interface'

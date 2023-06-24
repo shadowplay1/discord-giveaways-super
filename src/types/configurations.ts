@@ -113,8 +113,12 @@ export interface IJSONDatabseConfiguration {
     checkCountdown: number
 }
 
+export type IGiveawayButtons = Record<'joinGiveawayButton' | 'rerollButton', Partial<IGiveawayJoinButtonOptions>> & {
+    goToMessageButton: Omit<Partial<IGiveawayJoinButtonOptions>, 'style'>
+}
+
 export interface IGiveawayStartOptions {
-    joinGiveawayButton: Partial<IGiveawayJoinButtonOptions>
+    buttons: Partial<IGiveawayButtons>
     defineEmbedStrings(giveaway: Omit<IGiveaway, 'entriesArray'>, giveawayHost: User): IGiveawayEmbedOptions
 }
 

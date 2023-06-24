@@ -1,6 +1,6 @@
 import { IGiveawaysConfigurationWithoutDatabase } from '../types/configurations'
 
-export = {
+export const defaultConfig = {
     updatesChecker: {
         checkUpdates: true,
         upToDateMessage: false

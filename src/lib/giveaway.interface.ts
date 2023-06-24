@@ -21,6 +21,12 @@ export interface IGiveaway {
     time: string
 
     /**
+     * Giveaway state
+     * @type {GiveawayState}
+     */
+    state: GiveawayState
+
+    /**
      * Giveaway winners count.
      * @type {number}
      */
@@ -92,4 +98,11 @@ export interface IGiveawayMessageProps {
     buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayJoinButtonOptions>>
 }
 
-export type GiveawayWithoutEntriesArray = Omit<Record<keyof IGiveaway, string>, 'entriesArray'>
+export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state'>
+
+export enum GiveawayState {
+    NONE = 0,
+    STARTED = 1,
+    ENDED = 2,
+    FORCE_ENDED = 3
+}

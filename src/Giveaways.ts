@@ -12,6 +12,7 @@ import {
 
 import {
     Database, DatabaseConnectionOptions,
+    IGiveawayButtons,
     IGiveawayEmbedOptions,
     IGiveawayJoinButtonOptions,
     IGiveawayStartOptions, IGiveawaysConfiguration
@@ -35,7 +36,7 @@ import { checkConfiguration } from './lib/util/functions/checkConfiguration.util
 import { FindCallback, Optional } from './types/misc/utils'
 
 import { Giveaway } from './lib/Giveaway'
-import { IGiveaway } from './lib/giveaway.interface'
+import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
 
 import { giveawayTemplate, replaceGiveawayKeys } from './structures/giveawayTemplate'
 
@@ -311,7 +312,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                     const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
-                    console.log({ giveaway });
+                    console.log({ giveaway: giveaway?.messageProps })
 
 
                     if (giveaway) {
@@ -402,7 +403,9 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         giveawayOptions: Optional<
             Omit<
                 IGiveaway,
-                'id' | 'startTimestamp' | 'endTimestamp' | 'messageID' | 'messageURL' | 'entries' | 'entriesArray'
+                'id' | 'startTimestamp' | 'endTimestamp' |
+                'messageID' | 'messageURL' | 'entries' |
+                'entriesArray' | 'state'
             >,
             'time' | 'winnersCount'
         > &
@@ -411,8 +414,14 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         const {
             channelID, guildID, hostMemberID,
             prize, time, winnersCount,
-            defineEmbedStrings, joinGiveawayButton
+            defineEmbedStrings, buttons
         } = giveawayOptions
+
+        const {
+            joinGiveawayButton,
+            // rerollButton,
+            // goToMessageButton
+        } = (buttons || {}) as IGiveawayButtons
 
         const guildGiveaways = await this.getGuildGiveaways(guildID)
 
@@ -426,14 +435,11 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             startTimestamp: Date.now(),
             endTimestamp: 0,
             time: time || '1d',
+            state: GiveawayState.STARTED,
             winnersCount: winnersCount || 1,
             entries: 0,
             entriesArray: []
         }
-
-
-        console.log(replaceGiveawayKeys('id: {id}, prize: {prize}', newGiveaway))
-
 
         const embedStrings = defineEmbedStrings ? defineEmbedStrings(
             giveawayTemplate as any,
@@ -460,10 +466,9 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 joinGiveawayButton: joinGiveawayButton as Partial<IGiveawayJoinButtonOptions>,
                 rerollButton: {} as any,
                 goToMessageButton: {} as any
+
             }
         }
-
-        console.log({ embedStrings })
 
         this.database.push(`${guildID}.giveaways`, newGiveaway)
         return new Giveaway(this, newGiveaway)
@@ -540,7 +545,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                     customId: 'joinGiveawayButton',
                     label: joinGiveawayButton?.text || 'Join the giveaway',
                     emoji: joinGiveawayButton?.emoji || '🎉',
-                    style: joinGiveawayButton?.style as any || ButtonStyle.Primary
+                    style: ButtonStyle.Primary
                 })
             )
 

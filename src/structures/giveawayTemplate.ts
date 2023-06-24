@@ -1,6 +1,6 @@
-import { GiveawayWithoutEntriesArray } from '../lib/giveaway.interface'
+import { GiveawayWithoutInternalData } from '../lib/giveaway.interface'
 
-export const giveawayTemplate: GiveawayWithoutEntriesArray = {
+export const giveawayTemplate: GiveawayWithoutInternalData = {
     id: '{id}',
     hostMemberID: '{hostMemberID}',
     guildID: '{guildID}',
