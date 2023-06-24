@@ -98,7 +98,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP>
-                return database.get(key) as V
+                return database.get(key) as any
             }
         }
 
@@ -551,7 +551,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
                 const database = this.db as Database<DatabaseType.MONGODB>
                 const data = await database.all()
 
-                return data as V
+                return data as any
             }
 
             case DatabaseType.ENMAP: {
@@ -576,7 +576,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
                     }
                 }
 
-                return allData as V
+                return allData as any
             }
         }
 

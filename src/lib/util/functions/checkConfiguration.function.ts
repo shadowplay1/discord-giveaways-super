@@ -1,4 +1,4 @@
-import defaultConfig from '../../../structures/defaultConfig'
+import { defaultConfig } from '../../../structures/defaultConfig'
 import { IGiveawaysConfiguration, IGiveawaysConfigCheckerConfiguration } from '../../../types/configurations'
 import { DatabaseType } from '../../../types/databaseType.enum'
 

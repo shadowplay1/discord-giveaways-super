@@ -22,17 +22,22 @@ const y = d * 365.25
  * @api public
  */
 
-module.exports = function (val: any, options: any = { long: true }): string | number {
+export const ms = <TInputValue extends string | number>(
+    val: TInputValue,
+    options: { long: boolean } = { long: true }
+): StringOrNumber<TInputValue> => {
     options = options || {}
     const type = typeof val
-    if (type === 'string' && val.length > 0) {
-        return parse(val)
-    } else if (type === 'number' && isFinite(val)) {
-        return options.long ? fmtLong(val) : fmtShort(val)
+    if (type === 'string' && (val as string).length > 0) {
+        return parse(val as any)
+    } else if (type === 'number' && isFinite(val as any)) {
+        return (options.long ? fmtLong(val as any) : fmtShort(val as any)) as any
     }
 
     return null as any
 }
+
+export type StringOrNumber<TInputValue extends string | number> = TInputValue extends string ? number : string
 
 /**
  * Parse the given `str` and return milliseconds.

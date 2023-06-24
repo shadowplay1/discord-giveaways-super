@@ -1,6 +1,8 @@
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
 
+import { ms } from './lib/misc/ms'
+
 import QuickMongo from 'quick-mongo-super'
 import Enmap from 'enmap'
 
@@ -32,7 +34,7 @@ import { Emitter } from './lib/util/classes/Emitter'
 
 import { DatabaseManager } from './lib/managers/DatabaseManager'
 
-import { checkConfiguration } from './lib/util/functions/checkConfiguration.util'
+import { checkConfiguration } from './lib/util/functions/checkConfiguration.function'
 import { FindCallback, Optional } from './types/misc/utils'
 
 import { Giveaway } from './lib/Giveaway'
@@ -87,6 +89,12 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
      * @private
      */
     private _logger: Logger
+
+    /**
+     * Giveaways ending state checking interval.
+     * @type {NodeJS.Timeout}
+     */
+    public giveawaysCheckingInterval: NodeJS.Timeout
 
     /**
      * Main Giveaways constructor.
@@ -144,6 +152,12 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
          * @type {DatabaseManager}
          */
         this.database = null as any
+
+        /**
+         * Giveaways ending state checking interval.
+         * @type {NodeJS.Timeout}
+         */
+        this.giveawaysCheckingInterval = null as any
 
         this._init()
     }
@@ -259,6 +273,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                     }
                 }
 
+                this.emit('databaseConnected')
                 break
             }
 
@@ -275,6 +290,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 this.db = mongo as Database<TDatabase>
                 this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
 
+                this.emit('databaseConnected')
                 break
             }
 
@@ -284,6 +300,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.ENMAP>
                 this.db = new Enmap(databaseOptions) as Database<TDatabase>
 
+                this.emit('databaseConnected')
                 break
             }
 
@@ -297,12 +314,22 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         this._logger.debug('Waiting for client to be ready...')
 
-        this.client.on('ready', () => {
-            this._logger.debug('Giveaways module is ready!', 'lightgreen')
+        const clientReadyInterval = setInterval(() => {
+            if (this.client.isReady()) {
+                clearInterval(clientReadyInterval)
 
-            this.ready = true
-            this.emit('ready', this)
-        })
+                const giveawatCheckingInterval = setInterval(() => {
+                    this._checkGiveaways()
+                }, this.options.giveawaysCheckingInterval)
+
+                this.giveawaysCheckingInterval = giveawatCheckingInterval
+
+                this.ready = true
+                this.emit('ready', this)
+
+                this._logger.debug('Giveaways module is ready!', 'lightgreen')
+            }
+        }, 100)
 
         this.client.on('interactionCreate', async interaction => {
             if (interaction.isButton()) {
@@ -397,7 +424,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     /**
      * Starts the giveaway.
      * @param giveawayOptions Giveaway options.
-     * @returns {Promise<Giveaway>} Created giveaway instance.
+     * @returns {Promise<Giveaway<DatabaseType>>} Created giveaway instance.
      */
     public async start(
         giveawayOptions: Optional<
@@ -410,7 +437,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             'time' | 'winnersCount'
         > &
             Partial<IGiveawayStartOptions>
-    ): Promise<Giveaway> {
+    ): Promise<Giveaway<TDatabase>> {
         const {
             channelID, guildID, hostMemberID,
             prize, time, winnersCount,
@@ -460,34 +487,38 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         newGiveaway.messageID = message.id
         newGiveaway.messageURL = message.url
 
+        newGiveaway.endTimestamp = Date.now() + ms(newGiveaway.time)
+
         newGiveaway.messageProps = {
             embed: embedStrings,
             buttons: {
                 joinGiveawayButton: joinGiveawayButton as Partial<IGiveawayJoinButtonOptions>,
                 rerollButton: {} as any,
                 goToMessageButton: {} as any
-
             }
         }
 
         this.database.push(`${guildID}.giveaways`, newGiveaway)
-        return new Giveaway(this, newGiveaway)
+
+        const startedGiveaway = new Giveaway(this, newGiveaway)
+        this.emit('giveawayStarted', startedGiveaway)
+
+        return startedGiveaway
     }
 
-    public async find(cb: FindCallback<Giveaway>): Promise<Giveaway> {
+    public async find(cb: FindCallback<Giveaway<TDatabase>>): Promise<Giveaway<TDatabase>> {
         const giveaways = await this.getAll()
         const giveaway = giveaways.find(cb)
 
-        return giveaway as Giveaway
+        return giveaway as Giveaway<TDatabase>
     }
 
-    public async getGuildGiveaways(guildID: string): Promise<Giveaway[]> {
+    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabase>[]> {
         const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
-        // console.log({ guildGiveawaysProps: giveaways.map(giveaway => new Giveaway(this, giveaway)).map(x => x.messageProps) })
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
-    public async getAll(): Promise<Giveaway[]> {
+    public async getAll(): Promise<Giveaway<TDatabase>[]> {
         const giveaways: IGiveaway[] = []
         const guildIDs = await this.database.getKeys()
 
@@ -552,9 +583,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         return buttonsRow
     }
 
-    private async _editGiveawayMessage(
-        giveaway: IGiveaway
-    ): Promise<void> {
+    private async _editGiveawayMessage(giveaway: IGiveaway): Promise<void> {
         const embedStrings = giveaway.messageProps?.embed as IGiveawayEmbedOptions
         const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
 
@@ -568,5 +597,15 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             embeds: [embed],
             components: [buttonsRow]
         })
+    }
+
+    private async _checkGiveaways(): Promise<void> {
+        const giveaways = await this.getAll()
+
+        for (const giveaway of giveaways) {
+            if (giveaway.isEnded) {
+                giveaway.end()
+            }
+        }
     }
 }

@@ -2,9 +2,10 @@ import { User, TextChannel, Guild } from 'discord.js'
 
 import { Giveaways } from '../Giveaways'
 import { GiveawayState, IGiveaway, IGiveawayMessageProps } from './giveaway.interface'
+import { DatabaseType } from '../types/databaseType.enum'
 
-export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
-    private _giveaways: Giveaways<any>
+export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
+    private _giveaways: Giveaways<TDatabase>
     public raw: IGiveaway
 
     public id: number
@@ -23,7 +24,7 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
     public entriesArray: string[]
     public messageProps?: IGiveawayMessageProps
 
-    public constructor(giveaways: Giveaways<any>, giveaway: IGiveaway) {
+    public constructor(giveaways: Giveaways<TDatabase>, giveaway: IGiveaway) {
         this._giveaways = giveaways
         this.raw = giveaway
 
@@ -41,26 +42,34 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         this.messageURL = giveaway.messageURL || ''
         this.entriesArray = []
         this.entries = 0
+
         this.messageProps = giveaway.messageProps || {
             embed: {} as any,
             buttons: {} as any
         }
     }
 
+    /**
+     * Determines if the giveaway is ended.
+     * @type {boolean}
+     */
+    public get isEnded(): boolean {
+        return this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp
+    }
 
-    public async restart(): Promise<any> {
+    public async restart(): Promise<void> {
         //
     }
 
-    public async end(): Promise<any> {
+    public async end(): Promise<void> {
+        // console.log(`giveaway ${this.id} has ended`)
+    }
+
+    public async forceEnd(): Promise<void> {
         //
     }
 
-    public async forceEnd(): Promise<any> {
-        //
-    }
-
-    public async reroll(): Promise<any> {
+    public async reroll(): Promise<void> {
         //
     }
 
@@ -103,6 +112,12 @@ export class Giveaway implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 
         }
     }
 
+    /**
+     * Gets the giveaway data and its index in guild giveaways array from database.
+     * @param {string} guildID Guild ID to get the giveaways array from.
+     * @returns {Promise<IDatabaseGiveaway>} Database giveaway object.
+     * @private
+     */
     private async _getFromDatabase(guildID: string): Promise<IDatabaseGiveaway> {
         const giveaways = await this._giveaways.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
 

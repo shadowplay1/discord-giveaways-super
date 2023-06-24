@@ -12,8 +12,8 @@
 	"license": "MIT",
 	"dependencies": {
 		"discord.js": "^14.11.0",
-		"enmap": "^5.9.8",
-		"quick-mongo-super": "^1.0.14"
+		"quick-mongo-super": "^1.0.14",
+		"enmap": "^5.9.8"
 	},
 	"devDependencies": {
 		"@types/node-fetch": "^2.6.4",

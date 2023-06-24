@@ -26,6 +26,12 @@ export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
 export interface IGiveawaysOptionalConfiguration {
 
     /**
+     * Determines how often the giveaways ending state will be checked (in ms). Default: 1000.
+     * @type {?number}
+     */
+    giveawaysCheckingInterval: number
+
+    /**
      * Determines if debug mode is enabled.
      * @type {boolean}
      */

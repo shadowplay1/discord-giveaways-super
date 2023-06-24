@@ -1,6 +1,8 @@
 import { IGiveawaysConfigurationWithoutDatabase } from '../types/configurations'
 
-export const defaultConfig = {
+export const defaultConfig: IGiveawaysConfigurationWithoutDatabase = {
+    giveawaysCheckingInterval: 1000,
+
     updatesChecker: {
         checkUpdates: true,
         upToDateMessage: false
@@ -16,4 +18,4 @@ export const defaultConfig = {
     },
 
     debug: false
-} satisfies IGiveawaysConfigurationWithoutDatabase
+}
