@@ -418,7 +418,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                             )
 
                             interaction.reply({
-                                content: rerollEmbed?.rerollSuccessful.messageContent,
+                                content: rerollEmbed?.rerollSuccessful?.messageContent,
                                 embeds: [successEmbed],
                                 ephemeral: true
                             }).catch(() => {
@@ -529,15 +529,17 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             isEnded: false
         }
 
-        const {
-            start: startEmbedStrings,
-            finish,
-            reroll,
-            finishWithoutWinners: finishWithoutWinnersEmbedStrings
-        } = defineEmbedStrings ? defineEmbedStrings(
+        const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings(
             giveawayTemplate as any,
             this.client.users.cache.get(hostMemberID) as User
         ) as Required<IEmbedStringsDefinitions> : {} as Required<IEmbedStringsDefinitions>
+
+        const startEmbedStrings = definedEmbedStrings.start
+
+        const finish = definedEmbedStrings.finish
+        const reroll = definedEmbedStrings.reroll
+
+        const finishWithoutWinnersEmbedStrings = definedEmbedStrings.start
 
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 

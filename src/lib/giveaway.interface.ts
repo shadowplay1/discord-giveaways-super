@@ -104,8 +104,9 @@ export interface IGiveawayMessageProps {
     buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayButtonOptions>>
 }
 
-export type IGiveawayEmbeds = Record<'start' | 'finish' | 'finishWithoutWinners', IGiveawayEmbedOptions> & {
+export type IGiveawayEmbeds = Record<'start', IGiveawayEmbedOptions> & {
     reroll: Record<'onlyHostCanReroll' | 'newGiveawayMessage' | 'rerollSuccessful', IGiveawayEmbedOptions>
+    finish: Record<'newGiveawayMessage' | 'giveawayEndMessage' | 'noWinners', IGiveawayEmbedOptions>
 }
 
 export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state' | 'isEnded'>

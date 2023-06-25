@@ -62,14 +62,17 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
             embeds: {
                 start: {},
 
+                finish: {
+                    giveawayEndMessage: {},
+                    newGiveawayMessage: {},
+                    noWinners: {}
+                },
+
                 reroll: {
                     newGiveawayMessage: {},
                     onlyHostCanReroll: {},
                     rerollSuccessful: {}
-                },
-
-                finish: {},
-                finishWithoutWinners: {}
+                }
             },
 
             buttons: {
@@ -183,6 +186,10 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     public _pickWinners(): User[] {
         const winners: User[] = []
         const shuffledEntries = this._shuffleArray(this.entriesArray)
+
+        if (!shuffledEntries.length) {
+            return []
+        }
 
         for (let i = 0; i < this.winnersCount; i++) {
             const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)

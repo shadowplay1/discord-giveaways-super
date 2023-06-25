@@ -127,16 +127,16 @@ export interface IGiveawayStartOptions {
     ): Partial<IEmbedStringsDefinitions>
 }
 
-export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => IGiveawayEmbedOptions
+export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => Partial<
+    Record<'newGiveawayMessage' | 'giveawayEndMessage' | 'noWinners', IGiveawayEmbedOptions>
+>
 
-export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<Record<
-    'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage',
-    IGiveawayEmbedOptions
->>
+export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<
+    Record<'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage', IGiveawayEmbedOptions>
+>
 
 export interface IEmbedStringsDefinitions {
     start: IGiveawayEmbedOptions
-    finishWithoutWinners: IGiveawayEmbedOptions
     finish: GiveawayFinishCallback
     reroll: GiveawayRerollCallback
 }
