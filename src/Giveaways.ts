@@ -452,6 +452,9 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         } = giveawayOptions
 
         const joinGiveawayButton = buttons?.joinGiveawayButton as IGiveawayButtonOptions
+        const rerollButton = buttons?.rerollButton as IGiveawayButtonOptions
+        const goToMessageButton = buttons?.goToMessageButton as IGiveawayButtonOptions
+
         const guildGiveaways = await this.getGuildGiveaways(guildID)
 
         const newGiveaway: IGiveaway = {
@@ -504,9 +507,9 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 finishedWithoutWinners: finishedWithoutWinnersEmbedStrings
             } as any,
             buttons: {
-                joinGiveawayButton: joinGiveawayButton,
-                rerollButton: finishedEmbedStrings,
-                goToMessageButton: finishedWithoutWinnersEmbedStrings
+                joinGiveawayButton,
+                rerollButton,
+                goToMessageButton
             } as any
         }
 

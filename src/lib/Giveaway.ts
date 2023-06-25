@@ -60,7 +60,11 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
                 finishedWithoutWinners: {}
             },
 
-            buttons: {} as any
+            buttons: {
+                joinGiveawayButton: {},
+                goToMessageButton: {},
+                rerollButton: {}
+            }
         }
     }
 
