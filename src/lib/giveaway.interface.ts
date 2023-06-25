@@ -100,8 +100,12 @@ export interface IGiveaway {
 }
 
 export interface IGiveawayMessageProps {
-    embeds: Record<'started' | 'finished' | 'rerolled' | 'finishedWithoutWinners', IGiveawayEmbedOptions>
+    embeds: IGiveawayEmbeds
     buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayButtonOptions>>
+}
+
+export type IGiveawayEmbeds = Record<'start' | 'finish' | 'finishWithoutWinners', IGiveawayEmbedOptions> & {
+    reroll: Record<'onlyHostCanReroll' | 'newGiveawayMessage' | 'rerollSuccessful', IGiveawayEmbedOptions>
 }
 
 export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state' | 'isEnded'>

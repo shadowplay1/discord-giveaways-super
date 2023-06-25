@@ -5,3 +5,8 @@ export interface IDatabaseStructure {
         giveaways: IGiveaway[]
     }
 }
+
+export interface IDatabaseGiveaway {
+    giveaway: IGiveaway
+    giveawayIndex: number
+}

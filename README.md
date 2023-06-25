@@ -4,7 +4,7 @@
 [![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
 [![Build Status](https://github.com/shadowplay1/discord-giveaways-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-giveaways-super)
 
-<b>Discord Giveaways Super</b> - reate and manage giveaways in Discord.
+<b>Discord Giveaways Super</b> - Create and manage giveaways in Discord.
 
 ## ❓ | Why **Discord Giveaways Super**?
 <ul>

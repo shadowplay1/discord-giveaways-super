@@ -28,8 +28,6 @@ export function replaceGiveawayKeys(input: string, giveawayObject: { [key: strin
                 ? winners?.length
                 : key == 'winnersString' ? winners?.join(', ') : giveawayObject[key]
         )
-
-        // console.log({ winners: winners.map(x => x?.username) });
     }
 
     return input

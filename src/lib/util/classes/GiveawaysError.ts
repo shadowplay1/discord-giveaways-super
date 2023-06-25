@@ -50,7 +50,8 @@ export enum GiveawaysErrorCodes {
     REQUIRED_ARGUMENT_MISSING = 'REQUIRED_ARGUMENT_MISSING',
     REQUIRED_CONFIG_OPTION_MISSING = 'REQUIRED_CONFIG_OPTION_MISSING',
     INVALID_TYPE = 'INVALID_TYPE',
-    INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE'
+    INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE',
+    UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY'
 }
 
 export const errorMessages = {
@@ -70,6 +71,10 @@ export const errorMessages = {
         }
 
         return `Unknown ${databaseType} error.`
+    },
+
+    UNKNOWN_GIVEAWAY(messageID: string): string {
+        return `Unknown giveaway with message ID ${messageID}.`
     },
 
     INTENT_MISSING(missingIntent: string): string {

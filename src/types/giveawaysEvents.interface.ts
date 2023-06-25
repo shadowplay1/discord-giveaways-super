@@ -6,9 +6,9 @@ import { DatabaseType } from './databaseType.enum'
 
 export type IGiveawaysEvents<TDatabase extends DatabaseType> = {
     ready: Giveaways<TDatabase>
-    databaseConnected: void
-    giveawayRerolled: IGiveawayRerollEvent<TDatabase>
-} & Record<'giveawayStarted' | 'giveawayEnded' | 'giveawayForceEnded', Giveaway<TDatabase>>
+    databaseConnect: void
+    giveawayReroll: IGiveawayRerollEvent<TDatabase>
+} & Record<'giveawayStart' | 'giveawayRestart' | 'giveawayEnd', Giveaway<TDatabase>>
 
 export interface IGiveawayRerollEvent<TDatabase extends DatabaseType> {
     giveaway: Giveaway<TDatabase>

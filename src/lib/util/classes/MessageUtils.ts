@@ -38,7 +38,7 @@ export class MessageUtils {
     public buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions, winners?: User[]): EmbedBuilder {
         const embedStrings = newEmbedStrings
             ? { ...newEmbedStrings }
-            : { ...giveaway.messageProps?.embeds?.started || {} } as IGiveawayEmbedOptions
+            : { ...giveaway.messageProps?.embeds?.start || {} } as IGiveawayEmbedOptions
 
         for (const stringKey in embedStrings) {
             const strings = embedStrings as { [key: string]: string }
@@ -153,7 +153,7 @@ export class MessageUtils {
      * @returns {Promise<void>}
      */
     public async editEntryGiveawayMessage(giveaway: IGiveaway): Promise<void> {
-        const embedStrings = giveaway.messageProps?.embeds?.started || {} as IGiveawayEmbedOptions
+        const embedStrings = giveaway.messageProps?.embeds?.start || {} as IGiveawayEmbedOptions
         const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
 
         const embed = this.buildGiveawayEmbed(giveaway)
@@ -177,17 +177,27 @@ export class MessageUtils {
      * @returns {Promise<void>}
      */
     public async editFinishGiveawayMessage(giveaway: IGiveaway, winners?: User[]): Promise<void> {
-        const embedStrings = giveaway.messageProps?.embeds?.finished || {} as IGiveawayEmbedOptions
+        const embedStrings = giveaway.messageProps?.embeds?.finish || {} as IGiveawayEmbedOptions
+        const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finishWithoutWinners || {} as IGiveawayEmbedOptions
+
         const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
 
-        const defaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
+        const finishDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
             title: embedStrings.title || 'Giveaway',
-            color: '#d694ff',
+            color: embedStrings.color || '#d694ff',
             description: embedStrings.description || 'Giveaway is over!',
             footer: embedStrings.footer || 'Giveaway ended',
         }
 
-        const embed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings, winners)
+        const noWinnersDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
+            title: noWinnersEmbedStrings.title || 'Giveaway',
+            color: noWinnersEmbedStrings.color || '#d694ff',
+            description: noWinnersEmbedStrings.description || 'There are no winners in this giveaway!',
+            footer: noWinnersEmbedStrings.footer || 'Giveaway ended',
+        }
+
+        const defaultedEmbedStrings = winners?.length ? finishDefaultedEmbedStrings : noWinnersDefaultedEmbedStrings
+        const finishEmbed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings, winners)
 
         const buttonsRow = this.buildGiveawayFinishedButtonsRow(
             giveaway.messageProps?.buttons.rerollButton as IGiveawayButtonOptions,
@@ -198,8 +208,8 @@ export class MessageUtils {
         const message = await channel.messages.fetch(giveaway.messageID)
 
         await message.edit({
-            content: embedStrings.messageContent,
-            embeds: [embed],
+            content: defaultedEmbedStrings.messageContent,
+            embeds: [finishEmbed],
             components: [buttonsRow]
         })
     }

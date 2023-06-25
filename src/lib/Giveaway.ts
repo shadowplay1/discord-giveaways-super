@@ -5,6 +5,9 @@ import { GiveawayState, IGiveaway, IGiveawayMessageProps } from './giveaway.inte
 import { DatabaseType } from '../types/databaseType.enum'
 
 import { MessageUtils } from './util/classes/MessageUtils'
+import { ms } from './misc/ms'
+
+import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
 
 /**
  * Class that represents the Giveaway object.
@@ -57,10 +60,16 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
         this.messageProps = giveaway.messageProps || {
             embeds: {
-                started: {},
-                finished: {},
-                rerolled: {},
-                finishedWithoutWinners: {}
+                start: {},
+
+                reroll: {
+                    newGiveawayMessage: {},
+                    onlyHostCanReroll: {},
+                    rerollSuccessful: {}
+                },
+
+                finish: {},
+                finishWithoutWinners: {}
             },
 
             buttons: {
@@ -85,18 +94,22 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
         this.isEnded = false
         this.raw.isEnded = false
+        this.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
 
         const strings = this.messageProps
-        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, strings?.embeds.started)
+
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, strings?.embeds.start)
         const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
 
         const message = await this.channel.messages.fetch(this.messageID)
 
         await message.edit({
-            content: strings?.embeds.started?.messageContent,
+            content: strings?.embeds.start?.messageContent,
             embeds: [embed],
             components: [buttonsRow]
         })
+
+        this._giveaways.emit('giveawayRestart', this)
     }
 
     public async end(): Promise<void> {
@@ -110,10 +123,18 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
         await this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
         await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
+
+        this._giveaways.emit('giveawayEnd', this)
     }
 
-    public async reroll(): Promise<void> {
-        //
+    public async reroll(): Promise<User[]> {
+        const { giveaway } = await this._getFromDatabase(this.guild.id)
+        this.sync(giveaway)
+
+        const winners = this._pickWinners()
+
+        await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
+        return winners
     }
 
     public async addEntry(guildID: string, userID: string): Promise<IGiveaway> {
@@ -219,9 +240,4 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     public toJSON(): IGiveaway {
         return this.raw
     }
-}
-
-export interface IDatabaseGiveaway {
-    giveaway: IGiveaway
-    giveawayIndex: number
 }

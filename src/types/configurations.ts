@@ -50,19 +50,12 @@ export interface IGiveawaysOptionalConfiguration {
     configurationChecker: Partial<IGiveawaysConfigCheckerConfiguration>
 }
 
-export interface IUpdateCheckerConfiguration {
-
-    /**
-     * Sends the update state message in console on start. Default: true.
-     */
-    checkUpdates: boolean
-
-    /**
-     * Sends the message in console on start if module is up to date. Default: true.
-     */
-    upToDateMessage: boolean
-}
-
+/**
+ * @typedef {object} IUpdateCheckerConfiguration
+ * @prop {boolean} checkUpdates Sends the update state message in console on start. Default: true.
+ * @prop {boolean} upToDateMessage Sends the message in console on start if module is up to date. Default: false.
+ */
+export type IUpdateCheckerConfiguration = Record<'checkUpdates' | 'upToDateMessage', boolean>
 
 export interface IGiveawaysConfigCheckerConfiguration {
 
@@ -131,15 +124,22 @@ export interface IGiveawayStartOptions {
     defineEmbedStrings(
         giveaway: Omit<IGiveaway, 'entriesArray'>,
         giveawayHost: User
-    ): IEmbedStringsDefinitions
+    ): Partial<IEmbedStringsDefinitions>
 }
 
 export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => IGiveawayEmbedOptions
 
-export type IEmbedStringsDefinitions = Partial<
-    Record<'finished' | 'rerolled', GiveawayFinishCallback> &
-    Record<'started' | 'finishedWithoutWinners', IGiveawayEmbedOptions>
->
+export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<Record<
+    'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage',
+    IGiveawayEmbedOptions
+>>
+
+export interface IEmbedStringsDefinitions {
+    start: IGiveawayEmbedOptions
+    finishWithoutWinners: IGiveawayEmbedOptions
+    finish: GiveawayFinishCallback
+    reroll: GiveawayRerollCallback
+}
 
 export interface IGiveawayButtonOptions {
     text: string

@@ -280,7 +280,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                     }
                 }
 
-                this.emit('databaseConnected')
+                this.emit('databaseConnect')
                 break
             }
 
@@ -297,7 +297,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 this.db = mongo as Database<TDatabase>
                 this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
 
-                this.emit('databaseConnected')
+                this.emit('databaseConnect')
                 break
             }
 
@@ -307,7 +307,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.ENMAP>
                 this.db = new Enmap(databaseOptions) as Database<TDatabase>
 
-                this.emit('databaseConnected')
+                this.emit('databaseConnect')
                 break
             }
 
@@ -340,14 +340,11 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         this.client.on('interactionCreate', async interaction => {
             if (interaction.isButton()) {
-                if (interaction.customId == 'joinGiveawayButton') {
-                    const interactionMessage = interaction.message
+                const interactionMessage = interaction.message
 
+                if (interaction.customId == 'joinGiveawayButton') {
                     const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
-
-                    console.log({ giveaway: giveaway?.messageProps })
-
 
                     if (giveaway) {
                         const userEntry = giveaway.raw.entriesArray.find(entryUser => entryUser == interaction.user.id)
@@ -377,9 +374,66 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
                             this._messageUtils.editEntryGiveawayMessage(newGiveaway)
                         }
+                    } else {
+                        throw new GiveawaysError(
+                            'Cannot join the giveaway: ' + errorMessages.UNKNOWN_GIVEAWAY(interactionMessage.id),
+                            GiveawaysErrorCodes.UNKNOWN_GIVEAWAY
+                        )
                     }
                 }
             }
+
+            this.client.on('interactionCreate', async interaction => {
+                if (interaction.isButton()) {
+                    const interactionMessage = interaction.message
+
+                    if (interaction.customId == 'rerollButton') {
+                        const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                        const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
+
+                        const rerollEmbed = giveaway?.messageProps?.embeds?.reroll
+
+                        if (giveaway) {
+                            if (interaction.user.id !== giveaway?.host.id) {
+                                const errorEmbed = this._messageUtils.buildGiveawayEmbed(
+                                    giveaway.raw,
+                                    rerollEmbed?.onlyHostCanReroll as any
+                                )
+
+                                interaction.reply({
+                                    content: rerollEmbed?.onlyHostCanReroll.messageContent,
+                                    embeds: [errorEmbed],
+                                    ephemeral: true
+                                }).catch(() => {
+                                    // catch the "unknown interaction" error
+                                    // while still sending the responce on the button click somehow
+                                })
+                            }
+
+                            await giveaway?.reroll()
+
+                            const successEmbed = this._messageUtils.buildGiveawayEmbed(
+                                giveaway.raw,
+                                rerollEmbed?.rerollSuccessful as any
+                            )
+
+                            interaction.reply({
+                                content: rerollEmbed?.rerollSuccessful.messageContent,
+                                embeds: [successEmbed],
+                                ephemeral: true
+                            }).catch(() => {
+                                // catch the "unknown interaction" error
+                                // while still sending the responce on the button click somehow
+                            })
+                        } else {
+                            throw new GiveawaysError(
+                                'Cannot reroll the winners:' + errorMessages.UNKNOWN_GIVEAWAY(interactionMessage.id),
+                                GiveawaysErrorCodes.UNKNOWN_GIVEAWAY
+                            )
+                        }
+                    }
+                }
+            })
         })
     }
 
@@ -476,10 +530,10 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         }
 
         const {
-            started: startedEmbedStrings,
-            finished,
-            rerolled,
-            finishedWithoutWinners: finishedWithoutWinnersEmbedStrings
+            start: startEmbedStrings,
+            finish,
+            reroll,
+            finishWithoutWinners: finishWithoutWinnersEmbedStrings
         } = defineEmbedStrings ? defineEmbedStrings(
             giveawayTemplate as any,
             this.client.users.cache.get(hostMemberID) as User
@@ -487,17 +541,17 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 
-        const embed = this._messageUtils.buildGiveawayEmbed(newGiveaway, startedEmbedStrings)
+        const giveawayEmbed = this._messageUtils.buildGiveawayEmbed(newGiveaway, startEmbedStrings)
         const buttonsRow = this._messageUtils.buildButtonsRow(joinGiveawayButton)
 
-        const [finishedEmbedStrings, rerolledEmbedStrings] = [
-            finished('{winnersString}', '{numberOfWinners}' as any),
-            rerolled('{winnersString}', '{numberOfWinners}' as any)
+        const [finishEmbedStrings, rerollEmbedStrings] = [
+            finish('{winnersString}', '{numberOfWinners}' as any),
+            reroll('{winnersString}', '{numberOfWinners}' as any)
         ]
 
         const message = await channel.send({
-            content: startedEmbedStrings?.messageContent,
-            embeds: [embed],
+            content: startEmbedStrings?.messageContent,
+            embeds: [giveawayEmbed],
             components: [buttonsRow]
         })
 
@@ -508,10 +562,10 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
         newGiveaway.messageProps = {
             embeds: {
-                started: startedEmbedStrings,
-                finished: finishedEmbedStrings,
-                rerolled: rerolledEmbedStrings,
-                finishedWithoutWinners: finishedWithoutWinnersEmbedStrings
+                start: startEmbedStrings,
+                finish: finishEmbedStrings,
+                reroll: rerollEmbedStrings,
+                finishWithoutWinners: finishWithoutWinnersEmbedStrings
             } as any,
             buttons: {
                 joinGiveawayButton,
@@ -523,7 +577,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.database.push(`${guildID}.giveaways`, newGiveaway)
 
         const startedGiveaway = new Giveaway(this, newGiveaway)
-        this.emit('giveawayStarted', startedGiveaway)
+        this.emit('giveawayStart', startedGiveaway)
 
         return startedGiveaway
     }
