@@ -1,4 +1,4 @@
-import { IGiveawayEmbedOptions, IGiveawayJoinButtonOptions } from '../types/configurations'
+import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configurations'
 
 export interface IGiveaway {
 
@@ -94,8 +94,8 @@ export interface IGiveaway {
 }
 
 export interface IGiveawayMessageProps {
-    embed: IGiveawayEmbedOptions
-    buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayJoinButtonOptions>>
+    embeds: Record<'started' | 'finished' | 'finishedWithoutWinners', Partial<IGiveawayEmbedOptions>>
+    buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayButtonOptions>>
 }
 
 export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state'>

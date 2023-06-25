@@ -9,15 +9,10 @@
 ## ❓ | Why **Discord Giveaways Super**?
 <ul>
 <li><b>Clean TypeScript Defenitions 📘</b></li>
-<li><b><a href="https://des-docs.js.org/#/docs/main/1.7.7/general/migrating-to-mongo">MongoDB Support 🍃</a></b></li>
+<li><b>Multiple Databases Support 🍃</a></b></li>
 <li><b>Flexible and Customizable ⚙️</b></li>
 <li><b>Easy to use 👍</b></li>
 <li><b>Beginner Friendly 😄</b></li>
-<li><b>Shop/Inventory System 🛒</b></li>
-<li><b>Balance/Bank balance Systems 🏦</b></li>
-<li><b>Custom Currencies System 💵</b></li>
-<li><b><a href="https://des-docs.js.org/#/docs/main/1.7.7/general/custom-data">Custom Item Data 📝</a></b></li>
-<li><b><a href="https://des-docs.js.org/#/docs/main/1.7.7/general/configuring">Multi-Server Setup 🔧</a></b></li>
 </ul>
 
 ## 📂 | Installation
@@ -29,18 +24,19 @@ $ yarn add discord-giveaways-super
 $ pnpm add discord-giveaways-super
 ```
 
-## [[Module Documentation]](https://des-docs.js.org)
+## [[Module Documentation]](https://dgs-docs.js.org)
 
 ## 🛠️ | Examples
-[MongoDB Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples/mongodb)
+[MongoDB Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
 
-[JSON Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples/json)
+[JSON Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
 
 ## 🤔 | Help
 <b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = "https://discord.gg/4pWKq8vUnb">Support Server</a>.</b>
 
 ## 🕘 | My Other Modules
 <ul>
+<li><b><a href="https://www.npmjs.com/package/discord-economy-super">discord-economy-super</a></b></li>
 <li><b><a href="https://www.npmjs.com/package/discord-achievements">discord-achievements</a></b></li>
 <li><b><a href="https://www.npmjs.com/package/quick-mongo-super">quick-mongo-super</a></b></li>
 <li><b><a href="https://www.npmjs.com/package/discord-leveling-super">discord-leveling-super</a></b></li>

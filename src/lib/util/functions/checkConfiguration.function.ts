@@ -4,7 +4,7 @@ import { DatabaseType } from '../../../types/databaseType.enum'
 
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     configurationToCheck: { [key: string]: any },
-    checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {} as any
+    checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}
 ): IGiveawaysConfiguration<TDatabaseType> => {
     const problems: string[] = []
 

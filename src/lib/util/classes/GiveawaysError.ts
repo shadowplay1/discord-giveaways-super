@@ -17,9 +17,10 @@ export class GiveawaysError extends Error {
      * @param {GiveawaysErrorCodes} errorCode Error code to throw.
      */
     public constructor(error: GiveawaysErrorCodes | string, errorCode?: GiveawaysErrorCodes) {
-        const isErrorCode = (errorMessages as any)[error]
+        const errorMsg = errorMessages as any
+        const isErrorCode = errorMsg[error]
 
-        super(isErrorCode ? (errorMessages as any)[error] : error)
+        super(isErrorCode ? errorMsg[error] : error)
 
         /**
          * Error name.

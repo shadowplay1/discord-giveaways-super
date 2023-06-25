@@ -40,7 +40,10 @@ module.exports = {
     },
 
     ignorePatterns: [
-        'node_modules/*',
+        'node_modules/**/*',
+        'types/**/*',
+        'dist/**/*',
+        'test/**/*',
         '.eslintrc.js',
         'postinstall.js',
         'commitlint.config.js'

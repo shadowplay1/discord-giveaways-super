@@ -4,11 +4,19 @@ import { Giveaways } from '../Giveaways'
 import { GiveawayState, IGiveaway, IGiveawayMessageProps } from './giveaway.interface'
 import { DatabaseType } from '../types/databaseType.enum'
 
+import { MessageUtils } from './util/classes/MessageUtils'
+
+/**
+ * Class that represents the Giveaway object.
+ * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'>}
+ */
 export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
-    private _giveaways: Giveaways<TDatabase>
+    private readonly _giveaways: Giveaways<TDatabase>
+    private readonly _messageUtils: MessageUtils
+
     public raw: IGiveaway
 
-    public id: number
+    public readonly id: number
     public prize: string
     public time: string
     public state: GiveawayState
@@ -26,6 +34,8 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
     public constructor(giveaways: Giveaways<TDatabase>, giveaway: IGiveaway) {
         this._giveaways = giveaways
+        this._messageUtils = new MessageUtils(giveaways.client)
+
         this.raw = giveaway
 
         this.id = giveaway.id
@@ -44,7 +54,12 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
         this.entries = 0
 
         this.messageProps = giveaway.messageProps || {
-            embed: {} as any,
+            embeds: {
+                started: {},
+                finished: {},
+                finishedWithoutWinners: {}
+            },
+
             buttons: {} as any
         }
     }
@@ -62,7 +77,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     }
 
     public async end(): Promise<void> {
-        // console.log(`giveaway ${this.id} has ended`)
+        await this._messageUtils.editFinishGiveawayMessage(this.raw)
     }
 
     public async forceEnd(): Promise<void> {
@@ -110,6 +125,43 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
         for (const key in giveaway) {
             (this.raw as any)[key] = (giveaway as any)[key]
         }
+    }
+
+    /**
+     * Shuffles all the giveaway entries and randomly picks the winners.
+     * @returns {User[]} Array of users that were picked as the winners.
+     */
+    public _pickWinners(): User[] {
+        const winners: User[] = []
+        const shuffledEntries = this._shuffleArray(this.entriesArray)
+
+        for (let i = 0; i < this.winnersCount; i++) {
+            const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)
+
+            const winnerUserID = shuffledEntries[randomEntryIndex]
+            const winnerUser = this._giveaways.client.users.cache.get(winnerUserID) as User
+
+            winners.push(winnerUser)
+        }
+
+        return winners
+    }
+
+    /**
+     * Shuffles an array and returns it.
+     * @param {any[]} arrayToShuffle Thr array to shuffle.
+     * @returns {any[]} Shuffled array
+     */
+    private _shuffleArray<T>(arrayToShuffle: T[]): T[] {
+        const shuffledArray = [...arrayToShuffle]
+
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)) as any
+
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]
+        }
+
+        return shuffledArray
     }
 
     /**

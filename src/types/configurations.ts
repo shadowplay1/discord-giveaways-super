@@ -27,7 +27,7 @@ export interface IGiveawaysOptionalConfiguration {
 
     /**
      * Determines how often the giveaways ending state will be checked (in ms). Default: 1000.
-     * @type {?number}
+     * @type {number}
      */
     giveawaysCheckingInterval: number
 
@@ -102,33 +102,46 @@ export interface IJSONDatabseConfiguration {
 
     /**
      * Full path to a JSON storage file. Default: './giveaways.json'.
-     * @type {?string}
+     * @type {string}
      */
     path: string
 
     /**
      * Checks the if there are errors in database file. Default: true.
-     * @type {?boolean}
+     * @type {boolean}
      */
     checkDatabase: boolean
 
     /**
      * Determines how often the database file will be checked (in ms). Default: 1000.
-     * @type {?number}
+     * @type {number}
      */
     checkCountdown: number
 }
 
-export type IGiveawayButtons = Record<'joinGiveawayButton' | 'rerollButton', Partial<IGiveawayJoinButtonOptions>> & {
-    goToMessageButton: Omit<Partial<IGiveawayJoinButtonOptions>, 'style'>
+export type IGiveawayButtons = Record<'joinGiveawayButton' | 'rerollButton', Partial<IGiveawayButtonOptions>> & {
+    goToMessageButton: ILinkButton
 }
+
+export type ILinkButton = Omit<Partial<IGiveawayButtonOptions>, 'link' | 'style'>
 
 export interface IGiveawayStartOptions {
     buttons: Partial<IGiveawayButtons>
-    defineEmbedStrings(giveaway: Omit<IGiveaway, 'entriesArray'>, giveawayHost: User): IGiveawayEmbedOptions
+
+    defineEmbedStrings(
+        giveaway: Omit<IGiveaway, 'entriesArray'>,
+        giveawayHost: User
+    ): Partial<IEmbedStringsDefinitions>
 }
 
-export interface IGiveawayJoinButtonOptions {
+export type GiveawayFinishCallback = (winners: User[]) => Partial<IGiveawayEmbedOptions>
+
+export type IEmbedStringsDefinitions = Partial<
+    Record<'finished' | 'rerolled', GiveawayFinishCallback> &
+    Record<'started' | 'finishedWithoutWinners', Partial<IGiveawayEmbedOptions>>
+>
+
+export interface IGiveawayButtonOptions {
     text: string
     emoji: string
     style: ButtonStyle
