@@ -27,7 +27,7 @@ export interface IGiveaway {
     state: GiveawayState
 
     /**
-     * Giveaway winners count.
+     * Number of possible winners in the giveaway.
      * @type {number}
      */
     winnersCount: number

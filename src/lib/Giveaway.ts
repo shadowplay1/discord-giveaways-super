@@ -72,7 +72,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     }
 
     /**
-     * Determines if the giveaway is ended.
+     * Determines if the giveaway's time is up or if the giveaway was ended forcefully.
      * @type {boolean}
      */
     public get isFinished(): boolean {
@@ -80,7 +80,23 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     }
 
     public async restart(): Promise<void> {
-        //
+        const { giveaway } = await this._getFromDatabase(this.guild.id)
+        this.sync(giveaway)
+
+        this.isEnded = false
+        this.raw.isEnded = false
+
+        const strings = this.messageProps
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, strings?.embeds.started)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+
+        const message = await this.channel.messages.fetch(this.messageID)
+
+        await message.edit({
+            content: strings?.embeds.started?.messageContent,
+            embeds: [embed],
+            components: [buttonsRow]
+        })
     }
 
     public async end(): Promise<void> {
@@ -94,10 +110,6 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
         await this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
         await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
-    }
-
-    public async forceEnd(): Promise<void> {
-        //
     }
 
     public async reroll(): Promise<void> {
