@@ -119,26 +119,26 @@ export interface IJSONDatabseConfiguration {
     checkCountdown: number
 }
 
-export type IGiveawayButtons = Record<'joinGiveawayButton' | 'rerollButton', Partial<IGiveawayButtonOptions>> & {
+export type IGiveawayButtons = Partial<Record<'joinGiveawayButton' | 'rerollButton', Partial<IGiveawayButtonOptions>> & {
     goToMessageButton: ILinkButton
-}
+}>
 
 export type ILinkButton = Omit<Partial<IGiveawayButtonOptions>, 'link' | 'style'>
 
 export interface IGiveawayStartOptions {
-    buttons: Partial<IGiveawayButtons>
+    buttons: IGiveawayButtons
 
     defineEmbedStrings(
         giveaway: Omit<IGiveaway, 'entriesArray'>,
         giveawayHost: User
-    ): Partial<IEmbedStringsDefinitions>
+    ): IEmbedStringsDefinitions
 }
 
-export type GiveawayFinishCallback = (winners: User[]) => Partial<IGiveawayEmbedOptions>
+export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => IGiveawayEmbedOptions
 
 export type IEmbedStringsDefinitions = Partial<
     Record<'finished' | 'rerolled', GiveawayFinishCallback> &
-    Record<'started' | 'finishedWithoutWinners', Partial<IGiveawayEmbedOptions>>
+    Record<'started' | 'finishedWithoutWinners', IGiveawayEmbedOptions>
 >
 
 export interface IGiveawayButtonOptions {

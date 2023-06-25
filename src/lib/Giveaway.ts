@@ -30,6 +30,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     public channel: TextChannel
     public entries: number
     public entriesArray: string[]
+    public isEnded: boolean
     public messageProps?: IGiveawayMessageProps
 
     public constructor(giveaways: Giveaways<TDatabase>, giveaway: IGiveaway) {
@@ -50,6 +51,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
         this.host = this._giveaways.client.users.cache.get(giveaway.hostMemberID) as User
         this.channel = this._giveaways.client.channels.cache.get(giveaway.channelID) as TextChannel
         this.messageURL = giveaway.messageURL || ''
+        this.isEnded = giveaway.isEnded || false
         this.entriesArray = []
         this.entries = 0
 
@@ -57,6 +59,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
             embeds: {
                 started: {},
                 finished: {},
+                rerolled: {},
                 finishedWithoutWinners: {}
             },
 
@@ -72,8 +75,8 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
      * Determines if the giveaway is ended.
      * @type {boolean}
      */
-    public get isEnded(): boolean {
-        return this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp
+    public get isFinished(): boolean {
+        return this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp * 1000
     }
 
     public async restart(): Promise<void> {
@@ -81,7 +84,16 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
     }
 
     public async end(): Promise<void> {
-        await this._messageUtils.editFinishGiveawayMessage(this.raw)
+        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        this.sync(giveaway)
+
+        const winners = this._pickWinners()
+
+        this.isEnded = true
+        this.raw.isEnded = true
+
+        await this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
+        await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
     }
 
     public async forceEnd(): Promise<void> {
@@ -119,7 +131,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
     /**
      * Syncs the constructor properties with specified raw giveaway object.
-     * @param giveaway Giveaway object to sync the constructor properties with.
+     * @param {IGiveaway} giveaway Giveaway object to sync the constructor properties with.
      */
     public sync(giveaway: IGiveaway): void {
         for (const key in giveaway) {

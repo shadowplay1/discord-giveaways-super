@@ -1,7 +1,7 @@
 import {
     ActionRowBuilder, ButtonBuilder,
     ButtonStyle, Client,
-    EmbedBuilder, TextChannel
+    EmbedBuilder, TextChannel, User
 } from 'discord.js'
 
 import { IGiveawayEmbedOptions, IGiveawayButtonOptions, ILinkButton } from '../../../types/configurations'
@@ -32,16 +32,17 @@ export class MessageUtils {
      * Creates a new message embed based on giveaway and specified embed strings.
      * @param {IGiveaway} giveaway Raw giveaway object to get the values from.
      * @param {IGiveawayEmbedOptions} newEmbedStrings String values to use in the embed.
+     * @param {User[]} winners Array of winners to replace the {winners} statements with.
      * @returns {EmbedBuilder} Generated message embed.
      */
-    public buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions): EmbedBuilder {
+    public buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions, winners?: User[]): EmbedBuilder {
         const embedStrings = newEmbedStrings
             ? { ...newEmbedStrings }
             : { ...giveaway.messageProps?.embeds?.started || {} } as IGiveawayEmbedOptions
 
         for (const stringKey in embedStrings) {
             const strings = embedStrings as { [key: string]: string }
-            strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway)
+            strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway, winners)
         }
 
         const {
@@ -124,6 +125,29 @@ export class MessageUtils {
     }
 
     /**
+     * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
+     * @param {ILinkButton} goToMessageButton String values to use in the "go to message" link button.
+     * @param {string} giveawayMessageURL Giveaway message URL to use in the "go to message" button.
+     * @returns {EmbedBuilder} Generated buttons row.
+     */
+    public buildGiveawayFinishedButtonsRowWithoutRerollButton(
+        goToMessageButton: ILinkButton,
+        giveawayMessageURL: string
+    ): ActionRowBuilder<ButtonBuilder> {
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder({
+                    label: goToMessageButton?.text || 'Go to Message',
+                    emoji: goToMessageButton?.emoji || '↗️',
+                    style: ButtonStyle.Link,
+                    url: giveawayMessageURL
+                })
+            )
+
+        return buttonsRow
+    }
+
+    /**
      * Edits the giveaway message on giveaway entry.
      * @param {IGiveaway} giveaway Raw giveaway object.
      * @returns {Promise<void>}
@@ -152,7 +176,7 @@ export class MessageUtils {
      * @param {IGiveaway} giveaway Raw giveaway object.
      * @returns {Promise<void>}
      */
-    public async editFinishGiveawayMessage(giveaway: IGiveaway): Promise<void> {
+    public async editFinishGiveawayMessage(giveaway: IGiveaway, winners?: User[]): Promise<void> {
         const embedStrings = giveaway.messageProps?.embeds?.finished || {} as IGiveawayEmbedOptions
         const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
 
@@ -163,7 +187,7 @@ export class MessageUtils {
             footer: embedStrings.footer || 'Giveaway ended',
         }
 
-        const embed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings)
+        const embed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings, winners)
 
         const buttonsRow = this.buildGiveawayFinishedButtonsRow(
             giveaway.messageProps?.buttons.rerollButton as IGiveawayButtonOptions,

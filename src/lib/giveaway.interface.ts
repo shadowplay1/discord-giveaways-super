@@ -39,6 +39,12 @@ export interface IGiveaway {
     startTimestamp: number
 
     /**
+     * Final winners of the giveaway.
+     * @type {boolean}
+     */
+    isEnded: boolean
+
+    /**
      * Giveaway end timestamp.
      * @type {number}
      */
@@ -94,11 +100,11 @@ export interface IGiveaway {
 }
 
 export interface IGiveawayMessageProps {
-    embeds: Record<'started' | 'finished' | 'finishedWithoutWinners', Partial<IGiveawayEmbedOptions>>
+    embeds: Record<'started' | 'finished' | 'rerolled' | 'finishedWithoutWinners', IGiveawayEmbedOptions>
     buttons: Record<'joinGiveawayButton' | 'rerollButton' | 'goToMessageButton', Partial<IGiveawayButtonOptions>>
 }
 
-export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state'>
+export type GiveawayWithoutInternalData = Omit<Record<keyof IGiveaway, string>, 'entriesArray' | 'state' | 'isEnded'>
 
 export enum GiveawayState {
     STARTED = 1,

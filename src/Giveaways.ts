@@ -439,7 +439,8 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 IGiveaway,
                 'id' | 'startTimestamp' | 'endTimestamp' |
                 'messageID' | 'messageURL' | 'entries' |
-                'entriesArray' | 'state' | 'messageProps'
+                'entriesArray' | 'state' | 'messageProps' |
+                'isEnded'
             >,
             'time' | 'winnersCount'
         > &
@@ -464,18 +465,20 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
             channelID,
             messageID: '',
             prize,
-            startTimestamp: Date.now(),
-            endTimestamp: 0,
+            startTimestamp: Math.floor(Date.now() / 1000),
+            endTimestamp: Math.floor((Date.now() + ms(time as string)) / 1000),
             time: time || '1d',
             state: GiveawayState.STARTED,
             winnersCount: winnersCount || 1,
             entries: 0,
-            entriesArray: []
+            entriesArray: [],
+            isEnded: false
         }
 
         const {
             started: startedEmbedStrings,
             finished,
+            rerolled,
             finishedWithoutWinners: finishedWithoutWinnersEmbedStrings
         } = defineEmbedStrings ? defineEmbedStrings(
             giveawayTemplate as any,
@@ -487,7 +490,10 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         const embed = this._messageUtils.buildGiveawayEmbed(newGiveaway, startedEmbedStrings)
         const buttonsRow = this._messageUtils.buildButtonsRow(joinGiveawayButton)
 
-        const finishedEmbedStrings = finished([])
+        const [finishedEmbedStrings, rerolledEmbedStrings] = [
+            finished('{winnersString}', '{numberOfWinners}' as any),
+            rerolled('{winnersString}', '{numberOfWinners}' as any)
+        ]
 
         const message = await channel.send({
             content: startedEmbedStrings?.messageContent,
@@ -498,12 +504,13 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         newGiveaway.messageID = message.id
         newGiveaway.messageURL = message.url
 
-        newGiveaway.endTimestamp = Date.now() + ms(newGiveaway.time)
+        newGiveaway.endTimestamp = Math.floor((Date.now() + ms(newGiveaway.time)) / 1000)
 
         newGiveaway.messageProps = {
             embeds: {
                 started: startedEmbedStrings,
                 finished: finishedEmbedStrings,
+                rerolled: rerolledEmbedStrings,
                 finishedWithoutWinners: finishedWithoutWinnersEmbedStrings
             } as any,
             buttons: {
@@ -552,8 +559,8 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         const giveaways = await this.getAll()
 
         for (const giveaway of giveaways) {
-            if (giveaway.isEnded) {
-                giveaway.end()
+            if (giveaway.isFinished && !giveaway.isEnded) {
+                await giveaway.end()
             }
         }
     }
