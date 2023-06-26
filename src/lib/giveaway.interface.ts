@@ -39,7 +39,7 @@ export interface IGiveaway {
     startTimestamp: number
 
     /**
-     * Final winners of the giveaway.
+     * Determines if the giveaway was ended in database.
      * @type {boolean}
      */
     isEnded: boolean

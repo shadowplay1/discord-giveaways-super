@@ -29,22 +29,24 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
         const defaultValue = (defaultConfig as any)[key]
         const value = configurationToCheck[key]
 
-        if (value == undefined) {
-            output[key] = defaultValue
-
-            if (!checkerConfiguration.ignoreUnspecifiedOptions) {
-                problems.push(`options.${key} is not specified.`)
-            }
-        } else if (typeof value !== typeof defaultValue) {
-            if (!checkerConfiguration.ignoreInvalidTypes) {
-                problems.push(
-                    `options.${key} is not a ${typeof defaultValue}. Received type: ${typeof value}.`
-                )
-
+        if (key !== 'database' && key !== 'connection') {
+            if (value == undefined) {
                 output[key] = defaultValue
+
+                if (!checkerConfiguration.ignoreUnspecifiedOptions) {
+                    problems.push(`options.${key} is not specified.`)
+                }
+            } else if (typeof value !== typeof defaultValue) {
+                if (!checkerConfiguration.ignoreInvalidTypes) {
+                    problems.push(
+                        `options.${key} is not a ${typeof defaultValue}. Received type: ${typeof value}.`
+                    )
+
+                    output[key] = defaultValue
+                }
+            } else {
+                output[key] = value
             }
-        } else {
-            output[key] = value
         }
     }
 
@@ -84,14 +86,18 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     checkNestedOptionsObjects(configurationToCheck, defaultConfig, '')
 
     if (checkerConfiguration.sendLog) {
-        const problemCount = problems.length
+        const problemsCount = problems.length
 
-        if (checkerConfiguration.showProblems || checkerConfiguration.sendSuccessLog) {
-            console.log(`Checked the configuration: ${problemCount} ${problemCount == 1 ? 'problem' : 'problems'} found.`)
-        }
+        if (checkerConfiguration.showProblems) {
+            if (checkerConfiguration.sendSuccessLog || problemsCount) {
+                console.log(
+                    `Checked the configuration: ${problemsCount} ${problemsCount == 1 ? 'problem' : 'problems'} found.`
+                )
+            }
 
-        if (checkerConfiguration.showProblems && problemCount) {
-            console.log(problems.join('\n'))
+            if (problemsCount) {
+                console.log(problems.join('\n'))
+            }
         }
     }
 
