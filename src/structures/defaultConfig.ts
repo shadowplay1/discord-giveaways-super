@@ -2,6 +2,7 @@ import { IGiveawaysConfigurationWithoutDatabase } from '../types/configurations'
 
 export const defaultConfig: IGiveawaysConfigurationWithoutDatabase = {
     giveawaysCheckingInterval: 1000,
+    minGiveawayEntries: 1,
 
     updatesChecker: {
         checkUpdates: true,

@@ -21,8 +21,7 @@ export const giveawayTemplate: GiveawayWithoutInternalData & Record<'numberOfWin
 
 export function replaceGiveawayKeys(input: string, giveawayObject: { [key: string]: any }, winners: User[] = []): string {
     for (const key in giveawayTemplate) {
-
-        input = input.replaceAll(
+        input = input?.replaceAll(
             `{${key}}`,
             key == 'numberOfWinners'
                 ? winners?.length

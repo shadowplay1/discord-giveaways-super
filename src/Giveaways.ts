@@ -64,10 +64,10 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     public readonly version: string
 
     /**
-     * Giveaways options.
-     * @type {IGiveawaysConfiguration<DatabaseType>}
+     * Completed, filled and fixed Giveaways configuration.
+     * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
      */
-    public readonly options: IGiveawaysConfiguration<TDatabase>
+    public readonly options: Required<IGiveawaysConfiguration<TDatabase>>
 
     /**
      * External database instanca (such as Enmap or MongoDB) if used.
@@ -82,12 +82,17 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     public database: DatabaseManager<TDatabase>
 
     /**
-     * Module logger.
+     * Giveaways logger.
      * @type {Logger}
      * @private
      */
     private readonly _logger: Logger
 
+    /**
+     * Message generation utility methods.
+     * @type {MessageUtils}
+     * @private
+     */
     private readonly _messageUtils: MessageUtils
 
     /**
@@ -99,7 +104,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     /**
      * Main Giveaways constructor.
      * @param {Client} client Discord client.
-     * @param {IGiveawaysConfiguration} options Module configuration.
+     * @param {IGiveawaysConfiguration} options Giveaways configuration.
      */
     public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabase> = {} as any) {
         super()
@@ -111,19 +116,19 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.client = client
 
         /**
-         * Module ready state.
+         * Giveaways ready state.
          * @type {boolean}
          */
         this.ready = false
 
         /**
-         * Module version.
+         * Giveaways version.
          * @type {string}
          */
         this.version = packageVersion
 
         /**
-         * Module logger.
+         * Giveaways logger.
          * @type {Logger}
          * @private
          */
@@ -136,8 +141,8 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this._logger.debug('Checking the configuration...')
 
         /**
-         * Module options.
-         * @type {IGiveawaysConfiguration<DatabaseType>}
+         * Completed, filled and fixed Giveaways configuration.
+         * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
          */
         this.options = checkConfiguration(options, options.configurationChecker)
 
@@ -164,7 +169,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
          * @type {MessageUtils}
          * @private
          */
-        this._messageUtils = new MessageUtils(client)
+        this._messageUtils = new MessageUtils(this, client)
 
         this._init()
     }
@@ -358,6 +363,16 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                             interaction.reply({
                                 content: ':white_check_mark: | You have entered the giveaway!',
                                 ephemeral: true
+                            }).catch((err: Error) => {
+                                // catching the "unknown interaction" error
+                                // while still sending the responce on the button click somehow
+
+                                if (!err.message.toLowerCase().includes('interaction')) {
+                                    throw new GiveawaysError(
+                                        'Cannot join the giveaway: ' + err,
+                                        GiveawaysErrorCodes.UNKNOWN_ERROR
+                                    )
+                                }
                             })
 
                             this._messageUtils.editEntryGiveawayMessage(newGiveaway)
@@ -370,6 +385,16 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                             interaction.reply({
                                 content: ':x: | You have left the giveaway!',
                                 ephemeral: true
+                            }).catch((err: Error) => {
+                                // catching the "unknown interaction" error
+                                // while still sending the responce on the button click somehow
+
+                                if (!err.message.toLowerCase().includes('interaction')) {
+                                    throw new GiveawaysError(
+                                        'Cannot leave the giveaway: ' + err,
+                                        GiveawaysErrorCodes.UNKNOWN_ERROR
+                                    )
+                                }
                             })
 
                             this._messageUtils.editEntryGiveawayMessage(newGiveaway)
@@ -381,59 +406,77 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                         )
                     }
                 }
-            }
 
-            this.client.on('interactionCreate', async interaction => {
-                if (interaction.isButton()) {
-                    const interactionMessage = interaction.message
+                if (interaction.customId == 'rerollButton') {
+                    const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
-                    if (interaction.customId == 'rerollButton') {
-                        const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
-                        const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
+                    const rerollEmbedStrings = giveaway?.messageProps?.embeds?.reroll
 
-                        const rerollEmbed = giveaway?.messageProps?.embeds?.reroll
+                    if (giveaway) {
+                        if (interaction.user.id !== giveaway?.host.id) {
+                            const onlyHostCanReroll = rerollEmbedStrings?.onlyHostCanReroll
+                            const rerollErroredMessageContent = onlyHostCanReroll?.messageContent as any
 
-                        if (giveaway) {
-                            if (interaction.user.id !== giveaway?.host.id) {
-                                const errorEmbed = this._messageUtils.buildGiveawayEmbed(
-                                    giveaway.raw,
-                                    rerollEmbed?.onlyHostCanReroll as any
-                                )
+                            const errorEmbed = this._messageUtils.buildGiveawayEmbed(
+                                giveaway.raw,
+                                rerollErroredMessageContent
+                            )
 
-                                interaction.reply({
-                                    content: rerollEmbed?.onlyHostCanReroll.messageContent,
-                                    embeds: [errorEmbed],
-                                    ephemeral: true
-                                }).catch(() => {
-                                    // catch the "unknown interaction" error
-                                    // while still sending the responce on the button click somehow
-                                })
-                            }
+                            interaction.reply({
+                                content: rerollErroredMessageContent,
+                                embeds: Object.keys(
+                                    onlyHostCanReroll as any
+                                ).length == 1 && rerollErroredMessageContent ? [] : [errorEmbed],
+                                ephemeral: true
+                            }).catch((err: Error) => {
+                                // catching the "unknown interaction" error
+                                // while still sending the responce on the button click somehow
+
+                                if (!err.message.toLowerCase().includes('interaction')) {
+                                    throw new GiveawaysError(
+                                        'Cannot reply to the button: ' + err,
+                                        GiveawaysErrorCodes.UNKNOWN_ERROR
+                                    )
+                                }
+                            })
+                        } else {
+                            const rerollSuccess = rerollEmbedStrings?.successMessage
+                            const rerollSuccessfulMessageCreate = rerollSuccess?.messageContent
 
                             await giveaway?.reroll()
 
                             const successEmbed = this._messageUtils.buildGiveawayEmbed(
                                 giveaway.raw,
-                                rerollEmbed?.rerollSuccessful as any
+                                rerollSuccess as any
                             )
 
                             interaction.reply({
-                                content: rerollEmbed?.rerollSuccessful?.messageContent,
-                                embeds: [successEmbed],
+                                content: rerollSuccessfulMessageCreate,
+                                embeds: Object.keys(
+                                    rerollSuccess as any
+                                ).length == 1 && rerollSuccessfulMessageCreate ? [] : [successEmbed],
                                 ephemeral: true
-                            }).catch(() => {
-                                // catch the "unknown interaction" error
+                            }).catch((err: Error) => {
+                                // catching the "unknown interaction" error
                                 // while still sending the responce on the button click somehow
+
+                                if (!err.message.toLowerCase().includes('interaction')) {
+                                    throw new GiveawaysError(
+                                        'Cannot reroll the winners: ' + err,
+                                        GiveawaysErrorCodes.UNKNOWN_ERROR
+                                    )
+                                }
                             })
-                        } else {
-                            throw new GiveawaysError(
-                                'Cannot reroll the winners:' + errorMessages.UNKNOWN_GIVEAWAY(interactionMessage.id),
-                                GiveawaysErrorCodes.UNKNOWN_GIVEAWAY
-                            )
                         }
+                    } else {
+                        throw new GiveawaysError(
+                            'Cannot reroll the winners: ' + errorMessages.UNKNOWN_GIVEAWAY(interactionMessage.id),
+                            GiveawaysErrorCodes.UNKNOWN_GIVEAWAY
+                        )
                     }
                 }
-            })
+            }
         })
     }
 

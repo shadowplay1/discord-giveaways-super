@@ -38,6 +38,12 @@ export interface IGiveawaysOptionalConfiguration {
     debug: boolean
 
     /**
+     * Determines the minimum required giveaway entries to draw the winner. Default: 1
+     * @type {number}
+     */
+    minGiveawayEntries: number
+
+    /**
      * Updates checker configuration.
      * @type {Partial<IUpdateCheckerConfiguration>}
      */
@@ -128,7 +134,7 @@ export interface IGiveawayStartOptions {
 }
 
 export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => Partial<
-    Record<'newGiveawayMessage' | 'giveawayEndMessage' | 'noWinners', IGiveawayEmbedOptions>
+    Record<'newGiveawayMessage' | 'endMessage' | 'noWinners' | 'noWinnersEndMessage', IGiveawayEmbedOptions>
 >
 
 export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<

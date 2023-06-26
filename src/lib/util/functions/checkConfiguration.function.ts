@@ -5,7 +5,7 @@ import { DatabaseType } from '../../../types/databaseType.enum'
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     configurationToCheck: { [key: string]: any },
     checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}
-): IGiveawaysConfiguration<TDatabaseType> => {
+): Required<IGiveawaysConfiguration<TDatabaseType>> => {
     const problems: string[] = []
 
     const output: { [key: string]: any } = {
@@ -98,5 +98,5 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     output.database = configurationToCheck.database
     output.connection = configurationToCheck.connection
 
-    return output as IGiveawaysConfiguration<TDatabaseType>
+    return output as Required<IGiveawaysConfiguration<TDatabaseType>>
 }

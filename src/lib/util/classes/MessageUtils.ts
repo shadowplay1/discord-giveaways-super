@@ -8,6 +8,7 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions, ILinkButton } from '../.
 import { IGiveaway } from '../../giveaway.interface'
 
 import { replaceGiveawayKeys } from '../../../structures/giveawayTemplate'
+import { Giveaways } from '../../../Giveaways'
 
 /**
  * Message utils class.
@@ -18,14 +19,21 @@ export class MessageUtils {
      * Discord Client.
      * @type {Client<boolean>}
      */
-    public client: Client<boolean>
+    private _client: Client<boolean>
+
+    /**
+     * Giveaways instance.
+     * @type {Giveaways<any>}
+     */
+    private _giveaways: Giveaways<any>
 
     /**
      * Message utils class constructor.
      * @param {Client<boolean>} client Discord client.
      */
-    public constructor(client: Client<boolean>) {
-        this.client = client
+    public constructor(giveaways: Giveaways<any>, client: Client<boolean>) {
+        this._client = client
+        this._giveaways = giveaways
     }
 
     /**
@@ -99,6 +107,44 @@ export class MessageUtils {
      */
     public buildGiveawayFinishedButtonsRow(
         rerollButton: IGiveawayButtonOptions,
+        goToMessageButton?: ILinkButton,
+        giveawayMessageURL?: string
+    ): ActionRowBuilder<ButtonBuilder> {
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
+
+        goToMessageButton ? buttonsRow.addComponents(
+            new ButtonBuilder({
+                customId: 'rerollButton',
+                label: rerollButton?.text || 'Reroll',
+                emoji: rerollButton?.emoji || '🔁',
+                style: (rerollButton?.style as any) || ButtonStyle.Primary
+            }),
+
+            new ButtonBuilder({
+                label: goToMessageButton?.text || 'Go to Message',
+                emoji: goToMessageButton?.emoji || '↗️',
+                style: ButtonStyle.Link,
+                url: giveawayMessageURL
+            })
+        ) : buttonsRow.addComponents(
+            new ButtonBuilder({
+                customId: 'rerollButton',
+                label: rerollButton?.text || 'Reroll',
+                emoji: rerollButton?.emoji || '🔁',
+                style: (rerollButton?.style as any) || ButtonStyle.Primary
+            })
+        )
+
+        return buttonsRow
+    }
+
+    /**
+     * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
+     * @param {IGiveawayButtonOptions} rerollButton String values to use in the "reroll" button.
+     * @returns {EmbedBuilder} Generated buttons row.
+     */
+    public buildGiveawayRerollButtonRow(
+        rerollButton: IGiveawayButtonOptions,
     ): ActionRowBuilder<ButtonBuilder> {
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
@@ -107,14 +153,7 @@ export class MessageUtils {
                     label: rerollButton?.text || 'Reroll',
                     emoji: rerollButton?.emoji || '🔁',
                     style: (rerollButton?.style as any) || ButtonStyle.Primary
-                }),
-
-                // new ButtonBuilder({
-                //     label: goToMessageButton?.text || 'Go to Message',
-                //     emoji: goToMessageButton?.emoji || '↗️',
-                //     style: ButtonStyle.Link,
-                //     url: giveawayMessageURL
-                // })
+                })
             )
 
         return buttonsRow
@@ -150,7 +189,7 @@ export class MessageUtils {
      */
     public async editEntryGiveawayMessage(giveaway: IGiveaway): Promise<void> {
         const embedStrings = giveaway.messageProps?.embeds?.start || {} as IGiveawayEmbedOptions
-        const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
+        const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 
         const embed = this.buildGiveawayEmbed(giveaway)
 
@@ -170,19 +209,27 @@ export class MessageUtils {
     /**
      * Edits the giveaway message on giveaway finish.
      * @param {IGiveaway} giveaway Raw giveaway object.
+     * @param {User[]} winners Array of giveaway winners.
+     * @param {IGiveawayEmbedOptions} customEmbedStrings Custom embed options to use instead of `finish` embed.
      * @returns {Promise<void>}
      */
-    public async editFinishGiveawayMessage(giveaway: IGiveaway, winners?: User[]): Promise<void> {
+    public async editFinishGiveawayMessage(
+        giveaway: IGiveaway,
+        winners?: User[],
+        customEmbedStrings?: IGiveawayEmbedOptions
+    ): Promise<void> {
         const embedStrings = giveaway.messageProps?.embeds?.finish
+
+        const finishEmbedStrings = customEmbedStrings || embedStrings?.newGiveawayMessage
         const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish?.noWinners || {} as IGiveawayEmbedOptions
 
-        const channel = this.client.channels.cache.get(giveaway.channelID) as TextChannel
+        const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 
         const finishDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
-            title: embedStrings?.newGiveawayMessage?.title || 'Giveaway',
-            color: embedStrings?.newGiveawayMessage?.color || '#d694ff',
-            description: embedStrings?.newGiveawayMessage?.description || 'Giveaway is over!',
-            footer: embedStrings?.newGiveawayMessage?.footer || 'Giveaway ended',
+            title: finishEmbedStrings?.title || 'Giveaway',
+            color: finishEmbedStrings?.color || '#d694ff',
+            description: finishEmbedStrings?.description || 'Giveaway is over!',
+            footer: finishEmbedStrings?.footer || 'Giveaway ended',
         }
 
         const noWinnersDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
@@ -192,17 +239,15 @@ export class MessageUtils {
             footer: noWinnersEmbedStrings?.footer || 'Giveaway ended',
         }
 
-        const defaultedEmbedStrings = winners?.length ? finishDefaultedEmbedStrings : noWinnersDefaultedEmbedStrings
+        const winnersCondition = winners?.length as number >= this._giveaways.options.minGiveawayEntries
+        const defaultedEmbedStrings = winnersCondition ? finishDefaultedEmbedStrings : noWinnersDefaultedEmbedStrings
 
         const finishEmbed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings, winners)
+
         const giveawayEndEmbed = this.buildGiveawayEmbed(
             giveaway,
-            winners?.length ? embedStrings?.giveawayEndMessage : embedStrings?.noWinners,
+            winnersCondition ? finishDefaultedEmbedStrings : embedStrings?.noWinnersEndMessage,
             winners
-        )
-
-        const rerollButtonRow = this.buildGiveawayFinishedButtonsRow(
-            giveaway.messageProps?.buttons.rerollButton as IGiveawayButtonOptions
         )
 
         const goToMessageButtonRow = this.buildGiveawayFinishedButtonsRowWithoutRerollButton(
@@ -210,19 +255,36 @@ export class MessageUtils {
             giveaway.messageURL as string
         )
 
+        const rerollButtonRow = this.buildGiveawayRerollButtonRow(
+            giveaway.messageProps?.buttons.rerollButton as IGiveawayButtonOptions
+        )
+
         const message = await channel.messages.fetch(giveaway.messageID)
 
+        const giveawayMessageContent = defaultedEmbedStrings.messageContent
+
+        const finishMessageContent =
+            replaceGiveawayKeys(
+                winnersCondition
+                    ? embedStrings?.endMessage.messageContent
+                    : embedStrings?.noWinnersEndMessage?.messageContent as any,
+                giveaway,
+                winners
+            )
+
+        const finishInputObjectKeys = winnersCondition
+            ? Object.keys(embedStrings?.endMessage || {} as any)
+            : Object.keys(embedStrings?.noWinnersEndMessage || {} as any)
+
         await message.edit({
-            content: defaultedEmbedStrings.messageContent,
-            embeds: [finishEmbed],
-            components: winners?.length ? [rerollButtonRow] : []
+            content: giveawayMessageContent,
+            embeds: Object.keys(defaultedEmbedStrings).length == 1 && giveawayMessageContent ? [] : [finishEmbed],
+            components: winnersCondition ? [rerollButtonRow] : []
         })
 
-        await channel.send({
-            content: winners?.length
-                ? embedStrings?.giveawayEndMessage.messageContent
-                : embedStrings?.noWinners?.messageContent,
-            embeds: [giveawayEndEmbed],
+        await message.reply({
+            content: finishMessageContent,
+            embeds: finishInputObjectKeys.length == 1 && finishMessageContent ? [] : [giveawayEndEmbed],
             components: [goToMessageButtonRow]
         })
     }

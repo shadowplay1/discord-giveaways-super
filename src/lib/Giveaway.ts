@@ -38,7 +38,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
     public constructor(giveaways: Giveaways<TDatabase>, giveaway: IGiveaway) {
         this._giveaways = giveaways
-        this._messageUtils = new MessageUtils(giveaways.client)
+        this._messageUtils = new MessageUtils(giveaways, giveaways.client)
 
         this.raw = giveaway
 
@@ -63,15 +63,16 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
                 start: {},
 
                 finish: {
-                    giveawayEndMessage: {},
+                    endMessage: {},
                     newGiveawayMessage: {},
-                    noWinners: {}
+                    noWinners: {},
+                    noWinnersEndMessage: {}
                 },
 
                 reroll: {
                     newGiveawayMessage: {},
                     onlyHostCanReroll: {},
-                    rerollSuccessful: {}
+                    successMessage: {}
                 }
             },
 
@@ -136,7 +137,12 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
         const winners = this._pickWinners()
 
-        await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
+        await this._messageUtils.editFinishGiveawayMessage(
+            this.raw,
+            winners,
+            giveaway.messageProps?.embeds.reroll.successMessage
+        )
+
         return winners
     }
 
