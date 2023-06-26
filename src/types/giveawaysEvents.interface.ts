@@ -12,5 +12,5 @@ export type IGiveawaysEvents<TDatabase extends DatabaseType> = {
 
 export interface IGiveawayRerollEvent<TDatabase extends DatabaseType> {
     giveaway: Giveaway<TDatabase>
-    newWinner: User
+    newWinners: User[]
 }

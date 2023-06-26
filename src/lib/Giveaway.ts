@@ -143,6 +143,11 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
             giveaway.messageProps?.embeds.reroll.successMessage
         )
 
+        this._giveaways.emit('giveawayReroll', {
+            newWinners: winners,
+            giveaway: this
+        })
+
         return winners
     }
 
