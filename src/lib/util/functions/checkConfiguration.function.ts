@@ -2,6 +2,18 @@ import { defaultConfig } from '../../../structures/defaultConfig'
 import { IGiveawaysConfiguration, IGiveawaysConfigCheckerConfiguration } from '../../../types/configurations'
 import { DatabaseType } from '../../../types/databaseType.enum'
 
+/**
+ * Completes, fills and fixes the @see Giveaways configuration.
+ * @callback checkConfiguration
+ *
+ * @template {DatabaseType} TDatabaseType
+ * The database type that will determine which connection configuration should be used.
+ *
+ * @param {IGiveawaysConfiguration} configurationToCheck The @see Giveaways configuration object to check.
+ * @param {Partial<IGiveawaysConfigCheckerConfiguration>} [checkerConfiguration] Config checker configuration object.
+ *
+ * @returns {Required<IGiveawaysConfiguration<TDatabaseType>>} Completed, filled and fixed @see Giveaways configuration.
+ */
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     configurationToCheck: { [key: string]: any },
     checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}

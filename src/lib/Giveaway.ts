@@ -11,53 +11,248 @@ import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
 
 /**
  * Class that represents the Giveaway object.
- * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'>}
+ *
+ * @implements {IGiveaway}
+ * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
-export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
-    private readonly _giveaways: Giveaways<TDatabase>
+export class Giveaway<
+    TDatabaseType extends DatabaseType
+> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
+
+    /**
+     * Giveaways instance.
+     * @type {Giveaways<DatabaseType>}
+     * @private
+     */
+    private readonly _giveaways: Giveaways<TDatabaseType>
+
+    /**
+     * Message utils instance.
+     * @type {MessageUtils}
+     * @private
+     */
     private readonly _messageUtils: MessageUtils
 
+
+    /**
+     * Raw giveaway object.
+     * @type {IGiveaway}
+     */
     public raw: IGiveaway
 
+    /**
+     * Giveaway ID.
+     * @type {number}
+     */
     public readonly id: number
+
+    /**
+     * Giveaway prize.
+     * @type {string}
+     */
     public prize: string
+
+    /**
+     * Giveaway time.
+     * @type {string}
+     */
     public time: string
+
+    /**
+     * Giveaway state.
+     * @type {GiveawayState}
+     */
     public state: GiveawayState
+
+    /**
+     * Number of possible winners in the giveaway.
+     * @type {number}
+     */
     public winnersCount: number
+
+    /**
+     * Giveaway start timestamp.
+     * @type {number}
+     */
     public startTimestamp: number
+
+    /**
+     * Giveaway end timestamp.
+     * @type {number}
+     */
     public endTimestamp: number
+
+    /**
+     * Giveaway message ID.
+     * @type {string}
+     */
     public messageID: string
+
+    /**
+     * Giveaway message URL.
+     * @type {string}
+     */
     public messageURL: string
+
+    /**
+     * Guild where the giveaway was created.
+     * @type {Guild}
+     */
     public guild: Guild
+
+    /**
+     * User who created the giveaway.
+     * @type {User}
+     */
     public host: User
+
+    /**
+     * Channel where the giveaway was created.
+     * @type {TextChannel}
+     */
     public channel: TextChannel
+
+    /**
+     * Number of giveaway entries.
+     * @type {number}
+     */
     public entries: number
+
+    /**
+     * Array of user IDs of users that have entered the giveaway.
+     * @type {string[]}
+     */
     public entriesArray: string[]
+
+    /**
+     * Determines if the giveaway was ended in database.
+     * @type {boolean}
+     */
     public isEnded: boolean
+
+    /**
+     * Message data properties for embeds and buttons.
+     * @type {?IGiveawayMessageProps}
+     */
     public messageProps?: IGiveawayMessageProps
 
-    public constructor(giveaways: Giveaways<TDatabase>, giveaway: IGiveaway) {
-        this._giveaways = giveaways
-        this._messageUtils = new MessageUtils(giveaways, giveaways.client)
+    public constructor(giveaways: Giveaways<TDatabaseType>, giveaway: IGiveaway) {
 
+        /**
+         * Giveaways instance.
+         * @type {Giveaways<DatabaseType>}
+         * @private
+         */
+        this._giveaways = giveaways
+
+        /**
+         * Message utils instance.
+         * @type {MessageUtils}
+         * @private
+         */
+        this._messageUtils = new MessageUtils(giveaways)
+
+
+        /**
+         * Raw giveaway object.
+         * @type {IGiveaway}
+         */
         this.raw = giveaway
 
+        /**
+         * Giveaway ID.
+         * @type {number}
+         */
         this.id = giveaway.id
+
+        /**
+         * Giveaway prize.
+         * @type {string}
+         */
         this.prize = giveaway.prize
+
+        /**
+         * Giveaway time.
+         * @type {string}
+         */
         this.time = giveaway.time
+
+        /**
+         * Giveaway state.
+         * @type {GiveawayState}
+         */
         this.state = giveaway.state
+
+        /**
+         * Number of possible winners in the giveaway.
+         * @type {number}
+         */
         this.winnersCount = giveaway.winnersCount
+
+        /**
+         * Giveaway start timestamp.
+         * @type {number}
+         */
         this.startTimestamp = giveaway.startTimestamp
+
+        /**
+         * Giveaway end timestamp.
+         * @type {number}
+         */
         this.endTimestamp = giveaway.endTimestamp
+
+        /**
+         * Giveaway message ID.
+         * @type {string}
+         */
         this.messageID = giveaway.messageID
+
+        /**
+         * Guild where the giveaway was created.
+         * @type {Guild}
+         */
         this.guild = this._giveaways.client.guilds.cache.get(giveaway.guildID) as Guild
+
+        /**
+         * User who created the giveaway.
+         * @type {User}
+         */
         this.host = this._giveaways.client.users.cache.get(giveaway.hostMemberID) as User
+
+        /**
+         * Channel where the giveaway was created.
+         * @type {TextChannel}
+         */
         this.channel = this._giveaways.client.channels.cache.get(giveaway.channelID) as TextChannel
+
+        /**
+         * Giveaway message URL.
+         * @type {string}
+         */
         this.messageURL = giveaway.messageURL || ''
+
+        /**
+         * Determines if the giveaway was ended in database.
+         * @type {boolean}
+         */
         this.isEnded = giveaway.isEnded || false
+
+        /**
+         * Array of user IDs of users that have entered the giveaway.
+         * @type {string[]}
+         */
         this.entriesArray = []
+
+        /**
+         * Number of giveaway entries.
+         * @type {number}
+         */
         this.entries = 0
 
+        /**
+         * Message data properties for embeds and buttons.
+         * @type {IGiveawayMessageProps}
+         */
         this.messageProps = giveaway.messageProps || {
             embeds: {
                 start: {},
@@ -131,7 +326,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
         this._giveaways.emit('giveawayEnd', this)
     }
 
-    public async reroll(): Promise<User[]> {
+    public async reroll(): Promise<string[]> {
         const { giveaway } = await this._getFromDatabase(this.guild.id)
         this.sync(giveaway)
 
@@ -192,10 +387,10 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
 
     /**
      * Shuffles all the giveaway entries and randomly picks the winners.
-     * @returns {User[]} Array of users that were picked as the winners.
+     * @returns {string[]} Array of users that were picked as the winners.
      */
-    public _pickWinners(): User[] {
-        const winners: User[] = []
+    public _pickWinners(): string[] {
+        const winners: string[] = []
         const shuffledEntries = this._shuffleArray(this.entriesArray)
 
         if (!shuffledEntries.length) {
@@ -206,9 +401,7 @@ export class Giveaway<TDatabase extends DatabaseType> implements Omit<IGiveaway,
             const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)
 
             const winnerUserID = shuffledEntries[randomEntryIndex]
-            const winnerUser = this._giveaways.client.users.cache.get(winnerUserID) as User
-
-            winners.push(winnerUser)
+            winners.push(winnerUserID)
         }
 
         return winners

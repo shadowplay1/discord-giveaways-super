@@ -1,7 +1,6 @@
-import { User } from 'discord.js'
-import { GiveawayWithoutInternalData } from '../lib/giveaway.interface'
+import { GiveawayWithoutInternalProps } from '../lib/giveaway.interface'
 
-export const giveawayTemplate: GiveawayWithoutInternalData & Record<'numberOfWinners' | 'winnersString', string> = {
+export const giveawayTemplate: GiveawayWithoutInternalProps & Record<'numberOfWinners' | 'winnersString', string> = {
     id: '{id}',
     hostMemberID: '{hostMemberID}',
     guildID: '{guildID}',
@@ -19,7 +18,7 @@ export const giveawayTemplate: GiveawayWithoutInternalData & Record<'numberOfWin
     winnersString: '{winnersString}',
 }
 
-export function replaceGiveawayKeys(input: string, giveawayObject: { [key: string]: any }, winners: User[] = []): string {
+export function replaceGiveawayKeys(input: string, giveawayObject: { [key: string]: any }, winners: string[] = []): string {
     for (const key in giveawayTemplate) {
         input = input?.replaceAll(
             `{${key}}`,

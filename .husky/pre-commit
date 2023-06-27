@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # eslint ./src --fix
-tsc
+npm run build
 git add .

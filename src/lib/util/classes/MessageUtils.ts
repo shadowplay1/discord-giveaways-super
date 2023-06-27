@@ -1,7 +1,7 @@
 import {
     ActionRowBuilder, ButtonBuilder,
     ButtonStyle, Client,
-    EmbedBuilder, TextChannel, User
+    EmbedBuilder, TextChannel
 } from 'discord.js'
 
 import { IGiveawayEmbedOptions, IGiveawayButtonOptions, ILinkButton } from '../../../types/configurations'
@@ -29,21 +29,25 @@ export class MessageUtils {
 
     /**
      * Message utils class constructor.
-     * @param {Client<boolean>} client Discord client.
+     * @param {Giveaways<any>} giveaways Giveaways instance.
      */
-    public constructor(giveaways: Giveaways<any>, client: Client<boolean>) {
-        this._client = client
+    public constructor(giveaways: Giveaways<any>) {
         this._giveaways = giveaways
+        this._client = giveaways.client
     }
 
     /**
      * Creates a new message embed based on giveaway and specified embed strings.
      * @param {IGiveaway} giveaway Raw giveaway object to get the values from.
-     * @param {IGiveawayEmbedOptions} newEmbedStrings String values to use in the embed.
-     * @param {User[]} winners Array of winners to replace the {winners} statements with.
+     * @param {IGiveawayEmbedOptions} newEmbedStrings String values object to use in the embed.
+     * @param {string[]} winners Array of winners to replace the {winners} statements with.
      * @returns {EmbedBuilder} Generated message embed.
      */
-    public buildGiveawayEmbed(giveaway: IGiveaway, newEmbedStrings?: IGiveawayEmbedOptions, winners?: User[]): EmbedBuilder {
+    public buildGiveawayEmbed(
+        giveaway: IGiveaway,
+        newEmbedStrings?: IGiveawayEmbedOptions,
+        winners?: string[]
+    ): EmbedBuilder {
         const embedStrings = newEmbedStrings
             ? { ...newEmbedStrings }
             : { ...giveaway.messageProps?.embeds?.start || {} } as IGiveawayEmbedOptions
@@ -83,7 +87,7 @@ export class MessageUtils {
 
     /**
      * Creates a buttons row based on the specified "join giveaway" button object.
-     * @param {IGiveawayButtonOptions} joinGiveawayButton String values to use in the button.
+     * @param {IGiveawayButtonOptions} joinGiveawayButton String values object to use in the button.
      * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildButtonsRow(joinGiveawayButton: IGiveawayButtonOptions): ActionRowBuilder<ButtonBuilder> {
@@ -102,7 +106,9 @@ export class MessageUtils {
 
     /**
      * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
-     * @param {IGiveawayButtonOptions} rerollButton String values to use in the "reroll" button.
+     * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
+     * @param {ILinkButton} [goToMessageButton] String values object to use in the "go to message" button.
+     * @param {string} [giveawayMessageURL] Giveaway message URL to be set in the "go to message" button.
      * @returns {EmbedBuilder} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRow(
@@ -140,7 +146,7 @@ export class MessageUtils {
 
     /**
      * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
-     * @param {IGiveawayButtonOptions} rerollButton String values to use in the "reroll" button.
+     * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
      * @returns {EmbedBuilder} Generated buttons row.
      */
     public buildGiveawayRerollButtonRow(
@@ -161,8 +167,8 @@ export class MessageUtils {
 
     /**
      * Creates a buttons row based on the specified "go to message" button objects.
-     * @param {ILinkButton} goToMessageButton String values to use in the "go to message" link button.
-     * @param {string} giveawayMessageURL Giveaway message URL to use in the "go to message" button.
+     * @param {ILinkButton} goToMessageButton String values object to use in the "go to message" link button.
+     * @param {string} giveawayMessageURL Giveaway message URL to be set in the "go to message" button.
      * @returns {EmbedBuilder} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRowWithoutRerollButton(
@@ -209,13 +215,13 @@ export class MessageUtils {
     /**
      * Edits the giveaway message on giveaway finish.
      * @param {IGiveaway} giveaway Raw giveaway object.
-     * @param {User[]} winners Array of giveaway winners.
-     * @param {IGiveawayEmbedOptions} customEmbedStrings Custom embed options to use instead of `finish` embed.
+     * @param {string[]} winners Array of giveaway winners.
+     * @param {IGiveawayEmbedOptions} customEmbedStrings Embed options to use instead of `finish` embed.
      * @returns {Promise<void>}
      */
     public async editFinishGiveawayMessage(
         giveaway: IGiveaway,
-        winners?: User[],
+        winners?: string[],
         customEmbedStrings?: IGiveawayEmbedOptions
     ): Promise<void> {
         const embedStrings = giveaway.messageProps?.embeds?.finish
@@ -251,7 +257,7 @@ export class MessageUtils {
         )
 
         const goToMessageButtonRow = this.buildGiveawayFinishedButtonsRowWithoutRerollButton(
-            giveaway.messageProps?.buttons.goToMessageButton as IGiveawayButtonOptions,
+            giveaway.messageProps?.buttons.goToMessageButton as ILinkButton,
             giveaway.messageURL as string
         )
 

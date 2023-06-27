@@ -1,6 +1,6 @@
-import { IGiveawaysConfigurationWithoutDatabase } from '../types/configurations'
+import { IGiveawaysOptionalConfiguration } from '../types/configurations'
 
-export const defaultConfig: IGiveawaysConfigurationWithoutDatabase = {
+export const defaultConfig: IGiveawaysOptionalConfiguration = {
     giveawaysCheckingInterval: 1000,
     minGiveawayEntries: 1,
 

@@ -14,7 +14,8 @@ import {
 import {
     Database, DatabaseConnectionOptions,
     IEmbedStringsDefinitions, IGiveawayButtonOptions,
-    IGiveawayStartOptions, IGiveawaysConfiguration
+    IGiveawayStartConfig,
+    IGiveawaysConfiguration
 } from './types/configurations'
 
 import { IGiveawaysEvents } from './types/giveawaysEvents.interface'
@@ -32,7 +33,7 @@ import { Emitter } from './lib/util/classes/Emitter'
 import { DatabaseManager } from './lib/managers/DatabaseManager'
 
 import { checkConfiguration } from './lib/util/functions/checkConfiguration.function'
-import { FindCallback, Optional } from './types/misc/utils'
+import { FindCallback } from './types/misc/utils'
 
 import { Giveaway } from './lib/Giveaway'
 import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
@@ -42,44 +43,47 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
 
 /**
  * Main Giveaways class.
+ *
+ * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
+ * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
-export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveawaysEvents<TDatabase>> {
+export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
 
     /**
      * Discord Client.
-     * @type {Client}
+     * @type {Client<boolean>}
      */
     public readonly client: Client<boolean>
 
     /**
-     * Giveaways ready state.
+     * @see Giveaways ready state.
      * @type {boolean}
      */
     public ready: boolean
 
     /**
-     * Giveaways version.
+     * @see Giveaways version.
      * @type {string}
      */
     public readonly version: string
 
     /**
-     * Completed, filled and fixed Giveaways configuration.
+     * Completed, filled and fixed @see Giveaways configuration.
      * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
      */
-    public readonly options: Required<IGiveawaysConfiguration<TDatabase>>
+    public readonly options: Required<IGiveawaysConfiguration<TDatabaseType>>
 
     /**
      * External database instanca (such as Enmap or MongoDB) if used.
      * @type {?Database<DatabaseType>}
      */
-    public db: Database<TDatabase>
+    public db: Database<TDatabaseType>
 
     /**
      * Database Manager.
      * @type {DatabaseManager}
      */
-    public database: DatabaseManager<TDatabase>
+    public database: DatabaseManager<TDatabaseType>
 
     /**
      * Giveaways logger.
@@ -102,11 +106,11 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     public giveawaysCheckingInterval: NodeJS.Timeout
 
     /**
-     * Main Giveaways constructor.
-     * @param {Client} client Discord client.
-     * @param {IGiveawaysConfiguration} options Giveaways configuration.
+     * Main @see Giveaways constructor.
+     * @param {Client} client Discord Client.
+     * @param {IGiveawaysConfiguration} options @see Giveaways configuration.
      */
-    public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabase> = {} as any) {
+    public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
         super()
 
         /**
@@ -116,19 +120,19 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.client = client
 
         /**
-         * Giveaways ready state.
+         * @see Giveaways ready state.
          * @type {boolean}
          */
         this.ready = false
 
         /**
-         * Giveaways version.
+         * @see Giveaways version.
          * @type {string}
          */
         this.version = packageVersion
 
         /**
-         * Giveaways logger.
+         * @see Giveaways logger.
          * @type {Logger}
          * @private
          */
@@ -141,7 +145,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this._logger.debug('Checking the configuration...')
 
         /**
-         * Completed, filled and fixed Giveaways configuration.
+         * Completed, filled and fixed @see Giveaways configuration.
          * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
          */
         this.options = checkConfiguration(options, options.configurationChecker)
@@ -159,23 +163,23 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         this.database = null as any
 
         /**
-         * Giveaways ending state checking interval.
+         * @see Giveaways ending state checking interval.
          * @type {NodeJS.Timeout}
          */
         this.giveawaysCheckingInterval = null as any
 
         /**
-         * Message utils.
+         * Message utils instance.
          * @type {MessageUtils}
          * @private
          */
-        this._messageUtils = new MessageUtils(this, client)
+        this._messageUtils = new MessageUtils(this)
 
         this._init()
     }
 
     /**
-     * Initialize the database connection and initialize the module.
+     * Initialize the database connection and initialize the @see Giveaways module.
      * @returns {Promise<void>}
      * @private
      */
@@ -262,7 +266,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
                             const databaseFile = await readFile(databaseOptions.path as string, 'utf-8')
                             JSON.parse(databaseFile)
-                        }, databaseOptions.checkCountdown)
+                        }, databaseOptions.checkingCountdown)
                     } catch (err: any) {
                         if (err.message.includes('Unexpected token') || err.message.includes('Unexpected end')) {
                             throw new GiveawaysError(
@@ -299,7 +303,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
                 await mongo.connect()
 
-                this.db = mongo as Database<TDatabase>
+                this.db = mongo as Database<TDatabaseType>
                 this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
 
                 this.emit('databaseConnect')
@@ -310,7 +314,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
                 this._logger.debug('Initializing Enmap...')
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.ENMAP>
-                this.db = new Enmap(databaseOptions) as Database<TDatabase>
+                this.db = new Enmap(databaseOptions) as Database<TDatabaseType>
 
                 this.emit('databaseConnect')
                 break
@@ -481,7 +485,7 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
     }
 
     /**
-     * Sends the module update state in the console.
+     * Sends the @see Giveaways module update state in the console.
      * @returns {Promise<void>}
      * @private
      */
@@ -527,22 +531,12 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
 
     /**
      * Starts the giveaway.
-     * @param giveawayOptions Giveaway options.
-     * @returns {Promise<Giveaway<DatabaseType>>} Created giveaway instance.
+     * @param giveawayOptions @see Giveaway options.
+     * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
      */
     public async start(
-        giveawayOptions: Optional<
-            Omit<
-                IGiveaway,
-                'id' | 'startTimestamp' | 'endTimestamp' |
-                'messageID' | 'messageURL' | 'entries' |
-                'entriesArray' | 'state' | 'messageProps' |
-                'isEnded'
-            >,
-            'time' | 'winnersCount'
-        > &
-            Partial<IGiveawayStartOptions>
-    ): Promise<Giveaway<TDatabase>> {
+        giveawayOptions: IGiveawayStartConfig
+    ): Promise<Giveaway<TDatabaseType>> {
         const {
             channelID, guildID, hostMemberID,
             prize, time, winnersCount,
@@ -627,19 +621,19 @@ export class Giveaways<TDatabase extends DatabaseType> extends Emitter<IGiveaway
         return startedGiveaway
     }
 
-    public async find(cb: FindCallback<Giveaway<TDatabase>>): Promise<Giveaway<TDatabase>> {
+    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Giveaway<TDatabaseType>> {
         const giveaways = await this.getAll()
         const giveaway = giveaways.find(cb)
 
-        return giveaway as Giveaway<TDatabase>
+        return giveaway as Giveaway<TDatabaseType>
     }
 
-    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabase>[]> {
+    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabaseType>[]> {
         const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
-    public async getAll(): Promise<Giveaway<TDatabase>[]> {
+    public async getAll(): Promise<Giveaway<TDatabaseType>[]> {
         const giveaways: IGiveaway[] = []
         const guildIDs = await this.database.getKeys()
 

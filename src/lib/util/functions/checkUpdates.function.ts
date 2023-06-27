@@ -5,7 +5,7 @@ import { name as packageName, version as packageVersion } from '../../../../pack
 
 /**
  * Checks the latest available module version and compares it with installed one.
- * @returns {IUpdateState} Update checking results
+ * @returns {Promise<IUpdateState>} Update checking results
  */
 export const checkUpdates = async (): Promise<IUpdateState> => {
     const packageData = await fetch(`https://registry.npmjs.com/${packageName}`)

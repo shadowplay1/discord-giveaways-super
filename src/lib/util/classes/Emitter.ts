@@ -1,7 +1,9 @@
 import { EventEmitter } from 'events'
 
 /**
- * Represents an event emitter for giveaways events.
+ * Represents an event emitter for @see Giveaways events.
+ *
+ * @template {object} E The object whose **keys** will be used as event names and **values** for events' return types.
  * @private
  */
 export class Emitter<E extends object> {

@@ -3,6 +3,7 @@ import { typeOf } from '../functions/typeOf.function'
 
 /**
  * Giveaways error class.
+ * @extends {Error}
  */
 export class GiveawaysError extends Error {
 
