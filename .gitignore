@@ -13,6 +13,9 @@ types/
 # testing data
 data/
 
+# development scripts
+scripts/
+
 # backup files
 *.bak
 

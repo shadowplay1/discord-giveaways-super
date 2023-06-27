@@ -531,7 +531,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
     /**
      * Starts the giveaway.
-     * @param giveawayOptions @see Giveaway options.
+     * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
      * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
      */
     public async start(

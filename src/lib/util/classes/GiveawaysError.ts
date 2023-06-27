@@ -91,12 +91,7 @@ export const errorMessages = {
             `Received type: ${typeOf(receivedType)}.`
     },
 
-    /**
-     * Returns the `REQUIRED_ARGUMENT_MISSING` error message.
-     * @param parameter Parameter name.
-     * @param method `{ManagerName}.{methodName}`
-     * @returns Error message
-     */
+    // `method` parameter should be specified in format: `{ManagerName}.{methodName}`
     REQUIRED_ARGUMENT_MISSING(parameter: string, method: `${string}.${string}`): string {
         return `${parameter} must be specified in '${method}()' method.`
     },

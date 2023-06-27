@@ -16,6 +16,12 @@ src/
 # testing data
 data/
 
+# development scripts
+scripts/
+
+# documentation
+docs/
+
 # testing files
 test/
 
@@ -29,12 +35,15 @@ test/
 .gitattributes
 .editorconfig
 .eslintrc.js
+.babelrc.json
 commitlint.config.js
+jsconfig.json
 tsconfig.json
 
 # ignore lists
 .gitignore
 .npmignore
+
 
 # to reduce the final package size
 package-lock.json
