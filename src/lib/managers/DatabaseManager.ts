@@ -6,26 +6,29 @@ import { JSONParser } from '../util/classes/JSONParser'
 
 /**
  * Database manager class.
+ *
+ * @template {DatabaseType} TDatabaseType
+ * The database type that will determine which connection configuration should be used.
  */
-export class DatabaseManager<TDatabase extends DatabaseType> {
+export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Giveaways instance.
      * @type {Giveaways<DatabaseType>}
      */
-    public giveaways: Giveaways<TDatabase>
+    public giveaways: Giveaways<TDatabaseType>
 
     /**
      * Database instance.
      * @type {Database<DatabaseType>}
      */
-    public db: Database<TDatabase>
+    public db: Database<TDatabaseType>
 
     /**
      * Database type.
      * @type {DatabaseType}
      */
-    public databaseType: TDatabase
+    public databaseType: TDatabaseType
 
     /**
      * JSON parser instance.
@@ -37,7 +40,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
      * Database manager constructor.
      * @param {Giveaways<DatabaseType>} giveaways Giveaways instance.
      */
-    public constructor(giveaways: Giveaways<TDatabase>) {
+    public constructor(giveaways: Giveaways<TDatabaseType>) {
 
         /**
          * Giveaways instance.
@@ -80,7 +83,8 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
     /**
      * Gets the value from database by specified key.
      * @param {string} key The key in database.
-     * @returns {any} Value from database.
+     * @returns {V} Value from database.
+     * @template V The type that represents the returning value in the method.
      */
     public async get<V = any>(key: string): Promise<V> {
         switch (this.databaseType) {
@@ -110,7 +114,8 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
      *
      * - This method is an alias to {@link DatabaseManager.get()} method.
      * @param {string} key The key in database.
-     * @returns {any} Value from database.
+     * @returns {V} Value from database.
+     * @template V The type that represents the returning value in the method.
      */
     public async fetch<V = any>(key: string): Promise<V> {
         return this.get<V>(key)
@@ -121,8 +126,8 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
      * @param {string} key The key in database.
      * @returns {boolean} Boolean value that determines if specified key exists in database.
      */
-    public async has<V = any>(key: string): Promise<boolean> {
-        const data = await this.get<V>(key)
+    public async has(key: string): Promise<boolean> {
+        const data = await this.get(key)
         return !!data
     }
 
@@ -133,16 +138,16 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
      * @param {string} key The key in database.
      * @returns {boolean} Boolean value that determines if specified key exists in database.
      */
-    public async includes<V = any>(key: string): Promise<boolean> {
-        const data = await this.get<V>(key)
-        return !!data
+    public async includes(key: string): Promise<boolean> {
+        return this.has(key)
     }
 
     /**
      * Sets data in database.
      * @param {string} key The key in database.
-     * @param {any} value Any data to set.
+     * @param {V} value Any data to set.
      * @returns {boolean} `true` if set successfully, `false` otherwise.
+     * @template V The type that represents the specified `value` in the method.
      */
     public async set<V = any>(key: string, value: V): Promise<boolean> {
         switch (this.databaseType) {
@@ -352,8 +357,9 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
     /**
      * Pushes a value into specified array in database.
      * @param {string} key The key in database.
-     * @param {any} value Any value to push into database array.
+     * @param {V} value Any value to push into database array.
      * @returns {Promise<boolean>} `true` if pushed successfully, `false` otherwise.
+     * @template V The type that represents the specified `value` in the method.
      */
     public async push<V = any>(key: string, value: V): Promise<boolean> {
         switch (this.databaseType) {
@@ -415,8 +421,9 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
      * Changes the specified element's value in a specified array in the database.
      * @param {string} key The key in database.
      * @param {number} index The index in the target array.
-     * @param {any} newValue The new value to set.
+     * @param {V} newValue The new value to set.
      * @returns {Promise<boolean>} `true` if pulled successfully, `false` otherwise.
+     * @template V The type that represents the specified `newValue` in the method.
      */
     public async pull<V = any>(key: string, index: number, newValue: V): Promise<boolean> {
         switch (this.databaseType) {
@@ -539,6 +546,7 @@ export class DatabaseManager<TDatabase extends DatabaseType> {
     /**
      * Gets the whole database object.
      * @returns {Promise<V>} Database object.
+     * @template V The type that represents the returning value in the method.
      */
     public async all<V = any>(): Promise<V> {
         switch (this.databaseType) {
