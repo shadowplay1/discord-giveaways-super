@@ -167,14 +167,14 @@ export type IGiveawayButtons = Partial<Record<'joinGiveawayButton' | 'rerollButt
 
 /**
  * Link button object.
+ *
+ * Please note that URL is not required as it's being applied after starting the giveaway.
  * @typedef {object} ILinkButton
  * @prop {string} [text] Button text string.
  * @prop {string} [emoji] Emoji string.
  * @prop {ButtonStyle} url URL that the button will take to.
  */
-export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>> & {
-    url: string
-}
+export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>>
 
 /**
  * A function that defines the embed strings used in the giveaway.
