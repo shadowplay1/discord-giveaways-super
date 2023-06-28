@@ -38,11 +38,11 @@ else
 fi
 
 git reset --hard origin/docs > /dev/null 2>&1
-printf ".*\n*.[jt]s\n*.md\n*.sh\n*.y[a]ml\n*config.js*\npackage*.json\nnode_modules/\nsrc/\ndocs/\nscripts/\ntest/\ndata/\ndist/\n" > .gitignore
+git rm --cached . -r
 
 cp "/tmp/${package_version}.json" "./${package_version}.json"
 
-git add .
+git add "${package_version}.json"
 git commit -m "docs: documentation update for v${package_version}"
 git push -u origin docs
 
