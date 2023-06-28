@@ -44,6 +44,10 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
 /**
  * Main Giveaways class.
  *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
@@ -665,6 +669,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 /**
  * An object that contains an information about a giveaway.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @typedef {object} IGiveaway
  * @prop {number} id The ID of the giveaway.
  * @prop {string} prize The prize of the giveaway.
@@ -756,8 +765,13 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 
 /**
- * @typedef {object} IGiveawaysConfiguration
  * Full @see Giveaways class configuration object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
+ *
+ * @typedef {object} IGiveawaysConfiguration
  * @prop {DatabaseType} database Database type to use.
  * @prop {DatabaseConnectionOptions} connection Database type to use.
  *
@@ -949,6 +963,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * Database connection options based on the used database type.
  *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
+ *
  * @see Partial<IJSONDatabseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
@@ -966,6 +984,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * @see null - JSON database management object - `null`
  * is because it's not an external database - JSON is being parsed by the module.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
@@ -996,7 +1018,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 
 /**
- * A type containing all the @see Giveaways events and their return types..
+ * A type containing all the @see Giveaways events and their return types.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @typedef {object} IGiveawaysEvents
  * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
@@ -1010,6 +1037,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 /**
  * Giveaway reroll event object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @typedef {object} IGiveawayRerollEvent
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  * @prop {string} newWinners Array of the new picked winners after reroll.
@@ -1017,6 +1049,97 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
 
+/**
+ * An interface containing different colors that may be used in a logger.
+ * @typedef {object} ILoggerColors
+ * @prop {string} red The color red.
+ * @prop {string} green The color green.
+ * @prop {string} yellow The color yellow.
+ * @prop {string} blue The color blue.
+ * @prop {string} magenta The color magenta.
+ * @prop {string} cyan The color cyan.
+ * @prop {string} white The color white.
+ * @prop {string} reset The reset color.
+ * @prop {string} black The color black.
+ * @prop {string} lightgray The color light gray.
+ * @prop {string} default The default color.
+ * @prop {string} darkgray The color dark gray.
+ * @prop {string} lightred The color light red.
+ * @prop {string} lightgreen The color light green.
+ * @prop {string} lightyellow The color light yellow.
+ * @prop {string} lightblue The color light blue.
+ * @prop {string} lightmagenta The color light magenta.
+ * @prop {string} lightcyan The color light cyan.
+ */
+
+
+/**
+ * An object containing the data about available module updates.
+ * @typedef {object} IUpdateState
+ * @prop {boolean} updated Whether an update is available or not.
+ * @prop {string} installedVersion The currently installed version.
+ * @prop {string} availableVersion The available version, if any.
+ */
+
+/**
+ * Represents the `if` statement on a type level.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see boolean) - The boolean type to compare with.
+ * - `IfTrue` (@see any) - The type that will be returned if `T` is `true`.
+ * - `IfFalse` (@see any) - The type that will be returned if `T` is `false`.
+ *
+ * @template {boolean} T The boolean type to compare with.
+ * @template IfTrue The type that will be returned if `T` is `true`.
+ * @template IfFalse The type that will be returned if `T` is `false`.
+ *
+ * @typedef {IfTrue | IfFalse} If
+ */
+
+/**
+ * Makes the specified properties in `K` from the object in `T` optional.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see object) - The object to get the properties from.
+ * - `K` (keyof T) - The properties to make optional.
+ *
+ * @template T - The object to get the properties from.
+ * @template K - The properties to make optional.
+ *
+ * @typedef {object} Optional
+ */
+
+/**
+ * A callback function that calls when finding an element in array.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see any) - The type of item to be passed to the callback function.
+ *
+ * @template T The type of item to be passed to the callback function.
+ *
+ * @callback FindCallback
+ * @param {T} item The item to be passed to the callback function.
+ * @returns {boolean} The boolean value returned by the callback function.
+ */
+
+/**
+ * A callback function that calls when mapping the array using the @see Array.prototype.map method.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see any) - The type of item to be passed to the callback function.
+ * - `TReturnType` - (@see any) The type of value returned by the callback function.
+ *
+ * @template T The type of item to be passed to the callback function.
+ * @template TReturnType The type of value returned by the callback function.
+ *
+ * @callback MapCallback
+ * @param {T} item The item to be passed to the callback function.
+ * @returns {TReturnType} The value returned by the callback function.
+ */
 
 
 

@@ -4,7 +4,12 @@ import { Giveaway } from '../lib/Giveaway'
 import { DatabaseType } from './databaseType.enum'
 
 /**
- * A type containing all the @see Giveaways events and their return types..
+ * A type containing all the @see Giveaways events and their return types.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @typedef {object} IGiveawaysEvents
  * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
@@ -23,6 +28,11 @@ export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
 
 /**
  * Giveaway reroll event object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ *
  * @typedef {object} IGiveawayRerollEvent
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  * @prop {string} newWinners Array of the new picked winners after reroll.
