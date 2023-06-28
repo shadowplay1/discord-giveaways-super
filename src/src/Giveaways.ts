@@ -108,7 +108,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     /**
      * Main @see Giveaways constructor.
      * @param {Client} client Discord Client.
-     * @param {IGiveawaysConfiguration} options @see Giveaways configuration.
+     * @param {IGiveawaysConfiguration<TDatabaseType>} options @see Giveaways configuration.
      */
     public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
         super()
