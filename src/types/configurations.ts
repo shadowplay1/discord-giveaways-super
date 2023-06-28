@@ -10,8 +10,7 @@ import { IGiveaway } from '../lib/giveaway.interface'
 import { Optional } from './misc/utils'
 
 /**
- * Full @see Giveaways class configuration object.
- * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
+ * @typedef {object} IGiveawaysConfiguration<TDatabaseType> Full @see Giveaways class configuration object.
  * @prop {DatabaseType} database Database type to use.
  * @prop {DatabaseConnectionOptions<TDatabaseType>} connection Database type to use.
  *

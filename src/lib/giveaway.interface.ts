@@ -2,7 +2,7 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
 
 /**
  * An object that contains an information about a giveaway.
- * @typedef {object} IGiveaway
+ * @typedef {object} IGiveaway<DatabaseType>
  * @prop {number} id The ID of the giveaway.
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
@@ -19,6 +19,8 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
  * @prop {number} entries The number of giveaway entries.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
+ *
+ * @template TDatabaseType The database type that will be used in the module.
  */
 export interface IGiveaway {
 
