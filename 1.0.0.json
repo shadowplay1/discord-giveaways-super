@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687981120315
+  "date": 1687981180296
  },
  "custom": {
   "general": {
@@ -3512,7 +3512,7 @@
    "name": "DatabaseConnectionOptions<TDatabaseType>",
    "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
    "see": [
-    "Partial<IJSONDatabseConfiguration> - JSON configuration.",
+    "Partial<IJSONDatabaseConfiguration> - JSON configuration.",
     "EnmapOptions<any, any> - Enmap configuration.",
     "IMongoConnectionOptions - MongoDB connection configuration."
    ],
@@ -3523,7 +3523,7 @@
       "<"
      ],
      [
-      "IJSONDatabseConfiguration",
+      "IJSONDatabaseConfiguration",
       ">"
      ]
     ],
