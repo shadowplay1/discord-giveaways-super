@@ -1,3 +1,8 @@
+#!/bin/bash
+
+package_content="$(< ./package.json)"
+package_version="$(jq -r '.version' <<< "${package_content}")"
+
 source_pattern="src/* src/**/*"
 output_path="./docs/generated/${package_version}.json"
 
