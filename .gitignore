@@ -4,7 +4,11 @@
 *.sh
 *.y[a]ml
 *config.js*
+package*.json
+node_modules/
 src/
 docs/
 scripts/
-node_modules/
+test/
+data/
+dist/
