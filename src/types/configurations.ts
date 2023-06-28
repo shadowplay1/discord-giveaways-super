@@ -138,8 +138,20 @@ export interface IJSONDatabseConfiguration {
     checkingCountdown: number
 }
 
-// omitting all the internal giveaway properties and
+
+// IGiveawayData: omitting all the internal giveaway properties and
 // data properties that are generating on giveaway start
+
+/**
+ * An object that contains an information about a giveaway that is required fo starting..
+ * @typedef {object} IGiveawayData
+ * @prop {string} prize The prize of the giveaway.
+ * @prop {string} time The time of the giveaway.
+ * @prop {number} winnersCount The number of possible winners in the giveaway.
+ * @prop {string} hostMemberID The ID of the host member.
+ * @prop {string} channelID The ID of the channel where the giveaway is held.
+ * @prop {string} guildID The ID of the guild where the giveaway is held.
+ */
 export type IGiveawayData = Omit<
     IGiveaway,
     'id' | 'startTimestamp' | 'endTimestamp' |
@@ -148,6 +160,18 @@ export type IGiveawayData = Omit<
     'isEnded'
 >
 
+/**
+ * Giveaway start config.
+ * @typedef {object} IGiveawayStartConfig
+ * @prop {string} prize The prize of the giveaway.
+ * @prop {string} time The time of the giveaway.
+ * @prop {number} winnersCount The number of possible winners in the giveaway.
+ * @prop {string} hostMemberID The ID of the host member.
+ * @prop {string} channelID The ID of the channel where the giveaway is held.
+ * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
+ * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ */
 export type IGiveawayStartConfig = Optional<
     IGiveawayData,
     'time' | 'winnersCount'
@@ -182,6 +206,7 @@ export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>
  * @param {User} giveawayHost - The host of the giveaway.
  * @returns {Partial} - An object containing the defined embed strings.
  */
+
 /**
  * Giveaway start options.
  * @typedef {object} IGiveawayStartOptions

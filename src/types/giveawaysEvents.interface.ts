@@ -6,11 +6,11 @@ import { DatabaseType } from './databaseType.enum'
 /**
  * A type containing all the @see Giveaways events and their return types..
  * @typedef {object} IGiveawaysEvents
- * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways is ready.
+ * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
  * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
- * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is rerolled.
- * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is restarted.
+ * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is ended.
  * @prop {IGiveawayRerollEvent} giveawayReroll Emits when a giveaway is rerolled.
  *
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
