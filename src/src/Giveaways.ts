@@ -674,7 +674,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
  *
- * @typedef {object} IGiveaway
+ * @typedef {object} IGiveaway<TDatabaseType>
  * @prop {number} id The ID of the giveaway.
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
@@ -771,7 +771,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
  *
- * @typedef {object} IGiveawaysConfiguration
+ * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
  * @prop {DatabaseConnectionOptions} connection Database type to use.
  *
@@ -961,6 +961,14 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
+ * JSON database configuration.
+ * @typedef {object} IJSONDatabaseConfiguration
+ * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
+ * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
+ * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
+ */
+
+/**
  * Database connection options based on the used database type.
  *
  * Type parameters:
@@ -1024,7 +1032,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
  *
- * @typedef {object} IGiveawaysEvents
+ * @typedef {object} IGiveawaysEvents<TDatabaseType>
  * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
  * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
@@ -1042,7 +1050,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
  *
- * @typedef {object} IGiveawayRerollEvent
+ * @typedef {object} IGiveawayRerollEvent<TDatabaseType>
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  * @prop {string} newWinners Array of the new picked winners after reroll.
  *
@@ -1090,11 +1098,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * - `IfTrue` (@see any) - The type that will be returned if `T` is `true`.
  * - `IfFalse` (@see any) - The type that will be returned if `T` is `false`.
  *
+ * @typedef {IfTrue | IfFalse} If<T, IfTrue, IfFalse>
+ *
+ *
  * @template {boolean} T The boolean type to compare with.
  * @template IfTrue The type that will be returned if `T` is `true`.
  * @template IfFalse The type that will be returned if `T` is `false`.
- *
- * @typedef {IfTrue | IfFalse} If
  */
 
 /**
@@ -1105,10 +1114,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * - `T` (@see object) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make optional.
  *
+ * @typedef {object} Optional<T, K>
+ *
  * @template T - The object to get the properties from.
  * @template K - The properties to make optional.
- *
- * @typedef {object} Optional
  */
 
 /**
@@ -1118,9 +1127,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - `T` (@see any) - The type of item to be passed to the callback function.
  *
+ * @callback FindCallback<T>
  * @template T The type of item to be passed to the callback function.
  *
- * @callback FindCallback
  * @param {T} item The item to be passed to the callback function.
  * @returns {boolean} The boolean value returned by the callback function.
  */
@@ -1133,10 +1142,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * - `T` (@see any) - The type of item to be passed to the callback function.
  * - `TReturnType` - (@see any) The type of value returned by the callback function.
  *
+ * @callback MapCallback<T, TReturnType>
+ *
+ *
  * @template T The type of item to be passed to the callback function.
  * @template TReturnType The type of value returned by the callback function.
  *
- * @callback MapCallback
  * @param {T} item The item to be passed to the callback function.
  * @returns {TReturnType} The value returned by the callback function.
  */
