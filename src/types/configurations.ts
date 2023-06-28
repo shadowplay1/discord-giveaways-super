@@ -123,7 +123,7 @@ export type IGiveawaysConfigCheckerConfiguration = Record<
  * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
  * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
-export interface IJSONDatabseConfiguration {
+export interface IJSONDatabaseConfiguration {
 
     /**
      * Full path to a JSON storage file. Default: './giveaways.json'.
@@ -356,21 +356,21 @@ export type IGiveawayEmbedOptions = Partial<
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
  *
- * @see Partial<IJSONDatabseConfiguration> - JSON configuration.
+ * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
  * @typedef {(
- * Partial<IJSONDatabseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
+ * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
  * )} DatabaseConnectionOptions<TDatabaseType>
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
-    TDatabaseType extends DatabaseType.JSON ? Partial<IJSONDatabseConfiguration> :
+    TDatabaseType extends DatabaseType.JSON ? Partial<IJSONDatabaseConfiguration> :
     TDatabaseType extends DatabaseType.ENMAP ? EnmapOptions<any, any> :
     TDatabaseType extends DatabaseType.MONGODB ? IMongoConnectionOptions : never
 
