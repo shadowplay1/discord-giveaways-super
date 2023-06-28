@@ -44,6 +44,8 @@ tsconfig.json
 .gitignore
 .npmignore
 
-
 # to reduce the final package size
 package-lock.json
+
+# other
+src/src/*

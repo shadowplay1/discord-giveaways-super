@@ -24,3 +24,4 @@ test/
 
 # other
 package-lock.json
+src/src/*
