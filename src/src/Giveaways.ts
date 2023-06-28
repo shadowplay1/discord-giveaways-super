@@ -43,9 +43,6 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
 
 /**
  * Main Giveaways class.
- *
- * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
 export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
 
@@ -108,7 +105,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     /**
      * Main Giveaways constructor.
      * @param {Client} client Discord Client.
-     * @param {IGiveawaysConfiguration} options Giveaways configuration.
+     * @param {IGiveawaysConfiguration<TDatabaseType>} options Giveaways configuration.
      */
     public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
         super()
