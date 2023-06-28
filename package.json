@@ -8,7 +8,7 @@
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
 		"build": "npx tsc",
-		"docs:generate": "node ./scripts/docgen.js"
+		"docs:generate": "bash ./scripts/docgen.sh"
 	},
 	"keywords": [],
 	"author": "shadowplay1 <shadowplay483@gmail.com>",
