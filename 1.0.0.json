@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687969748698
+  "date": 1687969872784
  },
  "custom": {
   "general": {
@@ -2281,7 +2281,7 @@
    "meta": {
     "line": 1,
     "file": "databaseType.enum.ts",
-    "path": "src/src/types"
+    "path": "src/types"
    }
   }
  ],
