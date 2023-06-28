@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687966154842
+  "date": 1687967051668
  },
  "custom": {
   "general": {
@@ -18,6 +18,313 @@
   }
  },
  "classes": [
+  {
+   "name": "Giveaways",
+   "description": "Main Giveaways class.",
+   "extends": [
+    [
+     [
+      "Emitter",
+      "<"
+     ],
+     [
+      "IGiveawaysEvents",
+      "<"
+     ],
+     [
+      "TDatabaseType",
+      ">>"
+     ]
+    ]
+   ],
+   "construct": {
+    "name": "Giveaways",
+    "description": "Main @see Giveaways constructor.",
+    "params": [
+     {
+      "name": "client",
+      "description": "Discord Client.",
+      "type": [
+       [
+        [
+         "Client"
+        ]
+       ]
+      ]
+     },
+     {
+      "name": "options",
+      "description": "@see Giveaways configuration.",
+      "type": [
+       [
+        [
+         "IGiveawaysConfiguration",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">"
+        ]
+       ]
+      ]
+     }
+    ]
+   },
+   "props": [
+    {
+     "name": "ready",
+     "see": [
+      "Giveaways ready state."
+     ],
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 122,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "version",
+     "see": [
+      "Giveaways version."
+     ],
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 128,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_logger",
+     "see": [
+      "Giveaways logger."
+     ],
+     "access": "private",
+     "type": [
+      [
+       [
+        "Logger"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 134,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "options",
+     "description": "Completed, filled and fixed @see Giveaways configuration.",
+     "type": [
+      [
+       [
+        "Required",
+        "<"
+       ],
+       [
+        "IGiveawaysConfiguration",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">>"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 147,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "db",
+     "description": "External database (such as Enmap or MongoDB) if used.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "Database",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 153,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "database",
+     "description": "Database Manager.",
+     "type": [
+      [
+       [
+        "DatabaseManager"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 159,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawaysCheckingInterval",
+     "see": [
+      "Giveaways ending state checking interval."
+     ],
+     "type": [
+      [
+       [
+        "NodeJS",
+        "."
+       ],
+       [
+        "Timeout"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 165,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_messageUtils",
+     "description": "Message utils instance.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "MessageUtils"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 171,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "_init",
+     "description": "Initialize the database connection and initialize the @see Giveaways module.",
+     "access": "private",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 181,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_sendUpdateMessage",
+     "description": "Sends the @see Giveaways module update state in the console.",
+     "access": "private",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 487,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "start",
+     "description": "Starts the giveaway.",
+     "params": [
+      {
+       "name": "giveawayOptions",
+       "description": "@see Giveaway options.",
+       "type": [
+        [
+         [
+          "IGiveawayStartConfig"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "DatabaseType",
+         ">>"
+        ]
+       ]
+      ],
+      "description": "Created @see Giveaway instance."
+     },
+     "meta": {
+      "line": 532,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    }
+   ],
+   "meta": {
+    "line": 44,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
   {
    "name": "Giveaway",
    "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType: The database type that will be used in the module.",
