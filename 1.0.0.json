@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687967476309
+  "date": 1687969683782
  },
  "custom": {
   "general": {
@@ -827,6 +827,683 @@
     "file": "Giveaway.ts",
     "path": "src/lib"
    }
+  },
+  {
+   "name": "DatabaseManager",
+   "description": "Database manager class.",
+   "construct": {
+    "name": "DatabaseManager",
+    "description": "Database manager constructor.",
+    "params": [
+     {
+      "name": "giveaways",
+      "description": "Giveaways instance.",
+      "type": [
+       [
+        [
+         "Giveaways",
+         "<"
+        ],
+        [
+         "DatabaseType",
+         ">"
+        ]
+       ]
+      ]
+     }
+    ]
+   },
+   "props": [
+    {
+     "name": "giveaways",
+     "description": "Giveaways instance.",
+     "type": [
+      [
+       [
+        "Giveaways",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 45,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "db",
+     "description": "Database instance.",
+     "type": [
+      [
+       [
+        "Database",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 51,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "databaseType",
+     "description": "Database type.",
+     "type": [
+      [
+       [
+        "DatabaseType"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 57,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "jsonParser",
+     "description": "JSON parser instance.",
+     "type": [
+      [
+       [
+        "JSONParser"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 65,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "getKeys",
+     "description": "Gets the object keys in database root or in object by specified key.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "string",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Database object keys array."
+     },
+     "meta": {
+      "line": 73,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "get",
+     "description": "Gets the value from database by specified key.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Value from database."
+     },
+     "meta": {
+      "line": 83,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "fetch",
+     "description": "Gets the value from database by specified key.\n\n- This method is an alias to {@link DatabaseManager.get()} method.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Value from database."
+     },
+     "meta": {
+      "line": 112,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "has",
+     "description": "Determines if specified key exists in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Boolean value that determines if specified key exists in database."
+     },
+     "meta": {
+      "line": 124,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "includes",
+     "description": "Determines if specified key exists in database.\n\n- This method is an alias to {@link DatabaseManager.has()} method.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Boolean value that determines if specified key exists in database."
+     },
+     "meta": {
+      "line": 134,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "set",
+     "description": "Sets data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "value",
+       "description": "Any data to set.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 145,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "clear",
+     "description": "Clears the whole database.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 177,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "deleteAll",
+     "description": "Clears the whole database.\n\n- This method is an alias to {@link DatabaseManager.clear()} method.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 205,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "add",
+     "description": "Adds a number to the data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "numberToAdd",
+       "description": "Any number to add.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if added successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 215,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "subtract",
+     "description": "Subtracts a number to the data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "numberToSubtract",
+       "description": "Any number to subtract.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if subtracted successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 271,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "delete",
+     "description": "Deletes the data from database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if deleted successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 327,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "push",
+     "description": "Pushes a value into specified array in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "value",
+       "description": "Any value to push into database array.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if pushed successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 357,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "pull",
+     "description": "Changes the specified element's value in a specified array in the database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "index",
+       "description": "The index in the target array.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "newValue",
+       "description": "The new value to set.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if pulled successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 420,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "pop",
+     "description": "Removes an element from a specified array in the database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "index",
+       "description": "The index in the target array.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if popped successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 484,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "all",
+     "description": "Gets the whole database object.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "V",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Database object."
+     },
+     "meta": {
+      "line": 546,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "meta": {
+    "line": 7,
+    "file": "DatabaseManager.ts",
+    "path": "src/lib/managers"
+   }
   }
  ],
  "interfaces": [],
@@ -1604,7 +2281,7 @@
    "meta": {
     "line": 1,
     "file": "databaseType.enum.ts",
-    "path": "src/types"
+    "path": "src/src/types"
    }
   }
  ],
