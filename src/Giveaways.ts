@@ -975,14 +975,14 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
  *
- * @see Partial<IJSONDatabseConfiguration> - JSON configuration.
+ * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
  * @typedef {(
- * Partial<IJSONDatabseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
+ * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
  * )} DatabaseConnectionOptions<TDatabaseType>
  *
  * @template {DatabaseType} TDatabaseType
