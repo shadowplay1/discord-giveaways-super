@@ -1,0 +1,9 @@
+.*
+*.[jt]s
+*.md
+*.sh
+*.y[a]ml
+*config.js*
+src/
+docs/
+scripts/
