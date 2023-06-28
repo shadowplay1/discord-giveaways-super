@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687979693668
+  "date": 1687981120315
  },
  "custom": {
   "general": {
@@ -342,7 +342,7 @@
       }
      ],
      "meta": {
-      "line": 1148,
+      "line": 1159,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -364,7 +364,7 @@
       }
      ],
      "meta": {
-      "line": 1154,
+      "line": 1165,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -391,7 +391,7 @@
       }
      ],
      "meta": {
-      "line": 1160,
+      "line": 1171,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -418,7 +418,7 @@
       }
      ],
      "meta": {
-      "line": 1166,
+      "line": 1177,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -445,7 +445,7 @@
       }
      ],
      "meta": {
-      "line": 1172,
+      "line": 1183,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -467,7 +467,7 @@
       }
      ],
      "meta": {
-      "line": 1178,
+      "line": 1189,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -1663,7 +1663,7 @@
  "interfaces": [],
  "typedefs": [
   {
-   "name": "IGiveaway",
+   "name": "IGiveaway<TDatabaseType>",
    "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
    "type": [
     [
@@ -2323,7 +2323,7 @@
    }
   },
   {
-   "name": "IGiveawaysConfiguration",
+   "name": "IGiveawaysConfiguration<TDatabaseType>",
    "description": "Full @see Giveaways class configuration object.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
    "type": [
     [
@@ -2703,7 +2703,7 @@
     }
    ],
    "meta": {
-    "line": 822,
+    "line": 963,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3548,7 +3548,7 @@
     ]
    ],
    "meta": {
-    "line": 963,
+    "line": 971,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3593,7 +3593,7 @@
     ]
    ],
    "meta": {
-    "line": 984,
+    "line": 992,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3638,7 +3638,7 @@
     }
    ],
    "meta": {
-    "line": 1005,
+    "line": 1013,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3678,13 +3678,13 @@
     }
    ],
    "meta": {
-    "line": 1012,
+    "line": 1020,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "IGiveawaysEvents",
+   "name": "IGiveawaysEvents<TDatabaseType>",
    "description": "A type containing all the @see Giveaways events and their return types.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
    "type": [
     [
@@ -3782,13 +3782,13 @@
     }
    ],
    "meta": {
-    "line": 1020,
+    "line": 1028,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "IGiveawayRerollEvent",
+   "name": "IGiveawayRerollEvent<TDatabaseType>",
    "description": "Giveaway reroll event object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
    "type": [
     [
@@ -3827,7 +3827,7 @@
     }
    ],
    "meta": {
-    "line": 1038,
+    "line": 1046,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4043,7 +4043,7 @@
     }
    ],
    "meta": {
-    "line": 1052,
+    "line": 1060,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4094,13 +4094,13 @@
     }
    ],
    "meta": {
-    "line": 1076,
+    "line": 1084,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "If",
+   "name": "If<T,",
    "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` (@see boolean) - The boolean type to compare with.\n- `IfTrue` (@see any) - The type that will be returned if `T` is `true`.\n- `IfFalse` (@see any) - The type that will be returned if `T` is `false`.",
    "type": [
     [
@@ -4115,13 +4115,13 @@
     ]
    ],
    "meta": {
-    "line": 1084,
+    "line": 1092,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "Optional",
+   "name": "Optional<T,",
    "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` (@see object) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
    "type": [
     [
@@ -4131,13 +4131,13 @@
     ]
    ],
    "meta": {
-    "line": 1100,
+    "line": 1109,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "FindCallback",
+   "name": "FindCallback<T>",
    "description": "A callback function that calls when finding an element in array.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.",
    "type": [
     [
@@ -4170,13 +4170,13 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1114,
+    "line": 1123,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "MapCallback",
+   "name": "MapCallback<T,",
    "description": "A callback function that calls when mapping the array using the @see Array.prototype.map method.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.\n- `TReturnType` - (@see any) The type of value returned by the callback function.",
    "type": [
     [
@@ -4209,7 +4209,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1128,
+    "line": 1137,
     "file": "Giveaways.ts",
     "path": "src"
    }
