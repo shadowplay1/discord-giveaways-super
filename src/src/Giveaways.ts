@@ -43,6 +43,7 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
 
 /**
  * Main Giveaways class.
+ *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
@@ -55,19 +56,19 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     public readonly client: Client<boolean>
 
     /**
-     * @see Giveaways ready state.
+     * Giveaways ready state.
      * @type {boolean}
      */
     public ready: boolean
 
     /**
-     * @see Giveaways version.
+     * Giveaways version.
      * @type {string}
      */
     public readonly version: string
 
     /**
-     * Completed, filled and fixed @see Giveaways configuration.
+     * Completed, filled and fixed Giveaways configuration.
      * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
      */
     public readonly options: Required<IGiveawaysConfiguration<TDatabaseType>>
@@ -105,9 +106,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     public giveawaysCheckingInterval: NodeJS.Timeout
 
     /**
-     * Main @see Giveaways constructor.
+     * Main Giveaways constructor.
      * @param {Client} client Discord Client.
-     * @param {IGiveawaysConfiguration<TDatabaseType>} options @see Giveaways configuration.
+     * @param {IGiveawaysConfiguration} options Giveaways configuration.
      */
     public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
         super()
@@ -119,19 +120,19 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this.client = client
 
         /**
-         * @see Giveaways ready state.
+         * Giveaways ready state.
          * @type {boolean}
          */
         this.ready = false
 
         /**
-         * @see Giveaways version.
+         * Giveaways version.
          * @type {string}
          */
         this.version = packageVersion
 
         /**
-         * @see Giveaways logger.
+         * Giveaways logger.
          * @type {Logger}
          * @private
          */
@@ -144,7 +145,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this._logger.debug('Checking the configuration...')
 
         /**
-         * Completed, filled and fixed @see Giveaways configuration.
+         * Completed, filled and fixed Giveaways configuration.
          * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
          */
         this.options = checkConfiguration(options, options.configurationChecker)
@@ -162,7 +163,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this.database = null as any
 
         /**
-         * @see Giveaways ending state checking interval.
+         * Giveaways ending state checking interval.
          * @type {NodeJS.Timeout}
          */
         this.giveawaysCheckingInterval = null as any
@@ -178,7 +179,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
-     * Initialize the database connection and initialize the @see Giveaways module.
+     * Initialize the database connection and initialize the Giveaways module.
      * @returns {Promise<void>}
      * @private
      */
@@ -484,7 +485,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
-     * Sends the @see Giveaways module update state in the console.
+     * Sends the Giveaways module update state in the console.
      * @returns {Promise<void>}
      * @private
      */
@@ -530,8 +531,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
     /**
      * Starts the giveaway.
-     * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
-     * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
+     * @param {IGiveawayStartConfig} giveawayOptions Giveaway options.
+     * @returns {Promise<Giveaway<DatabaseType>>} Created Giveaway instance.
      */
     public async start(
         giveawayOptions: IGiveawayStartConfig
