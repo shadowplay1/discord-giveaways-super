@@ -3,7 +3,7 @@
 package_content="$(< ./package.json)"
 package_version="$(jq -r '.version' <<< "${package_content}")"
 
-source_pattern="src/* src/**/*"
+source_pattern="src/* src/**/* src/**/*/*"
 output_path="./docs/generated/${package_version}.json"
 
 customPath="./docs/index.yml"
