@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# vscode
+.vscode/
+
+# build files
+dist/
+
+# compiled types
+types/
+
+# testing data
+data/
+
+# development scripts
+scripts/
+
+# backup files
+*.bak
+
+# vim swap files
+*.sw[nop]
+
+# test scripts
+test/
+
+# other
+package-lock.json
