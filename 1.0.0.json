@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687963616634
+  "date": 1687966154842
  },
  "custom": {
   "general": {
@@ -20,11 +20,16 @@
  "classes": [
   {
    "name": "Giveaway",
-   "description": "Class that represents the Giveaway object.",
+   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType: The database type that will be used in the module.",
    "implements": [
     [
      [
-      "IGiveaway"
+      "IGiveaway",
+      "<"
+     ],
+     [
+      "DatabaseType",
+      ">"
      ]
     ]
    ],
@@ -46,7 +51,7 @@
       ]
      ],
      "meta": {
-      "line": 141,
+      "line": 144,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -63,7 +68,7 @@
       ]
      ],
      "meta": {
-      "line": 148,
+      "line": 151,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -79,7 +84,7 @@
       ]
      ],
      "meta": {
-      "line": 156,
+      "line": 159,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -95,7 +100,7 @@
       ]
      ],
      "meta": {
-      "line": 162,
+      "line": 165,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -111,7 +116,7 @@
       ]
      ],
      "meta": {
-      "line": 168,
+      "line": 171,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -127,7 +132,7 @@
       ]
      ],
      "meta": {
-      "line": 174,
+      "line": 177,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -143,7 +148,7 @@
       ]
      ],
      "meta": {
-      "line": 180,
+      "line": 183,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -159,7 +164,7 @@
       ]
      ],
      "meta": {
-      "line": 186,
+      "line": 189,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -175,7 +180,7 @@
       ]
      ],
      "meta": {
-      "line": 192,
+      "line": 195,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -191,7 +196,7 @@
       ]
      ],
      "meta": {
-      "line": 198,
+      "line": 201,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -207,7 +212,7 @@
       ]
      ],
      "meta": {
-      "line": 204,
+      "line": 207,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -223,7 +228,7 @@
       ]
      ],
      "meta": {
-      "line": 210,
+      "line": 213,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -239,7 +244,7 @@
       ]
      ],
      "meta": {
-      "line": 216,
+      "line": 219,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -255,7 +260,7 @@
       ]
      ],
      "meta": {
-      "line": 222,
+      "line": 225,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -271,7 +276,7 @@
       ]
      ],
      "meta": {
-      "line": 228,
+      "line": 231,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -287,7 +292,7 @@
       ]
      ],
      "meta": {
-      "line": 234,
+      "line": 237,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -308,7 +313,7 @@
       ]
      ],
      "meta": {
-      "line": 240,
+      "line": 243,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -324,7 +329,7 @@
       ]
      ],
      "meta": {
-      "line": 246,
+      "line": 249,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -340,7 +345,7 @@
       ]
      ],
      "meta": {
-      "line": 252,
+      "line": 255,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -356,7 +361,7 @@
       ]
      ],
      "meta": {
-      "line": 282,
+      "line": 285,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -380,7 +385,7 @@
       }
      ],
      "meta": {
-      "line": 374,
+      "line": 377,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -404,7 +409,7 @@
       "description": "Array of users that were picked as the winners."
      },
      "meta": {
-      "line": 388,
+      "line": 391,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -446,7 +451,7 @@
       "description": "Shuffled array"
      },
      "meta": {
-      "line": 410,
+      "line": 413,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -485,7 +490,7 @@
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 427,
+      "line": 430,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -504,7 +509,7 @@
       "description": "Plain object representation of Giveaway instance."
      },
      "meta": {
-      "line": 447,
+      "line": 450,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -520,7 +525,7 @@
  "interfaces": [],
  "typedefs": [
   {
-   "name": "IGiveaway",
+   "name": "IGiveaway<DatabaseType>",
    "description": "An object that contains an information about a giveaway.",
    "type": [
     [
@@ -764,7 +769,7 @@
     }
    ],
    "meta": {
-    "line": 122,
+    "line": 124,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -826,7 +831,7 @@
     }
    ],
    "meta": {
-    "line": 130,
+    "line": 132,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -866,7 +871,7 @@
     }
    ],
    "meta": {
-    "line": 141,
+    "line": 143,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -917,7 +922,7 @@
     }
    ],
    "meta": {
-    "line": 162,
+    "line": 164,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -968,7 +973,7 @@
     }
    ],
    "meta": {
-    "line": 196,
+    "line": 198,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -1134,7 +1139,7 @@
     }
    ],
    "meta": {
-    "line": 208,
+    "line": 210,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -1174,7 +1179,7 @@
     }
    ],
    "meta": {
-    "line": 230,
+    "line": 232,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
