@@ -3,6 +3,7 @@
 clean_up() {
     rm -rf "/tmp/src"
     rm "/tmp/${package_version}.json"
+    rm -rf src/src
 }
 
 echo "[1/3] - Generating documentation..."
