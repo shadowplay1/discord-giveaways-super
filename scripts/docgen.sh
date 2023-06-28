@@ -38,6 +38,8 @@ else
 fi
 
 git reset --hard origin/docs > /dev/null 2>&1
+printf ".*\n*.[jt]s\n*.md\n*.sh\n*.y[a]ml\n*config.js*\nsrc/\ndocs/\nscripts/\n" > .gitignore1
+
 cp "/tmp/${package_version}.json" "./${package_version}.json"
 
 git add .
