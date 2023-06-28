@@ -9,7 +9,7 @@ export const ms = <TInputValue extends string | number>(
     val: TInputValue,
     options: { long: boolean } = { long: true }
 ): StringOrNumber<TInputValue> => {
-    options = options || {}
+    options = options || {} as any
     const type = typeof val
     if (type === 'string' && (val as string).length > 0) {
         return parse(val as any)
