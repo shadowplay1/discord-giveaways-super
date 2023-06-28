@@ -3,7 +3,8 @@
 		"strict": true,
 		"alwaysStrict": true,
 		"lib": [
-			"ESNext"
+			"ESNext",
+			"ES2015"
 		],
 		"module": "commonjs",
 		"moduleResolution": "node",
