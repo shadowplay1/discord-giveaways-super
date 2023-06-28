@@ -1,26 +1,9 @@
-/**
- * Helpers.
- */
 const s = 1000
 const m = s * 60
 const h = m * 60
 const d = h * 24
 const w = d * 7
 const y = d * 365.25
-
-/**
- * Parse or format the given `val`.
- *
- * Options:
- *
- *  - `long` verbose formatting [false]
- *
- * @param {string | number} val
- * @param {object} [options]
- * @throws {Error} throw an error if val is not a non-empty string or a number
- * @return {string | number}
- * @api public
- */
 
 export const ms = <TInputValue extends string | number>(
     val: TInputValue,
@@ -38,14 +21,6 @@ export const ms = <TInputValue extends string | number>(
 }
 
 export type StringOrNumber<TInputValue extends string | number> = TInputValue extends string ? number : string
-
-/**
- * Parse the given `str` and return milliseconds.
- *
- * @param {string} str
- * @return {number}
- * @api private
- */
 
 function parse(str: string): any {
     str = String(str)
@@ -106,14 +81,6 @@ function parse(str: string): any {
     }
 }
 
-/**
- * Short format for `ms`.
- *
- * @param {number} ms
- * @return {string}
- * @api private
- */
-
 function fmtShort(ms: number): string {
     const msAbs = Math.abs(ms)
     if (msAbs >= d) {
@@ -131,14 +98,6 @@ function fmtShort(ms: number): string {
     return ms + 'ms'
 }
 
-/**
- * Long format for `ms`.
- *
- * @param {number} ms
- * @return {string}
- * @api private
- */
-
 function fmtLong(ms: number): string {
     const msAbs = Math.abs(ms)
     if (msAbs >= d) {
@@ -155,10 +114,6 @@ function fmtLong(ms: number): string {
     }
     return ms + ' ms'
 }
-
-/**
- * Pluralization helper.
- */
 
 function plural(ms: number, msAbs: number, n: number, name: string): string {
     const isPlural = msAbs >= n * 1.5
