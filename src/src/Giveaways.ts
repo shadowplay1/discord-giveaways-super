@@ -43,7 +43,6 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
 
 /**
  * Main Giveaways class.
- *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
