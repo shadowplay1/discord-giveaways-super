@@ -1,337 +1,1001 @@
 {
-    "meta": {
-     "generator": "0.11.1",
-     "format": 22,
-     "date": 1687967051668
-    },
-    "custom": {
-     "general": {
-      "name": "General",
-      "files": {
-       "welcome": {
-        "name": "Welcome",
-        "type": "md",
-        "content": "# test\n",
-        "path": "docs/general/welcome.md"
-       }
-      }
-     }
-    },
-    "classes": [
+ "meta": {
+  "generator": "0.11.1",
+  "format": 22,
+  "date": 1687981576666
+ },
+ "custom": {
+  "general": {
+   "name": "General",
+   "files": {
+    "welcome": {
+     "name": "Welcome",
+     "type": "md",
+     "content": "# test\n",
+     "path": "docs/general/welcome.md"
+    }
+   }
+  }
+ },
+ "classes": [
+  {
+   "name": "Giveaways",
+   "description": "Main Giveaways class.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "extends": [
+    [
+     [
+      "Emitter",
+      "<"
+     ],
+     [
+      "IGiveawaysEvents",
+      "<"
+     ],
+     [
+      "TDatabaseType",
+      ">>"
+     ]
+    ]
+   ],
+   "construct": {
+    "name": "Giveaways",
+    "description": "Main @see Giveaways constructor.",
+    "params": [
      {
-      "name": "Giveaways",
-      "description": "Main Giveaways class.",
-      "extends": [
+      "name": "client",
+      "description": "Discord Client.",
+      "type": [
        [
         [
-         "Emitter",
-         "<"
-        ],
+         "Client"
+        ]
+       ]
+      ]
+     },
+     {
+      "name": "options",
+      "description": "@see Giveaways configuration.",
+      "type": [
+       [
         [
-         "IGiveawaysEvents",
+         "IGiveawaysConfiguration",
          "<"
         ],
         [
          "TDatabaseType",
+         ">"
+        ]
+       ]
+      ]
+     }
+    ]
+   },
+   "props": [
+    {
+     "name": "ready",
+     "see": [
+      "Giveaways ready state."
+     ],
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 126,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "version",
+     "see": [
+      "Giveaways version."
+     ],
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 132,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_logger",
+     "see": [
+      "Giveaways logger."
+     ],
+     "access": "private",
+     "type": [
+      [
+       [
+        "Logger"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 138,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "options",
+     "description": "Completed, filled and fixed @see Giveaways configuration.",
+     "type": [
+      [
+       [
+        "Required",
+        "<"
+       ],
+       [
+        "IGiveawaysConfiguration",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">>"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 151,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "db",
+     "description": "External database (such as Enmap or MongoDB) if used.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "Database",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 157,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "database",
+     "description": "Database Manager.",
+     "type": [
+      [
+       [
+        "DatabaseManager"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 163,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawaysCheckingInterval",
+     "see": [
+      "Giveaways ending state checking interval."
+     ],
+     "type": [
+      [
+       [
+        "NodeJS",
+        "."
+       ],
+       [
+        "Timeout"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 169,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_messageUtils",
+     "description": "Message utils instance.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "MessageUtils"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 175,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "_init",
+     "description": "Initialize the database connection and initialize the @see Giveaways module.",
+     "access": "private",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 185,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_sendUpdateMessage",
+     "description": "Sends the @see Giveaways module update state in the console.",
+     "access": "private",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 491,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "start",
+     "description": "Starts the giveaway.",
+     "params": [
+      {
+       "name": "giveawayOptions",
+       "description": "@see Giveaway options.",
+       "type": [
+        [
+         [
+          "IGiveawayStartConfig"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "DatabaseType",
          ">>"
         ]
        ]
       ],
-      "construct": {
-       "name": "Giveaways",
-       "description": "Main @see Giveaways constructor.",
-       "params": [
-        {
-         "name": "client",
-         "description": "Discord Client.",
-         "type": [
-          [
-           [
-            "Client"
-           ]
-          ]
-         ]
-        },
-        {
-         "name": "options",
-         "description": "@see Giveaways configuration.",
-         "type": [
-          [
-           [
-            "IGiveawaysConfiguration",
-            "<"
-           ],
-           [
-            "TDatabaseType",
-            ">"
-           ]
-          ]
-         ]
-        }
-       ]
-      },
-      "props": [
-       {
-        "name": "ready",
-        "see": [
-         "Giveaways ready state."
-        ],
-        "type": [
-         [
-          [
-           "boolean"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 122,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "version",
-        "see": [
-         "Giveaways version."
-        ],
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 128,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "_logger",
-        "see": [
-         "Giveaways logger."
-        ],
-        "access": "private",
-        "type": [
-         [
-          [
-           "Logger"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 134,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "options",
-        "description": "Completed, filled and fixed @see Giveaways configuration.",
-        "type": [
-         [
-          [
-           "Required",
-           "<"
-          ],
-          [
-           "IGiveawaysConfiguration",
-           "<"
-          ],
-          [
-           "DatabaseType",
-           ">>"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 147,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "db",
-        "description": "External database (such as Enmap or MongoDB) if used.",
-        "nullable": true,
-        "type": [
-         [
-          [
-           "Database",
-           "<"
-          ],
-          [
-           "DatabaseType",
-           ">"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 153,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "database",
-        "description": "Database Manager.",
-        "type": [
-         [
-          [
-           "DatabaseManager"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 159,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "giveawaysCheckingInterval",
-        "see": [
-         "Giveaways ending state checking interval."
-        ],
-        "type": [
-         [
-          [
-           "NodeJS",
-           "."
-          ],
-          [
-           "Timeout"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 165,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "_messageUtils",
-        "description": "Message utils instance.",
-        "access": "private",
-        "type": [
-         [
-          [
-           "MessageUtils"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 171,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       }
-      ],
-      "methods": [
-       {
-        "name": "_init",
-        "description": "Initialize the database connection and initialize the @see Giveaways module.",
-        "access": "private",
-        "async": true,
-        "returns": [
-         [
-          [
-           "Promise",
-           "<"
-          ],
-          [
-           "void",
-           ">"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 181,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "_sendUpdateMessage",
-        "description": "Sends the @see Giveaways module update state in the console.",
-        "access": "private",
-        "async": true,
-        "returns": [
-         [
-          [
-           "Promise",
-           "<"
-          ],
-          [
-           "void",
-           ">"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 487,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       },
-       {
-        "name": "start",
-        "description": "Starts the giveaway.",
-        "params": [
-         {
-          "name": "giveawayOptions",
-          "description": "@see Giveaway options.",
-          "type": [
-           [
-            [
-             "IGiveawayStartConfig"
-            ]
-           ]
-          ]
-         }
-        ],
-        "async": true,
-        "returns": {
-         "types": [
-          [
-           [
-            "Promise",
-            "<"
-           ],
-           [
-            "Giveaway",
-            "<"
-           ],
-           [
-            "DatabaseType",
-            ">>"
-           ]
-          ]
-         ],
-         "description": "Created @see Giveaway instance."
-        },
-        "meta": {
-         "line": 532,
-         "file": "Giveaways.ts",
-         "path": "src"
-        }
-       }
-      ],
-      "meta": {
-       "line": 44,
-       "file": "Giveaways.ts",
-       "path": "src"
-      }
+      "description": "Created @see Giveaway instance."
      },
-     {
-      "name": "Giveaway",
-      "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType: The database type that will be used in the module.",
-      "implements": [
+     "meta": {
+      "line": 536,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    }
+   ],
+   "events": [
+    {
+     "name": "ready",
+     "description": "Emits when the @see Giveaways module is ready.",
+     "params": [
+      {
+       "name": "giveaways",
+       "description": "Initialized @see Giveaways instance.",
+       "type": [
+        [
+         [
+          "Giveaways",
+          "<"
+         ],
+         [
+          "DatabaseType",
+          ">"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1159,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "databaseConnect",
+     "description": "Emits when the @see Giveaways module establishes the database connection.",
+     "params": [
+      {
+       "name": "databaseConnect",
+       "description": "Initialized @see Giveaways instance.",
+       "type": [
+        [
+         [
+          "void"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1165,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayStart",
+     "description": "Emits when a giveaway is started.",
+     "params": [
+      {
+       "name": "giveaway",
+       "description": "@see Giveaway that started.",
+       "type": [
+        [
+         [
+          "Giveaway",
+          "<"
+         ],
+         [
+          "DatabaseType",
+          ">"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1171,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayRestart",
+     "description": "Emits when a giveaway is restarted.",
+     "params": [
+      {
+       "name": "giveaway",
+       "description": "@see Giveaway that restarted.",
+       "type": [
+        [
+         [
+          "Giveaway",
+          "<"
+         ],
+         [
+          "DatabaseType",
+          ">"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1177,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayEnd",
+     "description": "Emits when a giveaway is ended.",
+     "params": [
+      {
+       "name": "giveaway",
+       "description": "@see Giveaway that ended.",
+       "type": [
+        [
+         [
+          "Giveaway",
+          "<"
+         ],
+         [
+          "DatabaseType",
+          ">"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1183,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayReroll",
+     "description": "Emits when a giveaway is rerolled.",
+     "params": [
+      {
+       "name": "giveaway",
+       "description": "@see Giveaway that was rerolled.",
+       "type": [
+        [
+         [
+          "IGiveawayRerollEvent"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1189,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    }
+   ],
+   "meta": {
+    "line": 44,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "Giveaway",
+   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) The database type that will be used in the module.",
+   "implements": [
+    [
+     [
+      "IGiveaway",
+      "<"
+     ],
+     [
+      "DatabaseType",
+      ">"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "_giveaways",
+     "description": "Giveaways instance.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "Giveaways",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 145,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "_messageUtils",
+     "description": "Message utils instance.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "MessageUtils"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 152,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "raw",
+     "description": "Raw giveaway object.",
+     "type": [
+      [
+       [
+        "IGiveaway"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 160,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "id",
+     "description": "Giveaway ID.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 166,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "prize",
+     "description": "Giveaway prize.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 172,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "time",
+     "description": "Giveaway time.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 178,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "state",
+     "description": "Giveaway state.",
+     "type": [
+      [
+       [
+        "GiveawayState"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 184,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "winnersCount",
+     "description": "Number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 190,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "startTimestamp",
+     "description": "Giveaway start timestamp.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 196,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "endTimestamp",
+     "description": "Giveaway end timestamp.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 202,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "messageID",
+     "description": "Giveaway message ID.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 208,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "guild",
+     "description": "Guild where the giveaway was created.",
+     "type": [
+      [
+       [
+        "Guild"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 214,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "host",
+     "description": "User who created the giveaway.",
+     "type": [
+      [
+       [
+        "User"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 220,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "channel",
+     "description": "Channel where the giveaway was created.",
+     "type": [
+      [
+       [
+        "TextChannel"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 226,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "messageURL",
+     "description": "Giveaway message URL.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 232,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "isEnded",
+     "description": "Determines if the giveaway was ended in database.",
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 238,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "entriesArray",
+     "description": "Array of user IDs of users that have entered the giveaway.",
+     "type": [
+      [
+       [
+        "Array",
+        "<"
+       ],
+       [
+        "string",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 244,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "entries",
+     "description": "Number of giveaway entries.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 250,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "messageProps",
+     "description": "Message data properties for embeds and buttons.",
+     "type": [
+      [
+       [
+        "IGiveawayMessageProps"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 256,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "isFinished",
+     "description": "Determines if the giveaway's time is up or if the giveaway was ended forcefully.",
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 286,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "sync",
+     "description": "Syncs the constructor properties with specified raw giveaway object.",
+     "params": [
+      {
+       "name": "giveaway",
+       "description": "Giveaway object to sync the constructor properties with.",
+       "type": [
+        [
+         [
+          "IGiveaway"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 378,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "_pickWinners",
+     "description": "Shuffles all the giveaway entries and randomly picks the winners.",
+     "returns": {
+      "types": [
        [
         [
-         "IGiveaway",
+         "Array",
+         "<"
+        ],
+        [
+         "string",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Array of users that were picked as the winners."
+     },
+     "meta": {
+      "line": 392,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "_shuffleArray",
+     "description": "Shuffles an array and returns it.",
+     "params": [
+      {
+       "name": "arrayToShuffle",
+       "description": "Thr array to shuffle.",
+       "type": [
+        [
+         [
+          "Array",
+          "<"
+         ],
+         [
+          "any",
+          ">"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "any",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Shuffled array"
+     },
+     "meta": {
+      "line": 414,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "_getFromDatabase",
+     "description": "Gets the giveaway data and its index in guild giveaways array from database.",
+     "access": "private",
+     "params": [
+      {
+       "name": "guildID",
+       "description": "Guild ID to get the giveaways array from.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "IDatabaseGiveaway",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Database giveaway object."
+     },
+     "meta": {
+      "line": 431,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "toJSON",
+     "description": "Converts the Giveaway instance to a plain object representation.",
+     "returns": {
+      "types": [
+       [
+        [
+         "IGiveaway"
+        ]
+       ]
+      ],
+      "description": "Plain object representation of Giveaway instance."
+     },
+     "meta": {
+      "line": 451,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    }
+   ],
+   "meta": {
+    "line": 12,
+    "file": "Giveaway.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "DatabaseManager",
+   "description": "Database manager class.",
+   "construct": {
+    "name": "DatabaseManager",
+    "description": "Database manager constructor.",
+    "params": [
+     {
+      "name": "giveaways",
+      "description": "Giveaways instance.",
+      "type": [
+       [
+        [
+         "Giveaways",
          "<"
         ],
         [
@@ -339,1274 +1003,3467 @@
          ">"
         ]
        ]
-      ],
-      "props": [
-       {
-        "name": "_giveaways",
-        "description": "Giveaways instance.",
-        "access": "private",
-        "type": [
-         [
-          [
-           "Giveaways",
-           "<"
-          ],
-          [
-           "DatabaseType",
-           ">"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 144,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "_messageUtils",
-        "description": "Message utils instance.",
-        "access": "private",
-        "type": [
-         [
-          [
-           "MessageUtils"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 151,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "raw",
-        "description": "Raw giveaway object.",
-        "type": [
-         [
-          [
-           "IGiveaway"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 159,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "id",
-        "description": "Giveaway ID.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 165,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "prize",
-        "description": "Giveaway prize.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 171,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "time",
-        "description": "Giveaway time.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 177,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "state",
-        "description": "Giveaway state.",
-        "type": [
-         [
-          [
-           "GiveawayState"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 183,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "winnersCount",
-        "description": "Number of possible winners in the giveaway.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 189,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "startTimestamp",
-        "description": "Giveaway start timestamp.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 195,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "endTimestamp",
-        "description": "Giveaway end timestamp.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 201,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "messageID",
-        "description": "Giveaway message ID.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 207,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "guild",
-        "description": "Guild where the giveaway was created.",
-        "type": [
-         [
-          [
-           "Guild"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 213,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "host",
-        "description": "User who created the giveaway.",
-        "type": [
-         [
-          [
-           "User"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 219,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "channel",
-        "description": "Channel where the giveaway was created.",
-        "type": [
-         [
-          [
-           "TextChannel"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 225,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "messageURL",
-        "description": "Giveaway message URL.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 231,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "isEnded",
-        "description": "Determines if the giveaway was ended in database.",
-        "type": [
-         [
-          [
-           "boolean"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 237,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "entriesArray",
-        "description": "Array of user IDs of users that have entered the giveaway.",
-        "type": [
-         [
-          [
-           "Array",
-           "<"
-          ],
-          [
-           "string",
-           ">"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 243,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "entries",
-        "description": "Number of giveaway entries.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 249,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "messageProps",
-        "description": "Message data properties for embeds and buttons.",
-        "type": [
-         [
-          [
-           "IGiveawayMessageProps"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 255,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "isFinished",
-        "description": "Determines if the giveaway's time is up or if the giveaway was ended forcefully.",
-        "type": [
-         [
-          [
-           "boolean"
-          ]
-         ]
-        ],
-        "meta": {
-         "line": 285,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       }
-      ],
-      "methods": [
-       {
-        "name": "sync",
-        "description": "Syncs the constructor properties with specified raw giveaway object.",
-        "params": [
-         {
-          "name": "giveaway",
-          "description": "Giveaway object to sync the constructor properties with.",
-          "type": [
-           [
-            [
-             "IGiveaway"
-            ]
-           ]
-          ]
-         }
-        ],
-        "meta": {
-         "line": 377,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "_pickWinners",
-        "description": "Shuffles all the giveaway entries and randomly picks the winners.",
-        "returns": {
-         "types": [
-          [
-           [
-            "Array",
-            "<"
-           ],
-           [
-            "string",
-            ">"
-           ]
-          ]
-         ],
-         "description": "Array of users that were picked as the winners."
-        },
-        "meta": {
-         "line": 391,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "_shuffleArray",
-        "description": "Shuffles an array and returns it.",
-        "params": [
-         {
-          "name": "arrayToShuffle",
-          "description": "Thr array to shuffle.",
-          "type": [
-           [
-            [
-             "Array",
-             "<"
-            ],
-            [
-             "any",
-             ">"
-            ]
-           ]
-          ]
-         }
-        ],
-        "returns": {
-         "types": [
-          [
-           [
-            "Array",
-            "<"
-           ],
-           [
-            "any",
-            ">"
-           ]
-          ]
-         ],
-         "description": "Shuffled array"
-        },
-        "meta": {
-         "line": 413,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "_getFromDatabase",
-        "description": "Gets the giveaway data and its index in guild giveaways array from database.",
-        "access": "private",
-        "params": [
-         {
-          "name": "guildID",
-          "description": "Guild ID to get the giveaways array from.",
-          "type": [
-           [
-            [
-             "string"
-            ]
-           ]
-          ]
-         }
-        ],
-        "async": true,
-        "returns": {
-         "types": [
-          [
-           [
-            "Promise",
-            "<"
-           ],
-           [
-            "IDatabaseGiveaway",
-            ">"
-           ]
-          ]
-         ],
-         "description": "Database giveaway object."
-        },
-        "meta": {
-         "line": 430,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       },
-       {
-        "name": "toJSON",
-        "description": "Converts the Giveaway instance to a plain object representation.",
-        "returns": {
-         "types": [
-          [
-           [
-            "IGiveaway"
-           ]
-          ]
-         ],
-         "description": "Plain object representation of Giveaway instance."
-        },
-        "meta": {
-         "line": 450,
-         "file": "Giveaway.ts",
-         "path": "src/lib"
-        }
-       }
-      ],
-      "meta": {
-       "line": 12,
-       "file": "Giveaway.ts",
-       "path": "src/lib"
-      }
+      ]
      }
-    ],
-    "interfaces": [],
-    "typedefs": [
-     {
-      "name": "IGiveaway<DatabaseType>",
-      "description": "An object that contains an information about a giveaway.",
-      "type": [
+    ]
+   },
+   "props": [
+    {
+     "name": "giveaways",
+     "description": "Giveaways instance.",
+     "type": [
+      [
        [
-        [
-         "object"
-        ]
-       ]
-      ],
-      "props": [
-       {
-        "name": "id",
-        "description": "The ID of the giveaway.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "prize",
-        "description": "The prize of the giveaway.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "time",
-        "description": "The time of the giveaway.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "state",
-        "description": "The state of the giveaway.",
-        "type": [
-         [
-          [
-           "GiveawayState"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "winnersCount",
-        "description": "The number of possible winners in the giveaway.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "startTimestamp",
-        "description": "The timestamp when the giveaway started.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "isEnded",
-        "description": "Determines if the giveaway was ended in the database.",
-        "type": [
-         [
-          [
-           "boolean"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "endTimestamp",
-        "description": "The timestamp when the giveaway ended.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "hostMemberID",
-        "description": "The ID of the host member.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "channelID",
-        "description": "The ID of the channel where the giveaway is held.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageID",
-        "description": "The ID of the giveaway message.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageURL",
-        "description": "The URL of the giveaway message.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "guildID",
-        "description": "The ID of the guild where the giveaway is held.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "entries",
-        "description": "The number of giveaway entries.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "entriesArray",
-        "description": "The array of user IDs of users that have entered the giveaway.",
-        "type": [
-         [
-          [
-           "Array",
-           "<"
-          ],
-          [
-           "string",
-           ">"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageProps",
-        "description": "The message data properties for embeds and buttons.",
-        "type": [
-         [
-          [
-           "IGiveawayMessageProps"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 3,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "IGiveawayRerollEmbeds",
-      "description": "An interface containing embed objects for various giveaway reroll cases.",
-      "type": [
+        "Giveaways",
+        "<"
+       ],
        [
-        [
-         "object"
-        ]
+        "DatabaseType",
+        ">"
        ]
-      ],
-      "props": [
-       {
-        "name": "onlyHostCanReroll",
-        "description": "The options for the embed when only the host can reroll.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "newGiveawayMessage",
-        "description": "The options for the embed when sending a new giveaway message.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "successMessage",
-        "description": "The options for the embed when the giveaway is successful.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 124,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "IGiveawayFinishEmbeds",
-      "description": "An interface containing embed objects for various giveaway finish cases.",
-      "type": [
+      ]
+     ],
+     "meta": {
+      "line": 45,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "db",
+     "description": "Database instance.",
+     "type": [
+      [
        [
-        [
-         "object"
-        ]
-       ]
-      ],
-      "props": [
-       {
-        "name": "newGiveawayMessage",
-        "description": "The options for the embed when sending a new giveaway message.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "endMessage",
-        "description": "The options for the embed when the giveaway has ended.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "noWinners",
-        "description": "The options for the embed when there are no winners for the giveaway.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "noWinnersEndMessage",
-        "description": "The options for the embed when there are no winners for the giveaway and it has ended.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 132,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "IGiveawayMessageProps",
-      "description": "An interface that contains the data properties for embeds and buttons.",
-      "type": [
+        "Database",
+        "<"
+       ],
        [
-        [
-         "object"
-        ]
+        "DatabaseType",
+        ">"
        ]
-      ],
-      "props": [
-       {
-        "name": "embeds",
-        "description": "The embed objects for the giveaway message.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbeds"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "buttons",
-        "description": "The button objects for the giveaway message.",
-        "type": [
-         [
-          [
-           "IGiveawayButtons"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 143,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "IGiveawayEmbeds",
-      "description": "An interface containing different types of giveaway embeds in the IGiveaways class.",
-      "type": [
+      ]
+     ],
+     "meta": {
+      "line": 51,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "databaseType",
+     "description": "Database type.",
+     "type": [
+      [
        [
-        [
-         "object"
-        ]
+        "DatabaseType"
        ]
-      ],
-      "props": [
-       {
-        "name": "start",
-        "description": "Message embed data for cases when the giveaway has started.",
-        "type": [
-         [
-          [
-           "IGiveawayEmbedOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "reroll",
-        "description": "Message embed data for cases when rerolling the giveaway.",
-        "type": [
-         [
-          [
-           "IGiveawayRerollEmbeds"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "finish",
-        "description": "Message embed data for cases when the giveaway has finished.",
-        "type": [
-         [
-          [
-           "IGiveawayFinishEmbeds"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 164,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "IGiveawayMessageButtons",
-      "description": "An object that contains the giveaway buttons that may be set up.",
-      "type": [
+      ]
+     ],
+     "meta": {
+      "line": 57,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "jsonParser",
+     "description": "JSON parser instance.",
+     "type": [
+      [
        [
-        [
-         "object"
-        ]
+        "JSONParser"
        ]
-      ],
-      "props": [
-       {
-        "name": "joinGiveawayButton",
-        "description": "The options for the join giveaway button.",
-        "type": [
-         [
-          [
-           "IGiveawayButtonOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "rerollButton",
-        "description": "The options for the reroll button.",
-        "type": [
-         [
-          [
-           "IGiveawayButtonOptions"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "goToMessageButton",
-        "description": "The options for the go to message button.",
-        "type": [
-         [
-          [
-           "IGiveawayButtonOptions"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 198,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "GiveawayWithoutInternalProps",
-      "description": "An object that contains an information about a giveaway without internal props.",
-      "type": [
-       [
-        [
-         "object"
-        ]
-       ]
-      ],
-      "props": [
-       {
-        "name": "id",
-        "description": "The ID of the giveaway.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "prize",
-        "description": "The prize of the giveaway.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "time",
-        "description": "The time of the giveaway.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "winnersCount",
-        "description": "The number of possible winners in the giveaway.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "startTimestamp",
-        "description": "The timestamp when the giveaway started.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "endTimestamp",
-        "description": "The timestamp when the giveaway ended.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "hostMemberID",
-        "description": "The ID of the host member.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "channelID",
-        "description": "The ID of the channel where the giveaway is held.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageID",
-        "description": "The ID of the giveaway message.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageURL",
-        "description": "The URL of the giveaway message.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "guildID",
-        "description": "The ID of the guild where the giveaway is held.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "entriesArray",
-        "description": "The array of user IDs of users that have entered the giveaway.",
-        "type": [
-         [
-          [
-           "Array",
-           "<"
-          ],
-          [
-           "string",
-           ">"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "messageProps",
-        "description": "The message data properties for embeds and buttons.",
-        "type": [
-         [
-          [
-           "IGiveawayMessageProps"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 210,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "GiveawayState",
-      "description": "An enum that determines the state of a giveaway.",
-      "type": [
-       [
-        [
-         "number"
-        ]
-       ]
-      ],
-      "props": [
-       {
-        "name": "STARTED",
-        "description": "The giveaway has started.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "ENDED",
-        "description": "The giveaway has ended.",
-        "type": [
-         [
-          [
-           "number"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 232,
-       "file": "giveaway.interface.ts",
-       "path": "src/lib"
-      }
-     },
-     {
-      "name": "replaceGiveawayKeys",
-      "description": "Replaces the giveaways keys with the corresponding values in the input string.",
-      "type": [
-       [
-        [
-         "function"
-        ]
-       ]
-      ],
-      "params": [
-       {
-        "name": "input",
-        "description": "The input string to replace the keys in.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "giveawayObject",
-        "type": [
-         [
-          [
-           "IGiveaway"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "winners",
-        "description": "Winners array to replace the winners giveaway keys.",
-        "type": [
-         [
-          [
-           "Array",
-           "<"
-          ],
-          [
-           "string",
-           ">"
-          ]
-         ]
-        ]
-       }
-      ],
-      "returns": {
-       "types": [
+      ]
+     ],
+     "meta": {
+      "line": 65,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "getKeys",
+     "description": "Gets the object keys in database root or in object by specified key.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
         [
          [
           "string"
          ]
         ]
-       ],
-       "description": "The string with all keys replaced."
-      },
-      "meta": {
-       "line": 21,
-       "file": "giveawayTemplate.ts",
-       "path": "src/structures"
+       ]
       }
-     },
-     {
-      "name": "DatabaseType",
-      "description": "An enum containing the possible database types.",
-      "type": [
+     ],
+     "async": true,
+     "returns": {
+      "types": [
        [
         [
-         "string"
+         "Array",
+         "<"
+        ],
+        [
+         "string",
+         ">"
         ]
        ]
       ],
-      "props": [
-       {
-        "name": "JSON",
-        "description": "The JSON database type.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "MONGODB",
-        "description": "The MongoDB database type.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       },
-       {
-        "name": "ENMAP",
-        "description": "The Enmap database type.",
-        "type": [
-         [
-          [
-           "string"
-          ]
-         ]
-        ]
-       }
-      ],
-      "meta": {
-       "line": 1,
-       "file": "databaseType.enum.ts",
-       "path": "src/types"
-      }
+      "description": "Database object keys array."
+     },
+     "meta": {
+      "line": 73,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
      }
-    ],
-    "externals": []
+    },
+    {
+     "name": "get",
+     "description": "Gets the value from database by specified key.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Value from database."
+     },
+     "meta": {
+      "line": 83,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "fetch",
+     "description": "Gets the value from database by specified key.\n\n- This method is an alias to {@link DatabaseManager.get()} method.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Value from database."
+     },
+     "meta": {
+      "line": 112,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "has",
+     "description": "Determines if specified key exists in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Boolean value that determines if specified key exists in database."
+     },
+     "meta": {
+      "line": 124,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "includes",
+     "description": "Determines if specified key exists in database.\n\n- This method is an alias to {@link DatabaseManager.has()} method.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Boolean value that determines if specified key exists in database."
+     },
+     "meta": {
+      "line": 134,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "set",
+     "description": "Sets data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "value",
+       "description": "Any data to set.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 145,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "clear",
+     "description": "Clears the whole database.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 177,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "deleteAll",
+     "description": "Clears the whole database.\n\n- This method is an alias to {@link DatabaseManager.clear()} method.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if set successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 205,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "add",
+     "description": "Adds a number to the data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "numberToAdd",
+       "description": "Any number to add.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if added successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 215,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "subtract",
+     "description": "Subtracts a number to the data in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "numberToSubtract",
+       "description": "Any number to subtract.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if subtracted successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 271,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "delete",
+     "description": "Deletes the data from database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if deleted successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 327,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "push",
+     "description": "Pushes a value into specified array in database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "value",
+       "description": "Any value to push into database array.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if pushed successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 357,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "pull",
+     "description": "Changes the specified element's value in a specified array in the database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "index",
+       "description": "The index in the target array.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "newValue",
+       "description": "The new value to set.",
+       "type": [
+        [
+         [
+          "V"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if pulled successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 420,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "pop",
+     "description": "Removes an element from a specified array in the database.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "index",
+       "description": "The index in the target array.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
+        ]
+       ]
+      ],
+      "description": "`true` if popped successfully, `false` otherwise."
+     },
+     "meta": {
+      "line": 484,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "all",
+     "description": "Gets the whole database object.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "V",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Database object."
+     },
+     "meta": {
+      "line": 546,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "meta": {
+    "line": 7,
+    "file": "DatabaseManager.ts",
+    "path": "src/lib/managers"
    }
+  }
+ ],
+ "interfaces": [],
+ "typedefs": [
+  {
+   "name": "IGiveaway<TDatabaseType>",
+   "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "id",
+     "description": "The ID of the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "prize",
+     "description": "The prize of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "time",
+     "description": "The time of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "state",
+     "description": "The state of the giveaway.",
+     "type": [
+      [
+       [
+        "GiveawayState"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "The number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "startTimestamp",
+     "description": "The timestamp when the giveaway started.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "isEnded",
+     "description": "Determines if the giveaway was ended in the database.",
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "endTimestamp",
+     "description": "The timestamp when the giveaway ended.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "hostMemberID",
+     "description": "The ID of the host member.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "channelID",
+     "description": "The ID of the channel where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageID",
+     "description": "The ID of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageURL",
+     "description": "The URL of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "guildID",
+     "description": "The ID of the guild where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "entries",
+     "description": "The number of giveaway entries.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "entriesArray",
+     "description": "The array of user IDs of users that have entered the giveaway.",
+     "type": [
+      [
+       [
+        "Array",
+        "<"
+       ],
+       [
+        "string",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageProps",
+     "description": "The message data properties for embeds and buttons.",
+     "type": [
+      [
+       [
+        "IGiveawayMessageProps"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 670,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayRerollEmbeds",
+   "description": "An interface containing embed objects for various giveaway reroll cases.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "onlyHostCanReroll",
+     "description": "The options for the embed when only the host can reroll.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "newGiveawayMessage",
+     "description": "The options for the embed when sending a new giveaway message.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "successMessage",
+     "description": "The options for the embed when the giveaway is successful.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 129,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawayFinishEmbeds",
+   "description": "An interface containing embed objects for various giveaway finish cases.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "newGiveawayMessage",
+     "description": "The options for the embed when sending a new giveaway message.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "endMessage",
+     "description": "The options for the embed when the giveaway has ended.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "noWinners",
+     "description": "The options for the embed when there are no winners for the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "noWinnersEndMessage",
+     "description": "The options for the embed when there are no winners for the giveaway and it has ended.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 137,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawayMessageProps",
+   "description": "An interface that contains the data properties for embeds and buttons.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "embeds",
+     "description": "The embed objects for the giveaway message.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbeds"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "buttons",
+     "description": "The button objects for the giveaway message.",
+     "type": [
+      [
+       [
+        "IGiveawayButtons"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 148,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawayEmbeds",
+   "description": "An interface containing different types of giveaway embeds in the IGiveaways class.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "start",
+     "description": "Message embed data for cases when the giveaway has started.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "reroll",
+     "description": "Message embed data for cases when rerolling the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayRerollEmbeds"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "finish",
+     "description": "Message embed data for cases when the giveaway has finished.",
+     "type": [
+      [
+       [
+        "IGiveawayFinishEmbeds"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 169,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawayMessageButtons",
+   "description": "An object that contains the giveaway buttons that may be set up.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "joinGiveawayButton",
+     "description": "The options for the join giveaway button.",
+     "type": [
+      [
+       [
+        "IGiveawayButtonOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "rerollButton",
+     "description": "The options for the reroll button.",
+     "type": [
+      [
+       [
+        "IGiveawayButtonOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "goToMessageButton",
+     "description": "The options for the go to message button.",
+     "type": [
+      [
+       [
+        "IGiveawayButtonOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 203,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "GiveawayWithoutInternalProps",
+   "description": "An object that contains an information about a giveaway without internal props.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "id",
+     "description": "The ID of the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "prize",
+     "description": "The prize of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "time",
+     "description": "The time of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "The number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "startTimestamp",
+     "description": "The timestamp when the giveaway started.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "endTimestamp",
+     "description": "The timestamp when the giveaway ended.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "hostMemberID",
+     "description": "The ID of the host member.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "channelID",
+     "description": "The ID of the channel where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageID",
+     "description": "The ID of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageURL",
+     "description": "The URL of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "guildID",
+     "description": "The ID of the guild where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "entriesArray",
+     "description": "The array of user IDs of users that have entered the giveaway.",
+     "type": [
+      [
+       [
+        "Array",
+        "<"
+       ],
+       [
+        "string",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageProps",
+     "description": "The message data properties for embeds and buttons.",
+     "type": [
+      [
+       [
+        "IGiveawayMessageProps"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 215,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "GiveawayState",
+   "description": "An enum that determines the state of a giveaway.",
+   "type": [
+    [
+     [
+      "number"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "STARTED",
+     "description": "The giveaway has started.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "ENDED",
+     "description": "The giveaway has ended.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 237,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawaysConfiguration<TDatabaseType>",
+   "description": "Full @see Giveaways class configuration object.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "database",
+     "description": "Database type to use.",
+     "type": [
+      [
+       [
+        "DatabaseType"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "connection",
+     "description": "Database type to use.",
+     "type": [
+      [
+       [
+        "DatabaseConnectionOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawaysCheckingInterval",
+     "description": "Determines how often the giveaways ending state will be checked (in ms). Default: 1000.",
+     "optional": true,
+     "default": 1000,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "debug",
+     "description": "Determines if debug mode is enabled. Default: false.",
+     "optional": true,
+     "default": false,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "minGiveawayEntries",
+     "description": "Determines the minimum required giveaway entries to draw the winner. Default: 1",
+     "optional": true,
+     "default": 1,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "updatesChecker",
+     "description": "Updates checker configuration.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "Partial"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "configurationChecker",
+     "description": "Giveaways config checker configuration.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "Partial"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 767,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawaysOptionalConfiguration",
+   "description": "Optional configuration for the @see Giveaways class.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "giveawaysCheckingInterval",
+     "description": "Determines how often the giveaways ending state will be checked (in ms). Default: 1000.",
+     "optional": true,
+     "default": 1000,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "debug",
+     "description": "Determines if debug mode is enabled. Default: false.",
+     "optional": true,
+     "default": false,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "minGiveawayEntries",
+     "description": "Determines the minimum required giveaway entries to draw the winner. Default: 1",
+     "optional": true,
+     "default": 1,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "updatesChecker",
+     "description": "Updates checker configuration.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "Partial"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "configurationChecker",
+     "description": "Giveaways config checker configuration.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "Partial"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 790,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IUpdateCheckerConfiguration",
+   "description": "Configuration for the updates checker.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "checkUpdates",
+     "description": "Sends the update state message in console on start. Default: true.",
+     "optional": true,
+     "default": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "upToDateMessage",
+     "description": "Sends the message in console on start if module is up to date. Default: false.",
+     "optional": true,
+     "default": false,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 803,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawaysConfigCheckerConfiguration",
+   "description": "Configuration for the configuration checker.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "ignoreInvalidTypes",
+     "description": "Allows the method to ignore the options with invalid types. Default: false.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "ignoreUnspecifiedOptions",
+     "description": "Allows the method to ignore the unspecified options. Default: true.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "ignoreInvalidOptions",
+     "description": "Allows the method to ignore the unexisting options. Default: false.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "showProblems",
+     "description": "Allows the method to show all the problems in the console. Default: true.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "sendLog",
+     "description": "Allows the method to send the result in the console.\nRequires the 'showProblems' or 'sendLog' options to set. Default: true.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "sendSuccessLog",
+     "description": "Allows the method to send the result if no problems were found. Default: false.",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 810,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IJSONDatabaseConfiguration",
+   "description": "JSON database configuration.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "path",
+     "description": "Full path to a JSON storage file. Default: './giveaways.json'.",
+     "optional": true,
+     "default": "'./giveaways.json'",
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "checkDatabase",
+     "description": "Checks the if there are errors in database file. Default: true.",
+     "optional": true,
+     "default": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "checkingCountdown",
+     "description": "Determines how often the database file will be checked (in ms). Default: 1000.",
+     "optional": true,
+     "default": 1000,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 963,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayData",
+   "description": "An object that contains an information about a giveaway that is required fo starting..",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "prize",
+     "description": "The prize of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "time",
+     "description": "The time of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "The number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "hostMemberID",
+     "description": "The ID of the host member.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "channelID",
+     "description": "The ID of the channel where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "guildID",
+     "description": "The ID of the guild where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 830,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayStartConfig",
+   "description": "Giveaway start config.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "prize",
+     "description": "The prize of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "time",
+     "description": "The time of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "The number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "hostMemberID",
+     "description": "The ID of the host member.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "channelID",
+     "description": "The ID of the channel where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "guildID",
+     "description": "The ID of the guild where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "buttons",
+     "description": "Giveaway buttons object.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtons"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "defineEmbedStrings",
+     "description": "Giveaway buttons object.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtons"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 841,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayButtons",
+   "description": "Giveaway buttons that may be specified.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "joinGiveawayButton",
+     "description": "Button object for the \"join giveaway\" button.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtonOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "rerollButton",
+     "description": "Button object for the \"reroll\" button.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtonOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "goToMessageButton",
+     "description": "Link button object for the \"go to message\" button.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "ILinkButton"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 854,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "ILinkButton",
+   "description": "Link button object.\n\nPlease note that URL is not required as it's being applied after starting the giveaway.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "text",
+     "description": "Button text string.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "emoji",
+     "description": "Emoji string.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "url",
+     "description": "URL that the button will take to.",
+     "type": [
+      [
+       [
+        "ButtonStyle"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 862,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "DefineEmbedStringsCallback",
+   "description": "A function that defines the embed strings used in the giveaway.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "giveaway",
+     "description": "An object containing information about the giveaway.",
+     "type": [
+      [
+       [
+        "Omit"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayHost",
+     "description": "The host of the giveaway.",
+     "type": [
+      [
+       [
+        "User"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "Partial"
+      ]
+     ]
+    ],
+    "description": "- An object containing the defined embed strings."
+   },
+   "meta": {
+    "line": 872,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayStartOptions",
+   "description": "Giveaway start options.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "buttons",
+     "description": "Giveaway buttons object.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtons"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "defineEmbedStrings",
+     "description": "Giveaway buttons object.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "IGiveawayButtons"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 880,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayMessages",
+   "description": "An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "onlyHostCanReroll",
+     "description": "The message sent in the giveaway channel when not a giveaway host tries to do a reroll.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "newGiveawayMessage",
+     "description": "Original giveaway message will be edited with this message object.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "successMessage",
+     "description": "The message sent in the giveaway channel when a giveaway ends without winners.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 906,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "GiveawayFinishCallback",
+   "description": "A function that is called when giveaway is finished.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "winnersString",
+     "description": "A string that contains the users that won the giveaway separated with comma.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "numberOfWinners",
+     "description": "Number of winners that were picked.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "IGiveawayMessages"
+      ]
+     ]
+    ],
+    "description": "Giveaway message objects."
+   },
+   "meta": {
+    "line": 898,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "GiveawayRerollCallback",
+   "description": "A function that is called when giveaway winners are rerolled.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "winnersString",
+     "description": "A string that contains the users that won the giveaway separated with comma.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "numberOfWinners",
+     "description": "Number of winners that were picked.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "IGiveawayMessages"
+      ]
+     ]
+    ],
+    "description": "Giveaway message objects."
+   },
+   "meta": {
+    "line": 918,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IEmbedStringsDefinitions",
+   "description": "Object containing embed string definitions used in the IGiveaways class.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "start",
+     "description": "This object is used in the original giveaway message that people will use to join the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "finish",
+     "description": "This function is called and all returned message objects are extracted and used when the giveaway is finished.",
+     "type": [
+      [
+       [
+        "GiveawayFinishCallback"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "reroll",
+     "description": "This function is called and all returned message objects are extracted and used when the giveaway winners are rerolled.",
+     "type": [
+      [
+       [
+        "GiveawayRerollCallback"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 926,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayButtonOptions",
+   "description": "Button object.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "text",
+     "description": "Button text string.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "emoji",
+     "description": "Emoji string.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "style",
+     "description": "Button style.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "ButtonStyle"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 940,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayEmbedOptions",
+   "description": "Message embed options.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "messageContent",
+     "description": "The content of the message. If only this is specified",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "title",
+     "description": "The title of the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "titleIcon",
+     "description": "The icon of the title in the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "titleIconURL",
+     "description": "The url of the icon of the title in the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "description",
+     "description": "The description of the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "footer",
+     "description": "The footer of the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "footerIcon",
+     "description": "The icon of the footer in the embed.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "thumbnailURL",
+     "description": "Embed thumbnail.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "imageURL",
+     "description": "Embed Image URL.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "color",
+     "description": "The color of the embed.",
+     "optional": true,
+     "type": [
+      [
+       [
+        "ColorResolvable"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 948,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "DatabaseConnectionOptions<TDatabaseType>",
+   "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+   "see": [
+    "Partial<IJSONDatabaseConfiguration> - JSON configuration.",
+    "EnmapOptions<any, any> - Enmap configuration.",
+    "IMongoConnectionOptions - MongoDB connection configuration."
+   ],
+   "type": [
+    [
+     [
+      "Partial",
+      "<"
+     ],
+     [
+      "IJSONDatabaseConfiguration",
+      ">"
+     ]
+    ],
+    [
+     [
+      "EnmapOptions",
+      "<"
+     ],
+     [
+      "any",
+      ", "
+     ],
+     [
+      "any",
+      ">"
+     ]
+    ],
+    [
+     [
+      "IMongoConnectionOptions"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 971,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "Database<TDatabaseType>",
+   "description": "External database object based on the used database type.",
+   "see": [
+    "null - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+    "Enmap<string, IDatabaseStructure> - Enmap database.",
+    "Mongo<IDatabaseStructure> - MongoDB database."
+   ],
+   "type": [
+    [
+     [
+      "null"
+     ]
+    ],
+    [
+     [
+      "Enmap",
+      "<"
+     ],
+     [
+      "string",
+      ", "
+     ],
+     [
+      "IDatabaseStructure",
+      ">"
+     ]
+    ],
+    [
+     [
+      "Mongo",
+      "<"
+     ],
+     [
+      "IDatabaseStructure",
+      ">"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 992,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IDatabaseStructure",
+   "description": "An interface containing the structure of the database used in the IGiveaways class.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "guildID",
+     "description": "Guild ID that stores the giveaways array",
+     "type": [
+      [
+       [
+        "any"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveaways",
+     "description": "Giveaways array property inside the [guildID] object in database.",
+     "type": [
+      [
+       [
+        "Array",
+        "<"
+       ],
+       [
+        "IGiveaway",
+        ">"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1013,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IDatabaseGiveaway",
+   "description": "The giveaway data that stored in database,",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "giveaway",
+     "description": "Giveaway object.",
+     "type": [
+      [
+       [
+        "IGiveaway"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayIndex",
+     "description": "Giveaway index in the guild giveaways array.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1020,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawaysEvents<TDatabaseType>",
+   "description": "A type containing all the @see Giveaways events and their return types.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "ready",
+     "description": "Emits when the @see Giveaways is ready.",
+     "type": [
+      [
+       [
+        "Giveaways",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "databaseConnect",
+     "description": "Emits when the connection to the database is established.",
+     "type": [
+      [
+       [
+        "void"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayStart",
+     "description": "Emits when a giveaway is started.",
+     "type": [
+      [
+       [
+        "Giveaway",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayRestart",
+     "description": "Emits when a giveaway is rerolled.",
+     "type": [
+      [
+       [
+        "Giveaway",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayEnd",
+     "description": "Emits when a giveaway is rerolled.",
+     "type": [
+      [
+       [
+        "Giveaway",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "giveawayReroll",
+     "description": "Emits when a giveaway is rerolled.",
+     "type": [
+      [
+       [
+        "IGiveawayRerollEvent"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1028,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayRerollEvent<TDatabaseType>",
+   "description": "Giveaway reroll event object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "giveaway",
+     "description": "Giveaway instance.",
+     "type": [
+      [
+       [
+        "Giveaway",
+        "<"
+       ],
+       [
+        "DatabaseType",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "newWinners",
+     "description": "Array of the new picked winners after reroll.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1046,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "ILoggerColors",
+   "description": "An interface containing different colors that may be used in a logger.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "red",
+     "description": "The color red.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "green",
+     "description": "The color green.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "yellow",
+     "description": "The color yellow.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "blue",
+     "description": "The color blue.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "magenta",
+     "description": "The color magenta.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "cyan",
+     "description": "The color cyan.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "white",
+     "description": "The color white.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "reset",
+     "description": "The reset color.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "black",
+     "description": "The color black.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightgray",
+     "description": "The color light gray.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "default",
+     "description": "The default color.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "darkgray",
+     "description": "The color dark gray.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightred",
+     "description": "The color light red.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightgreen",
+     "description": "The color light green.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightyellow",
+     "description": "The color light yellow.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightblue",
+     "description": "The color light blue.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightmagenta",
+     "description": "The color light magenta.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "lightcyan",
+     "description": "The color light cyan.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1060,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IUpdateState",
+   "description": "An object containing the data about available module updates.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "updated",
+     "description": "Whether an update is available or not.",
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "installedVersion",
+     "description": "The currently installed version.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "availableVersion",
+     "description": "The available version, if any.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1084,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "If<T,",
+   "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` (@see boolean) - The boolean type to compare with.\n- `IfTrue` (@see any) - The type that will be returned if `T` is `true`.\n- `IfFalse` (@see any) - The type that will be returned if `T` is `false`.",
+   "type": [
+    [
+     [
+      "IfTrue"
+     ]
+    ],
+    [
+     [
+      "IfFalse"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1092,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "Optional<T,",
+   "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` (@see object) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1109,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "FindCallback<T>",
+   "description": "A callback function that calls when finding an element in array.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "item",
+     "description": "The item to be passed to the callback function.",
+     "type": [
+      [
+       [
+        "T"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "boolean"
+      ]
+     ]
+    ],
+    "description": "The boolean value returned by the callback function."
+   },
+   "meta": {
+    "line": 1123,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "MapCallback<T,",
+   "description": "A callback function that calls when mapping the array using the @see Array.prototype.map method.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.\n- `TReturnType` - (@see any) The type of value returned by the callback function.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "item",
+     "description": "The item to be passed to the callback function.",
+     "type": [
+      [
+       [
+        "T"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "TReturnType"
+      ]
+     ]
+    ],
+    "description": "The value returned by the callback function."
+   },
+   "meta": {
+    "line": 1137,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveaway<DatabaseType>",
+   "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "id",
+     "description": "The ID of the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "prize",
+     "description": "The prize of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "time",
+     "description": "The time of the giveaway.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "state",
+     "description": "The state of the giveaway.",
+     "type": [
+      [
+       [
+        "GiveawayState"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "The number of possible winners in the giveaway.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "startTimestamp",
+     "description": "The timestamp when the giveaway started.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "isEnded",
+     "description": "Determines if the giveaway was ended in the database.",
+     "type": [
+      [
+       [
+        "boolean"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "endTimestamp",
+     "description": "The timestamp when the giveaway ended.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "hostMemberID",
+     "description": "The ID of the host member.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "channelID",
+     "description": "The ID of the channel where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageID",
+     "description": "The ID of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageURL",
+     "description": "The URL of the giveaway message.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "guildID",
+     "description": "The ID of the guild where the giveaway is held.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "entries",
+     "description": "The number of giveaway entries.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "entriesArray",
+     "description": "The array of user IDs of users that have entered the giveaway.",
+     "type": [
+      [
+       [
+        "Array",
+        "<"
+       ],
+       [
+        "string",
+        ">"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "messageProps",
+     "description": "The message data properties for embeds and buttons.",
+     "type": [
+      [
+       [
+        "IGiveawayMessageProps"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 3,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "DatabaseType",
+   "description": "An enum containing the possible database types.",
+   "type": [
+    [
+     [
+      "string"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "JSON",
+     "description": "The JSON database type.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "MONGODB",
+     "description": "The MongoDB database type.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "ENMAP",
+     "description": "The Enmap database type.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 1,
+    "file": "databaseType.enum.ts",
+    "path": "src/types"
+   }
+  }
+ ],
+ "externals": []
+}
