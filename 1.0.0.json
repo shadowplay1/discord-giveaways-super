@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688044449397
+  "date": 1688055711822
  },
  "custom": {
   "general": {
@@ -271,7 +271,7 @@
       ]
      ],
      "meta": {
-      "line": 491,
+      "line": 507,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -313,7 +313,7 @@
       "description": "Created @see Giveaway instance."
      },
      "meta": {
-      "line": 536,
+      "line": 552,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -342,7 +342,7 @@
       }
      ],
      "meta": {
-      "line": 1163,
+      "line": 1277,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -364,7 +364,7 @@
       }
      ],
      "meta": {
-      "line": 1169,
+      "line": 1283,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -391,7 +391,7 @@
       }
      ],
      "meta": {
-      "line": 1175,
+      "line": 1289,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -418,7 +418,7 @@
       }
      ],
      "meta": {
-      "line": 1181,
+      "line": 1295,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -445,7 +445,7 @@
       }
      ],
      "meta": {
-      "line": 1187,
+      "line": 1301,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -467,7 +467,7 @@
       }
      ],
      "meta": {
-      "line": 1193,
+      "line": 1307,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -512,7 +512,7 @@
       ]
      ],
      "meta": {
-      "line": 145,
+      "line": 146,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -529,7 +529,7 @@
       ]
      ],
      "meta": {
-      "line": 152,
+      "line": 153,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -545,7 +545,7 @@
       ]
      ],
      "meta": {
-      "line": 160,
+      "line": 161,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -561,7 +561,7 @@
       ]
      ],
      "meta": {
-      "line": 166,
+      "line": 167,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -577,7 +577,7 @@
       ]
      ],
      "meta": {
-      "line": 172,
+      "line": 173,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -593,7 +593,7 @@
       ]
      ],
      "meta": {
-      "line": 178,
+      "line": 179,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -609,7 +609,7 @@
       ]
      ],
      "meta": {
-      "line": 184,
+      "line": 185,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -625,7 +625,7 @@
       ]
      ],
      "meta": {
-      "line": 190,
+      "line": 191,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -641,7 +641,7 @@
       ]
      ],
      "meta": {
-      "line": 196,
+      "line": 197,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -657,7 +657,7 @@
       ]
      ],
      "meta": {
-      "line": 202,
+      "line": 203,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -673,7 +673,7 @@
       ]
      ],
      "meta": {
-      "line": 208,
+      "line": 209,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -689,7 +689,7 @@
       ]
      ],
      "meta": {
-      "line": 214,
+      "line": 215,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -705,7 +705,7 @@
       ]
      ],
      "meta": {
-      "line": 220,
+      "line": 221,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -721,7 +721,7 @@
       ]
      ],
      "meta": {
-      "line": 226,
+      "line": 227,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -737,7 +737,7 @@
       ]
      ],
      "meta": {
-      "line": 232,
+      "line": 233,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -753,7 +753,7 @@
       ]
      ],
      "meta": {
-      "line": 238,
+      "line": 239,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -774,7 +774,7 @@
       ]
      ],
      "meta": {
-      "line": 244,
+      "line": 245,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -790,7 +790,7 @@
       ]
      ],
      "meta": {
-      "line": 250,
+      "line": 251,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -806,7 +806,7 @@
       ]
      ],
      "meta": {
-      "line": 256,
+      "line": 257,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -822,13 +822,174 @@
       ]
      ],
      "meta": {
-      "line": 286,
+      "line": 290,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "methods": [
+    {
+     "name": "restart",
+     "description": "Restarts the giveaway.",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 298,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "end",
+     "description": "Ends the giveaway.",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 328,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "reroll",
+     "description": "Redraws the giveaway winners",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "string",
+         ">>"
+        ]
+       ]
+      ],
+      "description": "Rerolled winners users IDs."
+     },
+     "meta": {
+      "line": 347,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "addEntry",
+     "description": "Adds the user ID into the giveaway entries.",
+     "params": [
+      {
+       "name": "guildID",
+       "description": "The guild ID where the giveaway is hosted.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "userID",
+       "description": "The user ID to add.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "IGiveaway"
+        ]
+       ]
+      ],
+      "description": "Updated giveaway object."
+     },
+     "meta": {
+      "line": 422,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "removeEntry",
+     "description": "Adds the user ID into the giveaway entries.",
+     "params": [
+      {
+       "name": "guildID",
+       "description": "The guild ID where the giveaway is hosted.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      },
+      {
+       "name": "userID",
+       "description": "The user ID to add.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "IGiveaway"
+        ]
+       ]
+      ],
+      "description": "Updated giveaway object."
+     },
+     "meta": {
+      "line": 422,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
     {
      "name": "sync",
      "description": "Syncs the constructor properties with specified raw giveaway object.",
@@ -845,8 +1006,15 @@
        ]
       }
      ],
+     "returns": [
+      [
+       [
+        "void"
+       ]
+      ]
+     ],
      "meta": {
-      "line": 378,
+      "line": 474,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -854,6 +1022,7 @@
     {
      "name": "_pickWinners",
      "description": "Shuffles all the giveaway entries and randomly picks the winners.",
+     "access": "private",
      "returns": {
       "types": [
        [
@@ -870,7 +1039,7 @@
       "description": "Array of users that were picked as the winners."
      },
      "meta": {
-      "line": 392,
+      "line": 507,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -878,6 +1047,7 @@
     {
      "name": "_shuffleArray",
      "description": "Shuffles an array and returns it.",
+     "access": "private",
      "params": [
       {
        "name": "arrayToShuffle",
@@ -909,10 +1079,10 @@
         ]
        ]
       ],
-      "description": "Shuffled array"
+      "description": "Shuffled array."
      },
      "meta": {
-      "line": 414,
+      "line": 530,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -951,7 +1121,7 @@
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 431,
+      "line": 566,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -970,14 +1140,14 @@
       "description": "Plain object representation of Giveaway instance."
      },
      "meta": {
-      "line": 451,
+      "line": 604,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "meta": {
-    "line": 12,
+    "line": 13,
     "file": "Giveaway.ts",
     "path": "src/lib"
    }
@@ -2037,6 +2207,28 @@
      ]
     },
     {
+     "name": "joinGiveawayMessage",
+     "description": "The message to reply to user with when they join the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "leaveGiveawayMejoinGiveawayMessage",
+     "description": "The message to reply to user with when they leave the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
      "name": "reroll",
      "description": "Message embed data for cases when rerolling the giveaway.",
      "type": [
@@ -2063,6 +2255,219 @@
     "line": 169,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
+   }
+  },
+  {
+   "name": "IGiveawayFinishMessages",
+   "description": "An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "newGiveawayMessage",
+     "description": "The message to be sent in the giveaway channel when giveaway ends.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "endMessage",
+     "description": "The message to be sent in the giveaway channel when a giveaway ends with winners.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "noWinners",
+     "description": "The message that will be set to the original giveaway message if there are no winners in the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "noWinnersEndMessage",
+     "description": "The message to be sent in the giveaway channel if there are no winners in the giveaway.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 843,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "GiveawayFinishCallback",
+   "description": "A function that is called when giveaway is finished.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "winnersString",
+     "description": "A string that contains the users that won the giveaway separated with comma.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "Number of winners that were picked.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "IGiveawayFinishMessages"
+      ]
+     ]
+    ],
+    "description": "Giveaway message objects."
+   },
+   "meta": {
+    "line": 857,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayRerollMessages",
+   "description": "An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "onlyHostCanReroll",
+     "description": "The message to reply to user with when not a giveaway host tries to do a reroll.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "newGiveawayMessage",
+     "description": "The message that will be set to the original giveaway message after the reroll.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "successMessage",
+     "description": "The message to be sent in the giveaway channel when the reroll is successful.",
+     "type": [
+      [
+       [
+        "IGiveawayEmbedOptions"
+       ]
+      ]
+     ]
+    }
+   ],
+   "meta": {
+    "line": 865,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "GiveawayRerollCallback",
+   "description": "A function that is called when giveaway winners are rerolled.",
+   "type": [
+    [
+     [
+      "function"
+     ]
+    ]
+   ],
+   "params": [
+    {
+     "name": "winnersString",
+     "description": "A string that contains the users that won the giveaway separated with comma.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "winnersCount",
+     "description": "Number of winners that were picked.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "IGiveawayRerollMessages"
+      ]
+     ]
+    ],
+    "description": "Giveaway message objects."
+   },
+   "meta": {
+    "line": 877,
+    "file": "Giveaways.ts",
+    "path": "src"
    }
   },
   {
@@ -2111,7 +2516,7 @@
     }
    ],
    "meta": {
-    "line": 203,
+    "line": 220,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2277,7 +2682,7 @@
     }
    ],
    "meta": {
-    "line": 215,
+    "line": 232,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2317,7 +2722,7 @@
     }
    ],
    "meta": {
-    "line": 237,
+    "line": 254,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2423,7 +2828,7 @@
     }
    ],
    "meta": {
-    "line": 767,
+    "line": 920,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2507,7 +2912,7 @@
     }
    ],
    "meta": {
-    "line": 790,
+    "line": 943,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2553,7 +2958,7 @@
     }
    ],
    "meta": {
-    "line": 803,
+    "line": 956,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2643,7 +3048,7 @@
     }
    ],
    "meta": {
-    "line": 810,
+    "line": 963,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2703,7 +3108,7 @@
     }
    ],
    "meta": {
-    "line": 963,
+    "line": 1077,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2787,7 +3192,7 @@
     }
    ],
    "meta": {
-    "line": 830,
+    "line": 983,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2895,7 +3300,7 @@
     }
    ],
    "meta": {
-    "line": 841,
+    "line": 994,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2952,7 +3357,7 @@
     }
    ],
    "meta": {
-    "line": 854,
+    "line": 1007,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3005,7 +3410,7 @@
     }
    ],
    "meta": {
-    "line": 862,
+    "line": 1015,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3055,7 +3460,7 @@
     "description": "- An object containing the defined embed strings."
    },
    "meta": {
-    "line": 872,
+    "line": 1025,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3097,158 +3502,7 @@
     }
    ],
    "meta": {
-    "line": 880,
-    "file": "Giveaways.ts",
-    "path": "src"
-   }
-  },
-  {
-   "name": "IGiveawayMessages",
-   "description": "An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.",
-   "type": [
-    [
-     [
-      "object"
-     ]
-    ]
-   ],
-   "props": [
-    {
-     "name": "onlyHostCanReroll",
-     "description": "The message sent in the giveaway channel when not a giveaway host tries to do a reroll.",
-     "type": [
-      [
-       [
-        "IGiveawayEmbedOptions"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "newGiveawayMessage",
-     "description": "Original giveaway message will be edited with this message object.",
-     "type": [
-      [
-       [
-        "IGiveawayEmbedOptions"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "successMessage",
-     "description": "The message sent in the giveaway channel when a giveaway ends without winners.",
-     "type": [
-      [
-       [
-        "IGiveawayEmbedOptions"
-       ]
-      ]
-     ]
-    }
-   ],
-   "meta": {
-    "line": 906,
-    "file": "Giveaways.ts",
-    "path": "src"
-   }
-  },
-  {
-   "name": "GiveawayFinishCallback",
-   "description": "A function that is called when giveaway is finished.",
-   "type": [
-    [
-     [
-      "function"
-     ]
-    ]
-   ],
-   "params": [
-    {
-     "name": "winnersString",
-     "description": "A string that contains the users that won the giveaway separated with comma.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "numberOfWinners",
-     "description": "Number of winners that were picked.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    }
-   ],
-   "returns": {
-    "types": [
-     [
-      [
-       "IGiveawayMessages"
-      ]
-     ]
-    ],
-    "description": "Giveaway message objects."
-   },
-   "meta": {
-    "line": 898,
-    "file": "Giveaways.ts",
-    "path": "src"
-   }
-  },
-  {
-   "name": "GiveawayRerollCallback",
-   "description": "A function that is called when giveaway winners are rerolled.",
-   "type": [
-    [
-     [
-      "function"
-     ]
-    ]
-   ],
-   "params": [
-    {
-     "name": "winnersString",
-     "description": "A string that contains the users that won the giveaway separated with comma.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "numberOfWinners",
-     "description": "Number of winners that were picked.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    }
-   ],
-   "returns": {
-    "types": [
-     [
-      [
-       "IGiveawayMessages"
-      ]
-     ]
-    ],
-    "description": "Giveaway message objects."
-   },
-   "meta": {
-    "line": 918,
+    "line": 1033,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3299,7 +3553,7 @@
     }
    ],
    "meta": {
-    "line": 926,
+    "line": 1040,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3356,7 +3610,7 @@
     }
    ],
    "meta": {
-    "line": 940,
+    "line": 1054,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3412,7 +3666,7 @@
      ]
     },
     {
-     "name": "titleIconURL",
+     "name": "titleURL",
      "description": "The url of the icon of the title in the embed.",
      "optional": true,
      "nullable": true,
@@ -3503,7 +3757,7 @@
     }
    ],
    "meta": {
-    "line": 948,
+    "line": 1062,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3548,7 +3802,7 @@
     ]
    ],
    "meta": {
-    "line": 971,
+    "line": 1085,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3593,7 +3847,7 @@
     ]
    ],
    "meta": {
-    "line": 993,
+    "line": 1107,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3638,7 +3892,7 @@
     }
    ],
    "meta": {
-    "line": 1014,
+    "line": 1128,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3678,7 +3932,7 @@
     }
    ],
    "meta": {
-    "line": 1021,
+    "line": 1135,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3782,7 +4036,7 @@
     }
    ],
    "meta": {
-    "line": 1029,
+    "line": 1143,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3827,7 +4081,7 @@
     }
    ],
    "meta": {
-    "line": 1047,
+    "line": 1161,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4043,7 +4297,7 @@
     }
    ],
    "meta": {
-    "line": 1061,
+    "line": 1175,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4094,7 +4348,7 @@
     }
    ],
    "meta": {
-    "line": 1084,
+    "line": 1198,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4115,7 +4369,7 @@
     ]
    ],
    "meta": {
-    "line": 1096,
+    "line": 1210,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4131,7 +4385,7 @@
     ]
    ],
    "meta": {
-    "line": 1113,
+    "line": 1227,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4170,7 +4424,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1127,
+    "line": 1241,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4209,7 +4463,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1141,
+    "line": 1255,
     "file": "Giveaways.ts",
     "path": "src"
    }
