@@ -25,8 +25,8 @@ import { Optional } from './misc/utils'
  *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {?number} [minGiveawayEntries=1] Determines the minimum required giveaway entries to draw the winner. Default: 1
- * @prop {Partial<IUpdateCheckerConfiguration>} [updatesChecker] Updates checker configuration.
- * @prop {Partial<IGiveawaysConfigCheckerConfiguration>} [configurationChecker] Giveaways config checker configuration.
+ * @prop {IUpdateCheckerConfiguration} [updatesChecker] Updates checker configuration.
+ * @prop {IGiveawaysConfigCheckerConfiguration} [configurationChecker] Giveaways config checker configuration.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -356,15 +356,15 @@ export type IGiveawayEmbedOptions = Partial<
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
  *
+ * @typedef {(
+ * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
+ * )} DatabaseConnectionOptions<TDatabaseType>
+ *
  * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
- *
- * @typedef {(
- * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
- * )} DatabaseConnectionOptions<TDatabaseType>
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.

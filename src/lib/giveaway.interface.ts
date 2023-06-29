@@ -7,7 +7,7 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
  *
  * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
  *
- * @typedef {object} IGiveaway<DatabaseType>
+ * @typedef {object} IGiveaway<TDatabaseType>
  * @prop {number} id The ID of the giveaway.
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
