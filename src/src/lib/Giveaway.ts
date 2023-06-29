@@ -14,7 +14,7 @@ import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) The database type that will be used in the module.
+ * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
  *
  * @implements {IGiveaway<DatabaseType>}
  * @template TDatabaseType The database type that will be used in the module.

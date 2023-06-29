@@ -975,15 +975,16 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
  *
+ * @typedef {(
+ * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
+ * )} DatabaseConnectionOptions<TDatabaseType>
+ *
  * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
- * @typedef {(
- * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
- * )} DatabaseConnectionOptions<TDatabaseType>
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -1080,7 +1081,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} lightcyan The color light cyan.
  */
 
-
 /**
  * An object containing the data about available module updates.
  * @typedef {object} IUpdateState
@@ -1088,6 +1088,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} installedVersion The currently installed version.
  * @prop {string} availableVersion The available version, if any.
  */
+
+
+
+// Utility types
 
 /**
  * Represents the `if` statement on a type level.
