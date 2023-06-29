@@ -261,6 +261,9 @@ export class Giveaway<
             embeds: {
                 start: {},
 
+                joinGiveawayMessage: {},
+                leaveGiveawayMessage: {},
+
                 finish: {
                     endMessage: {},
                     newGiveawayMessage: {},
@@ -339,7 +342,7 @@ export class Giveaway<
         await this._messageUtils.editFinishGiveawayMessage(
             this.raw,
             winners,
-            giveaway.messageProps?.embeds.reroll.successMessage
+            giveaway.messageProps?.embeds?.reroll?.successMessage
         )
 
         this._giveaways.emit('giveawayReroll', {

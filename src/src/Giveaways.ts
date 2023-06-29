@@ -363,13 +363,21 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                         const userEntry = giveaway.raw.entriesArray.find(entryUser => entryUser == interaction.user.id)
 
                         if (!userEntry) {
-                            const newGiveaway = await giveaway.addEntry(
+                            const giveawayJoinMessage = giveaway.messageProps?.embeds?.joinGiveawayMessage
+
+                            const giveawayLeaveEmbed =
+                                this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
+
+                            const newGiveaway = await giveaway.removeEntry(
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
 
                             interaction.reply({
-                                content: ':white_check_mark: | You have entered the giveaway!',
+                                content: giveawayJoinMessage?.messageContent,
+                                embeds: Object.keys(giveawayJoinMessage as any).length == 1 &&
+                                    giveawayJoinMessage?.messageContent
+                                    ? [] : [giveawayLeaveEmbed],
                                 ephemeral: true
                             }).catch((err: Error) => {
                                 // catching the "unknown interaction" error
@@ -385,13 +393,21 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                             this._messageUtils.editEntryGiveawayMessage(newGiveaway)
                         } else {
+                            const giveawayLeaveMessage = giveaway.messageProps?.embeds?.leaveGiveawayMessage
+
+                            const giveawayLeaveEmbed =
+                                this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayLeaveMessage)
+
                             const newGiveaway = await giveaway.removeEntry(
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
 
                             interaction.reply({
-                                content: ':x: | You have left the giveaway!',
+                                content: giveawayLeaveMessage?.messageContent,
+                                embeds: Object.keys(giveawayLeaveMessage as any).length == 1 &&
+                                    giveawayLeaveMessage?.messageContent
+                                    ? [] : [giveawayLeaveEmbed],
                                 ephemeral: true
                             }).catch((err: Error) => {
                                 // catching the "unknown interaction" error
@@ -730,6 +746,48 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
+ * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
+ * @typedef {object} IGiveawayFinishMessages
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage The message to be sent in the giveaway channel when giveaway ends.
+ *
+ * @prop {IGiveawayEmbedOptions} endMessage
+ * The message to be sent in the giveaway channel when a giveaway ends with winners.
+ * @prop {IGiveawayEmbedOptions} noWinners
+ * The message that will be set to the original giveaway message if there are no winners in the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
+ * The message to be sent in the giveaway channel if there are no winners in the giveaway.
+ */
+
+/**
+ * A function that is called when giveaway is finished.
+ * @callback GiveawayFinishCallback
+ * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ * @param {number} winnersCount Number of winners that were picked.
+ * @returns {IGiveawayFinishMessages} Giveaway message objects.
+ */
+
+/**
+ * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
+ * @typedef {object} IGiveawayRerollMessages
+ * @prop {IGiveawayEmbedOptions} onlyHostCanReroll The message to reply to user with when not a giveaway host tries to do a reroll.
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The message that will be set to the original giveaway message after the reroll.
+ *
+ * @prop {IGiveawayEmbedOptions} successMessage
+ * The message to be sent in the giveaway channel when the reroll is successful.
+ */
+
+/**
+ * A function that is called when giveaway winners are rerolled.
+ * @callback GiveawayRerollCallback
+ * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ * @param {number} winnersCount Number of winners that were picked.
+ * @returns {IGiveawayRerollMessages} Giveaway message objects.
+ */
+
+/**
  * An object that contains the giveaway buttons that may be set up.
  * @typedef {object} IGiveawayMessageButtons
  * @prop {IGiveawayButtonOptions} joinGiveawayButton The options for the join giveaway button.
@@ -885,45 +943,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
- * @prop {IGiveawayEmbedOptions} endMessage The message sent in the giveaway channel when a giveaway ends with winners.
- * @prop {IGiveawayEmbedOptions} noWinners The message sent in the giveaway channel when a giveaway ends without winners.
- *
- * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
- * The message sent in the giveaway channel when a giveaway ends without winners and there are no more participants.
- */
-
-/**
- * A function that is called when giveaway is finished.
- * @callback GiveawayFinishCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
- * @returns {IGiveawayMessages} Giveaway message objects.
- */
-
-/**
- * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
- * The message sent in the giveaway channel when not a giveaway host tries to do a reroll.
- *
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
- *
- * @prop {IGiveawayEmbedOptions} successMessage
- * The message sent in the giveaway channel when a giveaway ends without winners.
- */
-
-/**
- * A function that is called when giveaway winners are rerolled.
- * @callback GiveawayRerollCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
- * @returns {IGiveawayMessages} Giveaway message objects.
- */
-
-/**
  * Object containing embed string definitions used in the IGiveaways class.
  * @typedef {object} IEmbedStringsDefinitions
  *
@@ -951,7 +970,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {?string} [messageContent] The content of the message. If only this is specified
  * @prop {?string} [title] The title of the embed.
  * @prop {?string} [titleIcon] The icon of the title in the embed.
- * @prop {?string} [titleIconURL] The url of the icon of the title in the embed.
+ * @prop {?string} [titleURL] The url of the icon of the title in the embed.
  * @prop {?string} [description] The description of the embed.
  * @prop {?string} [footer] The footer of the embed.
  * @prop {?string} [footerIcon] The icon of the footer in the embed.

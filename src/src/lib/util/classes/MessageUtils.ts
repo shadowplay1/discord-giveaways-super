@@ -59,7 +59,7 @@ export class MessageUtils {
 
         const {
             title, titleIcon, color,
-            titleIconURL, description, footer,
+            titleURL, description, footer,
             footerIcon, imageURL, thumbnailURL
         } = embedStrings
 
@@ -67,7 +67,7 @@ export class MessageUtils {
             .setAuthor({
                 name: title || 'Giveaway',
                 iconURL: titleIcon,
-                url: titleIconURL
+                url: titleURL
             })
             .setDescription(
                 description || `**${giveaway.prize}** giveaway has started with **${giveaway.entries}** entries! ` +
@@ -206,8 +206,10 @@ export class MessageUtils {
         const message = await channel.messages.fetch(giveaway.messageID)
 
         await message.edit({
-            content: embedStrings.messageContent,
-            embeds: [embed],
+            content: embedStrings?.messageContent,
+            embeds: Object.keys(embedStrings).length == 1 &&
+                embedStrings?.messageContent
+                ? [] : [embed],
             components: [buttonsRow]
         })
     }
