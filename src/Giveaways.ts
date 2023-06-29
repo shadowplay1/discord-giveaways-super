@@ -553,6 +553,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * Starts the giveaway.
      * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
      * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
      */
     public async start(
         giveawayOptions: IGiveawayStartConfig
@@ -562,6 +566,97 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             prize, time, winnersCount,
             defineEmbedStrings, buttons
         } = giveawayOptions
+
+        if (!channelID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('channelID', 'Giveaways.start'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!guildID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.start'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!hostMemberID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('hostMemberID', 'Giveaways.start'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!prize) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('prize', 'Giveaways.start'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+
+        if (typeof channelID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.channelID', 'string', channelID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof guildID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.guildID', 'string', guildID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof hostMemberID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.hostMemberID', 'string', hostMemberID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof prize !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.prize', 'string', prize),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof time !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.time', 'string', time as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (isNaN(winnersCount as number)) {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.winnersCount', 'number', winnersCount as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (buttons && typeof buttons !== 'object') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.buttons', 'object', buttons as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof defineEmbedStrings !== 'function') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayOptions.defineEmbedStrings', 'function', defineEmbedStrings as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        try {
+            ms(time)
+        } catch {
+            throw new GiveawaysError(GiveawaysErrorCodes.INVALID_TIME)
+        }
 
         const joinGiveawayButton = buttons?.joinGiveawayButton as IGiveawayButtonOptions
         const rerollButton = buttons?.rerollButton as IGiveawayButtonOptions
@@ -610,7 +705,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
         const message = await channel.send({
             content: startEmbedStrings?.messageContent,
-            embeds: [giveawayEmbed],
+            embeds: Object.keys(startEmbedStrings).length == 1 && startEmbedStrings?.messageContent ? [] : [giveawayEmbed],
             components: [buttonsRow]
         })
 

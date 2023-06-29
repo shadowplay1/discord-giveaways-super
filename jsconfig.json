@@ -1,15 +1,11 @@
 {
-	"compilerOptions": {
-		"plugins": [
-			{
-				"name": "jsdoc-babel",
-			}
-		]
-	},
 	"source": {
 		"includePattern": ".+\\.ts?$",
 		"excludePattern": ".+\\.(test|spec).ts"
 	},
+	"plugins": [
+		"node_modules/jsdoc-babel"
+	],
 	"babel": {
 		"extensions": [
 			"ts"
