@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1687981576666
+  "date": 1688045019696
  },
  "custom": {
   "general": {
@@ -342,7 +342,7 @@
       }
      ],
      "meta": {
-      "line": 1159,
+      "line": 1163,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -364,7 +364,7 @@
       }
      ],
      "meta": {
-      "line": 1165,
+      "line": 1169,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -391,7 +391,7 @@
       }
      ],
      "meta": {
-      "line": 1171,
+      "line": 1175,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -418,7 +418,7 @@
       }
      ],
      "meta": {
-      "line": 1177,
+      "line": 1181,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -445,7 +445,7 @@
       }
      ],
      "meta": {
-      "line": 1183,
+      "line": 1187,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -467,7 +467,7 @@
       }
      ],
      "meta": {
-      "line": 1189,
+      "line": 1193,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -481,7 +481,7 @@
   },
   {
    "name": "Giveaway",
-   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) The database type that will be used in the module.",
+   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
    "implements": [
     [
      [
@@ -1856,9 +1856,9 @@
     }
    ],
    "meta": {
-    "line": 670,
-    "file": "Giveaways.ts",
-    "path": "src"
+    "line": 3,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
    }
   },
   {
@@ -3593,7 +3593,7 @@
     ]
    ],
    "meta": {
-    "line": 992,
+    "line": 993,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3638,7 +3638,7 @@
     }
    ],
    "meta": {
-    "line": 1013,
+    "line": 1014,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3678,7 +3678,7 @@
     }
    ],
    "meta": {
-    "line": 1020,
+    "line": 1021,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3782,7 +3782,7 @@
     }
    ],
    "meta": {
-    "line": 1028,
+    "line": 1029,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3827,7 +3827,7 @@
     }
    ],
    "meta": {
-    "line": 1046,
+    "line": 1047,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4043,7 +4043,7 @@
     }
    ],
    "meta": {
-    "line": 1060,
+    "line": 1061,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4115,7 +4115,7 @@
     ]
    ],
    "meta": {
-    "line": 1092,
+    "line": 1096,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4131,7 +4131,7 @@
     ]
    ],
    "meta": {
-    "line": 1109,
+    "line": 1113,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4170,7 +4170,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1123,
+    "line": 1127,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4209,208 +4209,9 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1137,
+    "line": 1141,
     "file": "Giveaways.ts",
     "path": "src"
-   }
-  },
-  {
-   "name": "IGiveaway<DatabaseType>",
-   "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
-   "type": [
-    [
-     [
-      "object"
-     ]
-    ]
-   ],
-   "props": [
-    {
-     "name": "id",
-     "description": "The ID of the giveaway.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "prize",
-     "description": "The prize of the giveaway.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "time",
-     "description": "The time of the giveaway.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "state",
-     "description": "The state of the giveaway.",
-     "type": [
-      [
-       [
-        "GiveawayState"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "winnersCount",
-     "description": "The number of possible winners in the giveaway.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "startTimestamp",
-     "description": "The timestamp when the giveaway started.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "isEnded",
-     "description": "Determines if the giveaway was ended in the database.",
-     "type": [
-      [
-       [
-        "boolean"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "endTimestamp",
-     "description": "The timestamp when the giveaway ended.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "hostMemberID",
-     "description": "The ID of the host member.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "channelID",
-     "description": "The ID of the channel where the giveaway is held.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "messageID",
-     "description": "The ID of the giveaway message.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "messageURL",
-     "description": "The URL of the giveaway message.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "guildID",
-     "description": "The ID of the guild where the giveaway is held.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "entries",
-     "description": "The number of giveaway entries.",
-     "type": [
-      [
-       [
-        "number"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "entriesArray",
-     "description": "The array of user IDs of users that have entered the giveaway.",
-     "type": [
-      [
-       [
-        "Array",
-        "<"
-       ],
-       [
-        "string",
-        ">"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "messageProps",
-     "description": "The message data properties for embeds and buttons.",
-     "type": [
-      [
-       [
-        "IGiveawayMessageProps"
-       ]
-      ]
-     ]
-    }
-   ],
-   "meta": {
-    "line": 3,
-    "file": "giveaway.interface.ts",
-    "path": "src/lib"
    }
   },
   {
