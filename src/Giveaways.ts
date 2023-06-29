@@ -363,7 +363,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                         const userEntry = giveaway.raw.entriesArray.find(entryUser => entryUser == interaction.user.id)
 
                         if (!userEntry) {
-                            const giveawayJoinMessage = giveaway.messageProps?.embeds?.joinGiveawayMessage
+                            const giveawayJoinMessage = giveaway.messageProps?.embeds?.joinGiveawayMessage || {}
 
                             const giveawayLeaveEmbed =
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
@@ -372,6 +372,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
+
+                            if (!Object.keys(giveawayJoinMessage).length) {
+                                giveawayJoinMessage.messageContent = 'You have joined the giveaway!'
+                            }
 
                             interaction.reply({
                                 content: giveawayJoinMessage?.messageContent,
@@ -393,7 +397,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                             this._messageUtils.editEntryGiveawayMessage(newGiveaway)
                         } else {
-                            const giveawayLeaveMessage = giveaway.messageProps?.embeds?.leaveGiveawayMessage
+                            const giveawayLeaveMessage = giveaway.messageProps?.embeds?.leaveGiveawayMessage || {}
 
                             const giveawayLeaveEmbed =
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayLeaveMessage)
@@ -402,6 +406,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
+
+                            if (!Object.keys(giveawayLeaveMessage).length) {
+                                giveawayLeaveMessage.messageContent = 'You have left the giveaway!'
+                            }
 
                             interaction.reply({
                                 content: giveawayLeaveMessage?.messageContent,
@@ -1063,7 +1071,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * Message embed options.
  * @typedef {object} IGiveawayEmbedOptions
- * @prop {?string} [messageContent] The content of the message. If only this is specified
+ *
+ * @prop {?string} [messageContent]
+ * Message content to specify in the message.
+ * If only message content is specified, it will be sent without the embed.
+ *
  * @prop {?string} [title] The title of the embed.
  * @prop {?string} [titleIcon] The icon of the title in the embed.
  * @prop {?string} [titleURL] The url of the icon of the title in the embed.

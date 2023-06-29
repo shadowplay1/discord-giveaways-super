@@ -65,7 +65,7 @@ export class MessageUtils {
 
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: title || 'Giveaway',
+                name: title as string,
                 iconURL: titleIcon,
                 url: titleURL
             })
@@ -77,7 +77,7 @@ export class MessageUtils {
             .setImage(imageURL as string)
             .setThumbnail(thumbnailURL as string)
             .setFooter({
-                text: footer || 'Giveaway started',
+                text: footer as string,
                 iconURL: footerIcon
             })
             .setTimestamp(new Date())
@@ -234,17 +234,17 @@ export class MessageUtils {
         const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 
         const finishDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
-            title: finishEmbedStrings?.title || 'Giveaway',
+            title: finishEmbedStrings?.title,
             color: finishEmbedStrings?.color || '#d694ff',
             description: finishEmbedStrings?.description || 'Giveaway is over!',
-            footer: finishEmbedStrings?.footer || 'Giveaway ended',
+            footer: finishEmbedStrings?.footer,
         }
 
         const noWinnersDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
-            title: noWinnersEmbedStrings?.title || 'Giveaway',
+            title: noWinnersEmbedStrings?.title,
             color: noWinnersEmbedStrings?.color || '#d694ff',
             description: noWinnersEmbedStrings?.description || 'There are no winners in this giveaway!',
-            footer: noWinnersEmbedStrings?.footer || 'Giveaway ended',
+            footer: noWinnersEmbedStrings?.footer,
         }
 
         const winnersCondition = winners?.length as number >= this._giveaways.options.minGiveawayEntries
