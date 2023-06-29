@@ -8,6 +8,7 @@ import { MessageUtils } from './util/classes/MessageUtils'
 import { ms } from './misc/ms'
 
 import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
+import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
 
 /**
  * Class that represents the Giveaway object.
@@ -294,6 +295,10 @@ export class Giveaway<
         return this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp * 1000
     }
 
+    /**
+     * Restarts the giveaway.
+     * @returns {Promise<void>}
+     */
     public async restart(): Promise<void> {
         const { giveaway } = await this._getFromDatabase(this.guild.id)
         this.sync(giveaway)
@@ -303,21 +308,27 @@ export class Giveaway<
         this.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
 
         const strings = this.messageProps
+        const startEmbedStrings = strings?.embeds.start
 
-        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, strings?.embeds.start)
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
         const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
 
         const message = await this.channel.messages.fetch(this.messageID)
 
         await message.edit({
-            content: strings?.embeds.start?.messageContent,
-            embeds: [embed],
+            content: startEmbedStrings?.messageContent,
+            embeds: Object.keys(startEmbedStrings as any).length == 1
+                && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
 
         this._giveaways.emit('giveawayRestart', this)
     }
 
+    /**
+     * Ends the giveaway.
+     * @returns {Promise<void>}
+     */
     public async end(): Promise<void> {
         const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
         this.sync(giveaway)
@@ -333,6 +344,10 @@ export class Giveaway<
         this._giveaways.emit('giveawayEnd', this)
     }
 
+    /**
+     * Redraws the giveaway winners
+     * @returns {Promise<string[]>} Rerolled winners users IDs.
+     */
     public async reroll(): Promise<string[]> {
         const { giveaway } = await this._getFromDatabase(this.guild.id)
         this.sync(giveaway)
@@ -353,7 +368,46 @@ export class Giveaway<
         return winners
     }
 
+    /**
+     * Adds the user ID into the giveaway entries.
+     * @param {string} guildID The guild ID where the giveaway is hosted.
+     * @param {string} userID The user ID to add.
+     * @returns {IGiveaway} Updated giveaway object.
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
     public async addEntry(guildID: string, userID: string): Promise<IGiveaway> {
+        if (!guildID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.addEntry'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!userID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('userID', 'Giveaway.addEntry'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+
+        if (typeof guildID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('guildID', 'string', guildID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof userID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('userID', 'string', userID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const { giveaway, giveawayIndex } = await this._getFromDatabase(guildID)
 
         giveaway.entriesArray.push(userID)
@@ -365,7 +419,46 @@ export class Giveaway<
         return giveaway
     }
 
+    /**
+     * Adds the user ID into the giveaway entries.
+     * @param {string} guildID The guild ID where the giveaway is hosted.
+     * @param {string} userID The user ID to add.
+     * @returns {IGiveaway} Updated giveaway object.
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
     public async removeEntry(guildID: string, userID: string): Promise<IGiveaway> {
+        if (!guildID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.removeEntry'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!userID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('userID', 'Giveaway.removeEntry'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+
+        if (typeof guildID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('guildID', 'string', guildID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (typeof userID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('userID', 'string', userID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const { giveaway, giveawayIndex } = await this._getFromDatabase(guildID)
         const entryIndex = this.raw.entriesArray.indexOf(userID)
 
@@ -381,8 +474,27 @@ export class Giveaway<
     /**
      * Syncs the constructor properties with specified raw giveaway object.
      * @param {IGiveaway} giveaway Giveaway object to sync the constructor properties with.
+     * @returns {void}
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
      */
     public sync(giveaway: IGiveaway): void {
+        if (!giveaway) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('giveaway', 'Giveaway.sync'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof giveaway !== 'object') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveaway', 'object', giveaway as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         for (const key in giveaway) {
             (this as any)[key] = (giveaway as any)[key]
         }
@@ -395,8 +507,9 @@ export class Giveaway<
     /**
      * Shuffles all the giveaway entries and randomly picks the winners.
      * @returns {string[]} Array of users that were picked as the winners.
+     * @private
      */
-    public _pickWinners(): string[] {
+    private _pickWinners(): string[] {
         const winners: string[] = []
         const shuffledEntries = this._shuffleArray(this.entriesArray)
 
@@ -417,9 +530,28 @@ export class Giveaway<
     /**
      * Shuffles an array and returns it.
      * @param {any[]} arrayToShuffle Thr array to shuffle.
-     * @returns {any[]} Shuffled array
+     * @returns {any[]} Shuffled array.
+     * @private
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
      */
     private _shuffleArray<T>(arrayToShuffle: T[]): T[] {
+        if (!arrayToShuffle) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('arrayToShuffle', 'Giveaway._shuffleArray'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!Array.isArray(arrayToShuffle)) {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('arrayToShuffle', 'array', arrayToShuffle as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const shuffledArray = [...arrayToShuffle]
 
         for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -436,8 +568,26 @@ export class Giveaway<
      * @param {string} guildID Guild ID to get the giveaways array from.
      * @returns {Promise<IDatabaseGiveaway>} Database giveaway object.
      * @private
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
+     *
+     * `INVALID_TYPE` - when argument type is invalid.
      */
     private async _getFromDatabase(guildID: string): Promise<IDatabaseGiveaway> {
+        if (!guildID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway._getFromDatabase'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof guildID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('guildID', 'string', guildID as any),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const giveaways = await this._giveaways.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
 
         const giveawayIndex = giveaways.findIndex(giveaway => giveaway.id == this.id)

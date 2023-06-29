@@ -41,6 +41,22 @@ export class GiveawaysError extends Error {
     }
 }
 
+/**
+ * An enum representing the error codes for the Giveaways module.
+ * @typedef {string} GiveawaysErrorCodes
+ * @prop {string} UNKNOWN_ERROR An unknown error occurred.
+ * @prop {string} UNKNOWN_DATABASE The database is unknown or inaccessible.
+ * @prop {string} NO_DISCORD_CLIENT No Discord client was provided.
+ * @prop {string} DATABASE_ERROR There was an error with the database.
+ * @prop {string} MODULE_ERROR There was an error with the Giveaways module.
+ * @prop {string} INTENT_MISSING The required intent is missing.
+ * @prop {string} REQUIRED_ARGUMENT_MISSING A required argument is missing.
+ * @prop {string} REQUIRED_CONFIG_OPTION_MISSING A required configuration option is missing.
+ * @prop {string} INVALID_TYPE The type is invalid.
+ * @prop {string} INVALID_TARGET_TYPE The target type is invalid.
+ * @prop {string} UNKNOWN_GIVEAWAY The giveaway is unknown.
+ * @prop {string} INVALID_TIME The time is invalid.
+ */
 export enum GiveawaysErrorCodes {
     UNKNOWN_ERROR = 'UNKNOWN_ERROR',
     UNKNOWN_DATABASE = 'UNKNOWN_DATABASE',
@@ -52,13 +68,15 @@ export enum GiveawaysErrorCodes {
     REQUIRED_CONFIG_OPTION_MISSING = 'REQUIRED_CONFIG_OPTION_MISSING',
     INVALID_TYPE = 'INVALID_TYPE',
     INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE',
-    UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY'
+    UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY',
+    INVALID_TIME = 'INVALID_TIME'
 }
 
 export const errorMessages = {
     UNKNOWN_ERROR: 'Unknown error.',
     UNKNOWN_DATABASE: 'Unknown database type was specified.',
     NO_DISCORD_CLIENT: 'Discord Client should be specified.',
+    INVALID_TIME: 'Invalid giveaway time was specified.',
 
     DATABASE_ERROR(databaseType: DatabaseType, errorType?: 'malformed' | 'notFound'): string {
         if (databaseType == DatabaseType.JSON) {
