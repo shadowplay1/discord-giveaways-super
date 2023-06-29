@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688045019696
+  "date": 1688044449397
  },
  "custom": {
   "general": {
@@ -4100,7 +4100,7 @@
    }
   },
   {
-   "name": "If<T,",
+   "name": "If<T, IfTrue, IfFalse>",
    "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` (@see boolean) - The boolean type to compare with.\n- `IfTrue` (@see any) - The type that will be returned if `T` is `true`.\n- `IfFalse` (@see any) - The type that will be returned if `T` is `false`.",
    "type": [
     [
@@ -4121,7 +4121,7 @@
    }
   },
   {
-   "name": "Optional<T,",
+   "name": "Optional<T, K>",
    "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` (@see object) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
    "type": [
     [
@@ -4176,7 +4176,7 @@
    }
   },
   {
-   "name": "MapCallback<T,",
+   "name": "MapCallback<T, TReturnType>",
    "description": "A callback function that calls when mapping the array using the @see Array.prototype.map method.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.\n- `TReturnType` - (@see any) The type of value returned by the callback function.",
    "type": [
     [
