@@ -554,8 +554,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
      * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     public async start(
