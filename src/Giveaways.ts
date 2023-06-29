@@ -842,15 +842,17 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
  * @typedef {object} IGiveawayFinishMessages
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage The message to be sent in the giveaway channel when giveaway ends.
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The separated message to be sent in the giveaway channel when giveaway ends.
  *
  * @prop {IGiveawayEmbedOptions} endMessage
- * The message to be sent in the giveaway channel when a giveaway ends with winners.
+ * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
  * @prop {IGiveawayEmbedOptions} noWinners
  * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
- * The message to be sent in the giveaway channel if there are no winners in the giveaway.
+ * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.
  */
 
 /**
@@ -870,7 +872,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * The message that will be set to the original giveaway message after the reroll.
  *
  * @prop {IGiveawayEmbedOptions} successMessage
- * The message to be sent in the giveaway channel when the reroll is successful.
+ * The separated message to be sent in the giveaway channel when the reroll is successful.
  */
 
 /**

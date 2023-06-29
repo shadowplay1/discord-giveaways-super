@@ -237,15 +237,17 @@ export interface IGiveawayStartOptions {
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
  * @typedef {object} IGiveawayStartMessages
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage The message to be sent in the giveaway channel when giveaway ends.
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The separated message to be sent in the giveaway channel when giveaway ends.
  *
  * @prop {IGiveawayEmbedOptions} endMessage
- * The message to be sent in the giveaway channel when a giveaway ends with winners.
+ * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
  * @prop {IGiveawayEmbedOptions} noWinners
  * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
- * The message to be sent in the giveaway channel if there are no winners in the giveaway.
+ * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.
  */
 
 /**
@@ -254,13 +256,13 @@ export interface IGiveawayStartOptions {
 export interface IGiveawayStartMessages {
 
     /**
-     * The message to be sent in the giveaway channel when giveaway ends.
+     * The separated message to be sent in the giveaway channel when giveaway ends.
      * @type {IGiveawayEmbedOptions}
      */
     newGiveawayMessage: IGiveawayEmbedOptions
 
     /**
-     * The message to be sent in the giveaway channel when a giveaway ends with winners.
+     * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
      * @type {IGiveawayEmbedOptions}
      */
     endMessage: IGiveawayEmbedOptions
@@ -272,7 +274,7 @@ export interface IGiveawayStartMessages {
     noWinners: IGiveawayEmbedOptions
 
     /**
-     * The message to be sent in the giveaway channel if there are no winners in the giveaway.
+     * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.
      * @type {IGiveawayEmbedOptions}
      */
     noWinnersEndMessage: IGiveawayEmbedOptions
@@ -298,7 +300,7 @@ export type GiveawayFinishCallback = (winnersString: string, winnersCount: numbe
  * The message that will be set to the original giveaway message after the reroll.
  *
  * @prop {IGiveawayEmbedOptions} successMessage
- * The message to be sent in the giveaway channel when the reroll is successful.
+ * The separated message to be sent in the giveaway channel when the reroll is successful.
  */
 
 export interface IGiveawayRerollMessages {
@@ -316,7 +318,7 @@ export interface IGiveawayRerollMessages {
     newGiveawayMessage: IGiveawayEmbedOptions
 
     /**
-     * The message to be sent in the giveaway channel when the reroll is successful.
+     * The separated message to be sent in the giveaway channel when the reroll is successful.
      * @type {IGiveawayEmbedOptions}
      */
     successMessage: IGiveawayEmbedOptions
