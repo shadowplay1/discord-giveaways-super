@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688056216453
+  "date": 1688056371006
  },
  "custom": {
   "general": {
@@ -342,7 +342,7 @@
       }
      ],
      "meta": {
-      "line": 1276,
+      "line": 1278,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -364,7 +364,7 @@
       }
      ],
      "meta": {
-      "line": 1282,
+      "line": 1284,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -391,7 +391,7 @@
       }
      ],
      "meta": {
-      "line": 1288,
+      "line": 1290,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -418,7 +418,7 @@
       }
      ],
      "meta": {
-      "line": 1294,
+      "line": 1296,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -445,7 +445,7 @@
       }
      ],
      "meta": {
-      "line": 1300,
+      "line": 1302,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -467,7 +467,7 @@
       }
      ],
      "meta": {
-      "line": 1306,
+      "line": 1308,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -2270,7 +2270,7 @@
    "props": [
     {
      "name": "newGiveawayMessage",
-     "description": "The message to be sent in the giveaway channel when giveaway ends.",
+     "description": "The separated message to be sent in the giveaway channel when giveaway ends.",
      "type": [
       [
        [
@@ -2281,7 +2281,7 @@
     },
     {
      "name": "endMessage",
-     "description": "The message to be sent in the giveaway channel when a giveaway ends with winners.",
+     "description": "The separated message to be sent in the giveaway channel when a giveaway ends with winners.",
      "type": [
       [
        [
@@ -2303,7 +2303,7 @@
     },
     {
      "name": "noWinnersEndMessage",
-     "description": "The message to be sent in the giveaway channel if there are no winners in the giveaway.",
+     "description": "The separated message to be sent in the giveaway channel if there are no winners in the giveaway.",
      "type": [
       [
        [
@@ -2364,7 +2364,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 856,
+    "line": 858,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2404,7 +2404,7 @@
     },
     {
      "name": "successMessage",
-     "description": "The message to be sent in the giveaway channel when the reroll is successful.",
+     "description": "The separated message to be sent in the giveaway channel when the reroll is successful.",
      "type": [
       [
        [
@@ -2415,7 +2415,7 @@
     }
    ],
    "meta": {
-    "line": 864,
+    "line": 866,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2465,7 +2465,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 876,
+    "line": 878,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2828,7 +2828,7 @@
     }
    ],
    "meta": {
-    "line": 919,
+    "line": 921,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2912,7 +2912,7 @@
     }
    ],
    "meta": {
-    "line": 942,
+    "line": 944,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2958,7 +2958,7 @@
     }
    ],
    "meta": {
-    "line": 955,
+    "line": 957,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3048,7 +3048,7 @@
     }
    ],
    "meta": {
-    "line": 962,
+    "line": 964,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3108,7 +3108,7 @@
     }
    ],
    "meta": {
-    "line": 1076,
+    "line": 1078,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3192,7 +3192,7 @@
     }
    ],
    "meta": {
-    "line": 982,
+    "line": 984,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3300,7 +3300,7 @@
     }
    ],
    "meta": {
-    "line": 993,
+    "line": 995,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3357,7 +3357,7 @@
     }
    ],
    "meta": {
-    "line": 1006,
+    "line": 1008,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3410,7 +3410,7 @@
     }
    ],
    "meta": {
-    "line": 1014,
+    "line": 1016,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3460,7 +3460,7 @@
     "description": "- An object containing the defined embed strings."
    },
    "meta": {
-    "line": 1024,
+    "line": 1026,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3502,7 +3502,7 @@
     }
    ],
    "meta": {
-    "line": 1032,
+    "line": 1034,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3553,7 +3553,7 @@
     }
    ],
    "meta": {
-    "line": 1039,
+    "line": 1041,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3610,7 +3610,7 @@
     }
    ],
    "meta": {
-    "line": 1053,
+    "line": 1055,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3757,7 +3757,7 @@
     }
    ],
    "meta": {
-    "line": 1061,
+    "line": 1063,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3802,7 +3802,7 @@
     ]
    ],
    "meta": {
-    "line": 1084,
+    "line": 1086,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3847,7 +3847,7 @@
     ]
    ],
    "meta": {
-    "line": 1106,
+    "line": 1108,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3892,7 +3892,7 @@
     }
    ],
    "meta": {
-    "line": 1127,
+    "line": 1129,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3932,7 +3932,7 @@
     }
    ],
    "meta": {
-    "line": 1134,
+    "line": 1136,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4036,7 +4036,7 @@
     }
    ],
    "meta": {
-    "line": 1142,
+    "line": 1144,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4081,7 +4081,7 @@
     }
    ],
    "meta": {
-    "line": 1160,
+    "line": 1162,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4297,7 +4297,7 @@
     }
    ],
    "meta": {
-    "line": 1174,
+    "line": 1176,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4348,7 +4348,7 @@
     }
    ],
    "meta": {
-    "line": 1197,
+    "line": 1199,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4369,7 +4369,7 @@
     ]
    ],
    "meta": {
-    "line": 1209,
+    "line": 1211,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4385,7 +4385,7 @@
     ]
    ],
    "meta": {
-    "line": 1226,
+    "line": 1228,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4424,7 +4424,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1240,
+    "line": 1242,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4463,7 +4463,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1254,
+    "line": 1256,
     "file": "Giveaways.ts",
     "path": "src"
    }
