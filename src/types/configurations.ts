@@ -208,9 +208,9 @@ export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>
 /**
  * A function that defines the embed strings used in the giveaway.
  * @callback DefineEmbedStringsCallback
- * @param {Omit} giveaway - An object containing information about the giveaway.
- * @param {User} giveawayHost - The host of the giveaway.
- * @returns {Partial} - An object containing the defined embed strings.
+ * @param {Omit} giveaway An object containing information about the giveaway.
+ * @param {User} giveawayHost The host of the giveaway.
+ * @returns {Partial<IEmbedStringsDefinitions>} An object containing the defined embed strings.
  */
 
 /**
@@ -224,60 +224,112 @@ export interface IGiveawayStartOptions {
 
     /**
      * A function that defines the embed strings used in the giveaway.
-     * @param giveaway An object containing information about the giveaway.
-     * @param giveawayHost The host of the giveaway.
+     * @param {IGiveaway} giveaway An object containing information about the giveaway.
+     * @param {User} giveawayHost The host of the giveaway.
      * @returns {Partial<IEmbedStringsDefinitions>}
      */
     defineEmbedStrings(
-        giveaway: Omit<IGiveaway, 'entriesArray'>,
+        giveaway: IGiveaway,
         giveawayHost: User
     ): Partial<IEmbedStringsDefinitions>
 }
 
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
- * @prop {IGiveawayEmbedOptions} endMessage The message sent in the giveaway channel when a giveaway ends with winners.
- * @prop {IGiveawayEmbedOptions} noWinners The message sent in the giveaway channel when a giveaway ends without winners.
+ * @typedef {object} IGiveawayStartMessages
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage The message to be sent in the giveaway channel when giveaway ends.
+ *
+ * @prop {IGiveawayEmbedOptions} endMessage
+ * The message to be sent in the giveaway channel when a giveaway ends with winners.
+ * @prop {IGiveawayEmbedOptions} noWinners
+ * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
- * The message sent in the giveaway channel when a giveaway ends without winners and there are no more participants.
+ * The message to be sent in the giveaway channel if there are no winners in the giveaway.
  */
+
+/**
+ * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
+ */
+export interface IGiveawayStartMessages {
+
+    /**
+     * The message to be sent in the giveaway channel when giveaway ends.
+     * @type {IGiveawayEmbedOptions}
+     */
+    newGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to be sent in the giveaway channel when a giveaway ends with winners.
+     * @type {IGiveawayEmbedOptions}
+     */
+    endMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message that will be set to the original giveaway message if there are no winners in the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    noWinners: IGiveawayEmbedOptions
+
+    /**
+     * The message to be sent in the giveaway channel if there are no winners in the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    noWinnersEndMessage: IGiveawayEmbedOptions
+}
 
 /**
  * A function that is called when giveaway is finished.
  * @callback GiveawayFinishCallback
  * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
- * @returns {IGiveawayMessages} Giveaway message objects.
+ * @param {number} winnersCount Number of winners that were picked.
+ * @returns {IGiveawayStartMessages} Giveaway message objects.
  */
-export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => Partial<
-    Record<'newGiveawayMessage' | 'endMessage' | 'noWinners' | 'noWinnersEndMessage', IGiveawayEmbedOptions>
->
+export type GiveawayFinishCallback = (winnersString: string, winnersCount: number) => Partial<IGiveawayStartMessages>
 
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
- * The message sent in the giveaway channel when not a giveaway host tries to do a reroll.
+ * @typedef {object} IGiveawayRerollMessages
  *
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
+ * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
+ * The message to reply to user with when not a giveaway host tries to do a reroll.
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The message that will be set to the original giveaway message after the reroll.
  *
  * @prop {IGiveawayEmbedOptions} successMessage
- * The message sent in the giveaway channel when a giveaway ends without winners.
+ * The message to be sent in the giveaway channel when the reroll is successful.
  */
+
+export interface IGiveawayRerollMessages {
+
+    /**
+     * The message to reply to user with when not a giveaway host tries to do a reroll.
+     * @type {IGiveawayEmbedOptions}
+     */
+    onlyHostCanReroll: IGiveawayEmbedOptions
+
+    /**
+     * The message that will be set to the original giveaway message after the reroll.
+     * @type {IGiveawayEmbedOptions}
+     */
+    newGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to be sent in the giveaway channel when the reroll is successful.
+     * @type {IGiveawayEmbedOptions}
+     */
+    successMessage: IGiveawayEmbedOptions
+}
 
 /**
  * A function that is called when giveaway winners are rerolled.
  * @callback GiveawayRerollCallback
  * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
+ * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayMessages} Giveaway message objects.
  */
-export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<
-    Record<'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage', IGiveawayEmbedOptions>
->
+export type GiveawayRerollCallback = (winnersString: string, winnersCount: number) => Partial<IGiveawayRerollMessages>
 
 /**
  * Object containing embed string definitions used in the IGiveaways class.
@@ -300,6 +352,18 @@ export interface IEmbedStringsDefinitions {
      * @type {IGiveawayEmbedOptions}
      */
     start: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they join the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    joinGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they leave the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    leaveGiveawayMessage: IGiveawayEmbedOptions
 
     /**
      * This function is called and all returned message objects are
@@ -333,7 +397,7 @@ export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & 
  * @prop {?string} [messageContent] The content of the message. If only this is specified
  * @prop {?string} [title] The title of the embed.
  * @prop {?string} [titleIcon] The icon of the title in the embed.
- * @prop {?string} [titleIconURL] The url of the icon of the title in the embed.
+ * @prop {?string} [titleURL] The url of the icon of the title in the embed.
  * @prop {?string} [description] The description of the embed.
  * @prop {?string} [footer] The footer of the embed.
  * @prop {?string} [footerIcon] The icon of the footer in the embed.
@@ -344,7 +408,7 @@ export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & 
 export type IGiveawayEmbedOptions = Partial<
     Record<
         'messageContent' | 'title' | 'titleIcon' |
-        'titleIconURL' | 'description' | 'footer' |
+        'titleURL' | 'description' | 'footer' |
         'footerIcon' | 'thumbnailURL' | 'imageURL', string
     > & { color: ColorResolvable }
 >

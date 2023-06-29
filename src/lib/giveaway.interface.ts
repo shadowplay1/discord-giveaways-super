@@ -157,7 +157,7 @@ export interface IGiveawayMessageProps {
      * The embed objects for the giveaway message.
      * @type {IGiveawayEmbeds}
      */
-    embeds: IGiveawayEmbeds
+    embeds: Partial<IGiveawayEmbeds>
 
     /**
      * The button objects for the giveaway message.
@@ -170,6 +170,11 @@ export interface IGiveawayMessageProps {
  * An interface containing different types of giveaway embeds in the IGiveaways class.
  * @typedef {object} IGiveawayEmbeds
  * @prop {IGiveawayEmbedOptions} start Message embed data for cases when the giveaway has started.
+ * @prop {IGiveawayEmbedOptions} joinGiveawayMessage The message to reply to user with when they join the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} leaveGiveawayMejoinGiveawayMessage
+ * The message to reply to user with when they leave the giveaway.
+ *
  * @prop {IGiveawayRerollEmbeds} reroll Message embed data for cases when rerolling the giveaway.
  * @prop {IGiveawayFinishEmbeds} finish Message embed data for cases when the giveaway has finished.
  */
@@ -180,6 +185,18 @@ export interface IGiveawayEmbeds {
      * @type {IGiveawayEmbedOptions}
      */
     start: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they join the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    joinGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they leave the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    leaveGiveawayMessage: IGiveawayEmbedOptions
 
     /**
      * Message embed data for cases when rerolling the giveaway.

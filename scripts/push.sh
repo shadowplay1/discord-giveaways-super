@@ -14,6 +14,10 @@ if ! source ./scripts/docgen.sh; then
     exit 1
 fi
 
+sed -i 's/"name": "If<T,/"name": "If<T, IfTrue, IfFalse>/g' "./docs/generated/${package_version}.json"
+sed -i 's/"name": "Optional<T,"/"name": "Optional<T, K>"/g' "./docs/generated/${package_version}.json"
+sed -i 's/"name": "MapCallback<T,/"name": "MapCallback<T, TReturnType>/g' "./docs/generated/${package_version}.json"
+
 cp "./docs/generated/${package_version}.json" "/tmp/${package_version}.json"
 cp -r "./src" "/tmp/src"
 

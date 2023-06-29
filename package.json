@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Create and manage giveaways in Discord.",
 	"types": "./types/src/index.d.ts",
-	"main": "dist/index.js",
+	"main": "dist/src/index.js",
 	"scripts": {
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
