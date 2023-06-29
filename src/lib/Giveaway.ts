@@ -374,8 +374,7 @@ export class Giveaway<
      * @param {string} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     public async addEntry(guildID: string, userID: string): Promise<IGiveaway> {
@@ -425,8 +424,7 @@ export class Giveaway<
      * @param {string} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     public async removeEntry(guildID: string, userID: string): Promise<IGiveaway> {
@@ -476,8 +474,7 @@ export class Giveaway<
      * @param {IGiveaway} giveaway Giveaway object to sync the constructor properties with.
      * @returns {void}
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     public sync(giveaway: IGiveaway): void {
@@ -533,8 +530,7 @@ export class Giveaway<
      * @returns {any[]} Shuffled array.
      * @private
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     private _shuffleArray<T>(arrayToShuffle: T[]): T[] {
@@ -569,8 +565,7 @@ export class Giveaway<
      * @returns {Promise<IDatabaseGiveaway>} Database giveaway object.
      * @private
      *
-     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing.
-     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
     private async _getFromDatabase(guildID: string): Promise<IDatabaseGiveaway> {
