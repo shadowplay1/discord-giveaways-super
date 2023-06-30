@@ -468,9 +468,9 @@ export type IGiveawayEmbedOptions = Partial<
  * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
  * )} DatabaseConnectionOptions<TDatabaseType>
  *
- * @see {@link Partial<IJSONDatabaseConfiguration>} - JSON configuration.
+ * @see {@link Partial}<{@link IJSONDatabaseConfiguration}>} - JSON configuration.
  *
- * @see {@link EnmapOptions<any, any>} - Enmap configuration.
+ * @see {@link EnmapOptions}<{@link any}, {@link any}>} - Enmap configuration.
  *
  * @see {@link IMongoConnectionOptions} - MongoDB connection configuration.
  *
@@ -497,9 +497,9 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  * @see {@link null} - JSON database management object - `null`
  * is because it's not an external database - JSON is being parsed by the module itself.
  *
- * @see {@link Enmap<string, IDatabaseStructure>} - Enmap database.
+ * @see {@link Enmap}<{@link string}, {@link IDatabaseStructure}>} - Enmap database.
  *
- * @see {@link Mongo<IDatabaseStructure>} - MongoDB database.
+ * @see {@link Mongo}<{@link IDatabaseStructure}>} - MongoDB database.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.
