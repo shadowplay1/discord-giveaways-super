@@ -46,7 +46,7 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
@@ -60,19 +60,19 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     public readonly client: Client<boolean>
 
     /**
-     * @see Giveaways ready state.
+     * {@link Giveaways} ready state.
      * @type {boolean}
      */
     public ready: boolean
 
     /**
-     * @see Giveaways version.
+     * {@link Giveaways} version.
      * @type {string}
      */
     public readonly version: string
 
     /**
-     * Completed, filled and fixed @see Giveaways configuration.
+     * Completed, filled and fixed {@link Giveaways} configuration.
      * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
      */
     public readonly options: Required<IGiveawaysConfiguration<TDatabaseType>>
@@ -110,9 +110,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     public giveawaysCheckingInterval: NodeJS.Timeout
 
     /**
-     * Main @see Giveaways constructor.
+     * Main {@link Giveaways} constructor.
      * @param {Client} client Discord Client.
-     * @param {IGiveawaysConfiguration<TDatabaseType>} options @see Giveaways configuration.
+     * @param {IGiveawaysConfiguration<TDatabaseType>} options {@link Giveaways} configuration.
      */
     public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
         super()
@@ -124,19 +124,19 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this.client = client
 
         /**
-         * @see Giveaways ready state.
+         * {@link Giveaways} ready state.
          * @type {boolean}
          */
         this.ready = false
 
         /**
-         * @see Giveaways version.
+         * {@link Giveaways} version.
          * @type {string}
          */
         this.version = packageVersion
 
         /**
-         * @see Giveaways logger.
+         * {@link Giveaways} logger.
          * @type {Logger}
          * @private
          */
@@ -149,7 +149,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this._logger.debug('Checking the configuration...')
 
         /**
-         * Completed, filled and fixed @see Giveaways configuration.
+         * Completed, filled and fixed {@link Giveaways} configuration.
          * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
          */
         this.options = checkConfiguration(options, options.configurationChecker)
@@ -167,7 +167,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this.database = null as any
 
         /**
-         * @see Giveaways ending state checking interval.
+         * {@link Giveaways} ending state checking interval.
          * @type {NodeJS.Timeout}
          */
         this.giveawaysCheckingInterval = null as any
@@ -183,7 +183,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
-     * Initialize the database connection and initialize the @see Giveaways module.
+     * Initialize the database connection and initialize the {@link Giveaways} module.
      * @returns {Promise<void>}
      * @private
      */
@@ -513,7 +513,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
-     * Sends the @see Giveaways module update state in the console.
+     * Sends the {@link Giveaways} module update state in the console.
      * @returns {Promise<void>}
      * @private
      */
@@ -558,8 +558,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
     /**
      * Starts the giveaway.
-     * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
-     * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
+     * @param {IGiveawayStartConfig} giveawayOptions {@link Giveaway} options.
+     * @returns {Promise<Giveaway<DatabaseType>>} Created {@link Giveaway} instance.
      *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
@@ -847,7 +847,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveaway<TDatabaseType>
  * @prop {number} id The ID of the giveaway.
@@ -989,11 +989,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 
 /**
- * Full @see Giveaways class configuration object.
+ * Full {@link Giveaways} class configuration object.
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.
  *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
@@ -1012,7 +1012,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * Optional configuration for the @see Giveaways class.
+ * Optional configuration for the {@link Giveaways} class.
  * @typedef {object} IGiveawaysOptionalConfiguration
  *
  * @prop {?number} [giveawaysCheckingInterval=1000]
@@ -1163,7 +1163,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.
  *
  * @typedef {(
  * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
@@ -1185,7 +1185,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
@@ -1219,14 +1219,14 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
 
 /**
- * A type containing all the @see Giveaways events and their return types.
+ * A type containing all the {@link Giveaways} events and their return types.
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawaysEvents<TDatabaseType>
- * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways is ready.
+ * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
  * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
  * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is rerolled.
@@ -1241,7 +1241,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawayRerollEvent<TDatabaseType>
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
@@ -1290,9 +1290,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `T` (@see boolean) - The boolean type to compare with.
- * - `IfTrue` (@see any) - The type that will be returned if `T` is `true`.
- * - `IfFalse` (@see any) - The type that will be returned if `T` is `false`.
+ * - `T` ({@link boolean}) - The boolean type to compare with.
+ * - `IfTrue` ({@link any}) - The type that will be returned if `T` is `true`.
+ * - `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.
  *
  * @typedef {IfTrue | IfFalse} If<T, IfTrue, IfFalse>
  *
@@ -1307,7 +1307,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `T` (@see object) - The object to get the properties from.
+ * - `T` ({@link object}) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make optional.
  *
  * @typedef {object} Optional<T, K>
@@ -1321,7 +1321,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type of item to be passed to the callback function.
+ * - `T` ({@link any}) - The type of item to be passed to the callback function.
  *
  * @callback FindCallback<T>
  * @template T The type of item to be passed to the callback function.
@@ -1331,12 +1331,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * A callback function that calls when mapping the array using the @see Array.prototype.map method.
+ * A callback function that calls when mapping the array using the {@link Array.prototype.map} method.
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type of item to be passed to the callback function.
- * - `TReturnType` - (@see any) The type of value returned by the callback function.
+ * - `T` ({@link any}) - The type of item to be passed to the callback function.
+ * - `TReturnType` - ({@link any}) The type of value returned by the callback function.
  *
  * @callback MapCallback<T, TReturnType>
  *
@@ -1353,37 +1353,37 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 // Events, for documentation purposes
 
 /**
- * Emits when the @see Giveaways module is ready.
+ * Emits when the {@link Giveaways} module is ready.
  * @event Giveaways#ready
- * @param {Giveaways<DatabaseType>} giveaways Initialized @see Giveaways instance.
+ * @param {Giveaways<DatabaseType>} giveaways Initialized {@link Giveaways} instance.
  */
 
 /**
- * Emits when the @see Giveaways module establishes the database connection.
+ * Emits when the {@link Giveaways} module establishes the database connection.
  * @event Giveaways#databaseConnect
- * @param {void} databaseConnect Initialized @see Giveaways instance.
+ * @param {void} databaseConnect Initialized {@link Giveaways} instance.
  */
 
 /**
  * Emits when a giveaway is started.
  * @event Giveaways#giveawayStart
- * @param {Giveaway<DatabaseType>} giveaway @see Giveaway that started.
+ * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that started.
  */
 
 /**
  * Emits when a giveaway is restarted.
  * @event Giveaways#giveawayRestart
- * @param {Giveaway<DatabaseType>} giveaway @see Giveaway that restarted.
+ * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that restarted.
  */
 
 /**
  * Emits when a giveaway is ended.
  * @event Giveaways#giveawayEnd
- * @param {Giveaway<DatabaseType>} giveaway @see Giveaway that ended.
+ * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that ended.
  */
 
 /**
  * Emits when a giveaway is rerolled.
  * @event Giveaways#giveawayReroll
- * @param {IGiveawayRerollEvent} giveaway @see Giveaway that was rerolled.
+ * @param {IGiveawayRerollEvent} giveaway {@link Giveaway} that was rerolled.
  */

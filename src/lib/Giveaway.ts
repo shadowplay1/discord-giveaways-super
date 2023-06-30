@@ -16,7 +16,7 @@ import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @implements {IGiveaway<DatabaseType>}
  * @template TDatabaseType The database type that will be used in the module.
@@ -775,8 +775,8 @@ export class Giveaway<
     }
 
     /**
-     * Converts the Giveaway instance to a plain object representation.
-     * @returns {IGiveaway} Plain object representation of Giveaway instance.
+     * Converts the {@link Giveaway} instance to a plain object representation.
+     * @returns {IGiveaway} Plain object representation of {@link Giveaway} instance.
      */
     public toJSON(): IGiveaway {
         return this.raw

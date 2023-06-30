@@ -10,11 +10,12 @@ import { IGiveaway } from '../lib/giveaway.interface'
 import { Optional } from './misc/utils'
 
 /**
- * Full @see Giveaways class configuration object.
+ * Full {@link Giveaways} class configuration object.
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * determine which connection configuration should be used.
  *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
@@ -47,7 +48,7 @@ export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
 } & Partial<IGiveawaysOptionalConfiguration>
 
 /**
- * Optional configuration for the @see Giveaways class.
+ * Optional configuration for the {@link Giveaways} class.
  * @typedef {object} IGiveawaysOptionalConfiguration
  *
  * @prop {?number} [giveawaysCheckingInterval=1000]
@@ -460,7 +461,8 @@ export type IGiveawayEmbedOptions = Partial<
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * determine which connection configuration should be used.
  *
  * @typedef {(
  * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
@@ -485,7 +487,8 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * Type parameters:
  *
- * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will
+ * determine which connection configuration should be used.
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
