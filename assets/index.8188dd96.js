@@ -996,7 +996,7 @@ function de(t={}) {
         updateServiceWorker: function(t={}) {
             const {immediate: e=!1, onNeedRefresh: s, onOfflineReady: o} = t;
             let n;
-            return "serviceWorker"in navigator && (n = new G("./assets/sw.js",{
+            return "serviceWorker"in navigator && (n = new G("./sw.js",{
                 scope: "/"
             }),
             n.addEventListener("activated", (t=>{
@@ -1442,7 +1442,7 @@ giveaways.on('ready', () => {
     props: !0
 }, {
     path: "/docs",
-    component: ()=>Ge((()=>import("./assets/docs.62f036c5.js")), ["./assets/docs.62f036c5.js", "./assets/docs.5a672fae.css", "./assets/vendor.5101602c.js", "./assets/chevron-down.ba5bc4fc.js", "./assets/headlessui.esm.83123edc.js", "./assets/Spinner.ee5f11f6.js", "./assets/Spinner.af24072b.css"]),
+    component: ()=>Ge((()=>import("./docs.62f036c5.js")), ["./docs.62f036c5.js", "./assets/docs.5a672fae.css", "./assets/vendor.5101602c.js", "./assets/chevron-down.ba5bc4fc.js", "./assets/headlessui.esm.83123edc.js", "./assets/Spinner.ee5f11f6.js", "./assets/Spinner.af24072b.css"]),
     children: [{
         name: "docs-source",
         path: ":source",
