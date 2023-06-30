@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"alwaysStrict": true,
+		"lib": [
+			"ESNext"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"target": "ESNext",
+		"outDir": "dist",
+		"rootDir": "./",
+		"declaration": true,
+		"strictNullChecks": true,
+		"declarationDir": "./types",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"allowSyntheticDefaultImports": true,
+		"skipDefaultLibCheck": true,
+		"resolveJsonModule": true,
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}
