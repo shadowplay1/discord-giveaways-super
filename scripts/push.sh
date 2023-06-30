@@ -64,11 +64,12 @@ else
     git checkout "$package_version" > /dev/null 2>&1
 fi
 
-
 git reset --hard "origin/$package_version" > /dev/null 2>&1
 cp -r "/tmp/src" "./src"
 
 git add .
+git rm --cached src/src > /dev/null 2>&1
+
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "$package_version"
 
@@ -81,11 +82,11 @@ else
     git checkout "master" > /dev/null 2>&1
 fi
 
-
 git reset --hard "origin/master" > /dev/null 2>&1
 cp -r "/tmp/src" "./src"
 
 git add .
+git rm --cached src/src > /dev/null 2>&1
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "master"
 
