@@ -996,7 +996,7 @@ function de(t={}) {
         updateServiceWorker: function(t={}) {
             const {immediate: e=!1, onNeedRefresh: s, onOfflineReady: o} = t;
             let n;
-            return "serviceWorker"in navigator && (n = new G("/sw.js",{
+            return "serviceWorker"in navigator && (n = new G("./assets/sw.js",{
                 scope: "/"
             }),
             n.addEventListener("activated", (t=>{
@@ -1442,11 +1442,11 @@ giveaways.on('ready', () => {
     props: !0
 }, {
     path: "/docs",
-    component: ()=>Ge((()=>import("./assets/docs.62f036c5.js")), ["./assets/docs.62f036c5.js", "./docs.5a672fae.css", "./assets/vendor.5101602c.js", "./assets/chevron-down.ba5bc4fc.js", "./assets/headlessui.esm.83123edc.js", "./assets/Spinner.ee5f11f6.js", "./Spinner.af24072b.css"]),
+    component: ()=>Ge((()=>import("./assets/docs.62f036c5.js")), ["./assets/docs.62f036c5.js", "./assets/docs.5a672fae.css", "./assets/vendor.5101602c.js", "./assets/chevron-down.ba5bc4fc.js", "./assets/headlessui.esm.83123edc.js", "./assets/Spinner.ee5f11f6.js", "./assets/Spinner.af24072b.css"]),
     children: [{
         name: "docs-source",
         path: ":source",
-        component: ()=>Ge((()=>import("./index.6c282508.js")), ["./index.6c282508.js", "./assets/Spinner.ee5f11f6.js", "./Spinner.af24072b.css", "./assets/vendor.5101602c.js"]),
+        component: ()=>Ge((()=>import("./index.6c282508.js")), ["./index.6c282508.js", "./assets/Spinner.ee5f11f6.js", "./assets/Spinner.af24072b.css", "./assets/vendor.5101602c.js"]),
         props: !0
     }, {
         name: "docs-source-tag-search",
