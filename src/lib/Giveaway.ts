@@ -363,7 +363,6 @@ export class Giveaway<
             )
         }
 
-
         this.endTimestamp = this.endTimestamp + this._timeToSeconds(extensionTime)
         this.raw.endTimestamp = this.endTimestamp + this._timeToSeconds(extensionTime)
 
@@ -383,7 +382,10 @@ export class Giveaway<
             components: [buttonsRow]
         })
 
-        this._giveaways.emit('giveawayRestart', this)
+        this._giveaways.emit('giveawayLengthReduced', {
+            time: extensionTime,
+            giveaway: this
+        })
     }
 
     /**
@@ -439,7 +441,10 @@ export class Giveaway<
             components: [buttonsRow]
         })
 
-        this._giveaways.emit('giveawayRestart', this)
+        this._giveaways.emit('giveawayLengthReduced', {
+            time: reductionTime,
+            giveaway: this
+        })
     }
 
 

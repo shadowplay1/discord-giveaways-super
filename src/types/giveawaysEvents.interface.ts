@@ -4,14 +4,14 @@ import { Giveaway } from '../lib/Giveaway'
 import { DatabaseType } from './databaseType.enum'
 
 /**
- * A type containing all the @see Giveaways events and their return types.
+ * A type containing all the {@link Giveaways} events and their return types.
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawaysEvents
- * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways module is ready.
+ * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
  * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
  * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is restarted.
@@ -25,13 +25,14 @@ export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
     databaseConnect: void
     giveawayReroll: IGiveawayRerollEvent<TDatabaseType>
 } & Record<'giveawayStart' | 'giveawayRestart' | 'giveawayEnd', Giveaway<TDatabaseType>>
+    & Record<'giveawayLengthExtended' | 'giveawayLengthReduced', IGiveawayTimeChangeEvent<TDatabaseType>>
 
 /**
  * Giveaway reroll event object.
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawayRerollEvent
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
@@ -42,4 +43,22 @@ export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
 export interface IGiveawayRerollEvent<TDatabaseType extends DatabaseType> {
     giveaway: Giveaway<TDatabaseType>
     newWinners: string[]
+}
+
+/**
+ * Giveaway time change event object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
+ *
+ * @typedef {object} IGiveawayTimeChangeEvent
+ * @prop {string} time The time that affected the giveaway's length.
+ * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
+ *
+ * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ */
+export interface IGiveawayTimeChangeEvent<TDatabaseType extends DatabaseType> {
+    time: string
+    giveaway: Giveaway<TDatabaseType>
 }
