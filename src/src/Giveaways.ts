@@ -302,7 +302,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.MONGODB>
 
-                const mongo = new QuickMongo(databaseOptions)
+                const mongo = new QuickMongo<any, any>(databaseOptions)
                 const connectionStartDate = Date.now()
 
                 await mongo.connect()
@@ -560,7 +560,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * Starts the giveaway.
      * @param {IGiveawayStartConfig} giveawayOptions {@link Giveaway} options.
      * @returns {Promise<Giveaway<DatabaseType>>} Created {@link Giveaway} instance.
-     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
@@ -751,7 +750,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * The callback function to find the giveaway in the giveaways database.
      *
      * @returns {Promise<Giveaway<TDatabaseType>>}
-     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -780,7 +778,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * Gets all the giveaways from the specified guild in database.
      * @param {string} guildID Guild ID to get the giveaways from.
      * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
-     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -972,6 +969,20 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} guildID The ID of the guild where the giveaway is held.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
+ */
+
+/**
+ * A type that contains all giveaway properties that may be safely edited.
+ * @typedef {'prize' | 'winnersCount' | 'hostMemberID'} EditableGiveawayProperties
+ */
+
+/**
+ * The type that returns the property's value type based on the specified {@link Giveaway} property in `TProperty`.
+ *
+ * Type parameters:
+ *
+ * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ * @typedef {object} GiveawayPropertyValue<TProperty>
  */
 
 /**

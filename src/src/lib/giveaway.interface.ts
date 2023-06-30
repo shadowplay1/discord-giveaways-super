@@ -247,6 +247,22 @@ export type GiveawayWithoutInternalProps = Omit<
 >
 
 /**
+ * A type that contains all giveaway properties that may be safely edited.
+ * @typedef {'prize' | 'winnersCount' | 'hostMemberID'} EditableGiveawayProperties
+ */
+export type EditableGiveawayProperties = 'prize' | 'winnersCount' | 'time' | 'hostMemberID'
+
+/**
+ * The type that returns the property's value type based on the specified {@link Giveaway} property in `TProperty`.
+ *
+ * Type parameters:
+ *
+ * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ * @typedef {object} GiveawayPropertyValue<TProperty>
+ */
+export type GiveawayPropertyValue<TProperty extends EditableGiveawayProperties> = IGiveaway[TProperty]
+
+/**
  * An enum that determines the state of a giveaway.
  * @typedef {number} GiveawayState
  * @prop {number} STARTED The giveaway has started.
