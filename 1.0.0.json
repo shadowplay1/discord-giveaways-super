@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688056371006
+  "date": 1688085787976
  },
  "custom": {
   "general": {
@@ -20,7 +20,7 @@
  "classes": [
   {
    "name": "Giveaways",
-   "description": "Main Giveaways class.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "description": "Main Giveaways class.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "extends": [
     [
      [
@@ -39,7 +39,7 @@
    ],
    "construct": {
     "name": "Giveaways",
-    "description": "Main @see Giveaways constructor.",
+    "description": "Main {@link Giveaways} constructor.",
     "params": [
      {
       "name": "client",
@@ -54,7 +54,7 @@
      },
      {
       "name": "options",
-      "description": "@see Giveaways configuration.",
+      "description": "{@link Giveaways} configuration.",
       "type": [
        [
         [
@@ -73,9 +73,7 @@
    "props": [
     {
      "name": "ready",
-     "see": [
-      "Giveaways ready state."
-     ],
+     "description": "{@link Giveaways} ready state.",
      "type": [
       [
        [
@@ -91,9 +89,7 @@
     },
     {
      "name": "version",
-     "see": [
-      "Giveaways version."
-     ],
+     "description": "{@link Giveaways} version.",
      "type": [
       [
        [
@@ -109,9 +105,7 @@
     },
     {
      "name": "_logger",
-     "see": [
-      "Giveaways logger."
-     ],
+     "description": "{@link Giveaways} logger.",
      "access": "private",
      "type": [
       [
@@ -128,7 +122,7 @@
     },
     {
      "name": "options",
-     "description": "Completed, filled and fixed @see Giveaways configuration.",
+     "description": "Completed, filled and fixed {@link Giveaways} configuration.",
      "type": [
       [
        [
@@ -191,9 +185,7 @@
     },
     {
      "name": "giveawaysCheckingInterval",
-     "see": [
-      "Giveaways ending state checking interval."
-     ],
+     "description": "{@link Giveaways} ending state checking interval.",
      "type": [
       [
        [
@@ -232,7 +224,7 @@
    "methods": [
     {
      "name": "_init",
-     "description": "Initialize the database connection and initialize the @see Giveaways module.",
+     "description": "Initialize the database connection and initialize the {@link Giveaways} module.",
      "access": "private",
      "async": true,
      "returns": [
@@ -255,7 +247,7 @@
     },
     {
      "name": "_sendUpdateMessage",
-     "description": "Sends the @see Giveaways module update state in the console.",
+     "description": "Sends the {@link Giveaways} module update state in the console.",
      "access": "private",
      "async": true,
      "returns": [
@@ -271,7 +263,7 @@
       ]
      ],
      "meta": {
-      "line": 507,
+      "line": 515,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -282,7 +274,7 @@
      "params": [
       {
        "name": "giveawayOptions",
-       "description": "@see Giveaway options.",
+       "description": "{@link Giveaway} options.",
        "type": [
         [
          [
@@ -310,10 +302,160 @@
         ]
        ]
       ],
-      "description": "Created @see Giveaway instance."
+      "description": "Created {@link Giveaway} instance."
      },
      "meta": {
-      "line": 552,
+      "line": 559,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "find",
+     "description": "Finds the giveaway in all giveaways database by the specified callback function.",
+     "params": [
+      {
+       "name": "cb",
+       "description": "The callback function to find the giveaway in the giveaways database.",
+       "type": [
+        [
+         [
+          "FindCallback",
+          "<"
+         ],
+         [
+          "Giveaway",
+          "<"
+         ],
+         [
+          "TDatabaseType",
+          ">>"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "Giveaway",
+        "<"
+       ],
+       [
+        "TDatabaseType",
+        ">>"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 747,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "getGuildGiveaways",
+     "description": "Gets all the giveaways from the specified guild in database.",
+     "params": [
+      {
+       "name": "guildID",
+       "description": "Guild ID to get the giveaways from.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">>>"
+        ]
+       ]
+      ],
+      "description": "Giveaways array from the specified guild in database."
+     },
+     "meta": {
+      "line": 779,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "getAll",
+     "description": "Gets all the giveaways from all the guilds in database.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">>>"
+        ]
+       ]
+      ],
+      "description": "Giveaways array from all the guilds in database."
+     },
+     "meta": {
+      "line": 806,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "_checkGiveaways",
+     "description": "Checks for all giveaways to be finished and end them if they are.",
+     "access": "private",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 825,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -322,11 +464,11 @@
    "events": [
     {
      "name": "ready",
-     "description": "Emits when the @see Giveaways module is ready.",
+     "description": "Emits when the {@link Giveaways} module is ready.",
      "params": [
       {
        "name": "giveaways",
-       "description": "Initialized @see Giveaways instance.",
+       "description": "Initialized {@link Giveaways} instance.",
        "type": [
         [
          [
@@ -342,18 +484,18 @@
       }
      ],
      "meta": {
-      "line": 1278,
+      "line": 1355,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "databaseConnect",
-     "description": "Emits when the @see Giveaways module establishes the database connection.",
+     "description": "Emits when the {@link Giveaways} module establishes the database connection.",
      "params": [
       {
        "name": "databaseConnect",
-       "description": "Initialized @see Giveaways instance.",
+       "description": "Initialized {@link Giveaways} instance.",
        "type": [
         [
          [
@@ -364,7 +506,7 @@
       }
      ],
      "meta": {
-      "line": 1284,
+      "line": 1361,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -375,7 +517,7 @@
      "params": [
       {
        "name": "giveaway",
-       "description": "@see Giveaway that started.",
+       "description": "{@link Giveaway} that started.",
        "type": [
         [
          [
@@ -391,7 +533,7 @@
       }
      ],
      "meta": {
-      "line": 1290,
+      "line": 1367,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -402,7 +544,7 @@
      "params": [
       {
        "name": "giveaway",
-       "description": "@see Giveaway that restarted.",
+       "description": "{@link Giveaway} that restarted.",
        "type": [
         [
          [
@@ -418,7 +560,7 @@
       }
      ],
      "meta": {
-      "line": 1296,
+      "line": 1373,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -429,7 +571,7 @@
      "params": [
       {
        "name": "giveaway",
-       "description": "@see Giveaway that ended.",
+       "description": "{@link Giveaway} that ended.",
        "type": [
         [
          [
@@ -445,7 +587,7 @@
       }
      ],
      "meta": {
-      "line": 1302,
+      "line": 1379,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -456,7 +598,7 @@
      "params": [
       {
        "name": "giveaway",
-       "description": "@see Giveaway that was rerolled.",
+       "description": "{@link Giveaway} that was rerolled.",
        "type": [
         [
          [
@@ -467,7 +609,7 @@
       }
      ],
      "meta": {
-      "line": 1308,
+      "line": 1385,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -481,7 +623,7 @@
   },
   {
    "name": "Giveaway",
-   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "implements": [
     [
      [
@@ -512,7 +654,7 @@
       ]
      ],
      "meta": {
-      "line": 146,
+      "line": 147,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -529,7 +671,7 @@
       ]
      ],
      "meta": {
-      "line": 153,
+      "line": 154,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -545,7 +687,7 @@
       ]
      ],
      "meta": {
-      "line": 161,
+      "line": 162,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -561,7 +703,7 @@
       ]
      ],
      "meta": {
-      "line": 167,
+      "line": 168,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -577,7 +719,7 @@
       ]
      ],
      "meta": {
-      "line": 173,
+      "line": 174,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -593,7 +735,7 @@
       ]
      ],
      "meta": {
-      "line": 179,
+      "line": 180,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -609,7 +751,7 @@
       ]
      ],
      "meta": {
-      "line": 185,
+      "line": 186,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -625,7 +767,7 @@
       ]
      ],
      "meta": {
-      "line": 191,
+      "line": 192,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -641,7 +783,7 @@
       ]
      ],
      "meta": {
-      "line": 197,
+      "line": 198,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -657,7 +799,7 @@
       ]
      ],
      "meta": {
-      "line": 203,
+      "line": 204,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -673,7 +815,7 @@
       ]
      ],
      "meta": {
-      "line": 209,
+      "line": 210,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -689,7 +831,7 @@
       ]
      ],
      "meta": {
-      "line": 215,
+      "line": 216,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -705,7 +847,7 @@
       ]
      ],
      "meta": {
-      "line": 221,
+      "line": 222,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -721,7 +863,7 @@
       ]
      ],
      "meta": {
-      "line": 227,
+      "line": 228,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -737,7 +879,7 @@
       ]
      ],
      "meta": {
-      "line": 233,
+      "line": 234,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -753,7 +895,7 @@
       ]
      ],
      "meta": {
-      "line": 239,
+      "line": 240,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -774,7 +916,7 @@
       ]
      ],
      "meta": {
-      "line": 245,
+      "line": 246,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -790,7 +932,7 @@
       ]
      ],
      "meta": {
-      "line": 251,
+      "line": 252,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -806,7 +948,7 @@
       ]
      ],
      "meta": {
-      "line": 257,
+      "line": 258,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -822,7 +964,7 @@
       ]
      ],
      "meta": {
-      "line": 290,
+      "line": 292,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -846,7 +988,77 @@
       ]
      ],
      "meta": {
-      "line": 298,
+      "line": 300,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "extendLength",
+     "description": "Extends the giveaway length.",
+     "params": [
+      {
+       "name": "extensionTime",
+       "description": "The time to extend the giveaway length by.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 332,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "reduceLength",
+     "description": "Reduces the giveaway length.",
+     "params": [
+      {
+       "name": "reductionTime",
+       "description": "The time to reduce the giveaway length by.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 389,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -868,7 +1080,7 @@
       ]
      ],
      "meta": {
-      "line": 328,
+      "line": 446,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -897,7 +1109,7 @@
       "description": "Rerolled winners users IDs."
      },
      "meta": {
-      "line": 347,
+      "line": 477,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -941,7 +1153,7 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 421,
+      "line": 566,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -985,7 +1197,7 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 421,
+      "line": 566,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1014,15 +1226,29 @@
       ]
      ],
      "meta": {
-      "line": 472,
+      "line": 617,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "_pickWinners",
-     "description": "Shuffles all the giveaway entries and randomly picks the winners.",
+     "description": "Shuffles all the giveaway entries, randomly picks the winner user IDs and converts them into mentions.",
      "access": "private",
+     "params": [
+      {
+       "name": "giveawayTySync",
+       "description": "The giveaway object to sync with.",
+       "optional": true,
+       "type": [
+        [
+         [
+          "IGiveaway"
+         ]
+        ]
+       ]
+      }
+     ],
      "returns": {
       "types": [
        [
@@ -1036,10 +1262,10 @@
         ]
        ]
       ],
-      "description": "Array of users that were picked as the winners."
+      "description": "Array of mentions of users that were picked as the winners."
      },
      "meta": {
-      "line": 504,
+      "line": 649,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1082,7 +1308,7 @@
       "description": "Shuffled array."
      },
      "meta": {
-      "line": 527,
+      "line": 688,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1121,14 +1347,47 @@
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 562,
+      "line": 723,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "_timeToSeconds",
+     "description": "Converts the time string into seconds.",
+     "access": "private",
+     "params": [
+      {
+       "name": "time",
+       "description": "The time string to convert.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "number"
+        ]
+       ]
+      ],
+      "description": "Converted time string into seconds."
+     },
+     "meta": {
+      "line": 760,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "toJSON",
-     "description": "Converts the Giveaway instance to a plain object representation.",
+     "description": "Converts the {@link Giveaway} instance to a plain object representation.",
      "returns": {
       "types": [
        [
@@ -1137,17 +1396,17 @@
         ]
        ]
       ],
-      "description": "Plain object representation of Giveaway instance."
+      "description": "Plain object representation of {@link Giveaway} instance."
      },
      "meta": {
-      "line": 599,
+      "line": 777,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "meta": {
-    "line": 13,
+    "line": 14,
     "file": "Giveaway.ts",
     "path": "src/lib"
    }
@@ -1834,7 +2093,7 @@
  "typedefs": [
   {
    "name": "IGiveaway<TDatabaseType>",
-   "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "description": "An object that contains an information about a giveaway.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "type": [
     [
      [
@@ -2314,7 +2573,7 @@
     }
    ],
    "meta": {
-    "line": 842,
+    "line": 907,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2364,7 +2623,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 858,
+    "line": 923,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2415,7 +2674,7 @@
     }
    ],
    "meta": {
-    "line": 866,
+    "line": 931,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2432,8 +2691,8 @@
    ],
    "params": [
     {
-     "name": "winnersString",
-     "description": "A string that contains the users that won the giveaway separated with comma.",
+     "name": "winnersMentionsString",
+     "description": "A string that contains the mentions of users that won the giveaway, separated with comma.",
      "type": [
       [
        [
@@ -2465,7 +2724,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 878,
+    "line": 945,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2729,7 +2988,7 @@
   },
   {
    "name": "IGiveawaysConfiguration<TDatabaseType>",
-   "description": "Full @see Giveaways class configuration object.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+   "description": "Full {@link Giveaways} class configuration object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
    "type": [
     [
      [
@@ -2828,14 +3087,14 @@
     }
    ],
    "meta": {
-    "line": 921,
+    "line": 991,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "IGiveawaysOptionalConfiguration",
-   "description": "Optional configuration for the @see Giveaways class.",
+   "description": "Optional configuration for the {@link Giveaways} class.",
    "type": [
     [
      [
@@ -2912,7 +3171,7 @@
     }
    ],
    "meta": {
-    "line": 944,
+    "line": 1014,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2958,7 +3217,7 @@
     }
    ],
    "meta": {
-    "line": 957,
+    "line": 1027,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3048,7 +3307,7 @@
     }
    ],
    "meta": {
-    "line": 964,
+    "line": 1034,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3108,7 +3367,7 @@
     }
    ],
    "meta": {
-    "line": 1078,
+    "line": 1153,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3192,7 +3451,7 @@
     }
    ],
    "meta": {
-    "line": 984,
+    "line": 1054,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3300,7 +3559,7 @@
     }
    ],
    "meta": {
-    "line": 995,
+    "line": 1065,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3357,7 +3616,7 @@
     }
    ],
    "meta": {
-    "line": 1008,
+    "line": 1078,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3410,7 +3669,7 @@
     }
    ],
    "meta": {
-    "line": 1016,
+    "line": 1086,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3460,7 +3719,7 @@
     "description": "- An object containing the defined embed strings."
    },
    "meta": {
-    "line": 1026,
+    "line": 1096,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3502,7 +3761,7 @@
     }
    ],
    "meta": {
-    "line": 1034,
+    "line": 1104,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3553,7 +3812,7 @@
     }
    ],
    "meta": {
-    "line": 1041,
+    "line": 1111,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3610,7 +3869,7 @@
     }
    ],
    "meta": {
-    "line": 1055,
+    "line": 1125,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3628,7 +3887,7 @@
    "props": [
     {
      "name": "messageContent",
-     "description": "The content of the message. If only this is specified",
+     "description": "Message content to specify in the message.\nIf only message content is specified, it will be sent without the embed.",
      "optional": true,
      "nullable": true,
      "type": [
@@ -3747,6 +4006,7 @@
      "name": "color",
      "description": "The color of the embed.",
      "optional": true,
+     "nullable": true,
      "type": [
       [
        [
@@ -3754,17 +4014,30 @@
        ]
       ]
      ]
+    },
+    {
+     "name": "timestamp",
+     "description": "The embed timestamp to set.",
+     "optional": true,
+     "nullable": true,
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ]
     }
    ],
    "meta": {
-    "line": 1063,
+    "line": 1133,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "DatabaseConnectionOptions<TDatabaseType>",
-   "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+   "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
    "see": [
     "Partial<IJSONDatabaseConfiguration> - JSON configuration.",
     "EnmapOptions<any, any> - Enmap configuration.",
@@ -3802,16 +4075,16 @@
     ]
    ],
    "meta": {
-    "line": 1086,
+    "line": 1161,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "Database<TDatabaseType>",
-   "description": "External database object based on the used database type.",
+   "description": "External database object based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
    "see": [
-    "null - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module.\n\nType parameters:\n\n- TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.",
+    "null - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module.",
     "Enmap<string, IDatabaseStructure> - Enmap database.",
     "Mongo<IDatabaseStructure> - MongoDB database."
    ],
@@ -3847,7 +4120,7 @@
     ]
    ],
    "meta": {
-    "line": 1108,
+    "line": 1183,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3892,7 +4165,7 @@
     }
    ],
    "meta": {
-    "line": 1129,
+    "line": 1206,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3932,14 +4205,14 @@
     }
    ],
    "meta": {
-    "line": 1136,
+    "line": 1213,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "IGiveawaysEvents<TDatabaseType>",
-   "description": "A type containing all the @see Giveaways events and their return types.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "description": "A type containing all the {@link Giveaways} events and their return types.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "type": [
     [
      [
@@ -3950,7 +4223,7 @@
    "props": [
     {
      "name": "ready",
-     "description": "Emits when the @see Giveaways is ready.",
+     "description": "Emits when the {@link Giveaways} is ready.",
      "type": [
       [
        [
@@ -4036,14 +4309,14 @@
     }
    ],
    "meta": {
-    "line": 1144,
+    "line": 1221,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "IGiveawayRerollEvent<TDatabaseType>",
-   "description": "Giveaway reroll event object.\n\nType parameters:\n\n- TDatabaseType (@see DatabaseType) - The database type that will be used in the module.",
+   "description": "Giveaway reroll event object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "type": [
     [
      [
@@ -4081,7 +4354,7 @@
     }
    ],
    "meta": {
-    "line": 1162,
+    "line": 1239,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4297,7 +4570,7 @@
     }
    ],
    "meta": {
-    "line": 1176,
+    "line": 1253,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4348,14 +4621,14 @@
     }
    ],
    "meta": {
-    "line": 1199,
+    "line": 1276,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "If<T, IfTrue, IfFalse>",
-   "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` (@see boolean) - The boolean type to compare with.\n- `IfTrue` (@see any) - The type that will be returned if `T` is `true`.\n- `IfFalse` (@see any) - The type that will be returned if `T` is `false`.",
+   "name": "If<T,",
+   "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` ({@link boolean}) - The boolean type to compare with.\n- `IfTrue` ({@link any}) - The type that will be returned if `T` is `true`.\n- `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.",
    "type": [
     [
      [
@@ -4369,14 +4642,14 @@
     ]
    ],
    "meta": {
-    "line": 1211,
+    "line": 1288,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "Optional<T, K>",
-   "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` (@see object) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
+   "name": "Optional<T,",
+   "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` ({@link object}) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
    "type": [
     [
      [
@@ -4385,14 +4658,14 @@
     ]
    ],
    "meta": {
-    "line": 1228,
+    "line": 1305,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "FindCallback<T>",
-   "description": "A callback function that calls when finding an element in array.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.",
+   "description": "A callback function that calls when finding an element in array.\n\nType parameters:\n\n- `T` ({@link any}) - The type of item to be passed to the callback function.",
    "type": [
     [
      [
@@ -4424,14 +4697,14 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1242,
+    "line": 1319,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "MapCallback<T, TReturnType>",
-   "description": "A callback function that calls when mapping the array using the @see Array.prototype.map method.\n\nType parameters:\n\n- `T` (@see any) - The type of item to be passed to the callback function.\n- `TReturnType` - (@see any) The type of value returned by the callback function.",
+   "name": "MapCallback<T,",
+   "description": "A callback function that calls when mapping the array using the {@link Array.prototype.map} method.\n\nType parameters:\n\n- `T` ({@link any}) - The type of item to be passed to the callback function.\n- `TReturnType` - ({@link any}) The type of value returned by the callback function.",
    "type": [
     [
      [
@@ -4463,7 +4736,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1256,
+    "line": 1333,
     "file": "Giveaways.ts",
     "path": "src"
    }
