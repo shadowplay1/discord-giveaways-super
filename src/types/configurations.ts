@@ -499,12 +499,12 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
- * @see Mongo<{IDatabaseStructure> - MongoDB database.
+ * @see Mongo<string, IDatabaseStructure> - MongoDB database.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.
  */
 export type Database<TDatabaseType extends DatabaseType> =
     TDatabaseType extends DatabaseType.JSON ? null :
-    TDatabaseType extends DatabaseType.ENMAP ? Enmap<string, IDatabaseStructure> :
-    TDatabaseType extends DatabaseType.MONGODB ? Mongo<IDatabaseStructure> : never
+    TDatabaseType extends DatabaseType.ENMAP ? Enmap<`${string}.giveaways`, IDatabaseStructure> :
+    TDatabaseType extends DatabaseType.MONGODB ? Mongo<`${string}.giveaways`, IDatabaseStructure> : never

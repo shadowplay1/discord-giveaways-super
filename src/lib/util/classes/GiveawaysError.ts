@@ -57,6 +57,7 @@ export class GiveawaysError extends Error {
  * @prop {string} UNKNOWN_GIVEAWAY The giveaway is unknown.
  * @prop {string} INVALID_TIME The time is invalid.
  * @prop {string} GIVEAWAY_ALREADY_ENDED Giveaway already ended.
+ * @prop {string} USER_NOT_FOUND User not found.
  */
 export enum GiveawaysErrorCodes {
     UNKNOWN_ERROR = 'UNKNOWN_ERROR',
@@ -71,7 +72,8 @@ export enum GiveawaysErrorCodes {
     INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE',
     UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY',
     INVALID_TIME = 'INVALID_TIME',
-    GIVEAWAY_ALREADY_ENDED = 'GIVEAWAY_ALREADY_ENDED'
+    GIVEAWAY_ALREADY_ENDED = 'GIVEAWAY_ALREADY_ENDED',
+    USER_NOT_FOUND = 'USER_NOT_FOUND'
 }
 
 export const errorMessages = {
@@ -122,5 +124,9 @@ export const errorMessages = {
 
     REQUIRED_CONFIG_OPTION_MISSING(requiredConfigOption: string): string {
         return `Required configuration option "${requiredConfigOption}" is missing.`
+    },
+
+    USER_NOT_FOUND(userID: string): string {
+        return `Specified user with ID ${userID} was not found.`
     }
 }
