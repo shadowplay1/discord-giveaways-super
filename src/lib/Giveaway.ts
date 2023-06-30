@@ -333,7 +333,6 @@ export class Giveaway<
      * Extends the giveaway length.
      * @param {string} extensionTime The time to extend the giveaway length by.
      * @returns {Promise<void>}
-     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -392,7 +391,6 @@ export class Giveaway<
      * Reduces the giveaway length.
      * @param {string} reductionTime The time to reduce the giveaway length by.
      * @returns {Promise<void>}
-     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -446,7 +444,6 @@ export class Giveaway<
             giveaway: this
         })
     }
-
 
     /**
      * Ends the giveaway.
@@ -617,6 +614,142 @@ export class Giveaway<
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
 
         return giveaway
+    }
+
+    /**
+     * Changes the giveaway's prize and edits the giveaway message.
+     * @param {string} prize The new prize to set.
+     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async setPrize(prize: string): Promise<Giveaway<TDatabaseType>> {
+        if (!prize) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('prize', 'Giveaways.setPrize'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof prize !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('prize', 'string', prize),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        return this.edit('prize', prize)
+    }
+
+    /**
+     * Changes the giveaway's winners count and edits the giveaway message.
+     * @param {string} winnersCount The new winners count to set.
+     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async setWinnersCount(winnersCount: number): Promise<Giveaway<TDatabaseType>> {
+        if (!winnersCount) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('winnersCount', 'Giveaways.setWinnersCount'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (isNaN(winnersCount)) {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('winnersCount', 'number', winnersCount.toString()),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        return this.edit('winnersCount', winnersCount)
+    }
+
+    /**
+     * Changes the giveaway's host member ID and edits the giveaway message.
+     * @param {string} hostMemberID The new host member ID to set.
+     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async setHostMemberID(hostMemberID: string): Promise<Giveaway<TDatabaseType>> {
+        if (!hostMemberID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('hostMemberID', 'Giveaways.setHostMemberID'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof hostMemberID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('hostMemberID', 'string', hostMemberID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        return this.edit('hostMemberID', hostMemberID)
+    }
+
+    /**
+     * Sets the specified value to the specified giveaway property and edits the giveaway message.
+     * @param {string} key The key of the giveaway object to set
+     * @param {string} value The value to set.
+     * @returns {Promise<Giveaway<DatabaseType>>} Updated {@link Giveaway} instance.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async edit(
+        key: 'prize' | 'winnersCount' | 'hostMemberID',
+        value: string | number // TODO: value typing using generic type
+    ): Promise<Giveaway<TDatabaseType>> {
+        const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
+
+        if (!key) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('key', 'Giveaways.edit'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (!value) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('value', 'Giveaways.edit'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof key !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('key', 'string', key),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (key == 'hostMemberID') {
+            this.host = this._giveaways.client.users.cache.get(value as string) as User
+        } else {
+            (this as any)[key] = value;
+            (this.raw as any)[key] = value
+        }
+
+        const strings = this.messageProps
+        const startEmbedStrings = strings?.embeds.start
+
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+
+        const message = await this.channel.messages.fetch(this.messageID)
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
+
+        message.edit({
+            content: startEmbedStrings?.messageContent,
+            embeds: Object.keys(startEmbedStrings as any).length == 1
+                && startEmbedStrings?.messageContent ? [] : [embed],
+            components: [buttonsRow]
+        })
+
+        return this
     }
 
     /**
