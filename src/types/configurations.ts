@@ -283,11 +283,14 @@ export interface IGiveawayStartMessages {
 /**
  * A function that is called when giveaway is finished.
  * @callback GiveawayFinishCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ * @param {string} winnersMentionsString A string that contains the users that won the giveaway separated with comma.
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayStartMessages} Giveaway message objects.
  */
-export type GiveawayFinishCallback = (winnersString: string, winnersCount: number) => Partial<IGiveawayStartMessages>
+export type GiveawayFinishCallback = (
+    winnersMentionsString: string,
+    winnersCount: number
+) => Partial<IGiveawayStartMessages>
 
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
@@ -318,20 +321,32 @@ export interface IGiveawayRerollMessages {
     newGiveawayMessage: IGiveawayEmbedOptions
 
     /**
-     * The separated message to be sent in the giveaway channel when the reroll is successful.
+     * The separated message to reply to user with when the reroll is successful.
      * @type {IGiveawayEmbedOptions}
      */
     successMessage: IGiveawayEmbedOptions
+
+    /**
+     * The separated message to be sent in the giveaway channel when the new winners are picked.
+     * @type {IGiveawayEmbedOptions}
+     */
+    rerollMessage: IGiveawayEmbedOptions
 }
 
 /**
  * A function that is called when giveaway winners are rerolled.
  * @callback GiveawayRerollCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ *
+ * @param {string} winnersMentionsString
+ * A string that contains the mentions of users that won the giveaway, separated with comma.
+ *
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayMessages} Giveaway message objects.
  */
-export type GiveawayRerollCallback = (winnersString: string, winnersCount: number) => Partial<IGiveawayRerollMessages>
+export type GiveawayRerollCallback = (
+    winnersMentionsString: string,
+    winnersCount: number
+) => Partial<IGiveawayRerollMessages>
 
 /**
  * Object containing embed string definitions used in the IGiveaways class.
@@ -409,7 +424,8 @@ export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & 
  * @prop {?string} [footerIcon] The icon of the footer in the embed.
  * @prop {?string} [thumbnailURL] Embed thumbnail.
  * @prop {?string} [imageURL] Embed Image URL.
- * @prop {ColorResolvable} [color] The color of the embed.
+ * @prop {?ColorResolvable} [color] The color of the embed.
+ * @prop {?number} [timestamp] The embed timestamp to set.
  */
 export type IGiveawayEmbedOptions = Partial<
     Record<
@@ -430,6 +446,12 @@ export type IGiveawayEmbedOptions = Partial<
          * @type {ColorResolvable}
          */
         color: ColorResolvable
+
+        /**
+         * The embed timestamp to set.
+         * @type {number}
+         */
+        timestamp: number
     }
 >
 
@@ -459,20 +481,22 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
     TDatabaseType extends DatabaseType.MONGODB ? IMongoConnectionOptions : never
 
 /**
+ * External database object based on the used database type.
+ *
+ * Type parameters:
+ *
+ * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ *
+ * @typedef {(
+ * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
+ * )} Database<TDatabaseType>
+ *
  * @see null - JSON database management object - `null`
  * is because it's not an external database - JSON is being parsed by the module.
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
  * @see Mongo<IDatabaseStructure> - MongoDB database.
- *
- * Type parameters:
- *
- * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
- *
- * @typedef {(
- * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
- * )} Database<TDatabaseType> External database object based on the used database type.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.

@@ -9,13 +9,14 @@ import { ms } from './misc/ms'
 
 import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
+import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
 
 /**
  * Class that represents the Giveaway object.
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
  *
  * @implements {IGiveaway<DatabaseType>}
  * @template TDatabaseType The database type that will be used in the module.
@@ -70,7 +71,7 @@ export class Giveaway<
     public state: GiveawayState
 
     /**
-     * Number of possible winners in the giveaway.
+     * Number of possible winnerIDs in the giveaway.
      * @type {number}
      */
     public winnersCount: number
@@ -275,6 +276,7 @@ export class Giveaway<
                 reroll: {
                     newGiveawayMessage: {},
                     onlyHostCanReroll: {},
+                    rerollMessage: {},
                     successMessage: {}
                 }
             },
@@ -300,12 +302,13 @@ export class Giveaway<
      * @returns {Promise<void>}
      */
     public async restart(): Promise<void> {
-        const { giveaway } = await this._getFromDatabase(this.guild.id)
-        this.sync(giveaway)
+        const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
 
         this.isEnded = false
         this.raw.isEnded = false
+
         this.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
+        this.raw.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
 
         const strings = this.messageProps
         const startEmbedStrings = strings?.embeds.start
@@ -314,8 +317,9 @@ export class Giveaway<
         const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
 
         const message = await this.channel.messages.fetch(this.messageID)
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
-        await message.edit({
+        message.edit({
             content: startEmbedStrings?.messageContent,
             embeds: Object.keys(startEmbedStrings as any).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
@@ -326,20 +330,146 @@ export class Giveaway<
     }
 
     /**
+     * Extends the giveaway length.
+     * @param {string} extensionTime The time to extend the giveaway length by.
+     * @returns {Promise<void>}
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
+     * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     */
+    public async extendLength(extensionTime: string): Promise<void> {
+        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+
+        if (!extensionTime) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('extensionTime', 'Giveaways.extendLength'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof extensionTime !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('extensionTime', 'string', extensionTime),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (this.isEnded) {
+            throw new GiveawaysError(
+                'Cannot extend the giveaway\'s length: '
+                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
+            )
+        }
+
+
+        this.endTimestamp = this.endTimestamp + this._timeToSeconds(extensionTime)
+        this.raw.endTimestamp = this.endTimestamp + this._timeToSeconds(extensionTime)
+
+        const strings = this.messageProps
+        const startEmbedStrings = strings?.embeds.start
+
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+
+        const message = await this.channel.messages.fetch(this.messageID)
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
+
+        message.edit({
+            content: startEmbedStrings?.messageContent,
+            embeds: Object.keys(startEmbedStrings as any).length == 1
+                && startEmbedStrings?.messageContent ? [] : [embed],
+            components: [buttonsRow]
+        })
+
+        this._giveaways.emit('giveawayRestart', this)
+    }
+
+    /**
+     * Reduces the giveaway length.
+     * @param {string} reductionTime The time to reduce the giveaway length by.
+     * @returns {Promise<void>}
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
+     * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     */
+    public async reduceLength(reductionTime: string): Promise<void> {
+        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+
+        if (!reductionTime) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('reductionTime', 'Giveaways.extendLength'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof reductionTime !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('reductionTime', 'string', reductionTime),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        if (this.isEnded) {
+            throw new GiveawaysError(
+                'Cannot reduce the giveaway\'s length: '
+                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
+            )
+        }
+
+        this.endTimestamp = this.endTimestamp - this._timeToSeconds(reductionTime)
+        this.raw.endTimestamp = this.endTimestamp - this._timeToSeconds(reductionTime)
+
+        const strings = this.messageProps
+        const startEmbedStrings = strings?.embeds.start
+
+        const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+
+        const message = await this.channel.messages.fetch(this.messageID)
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
+
+        message.edit({
+            content: startEmbedStrings?.messageContent,
+            embeds: Object.keys(startEmbedStrings as any).length == 1
+                && startEmbedStrings?.messageContent ? [] : [embed],
+            components: [buttonsRow]
+        })
+
+        this._giveaways.emit('giveawayRestart', this)
+    }
+
+
+    /**
      * Ends the giveaway.
      * @returns {Promise<void>}
+     *
+     * @throws {GiveawaysError} `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
     public async end(): Promise<void> {
         const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
-        this.sync(giveaway)
+        const winnerIDs = this._pickWinners(giveaway)
 
-        const winners = this._pickWinners()
+        if (this.isEnded) {
+            throw new GiveawaysError(
+                errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
+            )
+        }
 
         this.isEnded = true
         this.raw.isEnded = true
 
-        await this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
-        await this._messageUtils.editFinishGiveawayMessage(this.raw, winners)
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
+
+        this._messageUtils.editFinishGiveawayMessage(
+            this.raw,
+            winnerIDs,
+            this.messageProps?.embeds.finish?.newGiveawayMessage as any
+        )
 
         this._giveaways.emit('giveawayEnd', this)
     }
@@ -350,22 +480,37 @@ export class Giveaway<
      */
     public async reroll(): Promise<string[]> {
         const { giveaway } = await this._getFromDatabase(this.guild.id)
-        this.sync(giveaway)
+        const winnerIDs = this._pickWinners(giveaway)
 
-        const winners = this._pickWinners()
+        const rerollEmbedStrings = giveaway.messageProps?.embeds?.reroll
+        const rerollMessage: { [key: string]: any } = rerollEmbedStrings?.rerollMessage || {}
 
-        await this._messageUtils.editFinishGiveawayMessage(
+        for (const key in rerollMessage) {
+            rerollMessage[key] = replaceGiveawayKeys(rerollMessage[key], this, winnerIDs)
+        }
+
+        const rerolledEmbed = this._messageUtils.buildGiveawayEmbed(this.raw, rerollMessage, winnerIDs)
+        const giveawayMessage = await this.channel.messages.fetch(this.messageID)
+
+        giveawayMessage.reply({
+            content: rerollMessage?.messageContent,
+            embeds: Object.keys(rerollMessage as any).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
+        })
+
+        this._messageUtils.editFinishGiveawayMessage(
             this.raw,
-            winners,
-            giveaway.messageProps?.embeds?.reroll?.successMessage
+            winnerIDs,
+            rerollEmbedStrings?.newGiveawayMessage,
+            false,
+            rerollEmbedStrings?.successMessage,
         )
 
         this._giveaways.emit('giveawayReroll', {
-            newWinners: winners,
+            newWinners: winnerIDs,
             giveaway: this
         })
 
-        return winners
+        return winnerIDs
     }
 
     /**
@@ -502,26 +647,42 @@ export class Giveaway<
     }
 
     /**
-     * Shuffles all the giveaway entries and randomly picks the winners.
-     * @returns {string[]} Array of users that were picked as the winners.
+     * Shuffles all the giveaway entries, randomly picks the winner user IDs and converts them into mentions.
+     * @param {IGiveaway} [giveawayTySync] The giveaway object to sync with.
+     * @returns {string[]} Array of mentions of users that were picked as the winners.
      * @private
      */
-    private _pickWinners(): string[] {
-        const winners: string[] = []
-        const shuffledEntries = this._shuffleArray(this.entriesArray)
+    private _pickWinners(giveawayTySync?: IGiveaway): string[] {
+        const winnerIDs: string[] = []
 
-        if (!shuffledEntries.length) {
+        if (giveawayTySync) {
+            this.sync(giveawayTySync)
+        }
+
+        if (!this.entriesArray.length) {
             return []
         }
 
-        for (let i = 0; i < this.winnersCount; i++) {
-            const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)
+        const shuffledEntries = this._shuffleArray(this.entriesArray)
 
-            const winnerUserID = shuffledEntries[randomEntryIndex]
-            winners.push(winnerUserID)
+        for (let i = 0; i < this.winnersCount; i++) {
+            const recursiveShuffle = (): void => {
+                const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)
+                const winnerUserID = shuffledEntries[randomEntryIndex]
+
+                if (winnerIDs.includes(winnerUserID)) {
+                    if (winnerIDs.length !== this.entriesArray.length) {
+                        recursiveShuffle()
+                    }
+                } else {
+                    winnerIDs.push(winnerUserID)
+                }
+            }
+
+            recursiveShuffle()
         }
 
-        return winners
+        return winnerIDs.map(winnerID => `<@${winnerID}>`)
     }
 
     /**
@@ -593,6 +754,23 @@ export class Giveaway<
         return {
             giveaway,
             giveawayIndex
+        }
+    }
+
+    /**
+     * Converts the time string into seconds.
+     * @param {string} time The time string to convert.
+     * @returns {number} Converted time string into seconds.
+     * @private
+     *
+     * @throws {GiveawaysError} `INVALID_TIME` - if invalid time string was specified.
+     */
+    private _timeToSeconds(time: string): number {
+        try {
+            const milliseconds = ms(time)
+            return Math.floor(milliseconds / 1000 / 2)
+        } catch {
+            throw new GiveawaysError(GiveawaysErrorCodes.INVALID_TIME)
         }
     }
 

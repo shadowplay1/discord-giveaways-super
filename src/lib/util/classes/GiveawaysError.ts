@@ -56,6 +56,7 @@ export class GiveawaysError extends Error {
  * @prop {string} INVALID_TARGET_TYPE The target type is invalid.
  * @prop {string} UNKNOWN_GIVEAWAY The giveaway is unknown.
  * @prop {string} INVALID_TIME The time is invalid.
+ * @prop {string} GIVEAWAY_ALREADY_ENDED Giveaway already ended.
  */
 export enum GiveawaysErrorCodes {
     UNKNOWN_ERROR = 'UNKNOWN_ERROR',
@@ -69,7 +70,8 @@ export enum GiveawaysErrorCodes {
     INVALID_TYPE = 'INVALID_TYPE',
     INVALID_TARGET_TYPE = 'INVALID_TARGET_TYPE',
     UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY',
-    INVALID_TIME = 'INVALID_TIME'
+    INVALID_TIME = 'INVALID_TIME',
+    GIVEAWAY_ALREADY_ENDED = 'GIVEAWAY_ALREADY_ENDED'
 }
 
 export const errorMessages = {
@@ -92,8 +94,12 @@ export const errorMessages = {
         return `Unknown ${databaseType} error.`
     },
 
-    UNKNOWN_GIVEAWAY(messageID: string): string {
-        return `Unknown giveaway with message ID ${messageID}.`
+    UNKNOWN_GIVEAWAY(giveawayMessageID: string): string {
+        return `Unknown giveaway with message ID ${giveawayMessageID}.`
+    },
+
+    GIVEAWAY_ALREADY_ENDED(giveawayPrize: string, giveawayID: string): string {
+        return `Giveaway "${giveawayPrize}" (ID: ${giveawayID}) has already ended.`
     },
 
     INTENT_MISSING(missingIntent: string): string {

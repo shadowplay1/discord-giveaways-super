@@ -60,12 +60,13 @@ export class MessageUtils {
         const {
             title, titleIcon, color,
             titleURL, description, footer,
-            footerIcon, imageURL, thumbnailURL
+            footerIcon, imageURL, thumbnailURL,
+            timestamp,
         } = embedStrings
 
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: title as string,
+                name: title || null as any,
                 iconURL: titleIcon,
                 url: titleURL
             })
@@ -74,13 +75,16 @@ export class MessageUtils {
                 'Press the button below to join!'
             )
             .setColor(color || '#d694ff')
-            .setImage(imageURL as string)
-            .setThumbnail(thumbnailURL as string)
+            .setImage(imageURL || null as any)
+            .setThumbnail(thumbnailURL || null as any)
             .setFooter({
-                text: footer as string,
+                text: footer || null as any,
                 iconURL: footerIcon
             })
-            .setTimestamp(new Date())
+
+        if (timestamp) {
+            embed.setTimestamp(timestamp)
+        }
 
         return embed
     }
@@ -219,32 +223,35 @@ export class MessageUtils {
      * @param {IGiveaway} giveaway Raw giveaway object.
      * @param {string[]} winners Array of giveaway winners.
      * @param {IGiveawayEmbedOptions} customEmbedStrings Embed options to use instead of `finish` embed.
+     * @param {boolean} sendWinnersMessage Determines if the separated winners message should be sent.
      * @returns {Promise<void>}
      */
     public async editFinishGiveawayMessage(
         giveaway: IGiveaway,
         winners?: string[],
-        customEmbedStrings?: IGiveawayEmbedOptions
+        customEmbedStrings?: IGiveawayEmbedOptions,
+        sendWinnersMessage: boolean = true,
+        endEmbedStrings?: IGiveawayEmbedOptions
     ): Promise<void> {
         const embedStrings = giveaway.messageProps?.embeds?.finish
 
-        const finishEmbedStrings = customEmbedStrings || embedStrings?.newGiveawayMessage
+        const finishEmbedStrings = customEmbedStrings || embedStrings?.newGiveawayMessage || {}
         const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish?.noWinners || {} as IGiveawayEmbedOptions
 
         const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 
         const finishDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
-            title: finishEmbedStrings?.title,
+            ...finishEmbedStrings,
+
             color: finishEmbedStrings?.color || '#d694ff',
-            description: finishEmbedStrings?.description || 'Giveaway is over!',
-            footer: finishEmbedStrings?.footer,
+            description: finishEmbedStrings?.description || 'Giveaway is over!'
         }
 
         const noWinnersDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
-            title: noWinnersEmbedStrings?.title,
+            ...finishEmbedStrings,
+
             color: noWinnersEmbedStrings?.color || '#d694ff',
-            description: noWinnersEmbedStrings?.description || 'There are no winners in this giveaway!',
-            footer: noWinnersEmbedStrings?.footer,
+            description: noWinnersEmbedStrings?.description || 'There are no winners in this giveaway!'
         }
 
         const winnersCondition = winners?.length as number >= this._giveaways.options.minGiveawayEntries
@@ -274,7 +281,7 @@ export class MessageUtils {
         const finishMessageContent =
             replaceGiveawayKeys(
                 winnersCondition
-                    ? embedStrings?.endMessage.messageContent
+                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent
                     : embedStrings?.noWinnersEndMessage?.messageContent as any,
                 giveaway,
                 winners
@@ -290,10 +297,12 @@ export class MessageUtils {
             components: winnersCondition ? [rerollButtonRow] : []
         })
 
-        await message.reply({
-            content: finishMessageContent,
-            embeds: finishInputObjectKeys.length == 1 && finishMessageContent ? [] : [giveawayEndEmbed],
-            components: [goToMessageButtonRow]
-        })
+        if (sendWinnersMessage) {
+            await message.reply({
+                content: finishMessageContent,
+                embeds: finishInputObjectKeys.length == 1 && finishMessageContent ? [] : [giveawayEndEmbed],
+                components: [goToMessageButtonRow]
+            })
+        }
     }
 }

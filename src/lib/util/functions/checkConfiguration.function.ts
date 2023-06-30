@@ -8,7 +8,7 @@ import { DatabaseType } from '../../../types/databaseType.enum'
  * Type parameters:
  *
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will determine which connection configuration should be used.
  * @callback checkConfiguration
  *
  * @template {DatabaseType} TDatabaseType

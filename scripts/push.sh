@@ -14,11 +14,19 @@ if ! source ./scripts/docgen.sh; then
     exit 1
 fi
 
-sed -i 's/"name": "If<T,/"name": "If<T, IfTrue, IfFalse>/g' "./docs/generated/${package_version}.json"
-sed -i 's/"name": "Optional<T,"/"name": "Optional<T, K>"/g' "./docs/generated/${package_version}.json"
-sed -i 's/"name": "MapCallback<T,/"name": "MapCallback<T, TReturnType>/g' "./docs/generated/${package_version}.json"
 
-cp "./docs/generated/${package_version}.json" "/tmp/${package_version}.json"
+documentation_file_path = "./docs/generated/${package_version}.json"
+
+# add missing generics in classes
+sed -i 's/"name": "Giveaway"/"name": "Giveaway<TDatabaseType>"/g' "$documentation_file_path"
+sed -i 's/"name": "Giveaways"/"name": "Giveaways<TDatabaseType>"/g' "$documentation_file_path"
+
+# add missing generics in utility types with 2+ type arguments
+sed -i 's/"name": "If<T,/"name": "If<T, IfTrue, IfFalse>/g' "$documentation_file_path"
+sed -i 's/"name": "Optional<T,"/"name": "Optional<T, K>"/g' "$documentation_file_path"
+sed -i 's/"name": "MapCallback<T,/"name": "MapCallback<T, TReturnType>/g' "$documentation_file_path"
+
+cp "$documentation_file_path" "/tmp/${package_version}.json"
 cp -r "./src" "/tmp/src"
 
 echo

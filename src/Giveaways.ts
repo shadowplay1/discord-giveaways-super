@@ -46,7 +46,7 @@ import { MessageUtils } from './lib/util/classes/MessageUtils'
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
  *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
@@ -368,7 +368,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                             const giveawayLeaveEmbed =
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
 
-                            const newGiveaway = await giveaway.removeEntry(
+                            const newGiveaway = await giveaway.addEntry(
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
@@ -556,14 +556,13 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         }
     }
 
-
     /**
      * Starts the giveaway.
      * @param {IGiveawayStartConfig} giveawayOptions @see Giveaway options.
      * @returns {Promise<Giveaway<DatabaseType>>} Created @see Giveaway instance.
      *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
-     * `INVALID_TYPE` - when argument type is invalid.
+     * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
     public async start(
         giveawayOptions: IGiveawayStartConfig
@@ -693,12 +692,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             this.client.users.cache.get(hostMemberID) as User
         ) as Required<IEmbedStringsDefinitions> : {} as Required<IEmbedStringsDefinitions>
 
-        const startEmbedStrings = definedEmbedStrings.start
+        const startEmbedStrings = definedEmbedStrings?.start
 
-        const finish = definedEmbedStrings.finish
-        const reroll = definedEmbedStrings.reroll
+        const finish = definedEmbedStrings?.finish
+        const reroll = definedEmbedStrings?.reroll
 
-        const finishWithoutWinnersEmbedStrings = definedEmbedStrings.start
+        const finishWithoutWinnersEmbedStrings = definedEmbedStrings?.start
 
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 
@@ -724,6 +723,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         newGiveaway.messageProps = {
             embeds: {
                 start: startEmbedStrings,
+                joinGiveawayMessage: definedEmbedStrings?.joinGiveawayMessage,
+                leaveGiveawayMessage: definedEmbedStrings?.leaveGiveawayMessage,
                 finish: finishEmbedStrings,
                 reroll: rerollEmbedStrings,
                 finishWithoutWinners: finishWithoutWinnersEmbedStrings
@@ -743,18 +744,69 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         return startedGiveaway
     }
 
+    /**
+     * Finds the giveaway in all giveaways database by the specified callback function.
+     *
+     * @param {FindCallback<Giveaway<TDatabaseType>>} cb
+     * The callback function to find the giveaway in the giveaways database.
+     *
+     * @returns {Promise<Giveaway<TDatabaseType>>}
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
     public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Giveaway<TDatabaseType>> {
+        if (!cb) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof cb !== 'function') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('cb', 'function', cb),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const giveaways = await this.getAll()
         const giveaway = giveaways.find(cb)
 
         return giveaway as Giveaway<TDatabaseType>
     }
 
+    /**
+     * Gets all the giveaways from the specified guild in database.
+     * @param {string} guildID Guild ID to get the giveaways from.
+     * @returns {Promise<Giveaway<TDatabaseType>[]>} Giveaways array from the specified guild in database.
+     *
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
     public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabaseType>[]> {
+        if (!guildID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof guildID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('guildID', 'string', guildID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
         const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
+    /**
+     * Gets all the giveaways from all the guilds in database.
+     * @returns {Promise<Giveaway<TDatabaseType>[]>} Giveaways array from all the guilds in database.
+     */
     public async getAll(): Promise<Giveaway<TDatabaseType>[]> {
         const giveaways: IGiveaway[] = []
         const guildIDs = await this.database.getKeys()
@@ -770,6 +822,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
+    /**
+     * Checks for all giveaways to be finished and end them if they are.
+     * @returns {Promise<void>}
+     * @private
+     */
     private async _checkGiveaways(): Promise<void> {
         const giveaways = await this.getAll()
 
@@ -790,7 +847,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveaway<TDatabaseType>
  * @prop {number} id The ID of the giveaway.
@@ -874,7 +931,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
  * @typedef {object} IGiveawayRerollMessages
- * @prop {IGiveawayEmbedOptions} onlyHostCanReroll The message to reply to user with when not a giveaway host tries to do a reroll.
+ *
+ * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
+ * The message to reply to user with when not a giveaway host tries to do a reroll.
  *
  * @prop {IGiveawayEmbedOptions} newGiveawayMessage
  * The message that will be set to the original giveaway message after the reroll.
@@ -886,7 +945,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * A function that is called when giveaway winners are rerolled.
  * @callback GiveawayRerollCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ *
+ * @param {string} winnersMentionsString
+ * A string that contains the mentions of users that won the giveaway, separated with comma.
+ *
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayRerollMessages} Giveaway message objects.
  */
@@ -931,7 +993,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
  *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
@@ -1084,7 +1146,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {?string} [footerIcon] The icon of the footer in the embed.
  * @prop {?string} [thumbnailURL] Embed thumbnail.
  * @prop {?string} [imageURL] Embed Image URL.
- * @prop {ColorResolvable} [color] The color of the embed.
+ * @prop {?ColorResolvable} [color] The color of the embed.
+ * @prop {?number} [timestamp] The embed timestamp to set.
  */
 
 /**
@@ -1100,7 +1163,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
  *
  * @typedef {(
  * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
@@ -1118,20 +1181,22 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * @see null - JSON database management object - `null`
- * is because it's not an external database - JSON is being parsed by the module.
+ * External database object based on the used database type.
  *
  * Type parameters:
  *
- * - TDatabaseType (@see TDatabaseType) - The database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` (@see TDatabaseType) - Database type that will determine which connection configuration should be used.
+ *
+ * @typedef {(
+ * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
+ * )} Database<TDatabaseType>
+ *
+ * @see null - JSON database management object - `null`
+ * is because it's not an external database - JSON is being parsed by the module.
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
  * @see Mongo<IDatabaseStructure> - MongoDB database.
- *
- * @typedef {(
- * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
- * )} Database<TDatabaseType> External database object based on the used database type.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.
@@ -1158,7 +1223,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawaysEvents<TDatabaseType>
  * @prop {Giveaways<DatabaseType>} ready Emits when the @see Giveaways is ready.
@@ -1176,7 +1241,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` (@see DatabaseType) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawayRerollEvent<TDatabaseType>
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
@@ -1322,4 +1387,3 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @event Giveaways#giveawayReroll
  * @param {IGiveawayRerollEvent} giveaway @see Giveaway that was rerolled.
  */
-
