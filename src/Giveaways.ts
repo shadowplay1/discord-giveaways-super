@@ -779,12 +779,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     /**
      * Gets all the giveaways from the specified guild in database.
      * @param {string} guildID Guild ID to get the giveaways from.
-     * @returns {Promise<Giveaway<TDatabaseType>[]>} Giveaways array from the specified guild in database.
+     * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
      *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabaseType>[]> {
+    public async getGuildGiveaways(guildID: string): Promise<Array<Giveaway<TDatabaseType>>> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
@@ -805,9 +805,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
     /**
      * Gets all the giveaways from all the guilds in database.
-     * @returns {Promise<Giveaway<TDatabaseType>[]>} Giveaways array from all the guilds in database.
+     * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from all the guilds in database.
      */
-    public async getAll(): Promise<Giveaway<TDatabaseType>[]> {
+    public async getAll(): Promise<Array<Giveaway<TDatabaseType>>> {
         const giveaways: IGiveaway[] = []
         const guildIDs = await this.database.getKeys()
 
