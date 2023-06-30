@@ -5,7 +5,7 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
  *
  * Type parameters:
  *
- * - TDatabaseType (@see DatabaseType) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveaway<TDatabaseType>
  * @prop {number} id The ID of the giveaway.
@@ -203,7 +203,7 @@ export interface IGiveawayEmbeds {
      * @type {IGiveawayRerollEmbeds}
      */
     reroll: Record<
-        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage',
+        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage' | 'rerollMessage',
         IGiveawayEmbedOptions
     >
 

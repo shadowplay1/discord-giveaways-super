@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events'
 
 /**
- * Represents an event emitter for @see Giveaways events.
+ * Represents an event emitter for {@link Giveaways} events.
  *
  * Type parameters:
  *
- * - E (@see object) - The object whose **keys** will be used as event names and **values** for events' return types.
+ * - E ({@link object}) - The object whose **keys** will be used as event names and **values** for events' return types.
  *
  * @template {object} E The object whose **keys** will be used as event names and **values** for events' return types.
  * @private
