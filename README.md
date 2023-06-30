@@ -4,20 +4,21 @@
 [![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
 [![Build Status](https://github.com/shadowplay1/discord-giveaways-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-giveaways-super)
 
-<b>Discord Giveaways Super</b> - Create and manage giveaways in Discord.
+<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).
 
 ## ❓ | Why **Discord Giveaways Super**?
 <ul>
 <li><b>Clean TypeScript Defenitions 📘</b></li>
 <li><b>Multiple Databases Support 🍃</a></b></li>
 <li><b>Flexible and Customizable ⚙️</b></li>
-<li><b>Easy to use 👍</b></li>
+<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>
+<li><b>Handles Crashes/Restarts 🔄</b></li>
 <li><b>Beginner Friendly 😄</b></li>
 </ul>
 
 ## 📂 | Installation
 <b>Note:</br><b>
-<b>Node.js v14.0.0 or newer is required.</b><br>
+<b>Node.js v16.9.0 or newer is required.</b><br>
 ```console
 $ npm i discord-giveaways-super
 $ yarn add discord-giveaways-super
@@ -27,9 +28,7 @@ $ pnpm add discord-giveaways-super
 ## [[Module Documentation]](https://dgs-docs.js.org)
 
 ## 🛠️ | Examples
-[MongoDB Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
-
-[JSON Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
+[Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
 
 ## 🤔 | Help
 <b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = "https://discord.gg/4pWKq8vUnb">Support Server</a>.</b>

@@ -3,3 +3,15 @@
   files:
     - name: Welcome
       path: welcome.md
+
+    - name: Examples
+      path: examples.md
+
+    - name: Configuring
+      path: configuring.md
+
+    - name: FAQ
+      path: faq.md
+
+    - name: Changelog
+      path: changelog.md
