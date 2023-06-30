@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688089412138
+  "date": 1688127797534
  },
  "custom": {
   "general": {
@@ -353,7 +353,7 @@
       ]
      ],
      "meta": {
-      "line": 747,
+      "line": 746,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -399,7 +399,7 @@
       "description": "Giveaways array from the specified guild in database."
      },
      "meta": {
-      "line": 779,
+      "line": 777,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -432,7 +432,7 @@
       "description": "Giveaways array from all the guilds in database."
      },
      "meta": {
-      "line": 806,
+      "line": 803,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -455,7 +455,7 @@
       ]
      ],
      "meta": {
-      "line": 825,
+      "line": 822,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -484,7 +484,7 @@
       }
      ],
      "meta": {
-      "line": 1364,
+      "line": 1375,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -506,7 +506,7 @@
       }
      ],
      "meta": {
-      "line": 1370,
+      "line": 1381,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -533,7 +533,7 @@
       }
      ],
      "meta": {
-      "line": 1376,
+      "line": 1387,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -560,7 +560,7 @@
       }
      ],
      "meta": {
-      "line": 1382,
+      "line": 1393,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -587,7 +587,7 @@
       }
      ],
      "meta": {
-      "line": 1388,
+      "line": 1399,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -609,7 +609,7 @@
       }
      ],
      "meta": {
-      "line": 1394,
+      "line": 1405,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -654,7 +654,7 @@
       ]
      ],
      "meta": {
-      "line": 147,
+      "line": 151,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -671,7 +671,7 @@
       ]
      ],
      "meta": {
-      "line": 154,
+      "line": 158,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -687,7 +687,7 @@
       ]
      ],
      "meta": {
-      "line": 162,
+      "line": 166,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -703,7 +703,7 @@
       ]
      ],
      "meta": {
-      "line": 168,
+      "line": 172,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -719,7 +719,7 @@
       ]
      ],
      "meta": {
-      "line": 174,
+      "line": 178,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -735,7 +735,7 @@
       ]
      ],
      "meta": {
-      "line": 180,
+      "line": 184,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -751,7 +751,7 @@
       ]
      ],
      "meta": {
-      "line": 186,
+      "line": 190,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -767,7 +767,7 @@
       ]
      ],
      "meta": {
-      "line": 192,
+      "line": 196,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -783,7 +783,7 @@
       ]
      ],
      "meta": {
-      "line": 198,
+      "line": 202,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -799,7 +799,7 @@
       ]
      ],
      "meta": {
-      "line": 204,
+      "line": 208,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -815,7 +815,7 @@
       ]
      ],
      "meta": {
-      "line": 210,
+      "line": 214,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -831,7 +831,7 @@
       ]
      ],
      "meta": {
-      "line": 216,
+      "line": 220,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -847,7 +847,7 @@
       ]
      ],
      "meta": {
-      "line": 222,
+      "line": 226,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -863,7 +863,7 @@
       ]
      ],
      "meta": {
-      "line": 228,
+      "line": 232,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -879,7 +879,7 @@
       ]
      ],
      "meta": {
-      "line": 234,
+      "line": 238,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -895,7 +895,7 @@
       ]
      ],
      "meta": {
-      "line": 240,
+      "line": 244,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -916,7 +916,7 @@
       ]
      ],
      "meta": {
-      "line": 246,
+      "line": 250,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -932,7 +932,7 @@
       ]
      ],
      "meta": {
-      "line": 252,
+      "line": 256,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -948,7 +948,7 @@
       ]
      ],
      "meta": {
-      "line": 258,
+      "line": 262,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -964,7 +964,7 @@
       ]
      ],
      "meta": {
-      "line": 292,
+      "line": 296,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -988,7 +988,7 @@
       ]
      ],
      "meta": {
-      "line": 300,
+      "line": 304,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1023,7 +1023,7 @@
       ]
      ],
      "meta": {
-      "line": 332,
+      "line": 336,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1058,7 +1058,7 @@
       ]
      ],
      "meta": {
-      "line": 390,
+      "line": 394,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1080,7 +1080,7 @@
       ]
      ],
      "meta": {
-      "line": 448,
+      "line": 452,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1109,7 +1109,7 @@
       "description": "Rerolled winners users IDs."
      },
      "meta": {
-      "line": 479,
+      "line": 483,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1153,7 +1153,7 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 568,
+      "line": 571,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1197,7 +1197,7 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 568,
+      "line": 571,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1239,7 +1239,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 619,
+      "line": 621,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1281,7 +1281,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 644,
+      "line": 647,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1323,7 +1323,49 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 669,
+      "line": 673,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "setTime",
+     "description": "Changes the giveaway's time and edits the giveaway message.",
+     "params": [
+      {
+       "name": "time",
+       "description": "The new time to set.",
+       "type": [
+        [
+         [
+          "string"
+         ]
+        ]
+       ]
+      }
+     ],
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">>"
+        ]
+       ]
+      ],
+      "description": "Updated {@link Giveaway} instance."
+     },
+     "meta": {
+      "line": 699,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1376,7 +1418,36 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 694,
+      "line": 725,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "delete",
+     "description": "Deletes the giveaway from database and deletes its message.",
+     "async": true,
+     "returns": {
+      "types": [
+       [
+        [
+         "Promise",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "DatabaseType",
+         ">>"
+        ]
+       ]
+      ],
+      "description": "Deleted {@link Giveaway} instance."
+     },
+     "meta": {
+      "line": 822,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1405,7 +1476,7 @@
       ]
      ],
      "meta": {
-      "line": 755,
+      "line": 844,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1444,7 +1515,7 @@
       "description": "Array of mentions of users that were picked as the winners."
      },
      "meta": {
-      "line": 787,
+      "line": 875,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1487,7 +1558,7 @@
       "description": "Shuffled array."
      },
      "meta": {
-      "line": 826,
+      "line": 914,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1526,7 +1597,7 @@
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 861,
+      "line": 948,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1559,7 +1630,7 @@
       "description": "Converted time string into seconds."
      },
      "meta": {
-      "line": 898,
+      "line": 984,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1578,14 +1649,14 @@
       "description": "Plain object representation of {@link Giveaway} instance."
      },
      "meta": {
-      "line": 915,
+      "line": 1001,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "meta": {
-    "line": 14,
+    "line": 18,
     "file": "Giveaway.ts",
     "path": "src/lib"
    }
@@ -2752,7 +2823,7 @@
     }
    ],
    "meta": {
-    "line": 902,
+    "line": 899,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2802,7 +2873,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 918,
+    "line": 915,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2853,7 +2924,7 @@
     }
    ],
    "meta": {
-    "line": 926,
+    "line": 923,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2903,7 +2974,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 940,
+    "line": 937,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3126,6 +3197,51 @@
    }
   },
   {
+   "name": "EditableGiveawayProperties",
+   "description": "A type that contains all giveaway properties that may be safely edited.",
+   "type": [
+    [
+     [
+      "'prize",
+      "'"
+     ]
+    ],
+    [
+     [
+      "'winnersCount",
+      "'"
+     ]
+    ],
+    [
+     [
+      "'hostMemberID",
+      "'"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 249,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
+   "name": "GiveawayPropertyValue<TProperty>",
+   "description": "The type that returns the property's value type based on the specified {@link Giveaway} property in `TProperty`.\n\nType parameters:\n\n- `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 255,
+    "file": "giveaway.interface.ts",
+    "path": "src/lib"
+   }
+  },
+  {
    "name": "GiveawayState",
    "description": "An enum that determines the state of a giveaway.",
    "type": [
@@ -3160,7 +3276,7 @@
     }
    ],
    "meta": {
-    "line": 249,
+    "line": 265,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -3266,7 +3382,7 @@
     }
    ],
    "meta": {
-    "line": 986,
+    "line": 997,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3350,7 +3466,7 @@
     }
    ],
    "meta": {
-    "line": 1009,
+    "line": 1020,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3396,7 +3512,7 @@
     }
    ],
    "meta": {
-    "line": 1022,
+    "line": 1033,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3486,7 +3602,7 @@
     }
    ],
    "meta": {
-    "line": 1029,
+    "line": 1040,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3546,7 +3662,7 @@
     }
    ],
    "meta": {
-    "line": 1148,
+    "line": 1159,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3630,7 +3746,7 @@
     }
    ],
    "meta": {
-    "line": 1049,
+    "line": 1060,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3738,7 +3854,7 @@
     }
    ],
    "meta": {
-    "line": 1060,
+    "line": 1071,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3795,7 +3911,7 @@
     }
    ],
    "meta": {
-    "line": 1073,
+    "line": 1084,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3848,7 +3964,7 @@
     }
    ],
    "meta": {
-    "line": 1081,
+    "line": 1092,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3898,7 +4014,7 @@
     "description": "- An object containing the defined embed strings."
    },
    "meta": {
-    "line": 1091,
+    "line": 1102,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3940,7 +4056,7 @@
     }
    ],
    "meta": {
-    "line": 1099,
+    "line": 1110,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3991,7 +4107,7 @@
     }
    ],
    "meta": {
-    "line": 1106,
+    "line": 1117,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4048,7 +4164,7 @@
     }
    ],
    "meta": {
-    "line": 1120,
+    "line": 1131,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4209,7 +4325,7 @@
     }
    ],
    "meta": {
-    "line": 1128,
+    "line": 1139,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4254,7 +4370,7 @@
     ]
    ],
    "meta": {
-    "line": 1156,
+    "line": 1167,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4299,7 +4415,7 @@
     ]
    ],
    "meta": {
-    "line": 1178,
+    "line": 1189,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4344,7 +4460,7 @@
     }
    ],
    "meta": {
-    "line": 1201,
+    "line": 1212,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4384,7 +4500,7 @@
     }
    ],
    "meta": {
-    "line": 1208,
+    "line": 1219,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4488,7 +4604,7 @@
     }
    ],
    "meta": {
-    "line": 1216,
+    "line": 1227,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4533,7 +4649,7 @@
     }
    ],
    "meta": {
-    "line": 1234,
+    "line": 1245,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4578,7 +4694,7 @@
     }
    ],
    "meta": {
-    "line": 1248,
+    "line": 1259,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4794,7 +4910,7 @@
     }
    ],
    "meta": {
-    "line": 1262,
+    "line": 1273,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4845,7 +4961,7 @@
     }
    ],
    "meta": {
-    "line": 1285,
+    "line": 1296,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4866,7 +4982,7 @@
     ]
    ],
    "meta": {
-    "line": 1297,
+    "line": 1308,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4882,7 +4998,7 @@
     ]
    ],
    "meta": {
-    "line": 1314,
+    "line": 1325,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4921,7 +5037,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1328,
+    "line": 1339,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4960,7 +5076,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1342,
+    "line": 1353,
     "file": "Giveaways.ts",
     "path": "src"
    }
