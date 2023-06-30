@@ -1246,6 +1246,20 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
+ * Giveaway time change event object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
+ *
+ * @typedef {object} IGiveawayTimeChangeEvent
+ * @prop {string} time The time that affected the giveaway's length.
+ * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
+ *
+ * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ */
+
+/**
  * An interface containing different colors that may be used in a logger.
  * @typedef {object} ILoggerColors
  * @prop {string} red The color red.
