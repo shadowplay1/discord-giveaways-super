@@ -1170,11 +1170,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
  * )} DatabaseConnectionOptions<TDatabaseType>
  *
- * @see {@link Partial}<{@link IJSONDatabaseConfiguration}>} - JSON configuration.
+ * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
- * @see {@link EnmapOptions}<{@link any}, {@link any}>} - Enmap configuration.
+ * @see EnmapOptions<any, any> - Enmap configuration.
  *
- * @see {@link IMongoConnectionOptions} - MongoDB connection configuration.
+ * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -1191,12 +1191,12 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
  * )} Database<TDatabaseType>
  *
- * @see {@link null} - JSON database management object - `null`
+ * @see null - JSON database management object - `null`
  * is because it's not an external database - JSON is being parsed by the module itself.
  *
- * @see {@link Enmap}<{@link string}, {@link IDatabaseStructure}>} - Enmap database.
+ * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
- * @see {@link Mongo}<{@link IDatabaseStructure}>} - MongoDB database.
+ * @see Mongo<{IDatabaseStructure> - MongoDB database.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.
