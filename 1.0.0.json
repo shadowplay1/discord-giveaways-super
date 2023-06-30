@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688085787976
+  "date": 1688086491298
  },
  "custom": {
   "general": {
@@ -19,7 +19,7 @@
  },
  "classes": [
   {
-   "name": "Giveaways",
+   "name": "Giveaways<TDatabaseType>",
    "description": "Main Giveaways class.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "extends": [
     [
@@ -38,7 +38,7 @@
     ]
    ],
    "construct": {
-    "name": "Giveaways",
+    "name": "Giveaways<TDatabaseType>",
     "description": "Main {@link Giveaways} constructor.",
     "params": [
      {
@@ -622,7 +622,7 @@
    }
   },
   {
-   "name": "Giveaway",
+   "name": "Giveaway<TDatabaseType>",
    "description": "Class that represents the Giveaway object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "implements": [
     [
@@ -4037,11 +4037,11 @@
   },
   {
    "name": "DatabaseConnectionOptions<TDatabaseType>",
-   "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
+   "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will\ndetermine which connection configuration should be used.",
    "see": [
-    "Partial<IJSONDatabaseConfiguration> - JSON configuration.",
-    "EnmapOptions<any, any> - Enmap configuration.",
-    "IMongoConnectionOptions - MongoDB connection configuration."
+    "{@link Partial<IJSONDatabaseConfiguration>} - JSON configuration.",
+    "{@link EnmapOptions<any, any>} - Enmap configuration.",
+    "{@link IMongoConnectionOptions} - MongoDB connection configuration."
    ],
    "type": [
     [
@@ -4084,9 +4084,9 @@
    "name": "Database<TDatabaseType>",
    "description": "External database object based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
    "see": [
-    "null - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module.",
-    "Enmap<string, IDatabaseStructure> - Enmap database.",
-    "Mongo<IDatabaseStructure> - MongoDB database."
+    "{@link null} - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module itself.",
+    "{@link Enmap<string, IDatabaseStructure>} - Enmap database.",
+    "{@link Mongo<IDatabaseStructure>} - MongoDB database."
    ],
    "type": [
     [
@@ -4627,7 +4627,7 @@
    }
   },
   {
-   "name": "If<T,",
+   "name": "If<T, IfTrue, IfFalse>",
    "description": "Represents the `if` statement on a type level.\n\nType parameters:\n\n- `T` ({@link boolean}) - The boolean type to compare with.\n- `IfTrue` ({@link any}) - The type that will be returned if `T` is `true`.\n- `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.",
    "type": [
     [
@@ -4648,7 +4648,7 @@
    }
   },
   {
-   "name": "Optional<T,",
+   "name": "Optional<T, K>",
    "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` ({@link object}) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
    "type": [
     [
@@ -4703,7 +4703,7 @@
    }
   },
   {
-   "name": "MapCallback<T,",
+   "name": "MapCallback<T, TReturnType>",
    "description": "A callback function that calls when mapping the array using the {@link Array.prototype.map} method.\n\nType parameters:\n\n- `T` ({@link any}) - The type of item to be passed to the callback function.\n- `TReturnType` - ({@link any}) The type of value returned by the callback function.",
    "type": [
     [
