@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688086491298
+  "date": 1688086748009
  },
  "custom": {
   "general": {
@@ -4039,8 +4039,8 @@
    "name": "DatabaseConnectionOptions<TDatabaseType>",
    "description": "Database connection options based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will\ndetermine which connection configuration should be used.",
    "see": [
-    "{@link Partial<IJSONDatabaseConfiguration>} - JSON configuration.",
-    "{@link EnmapOptions<any, any>} - Enmap configuration.",
+    "{@link Partial}<{@link IJSONDatabaseConfiguration}>} - JSON configuration.",
+    "{@link EnmapOptions}<{@link any}, {@link any}>} - Enmap configuration.",
     "{@link IMongoConnectionOptions} - MongoDB connection configuration."
    ],
    "type": [
@@ -4085,8 +4085,8 @@
    "description": "External database object based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
    "see": [
     "{@link null} - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module itself.",
-    "{@link Enmap<string, IDatabaseStructure>} - Enmap database.",
-    "{@link Mongo<IDatabaseStructure>} - MongoDB database."
+    "{@link Enmap}<{@link string}, {@link IDatabaseStructure}>} - Enmap database.",
+    "{@link Mongo}<{@link IDatabaseStructure}>} - MongoDB database."
    ],
    "type": [
     [
