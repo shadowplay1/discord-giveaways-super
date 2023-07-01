@@ -26,6 +26,7 @@ Features:
 <ul>
 <li><b>Clean TypeScript Defenitions 📘</b></li>
 <li><b>Multiple Databases Support 🍃</a></b></li>
+<li><b>Object-Oriented 📝</b></li>
 <li><b>Flexible and Customizable ⚙️</b></li>
 <li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>
 <li><b>Handles Crashes/Restarts 🔄</b></li>
