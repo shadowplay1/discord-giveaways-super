@@ -12,14 +12,13 @@
 <li><b>Multiple Databases Support 🍃</a></b></li>
 <li><b>Object-Oriented 📝</b></li>
 <li><b>Flexible and Customizable ⚙️</b></li>
-<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>
+<li><b>Giveaway <u>start</u>, <u>edit</u>, <u>delete</u>, <u>reroll</u>, <u>extension</u> and <i>many more</i> 🚀</b></li>
 <li><b>Handles Crashes/Restarts 🔄</b></li>
 <li><b>Beginner Friendly 😄</b></li>
 </ul>
 
 ## 📂 | Installation
-<b>Note:</br><b>
-<b>Node.js v16.9.0 or newer is required.</b><br>
+<b>Node.js v16.9.0 or newer is required to install.</b><br>
 ```console
 $ npm i discord-giveaways-super
 $ yarn add discord-giveaways-super

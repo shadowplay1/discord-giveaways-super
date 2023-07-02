@@ -780,6 +780,9 @@ export class Giveaway<
         const strings = this.messageProps
         const startEmbedStrings: { [key: string]: any } = strings?.embeds.start || {}
 
+        const oldRawGiveaway = { ...this.raw }
+        const oldValue = oldRawGiveaway[key]
+
         if (key == 'hostMemberID') {
             const newGiveawayHostUserID = value as string
             const newGiveawayHost = this._giveaways.client.users.cache.get(newGiveawayHostUserID) as User
@@ -794,7 +797,7 @@ export class Giveaway<
             for (const key in startEmbedStrings) {
                 if (typeof startEmbedStrings[key] == 'string') {
 
-                    // not working
+                    // not working:
 
                     // for (const newGiveawayHostKey in this.host) {
                     // const currentHost = { ...this.host } as any
@@ -814,10 +817,10 @@ export class Giveaway<
                     // if (startEmbedStrings[key].includes(currentHost[newGiveawayHostKey])) {
                     //      startEmbedStrings[key] = startEmbedStrings[key]
                     //          .replaceAll(currentHost[newGiveawayHostKey], newHost[newGiveawayHostKey])
-                    // }
+                    //     }
                     // }
 
-                    // temporary solution foe the code above
+                    // temporary solution foe the commented out code above:
                     startEmbedStrings[key] = startEmbedStrings[key]
                         .replaceAll(this.host.username, newGiveawayHost.username)
                         .replaceAll(this.host.discriminator, newGiveawayHost.discriminator)
@@ -832,8 +835,6 @@ export class Giveaway<
                         .replaceAll(this.host.id, newGiveawayHost.id)
                 }
             }
-
-            // TODO: `giveaway.on('giveawayEdit') event
 
             this.host = newGiveawayHost
             this.raw.hostMemberID = newGiveawayHostUserID
@@ -862,6 +863,13 @@ export class Giveaway<
             embeds: Object.keys(startEmbedStrings as any).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
+        })
+
+        this._giveaways.emit('giveawayEdit', {
+            key,
+            oldValue,
+            newValue: value,
+            giveaway: this
         })
 
         return this
