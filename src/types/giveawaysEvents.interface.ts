@@ -25,7 +25,7 @@ export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
     databaseConnect: void
     giveawayReroll: IGiveawayRerollEvent<TDatabaseType>
 } & Record<'giveawayStart' | 'giveawayRestart' | 'giveawayEnd', Giveaway<TDatabaseType>>
-    & Record<'giveawayLengthExtended' | 'giveawayLengthReduced', IGiveawayTimeChangeEvent<TDatabaseType>>
+    & Record<'giveawayLengthExtend' | 'giveawayLengthReduce', IGiveawayTimeChangeEvent<TDatabaseType>>
 
 /**
  * Giveaway reroll event object.

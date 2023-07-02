@@ -1405,5 +1405,18 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 /**
  * Emits when a giveaway is rerolled.
  * @event Giveaways#giveawayReroll
- * @param {IGiveawayRerollEvent} giveaway {@link Giveaway} that was rerolled.
+ * @param {IGiveawayRerollEvent} data
+ * Data object that contains the new array of mentions of winners and the {@link Giveaway} reroll happened in.
+ */
+
+/**
+ * Emits when a giveaway's length was extended.
+ * @event Giveaways#giveawayLengthExtend
+ * @param {IGiveawayTimeChangeEvent} data Data object the contains the extension time and the affected {@link Giveaway}.
+ */
+
+/**
+ * Emits when a giveaway's length was reduced.
+ * @event Giveaways#giveawayLengthReduce
+ * @param {IGiveawayTimeChangeEvent} data Data object the contains the reduction time and the affected {@link Giveaway}.
  */

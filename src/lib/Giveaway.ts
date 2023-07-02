@@ -385,7 +385,7 @@ export class Giveaway<
             components: [buttonsRow]
         })
 
-        this._giveaways.emit('giveawayLengthReduced', {
+        this._giveaways.emit('giveawayLengthExtend', {
             time: extensionTime,
             giveaway: this
         })
@@ -443,7 +443,7 @@ export class Giveaway<
             components: [buttonsRow]
         })
 
-        this._giveaways.emit('giveawayLengthReduced', {
+        this._giveaways.emit('giveawayLengthReduce', {
             time: reductionTime,
             giveaway: this
         })
@@ -649,14 +649,25 @@ export class Giveaway<
      * @param {string} winnersCount The new winners count to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
-     * `INVALID_TYPE` - when argument type is invalid,
+     * `INVALID_TYPE` - when argument type is invalid, `INVALID_INPUT` - when the input value is bad or invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
     public async setWinnersCount(winnersCount: number): Promise<Giveaway<TDatabaseType>> {
-        if (!winnersCount) {
+        if (winnersCount == null || winnersCount == undefined) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('winnersCount', 'Giveaways.setWinnersCount'),
                 GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (winnersCount <= 0) {
+            throw new GiveawaysError(
+                errorMessages.INVALID_INPUT(
+                    'winnersCount',
+                    'Giveaways.setWinnersCount',
+                    'winners count cannot be less or equal 0'
+                ),
+                GiveawaysErrorCodes.INVALID_INPUT
             )
         }
 
@@ -767,29 +778,66 @@ export class Giveaway<
         }
 
         const strings = this.messageProps
-        const startEmbedStrings = strings?.embeds.start || {}
+        const startEmbedStrings: { [key: string]: any } = strings?.embeds.start || {}
 
         if (key == 'hostMemberID') {
-            const user = this._giveaways.client.users.cache.get(value as string) as User
+            const newGiveawayHostUserID = value as string
+            const newGiveawayHost = this._giveaways.client.users.cache.get(newGiveawayHostUserID) as User
 
-            if (!user) {
+            if (!newGiveawayHost) {
                 throw new GiveawaysError(
-                    errorMessages.USER_NOT_FOUND(value as string),
+                    errorMessages.USER_NOT_FOUND(newGiveawayHostUserID),
                     GiveawaysErrorCodes.USER_NOT_FOUND
                 )
             }
 
             for (const key in startEmbedStrings) {
-                if (typeof (startEmbedStrings as any)[key] == 'string') {
-                    (startEmbedStrings as any)[key] = (startEmbedStrings as any)[key]
-                        .replaceAll(this.host.username, user.username)
-                        .replaceAll(`<@${this.host.id}>`, `<@${user.id}>`)
-                        .replaceAll('{hostMemberID}', `<@${user.id}>`)
+                if (typeof startEmbedStrings[key] == 'string') {
+
+                    // not working
+
+                    // for (const newGiveawayHostKey in this.host) {
+                    // const currentHost = { ...this.host } as any
+                    // const newHost = newGiveawayHost as any
+
+                    // console.log({ old: currentHost[newGiveawayHostKey], new: newHost[newGiveawayHostKey] });
+
+                    // console.log({
+                    //     newGiveawayHostKey,
+                    //     includes: startEmbedStrings[key]
+                    //         .includes(currentHost[newGiveawayHostKey]),
+                    //     str: startEmbedStrings[key]
+                    // });
+
+                    // currentHost[newGiveawayHostKey] = newHost[newGiveawayHostKey]
+
+                    // if (startEmbedStrings[key].includes(currentHost[newGiveawayHostKey])) {
+                    //      startEmbedStrings[key] = startEmbedStrings[key]
+                    //          .replaceAll(currentHost[newGiveawayHostKey], newHost[newGiveawayHostKey])
+                    // }
+                    // }
+
+                    // temporary solution foe the code above
+                    startEmbedStrings[key] = startEmbedStrings[key]
+                        .replaceAll(this.host.username, newGiveawayHost.username)
+                        .replaceAll(this.host.discriminator, newGiveawayHost.discriminator)
+                        .replaceAll(this.host.tag, newGiveawayHost.tag)
+                        .replaceAll(this.host.avatar, newGiveawayHost.avatar)
+                        .replaceAll(this.host.defaultAvatarURL, newGiveawayHost.defaultAvatarURL)
+                        .replaceAll(this.host.bot, newGiveawayHost.bot)
+                        .replaceAll(this.host.system, newGiveawayHost.system)
+                        .replaceAll(this.host.banner, newGiveawayHost.banner)
+                        .replaceAll(this.host.createdAt, newGiveawayHost.createdAt)
+                        .replaceAll(this.host.createdTimestamp, newGiveawayHost.createdTimestamp)
+                        .replaceAll(this.host.id, newGiveawayHost.id)
                 }
             }
 
-            this.host = user
-            this.raw.hostMemberID = user.id
+            // TODO: `giveaway.on('giveawayEdit') event
+
+            this.host = newGiveawayHost
+            this.raw.hostMemberID = newGiveawayHostUserID
+
         } else if (key == 'time') {
             const time = value as string
 
