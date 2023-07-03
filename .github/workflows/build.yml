@@ -28,4 +28,4 @@ jobs:
           node-version: 16
 
       - name: Build the package
-        run: npm run build
+        run: npx -p typescript tsc
