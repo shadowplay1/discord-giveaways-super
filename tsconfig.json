@@ -4,7 +4,8 @@
 		"alwaysStrict": true,
 		"lib": [
 			"ESNext",
-			"ES2015"
+			"ES2015",
+			"DOM"
 		],
 		"module": "commonjs",
 		"moduleResolution": "node",
