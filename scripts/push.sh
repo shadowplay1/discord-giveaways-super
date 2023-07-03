@@ -3,7 +3,6 @@
 clean_up() {
     rm -rf "/tmp/src"
     rm "/tmp/${package_version}.json"
-    rm -rf src/src
 }
 
 echo "[1/3] - Generating documentation..."
@@ -70,10 +69,9 @@ else
 fi
 
 git reset --hard "origin/$package_version" > /dev/null 2>&1
-cp -r "/tmp/src" "./src"
+cp -r "/tmp/src" "./"
 
 git add .
-rm -rf src/src > /dev/null 2>&1
 
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "$package_version"
@@ -88,10 +86,9 @@ else
 fi
 
 git reset --hard "origin/master" > /dev/null 2>&1
-cp -r "/tmp/src" "./src"
+cp -r "/tmp/src" "./"
 
 git add .
-rm -rf --cached src/src > /dev/null 2>&1
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "master"
 
