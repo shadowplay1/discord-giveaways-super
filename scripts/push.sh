@@ -29,10 +29,12 @@ cp "./docs/generated/master.json" "/tmp/master.json"
 
 cp -r "./src" "/tmp/src"
 
+
 echo
 echo "[2/3] - Publishing documentation..."
 echo
 
+git fetch -p origin > /dev/null 2>&1
 
 is_docs_branch_existing=$(git rev-parse --verify docs)
 
