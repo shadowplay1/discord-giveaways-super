@@ -58,6 +58,7 @@ export class GiveawaysError extends Error {
  * @prop {string} INVALID_TIME The time is invalid.
  * @prop {string} GIVEAWAY_ALREADY_ENDED Giveaway already ended.
  * @prop {string} USER_NOT_FOUND User not found.
+ * @prop {string} INVALID_INPUT Invalid input.
  */
 export enum GiveawaysErrorCodes {
     UNKNOWN_ERROR = 'UNKNOWN_ERROR',
@@ -73,7 +74,8 @@ export enum GiveawaysErrorCodes {
     UNKNOWN_GIVEAWAY = 'UNKNOWN_GIVEAWAY',
     INVALID_TIME = 'INVALID_TIME',
     GIVEAWAY_ALREADY_ENDED = 'GIVEAWAY_ALREADY_ENDED',
-    USER_NOT_FOUND = 'USER_NOT_FOUND'
+    USER_NOT_FOUND = 'USER_NOT_FOUND',
+    INVALID_INPUT = 'INVALID_INPUT'
 }
 
 export const errorMessages = {
@@ -120,6 +122,10 @@ export const errorMessages = {
     // `method` parameter should be specified in format: `{ManagerName}.{methodName}`
     REQUIRED_ARGUMENT_MISSING(parameter: string, method: `${string}.${string}`): string {
         return `${parameter} must be specified in '${method}()' method.`
+    },
+
+    INVALID_INPUT(parameter: string, method: `${string}.${string}`, issue: string): string {
+        return `Invaid value of ${parameter} parameter in ${method} method: ${issue}`
     },
 
     REQUIRED_CONFIG_OPTION_MISSING(requiredConfigOption: string): string {
