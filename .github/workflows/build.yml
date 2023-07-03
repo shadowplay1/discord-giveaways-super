@@ -1,15 +1,30 @@
 name: build
 
 on:
-  release:
-    types: [created]
+  push:
 
 jobs:
-  build:
+  install:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+
         with:
           node-version: 16
-      - run: npm i && npm run build
+
+      - name: Install dependencies
+        run: npm i
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+
+        with:
+          node-version: 16
+
+      - name: Build the package
+        run: npm run build
