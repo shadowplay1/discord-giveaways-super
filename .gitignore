@@ -21,7 +21,3 @@ data/
 
 # test scripts
 test/
-
-# other
-package-lock.json
-src/src/*
