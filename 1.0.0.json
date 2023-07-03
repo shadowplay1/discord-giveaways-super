@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688130950909
+  "date": 1688344021655
  },
  "custom": {
   "general": {
@@ -11,7 +11,7 @@
     "welcome": {
      "name": "Welcome",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## 🙋‍♂️ | Welcome!\nWelcome to the `discord-giveaways-super v1.0.0` documentation!\n\n## 📂 | Installation\n<b>Note:<b>\n</br>\n<b>Node.js 16.9.0 or newer is required. Otherwise, the module won't work.</b><br>\n```console\n$ npm i discord-giveaways-super\n$ yarn add discord-giveaways-super\n$ pnpm add discord-giveaways-super\n```\n\n## ❓ | What is Discord Giveaways Super?\n<b>Discord Giveaways Super is a powerful Node.js module that allows you to make an giveaways system in your bot very easily. Supports **JSON**, **MongoDB** and **Enmap** databases!</b>\n\nFeatures:\n<br>\n<ul>\n<li><b>Clean TypeScript Defenitions 📘</b></li>\n<li><b>Multiple Databases Support 🍃</a></b></li>\n<li><b>Flexible and Customizable ⚙️</b></li>\n<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>\n<li><b>Handles Crashes/Restarts 🔄</b></li>\n<li><b>Beginner Friendly 😄</b></li>\n</ul>\n\n\n## 🤔 | Help\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n\n## 🕘 | My Other Modules\n<ul>\n<li><b><a href=\"https://www.npmjs.com/package/discord-economy-super\">discord-economy-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-achievements\">discord-achievements</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/quick-mongo-super\">quick-mongo-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super\">discord-leveling-super</a></b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## 🙋‍♂️ | Welcome!\nWelcome to the `discord-giveaways-super v1.0.0` documentation!\n\n## 📂 | Installation\n<b>Note:<b>\n</br>\n<b>Node.js 16.9.0 or newer is required. Otherwise, the module won't work.</b><br>\n```console\n$ npm i discord-giveaways-super\n$ yarn add discord-giveaways-super\n$ pnpm add discord-giveaways-super\n```\n\n## ❓ | What is Discord Giveaways Super?\n<b>Discord Giveaways Super is a powerful Node.js module that allows you to make an giveaways system in your bot very easily. Supports **JSON**, **MongoDB** and **Enmap** databases!</b>\n\nFeatures:\n<br>\n<ul>\n<li><b>Clean TypeScript Defenitions 📘</b></li>\n<li><b>Multiple Databases Support 🍃</a></b></li>\n<li><b>Object-Oriented 📝</b></li>\n<li><b>Flexible and Customizable ⚙️</b></li>\n<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>\n<li><b>Handles Crashes/Restarts 🔄</b></li>\n<li><b>Beginner Friendly 😄</b></li>\n</ul>\n\n\n## 🤔 | Help\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n\n## 🕘 | My Other Modules\n<ul>\n<li><b><a href=\"https://www.npmjs.com/package/discord-economy-super\">discord-economy-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-achievements\">discord-achievements</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/quick-mongo-super\">quick-mongo-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super\">discord-leveling-super</a></b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/welcome.md"
     },
     "examples": {
@@ -508,7 +508,7 @@
       }
      ],
      "meta": {
-      "line": 1375,
+      "line": 1385,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -530,14 +530,14 @@
       }
      ],
      "meta": {
-      "line": 1381,
+      "line": 1391,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayStart",
-     "description": "Emits when a giveaway is started.",
+     "description": "Emits when the giveaway is started.",
      "params": [
       {
        "name": "giveaway",
@@ -557,14 +557,14 @@
       }
      ],
      "meta": {
-      "line": 1387,
+      "line": 1397,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayRestart",
-     "description": "Emits when a giveaway is restarted.",
+     "description": "Emits when the giveaway is restarted.",
      "params": [
       {
        "name": "giveaway",
@@ -584,14 +584,14 @@
       }
      ],
      "meta": {
-      "line": 1393,
+      "line": 1403,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayEnd",
-     "description": "Emits when a giveaway is ended.",
+     "description": "Emits when the giveaway is ended.",
      "params": [
       {
        "name": "giveaway",
@@ -611,18 +611,18 @@
       }
      ],
      "meta": {
-      "line": 1399,
+      "line": 1409,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayReroll",
-     "description": "Emits when a giveaway is rerolled.",
+     "description": "Emits when the giveaway winners are rerolled.",
      "params": [
       {
-       "name": "giveaway",
-       "description": "{@link Giveaway} that was rerolled.",
+       "name": "data",
+       "description": "Data object that contains the new array of mentions of winners and the {@link Giveaway} reroll happened in.",
        "type": [
         [
          [
@@ -633,7 +633,73 @@
       }
      ],
      "meta": {
-      "line": 1405,
+      "line": 1415,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayLengthExtend",
+     "description": "Emits when the giveaway's length was extended.",
+     "params": [
+      {
+       "name": "data",
+       "description": "Data object the contains the extension time and the affected {@link Giveaway}.",
+       "type": [
+        [
+         [
+          "IGiveawayTimeChangeEvent"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1422,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayLengthReduce",
+     "description": "Emits when the giveaway's length was reduced.",
+     "params": [
+      {
+       "name": "data",
+       "description": "Data object the contains the reduction time and the affected {@link Giveaway}.",
+       "type": [
+        [
+         [
+          "IGiveawayTimeChangeEvent"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1428,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "giveawayEdit",
+     "description": "Emits when the giveaway info was edited.",
+     "params": [
+      {
+       "name": "data",
+       "description": "Data object the contains the changes and the affected {@link Giveaway}.",
+       "type": [
+        [
+         [
+          "IGiveawayEditEvent"
+         ]
+        ]
+       ]
+      }
+     ],
+     "meta": {
+      "line": 1434,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -1347,7 +1413,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 673,
+      "line": 684,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1389,7 +1455,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 699,
+      "line": 710,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1442,7 +1508,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 725,
+      "line": 736,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1471,7 +1537,7 @@
       "description": "Deleted {@link Giveaway} instance."
      },
      "meta": {
-      "line": 822,
+      "line": 878,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1500,7 +1566,7 @@
       ]
      ],
      "meta": {
-      "line": 844,
+      "line": 900,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1539,7 +1605,7 @@
       "description": "Array of mentions of users that were picked as the winners."
      },
      "meta": {
-      "line": 875,
+      "line": 931,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1582,7 +1648,7 @@
       "description": "Shuffled array."
      },
      "meta": {
-      "line": 914,
+      "line": 970,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1621,7 +1687,7 @@
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 948,
+      "line": 1004,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1654,7 +1720,7 @@
       "description": "Converted time string into seconds."
      },
      "meta": {
-      "line": 984,
+      "line": 1040,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1673,7 +1739,7 @@
       "description": "Plain object representation of {@link Giveaway} instance."
      },
      "meta": {
-      "line": 1001,
+      "line": 1057,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -4569,7 +4635,7 @@
     },
     {
      "name": "giveawayStart",
-     "description": "Emits when a giveaway is started.",
+     "description": "Emits when the giveaway is started.",
      "type": [
       [
        [
@@ -4585,7 +4651,7 @@
     },
     {
      "name": "giveawayRestart",
-     "description": "Emits when a giveaway is rerolled.",
+     "description": "Emits when the giveaway winners are rerolled.",
      "type": [
       [
        [
@@ -4601,7 +4667,7 @@
     },
     {
      "name": "giveawayEnd",
-     "description": "Emits when a giveaway is rerolled.",
+     "description": "Emits when the giveaway winners are rerolled.",
      "type": [
       [
        [
@@ -4617,7 +4683,7 @@
     },
     {
      "name": "giveawayReroll",
-     "description": "Emits when a giveaway is rerolled.",
+     "description": "Emits when the giveaway winners are rerolled.",
      "type": [
       [
        [
@@ -4719,6 +4785,72 @@
    ],
    "meta": {
     "line": 1259,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "IGiveawayEditEvent",
+   "description": "Giveaway edit event object.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "props": [
+    {
+     "name": "key",
+     "description": "The object key of a giveaway that was changed.",
+     "type": [
+      [
+       [
+        "string"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "oldValue",
+     "description": "Old value of the changed {@link Giveaway} property.",
+     "type": [
+      [
+       [
+        "any"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "newValue",
+     "description": "New value of the changed {@link Giveaway} property.",
+     "type": [
+      [
+       [
+        "any"
+       ]
+      ]
+     ]
+    }
+   ],
+   "returns": {
+    "types": [
+     [
+      [
+       "Giveaway",
+       "<"
+      ],
+      [
+       "DatabaseType",
+       ">"
+      ]
+     ]
+    ],
+    "description": "{@link Giveaway} instance that was affected."
+   },
+   "meta": {
+    "line": 1273,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4934,7 +5066,7 @@
     }
    ],
    "meta": {
-    "line": 1273,
+    "line": 1283,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4985,7 +5117,7 @@
     }
    ],
    "meta": {
-    "line": 1296,
+    "line": 1306,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5006,7 +5138,7 @@
     ]
    ],
    "meta": {
-    "line": 1308,
+    "line": 1318,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5022,7 +5154,7 @@
     ]
    ],
    "meta": {
-    "line": 1325,
+    "line": 1335,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5061,7 +5193,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1339,
+    "line": 1349,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5100,7 +5232,7 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1353,
+    "line": 1363,
     "file": "Giveaways.ts",
     "path": "src"
    }
