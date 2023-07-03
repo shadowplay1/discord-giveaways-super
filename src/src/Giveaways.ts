@@ -1234,10 +1234,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {object} IGiveawaysEvents<TDatabaseType>
  * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
- * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
- * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is rerolled.
- * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is rerolled.
- * @prop {IGiveawayRerollEvent} giveawayReroll Emits when a giveaway is rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayStart Emits when the giveaway is started.
+ * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when the giveaway winners are rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when the giveaway winners are rerolled.
+ * @prop {IGiveawayRerollEvent} giveawayReroll Emits when the giveaway winners are rerolled.
  *
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
@@ -1268,6 +1268,16 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  *
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ */
+
+/**
+ * Giveaway edit event object.
+ *
+ * @typedef {object} IGiveawayEditEvent
+ * @prop {string} key The object key of a giveaway that was changed.
+ * @prop {any} oldValue Old value of the changed {@link Giveaway} property.
+ * @prop {any} newValue New value of the changed {@link Giveaway} property.
+ * @returns {Giveaway<DatabaseType>} {@link Giveaway} instance that was affected.
  */
 
 /**
@@ -1385,25 +1395,44 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * Emits when a giveaway is started.
+ * Emits when the giveaway is started.
  * @event Giveaways#giveawayStart
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that started.
  */
 
 /**
- * Emits when a giveaway is restarted.
+ * Emits when the giveaway is restarted.
  * @event Giveaways#giveawayRestart
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that restarted.
  */
 
 /**
- * Emits when a giveaway is ended.
+ * Emits when the giveaway is ended.
  * @event Giveaways#giveawayEnd
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that ended.
  */
 
 /**
- * Emits when a giveaway is rerolled.
+ * Emits when the giveaway winners are rerolled.
  * @event Giveaways#giveawayReroll
- * @param {IGiveawayRerollEvent} giveaway {@link Giveaway} that was rerolled.
+ * @param {IGiveawayRerollEvent} data
+ * Data object that contains the new array of mentions of winners and the {@link Giveaway} reroll happened in.
+ */
+
+/**
+ * Emits when the giveaway's length was extended.
+ * @event Giveaways#giveawayLengthExtend
+ * @param {IGiveawayTimeChangeEvent} data Data object the contains the extension time and the affected {@link Giveaway}.
+ */
+
+/**
+ * Emits when the giveaway's length was reduced.
+ * @event Giveaways#giveawayLengthReduce
+ * @param {IGiveawayTimeChangeEvent} data Data object the contains the reduction time and the affected {@link Giveaway}.
+ */
+
+/**
+ * Emits when the giveaway info was edited.
+ * @event Giveaways#giveawayEdit
+ * @param {IGiveawayEditEvent} data Data object the contains the changes and the affected {@link Giveaway}.
  */
