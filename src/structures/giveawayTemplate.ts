@@ -18,15 +18,6 @@ export const giveawayTemplate: GiveawayWithoutInternalProps & Record<'numberOfWi
     winnersString: '{winnersString}',
 }
 
-/**
- * Replaces the giveaways keys with the corresponding values in the input string.
- * @callback replaceGiveawayKeys
- *
- * @param {string} input The input string to replace the keys in.
- * @param {IGiveaway} giveawayObject
- * @param {string[]} winners Winners array to replace the winners giveaway keys.
- * @returns {string} The string with all keys replaced.
- */
 export function replaceGiveawayKeys(input: string, giveawayObject: { [key: string]: any }, winners: string[] = []): string {
     for (const key in giveawayTemplate) {
         input = input?.replaceAll(

@@ -10,7 +10,13 @@ import { IGiveaway } from '../lib/giveaway.interface'
 import { Optional } from './misc/utils'
 
 /**
- * Full @see Giveaways class configuration object.
+ * Full {@link Giveaways} class configuration object.
+ *
+ * Type parameters:
+ *
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * determine which connection configuration should be used.
+ *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
  * @prop {DatabaseConnectionOptions<TDatabaseType>} connection Database type to use.
@@ -20,8 +26,8 @@ import { Optional } from './misc/utils'
  *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {?number} [minGiveawayEntries=1] Determines the minimum required giveaway entries to draw the winner. Default: 1
- * @prop {Partial<IUpdateCheckerConfiguration>} [updatesChecker] Updates checker configuration.
- * @prop {Partial<IGiveawaysConfigCheckerConfiguration>} [configurationChecker] Giveaways config checker configuration.
+ * @prop {IUpdateCheckerConfiguration} [updatesChecker] Updates checker configuration.
+ * @prop {IGiveawaysConfigCheckerConfiguration} [configurationChecker] Giveaways config checker configuration.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -42,7 +48,7 @@ export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
 } & Partial<IGiveawaysOptionalConfiguration>
 
 /**
- * Optional configuration for the @see Giveaways class.
+ * Optional configuration for the {@link Giveaways} class.
  * @typedef {object} IGiveawaysOptionalConfiguration
  *
  * @prop {?number} [giveawaysCheckingInterval=1000]
@@ -118,7 +124,7 @@ export type IGiveawaysConfigCheckerConfiguration = Record<
  * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
  * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
-export interface IJSONDatabseConfiguration {
+export interface IJSONDatabaseConfiguration {
 
     /**
      * Full path to a JSON storage file. Default: './giveaways.json'.
@@ -139,8 +145,20 @@ export interface IJSONDatabseConfiguration {
     checkingCountdown: number
 }
 
-// omitting all the internal giveaway properties and
+
+// IGiveawayData: omitting all the internal giveaway properties and
 // data properties that are generating on giveaway start
+
+/**
+ * An object that contains an information about a giveaway that is required fo starting..
+ * @typedef {object} IGiveawayData
+ * @prop {string} prize The prize of the giveaway.
+ * @prop {string} time The time of the giveaway.
+ * @prop {number} winnersCount The number of possible winners in the giveaway.
+ * @prop {string} hostMemberID The ID of the host member.
+ * @prop {string} channelID The ID of the channel where the giveaway is held.
+ * @prop {string} guildID The ID of the guild where the giveaway is held.
+ */
 export type IGiveawayData = Omit<
     IGiveaway,
     'id' | 'startTimestamp' | 'endTimestamp' |
@@ -149,6 +167,18 @@ export type IGiveawayData = Omit<
     'isEnded'
 >
 
+/**
+ * Giveaway start config.
+ * @typedef {object} IGiveawayStartConfig
+ * @prop {string} prize The prize of the giveaway.
+ * @prop {string} time The time of the giveaway.
+ * @prop {number} winnersCount The number of possible winners in the giveaway.
+ * @prop {string} hostMemberID The ID of the host member.
+ * @prop {string} channelID The ID of the channel where the giveaway is held.
+ * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
+ * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ */
 export type IGiveawayStartConfig = Optional<
     IGiveawayData,
     'time' | 'winnersCount'
@@ -179,10 +209,11 @@ export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>
 /**
  * A function that defines the embed strings used in the giveaway.
  * @callback DefineEmbedStringsCallback
- * @param {Omit} giveaway - An object containing information about the giveaway.
- * @param {User} giveawayHost - The host of the giveaway.
- * @returns {Partial} - An object containing the defined embed strings.
+ * @param {Omit} giveaway An object containing information about the giveaway.
+ * @param {User} giveawayHost The host of the giveaway.
+ * @returns {Partial<IEmbedStringsDefinitions>} An object containing the defined embed strings.
  */
+
 /**
  * Giveaway start options.
  * @typedef {object} IGiveawayStartOptions
@@ -194,60 +225,129 @@ export interface IGiveawayStartOptions {
 
     /**
      * A function that defines the embed strings used in the giveaway.
-     * @param giveaway An object containing information about the giveaway.
-     * @param giveawayHost The host of the giveaway.
+     * @param {IGiveaway} giveaway An object containing information about the giveaway.
+     * @param {User} giveawayHost The host of the giveaway.
      * @returns {Partial<IEmbedStringsDefinitions>}
      */
     defineEmbedStrings(
-        giveaway: Omit<IGiveaway, 'entriesArray'>,
+        giveaway: IGiveaway,
         giveawayHost: User
     ): Partial<IEmbedStringsDefinitions>
 }
 
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
- * @prop {IGiveawayEmbedOptions} endMessage The message sent in the giveaway channel when a giveaway ends with winners.
- * @prop {IGiveawayEmbedOptions} noWinners The message sent in the giveaway channel when a giveaway ends without winners.
+ * @typedef {object} IGiveawayStartMessages
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The separated message to be sent in the giveaway channel when giveaway ends.
+ *
+ * @prop {IGiveawayEmbedOptions} endMessage
+ * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
+ * @prop {IGiveawayEmbedOptions} noWinners
+ * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
- * The message sent in the giveaway channel when a giveaway ends without winners and there are no more participants.
+ * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.
  */
+
+/**
+ * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
+ */
+export interface IGiveawayStartMessages {
+
+    /**
+     * The separated message to be sent in the giveaway channel when giveaway ends.
+     * @type {IGiveawayEmbedOptions}
+     */
+    newGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
+     * @type {IGiveawayEmbedOptions}
+     */
+    endMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message that will be set to the original giveaway message if there are no winners in the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    noWinners: IGiveawayEmbedOptions
+
+    /**
+     * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    noWinnersEndMessage: IGiveawayEmbedOptions
+}
 
 /**
  * A function that is called when giveaway is finished.
  * @callback GiveawayFinishCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
- * @returns {IGiveawayMessages} Giveaway message objects.
+ * @param {string} winnersMentionsString A string that contains the users that won the giveaway separated with comma.
+ * @param {number} winnersCount Number of winners that were picked.
+ * @returns {IGiveawayStartMessages} Giveaway message objects.
  */
-export type GiveawayFinishCallback = (winnersString: string, numberOfWinners: number) => Partial<
-    Record<'newGiveawayMessage' | 'endMessage' | 'noWinners' | 'noWinnersEndMessage', IGiveawayEmbedOptions>
->
+export type GiveawayFinishCallback = (
+    winnersMentionsString: string,
+    winnersCount: number
+) => Partial<IGiveawayStartMessages>
 
 /**
  * An object that contains messages that are sent in various giveaway cases, such as end with winners or without winners.
- * @typedef {object} IGiveawayMessages
- * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
- * The message sent in the giveaway channel when not a giveaway host tries to do a reroll.
+ * @typedef {object} IGiveawayRerollMessages
  *
- * @prop {IGiveawayEmbedOptions} newGiveawayMessage Original giveaway message will be edited with this message object.
+ * @prop {IGiveawayEmbedOptions} onlyHostCanReroll
+ * The message to reply to user with when not a giveaway host tries to do a reroll.
+ *
+ * @prop {IGiveawayEmbedOptions} newGiveawayMessage
+ * The message that will be set to the original giveaway message after the reroll.
  *
  * @prop {IGiveawayEmbedOptions} successMessage
- * The message sent in the giveaway channel when a giveaway ends without winners.
+ * The separated message to be sent in the giveaway channel when the reroll is successful.
  */
+
+export interface IGiveawayRerollMessages {
+
+    /**
+     * The message to reply to user with when not a giveaway host tries to do a reroll.
+     * @type {IGiveawayEmbedOptions}
+     */
+    onlyHostCanReroll: IGiveawayEmbedOptions
+
+    /**
+     * The message that will be set to the original giveaway message after the reroll.
+     * @type {IGiveawayEmbedOptions}
+     */
+    newGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The separated message to reply to user with when the reroll is successful.
+     * @type {IGiveawayEmbedOptions}
+     */
+    successMessage: IGiveawayEmbedOptions
+
+    /**
+     * The separated message to be sent in the giveaway channel when the new winners are picked.
+     * @type {IGiveawayEmbedOptions}
+     */
+    rerollMessage: IGiveawayEmbedOptions
+}
 
 /**
  * A function that is called when giveaway winners are rerolled.
  * @callback GiveawayRerollCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
- * @param {number} numberOfWinners Number of winners that were picked.
+ *
+ * @param {string} winnersMentionsString
+ * A string that contains the mentions of users that won the giveaway, separated with comma.
+ *
+ * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayMessages} Giveaway message objects.
  */
-export type GiveawayRerollCallback = (winnersString: string, numberOfWinners: number) => Partial<
-    Record<'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage', IGiveawayEmbedOptions>
->
+export type GiveawayRerollCallback = (
+    winnersMentionsString: string,
+    winnersCount: number
+) => Partial<IGiveawayRerollMessages>
 
 /**
  * Object containing embed string definitions used in the IGiveaways class.
@@ -270,6 +370,18 @@ export interface IEmbedStringsDefinitions {
      * @type {IGiveawayEmbedOptions}
      */
     start: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they join the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    joinGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they leave the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    leaveGiveawayMessage: IGiveawayEmbedOptions
 
     /**
      * This function is called and all returned message objects are
@@ -300,62 +412,99 @@ export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & 
 /**
  * Message embed options.
  * @typedef {object} IGiveawayEmbedOptions
- * @prop {?string} [messageContent] The content of the message. If only this is specified
+ *
+ * @prop {?string} [messageContent]
+ * Message content to specify in the message.
+ * If only message content is specified, it will be sent without the embed.
+ *
  * @prop {?string} [title] The title of the embed.
  * @prop {?string} [titleIcon] The icon of the title in the embed.
- * @prop {?string} [titleIconURL] The url of the icon of the title in the embed.
+ * @prop {?string} [titleURL] The url of the icon of the title in the embed.
  * @prop {?string} [description] The description of the embed.
  * @prop {?string} [footer] The footer of the embed.
  * @prop {?string} [footerIcon] The icon of the footer in the embed.
  * @prop {?string} [thumbnailURL] Embed thumbnail.
  * @prop {?string} [imageURL] Embed Image URL.
- * @prop {ColorResolvable} [color] The color of the embed.
+ * @prop {?ColorResolvable} [color] The color of the embed.
+ * @prop {?number} [timestamp] The embed timestamp to set.
  */
 export type IGiveawayEmbedOptions = Partial<
     Record<
-        'messageContent' | 'title' | 'titleIcon' |
-        'titleIconURL' | 'description' | 'footer' |
+        'title' | 'titleIcon' |
+        'titleURL' | 'description' | 'footer' |
         'footerIcon' | 'thumbnailURL' | 'imageURL', string
-    > & { color: ColorResolvable }
+    > & {
+
+        /**
+         * Message content to specify in the message.
+         * If only message content is specified, it will be sent without the embed.
+         * @type {string}
+         */
+        messageContent: string
+
+        /**
+         * The color of the embed.
+         * @type {ColorResolvable}
+         */
+        color: ColorResolvable
+
+        /**
+         * The embed timestamp to set.
+         * @type {number}
+         */
+        timestamp: number
+    }
 >
 
 /**
  * Database connection options based on the used database type.
  *
- * @see Partial<IJSONDatabseConfiguration> - JSON configuration.
+ * Type parameters:
+ *
+ * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * determine which connection configuration should be used.
+ *
+ * @typedef {(
+ * Partial<IJSONDatabaseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
+ * )} DatabaseConnectionOptions<TDatabaseType>
+ *
+ * @see Partial<IJSONDatabaseConfiguration> - JSON configuration.
  *
  * @see EnmapOptions<any, any> - Enmap configuration.
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
- * @typedef {(
- * Partial<IJSONDatabseConfiguration> | EnmapOptions<any, any> | IMongoConnectionOptions
- * )} DatabaseConnectionOptions<TDatabaseType>
- *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
-    TDatabaseType extends DatabaseType.JSON ? Partial<IJSONDatabseConfiguration> :
+    TDatabaseType extends DatabaseType.JSON ? Partial<IJSONDatabaseConfiguration> :
     TDatabaseType extends DatabaseType.ENMAP ? EnmapOptions<any, any> :
     TDatabaseType extends DatabaseType.MONGODB ? IMongoConnectionOptions : never
 
 /**
- * @see null - JSON database management object - `null`
- * is because it's not an external database - JSON is being parsed by the module.
+ * External database object based on the used database type.
  *
- * @see Enmap<string, IDatabaseStructure> - Enmap database.
+ * Type parameters:
  *
- * @see Mongo<IDatabaseStructure> - MongoDB database.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will
+ * determine which connection configuration should be used.
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
- * )} Database<TDatabaseType> External database object based on the used database type.
+ * )} Database<TDatabaseType>
+ *
+ * @see null - JSON database management object - `null`
+ * is because it's not an external database - JSON is being parsed by the module itself.
+ *
+ * @see Enmap<string, IDatabaseStructure> - Enmap database.
+ *
+ * @see Mongo<string, IDatabaseStructure> - MongoDB database.
  *
  * @template {DatabaseType} TDatabaseType
  * The database type that will determine which external database management object should be used.
  */
 export type Database<TDatabaseType extends DatabaseType> =
     TDatabaseType extends DatabaseType.JSON ? null :
-    TDatabaseType extends DatabaseType.ENMAP ? Enmap<string, IDatabaseStructure> :
-    TDatabaseType extends DatabaseType.MONGODB ? Mongo<IDatabaseStructure> : never
+    TDatabaseType extends DatabaseType.ENMAP ? Enmap<`${string}.giveaways`, IDatabaseStructure> :
+    TDatabaseType extends DatabaseType.MONGODB ? Mongo<`${string}.giveaways`, IDatabaseStructure> : never

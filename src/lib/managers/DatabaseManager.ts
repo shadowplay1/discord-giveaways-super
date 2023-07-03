@@ -94,14 +94,14 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 const data = await database.get(key)
 
                 return data
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 return database.get(key) as any
             }
         }
@@ -157,14 +157,14 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 await database.set(key, value)
 
                 return true
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 database.set(key, value as any)
 
                 return true
@@ -186,13 +186,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 await database.clear()
                 return true
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 database.deleteAll()
 
                 return true
@@ -235,7 +235,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 const targetNumber = await database.get(key)
 
                 if (isNaN(targetNumber)) {
@@ -250,7 +250,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 const targetNumber = database.get(key) as any
 
                 if (isNaN(targetNumber)) {
@@ -291,7 +291,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 const targetNumber = await database.get(key)
 
                 if (isNaN(targetNumber)) {
@@ -306,7 +306,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 const targetNumber = database.get(key) as any
 
                 if (isNaN(targetNumber)) {
@@ -337,14 +337,14 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 await database.delete(key)
 
                 return true
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 database.delete(key)
 
                 return true
@@ -380,8 +380,8 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
-                const targetArray = await database.get<any[]>(key)
+                const database = this.db as Database<DatabaseType.MONGODB> as any
+                const targetArray = await database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
@@ -397,7 +397,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 const targetArray = database.get(key) || [] as any[]
 
                 if (!Array.isArray(targetArray)) {
@@ -444,8 +444,8 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
-                const targetArray = await database.get<any[]>(key)
+                const database = this.db as Database<DatabaseType.MONGODB> as any
+                const targetArray = await database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
@@ -461,7 +461,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 const targetArray = database.get(key)
 
                 if (!Array.isArray(targetArray)) {
@@ -506,8 +506,8 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
-                const targetArray = await database.get<any[]>(key)
+                const database = this.db as Database<DatabaseType.MONGODB> as any
+                const targetArray = await database.get(key)
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
@@ -523,7 +523,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
                 const targetArray = database.get(key)
 
                 if (!Array.isArray(targetArray)) {
@@ -556,7 +556,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
+                const database = this.db as Database<DatabaseType.MONGODB> as any
                 const data = await database.all()
 
                 return data as any
@@ -564,7 +564,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const allData: { [key: string]: any } = {}
-                const database = this.db as Database<DatabaseType.ENMAP>
+                const database = this.db as Database<DatabaseType.ENMAP> as any
 
                 for (const databaseKey of database.keys()) {
                     const keys = databaseKey.split('.')

@@ -19,6 +19,8 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
  * @prop {number} entries The number of giveaway entries.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
+ *
+ * @template TDatabaseType The database type that will be used in the module.
  */
 export interface IGiveaway {
 
@@ -150,7 +152,7 @@ export interface IGiveawayMessageProps {
      * The embed objects for the giveaway message.
      * @type {IGiveawayEmbeds}
      */
-    embeds: IGiveawayEmbeds
+    embeds: Partial<IGiveawayEmbeds>
 
     /**
      * The button objects for the giveaway message.
@@ -163,6 +165,11 @@ export interface IGiveawayMessageProps {
  * An interface containing different types of giveaway embeds in the IGiveaways class.
  * @typedef {object} IGiveawayEmbeds
  * @prop {IGiveawayEmbedOptions} start Message embed data for cases when the giveaway has started.
+ * @prop {IGiveawayEmbedOptions} joinGiveawayMessage The message to reply to user with when they join the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} leaveGiveawayMejoinGiveawayMessage
+ * The message to reply to user with when they leave the giveaway.
+ *
  * @prop {IGiveawayRerollEmbeds} reroll Message embed data for cases when rerolling the giveaway.
  * @prop {IGiveawayFinishEmbeds} finish Message embed data for cases when the giveaway has finished.
  */
@@ -175,11 +182,23 @@ export interface IGiveawayEmbeds {
     start: IGiveawayEmbedOptions
 
     /**
+     * The message to reply to user with when they join the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    joinGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
+     * The message to reply to user with when they leave the giveaway.
+     * @type {IGiveawayEmbedOptions}
+     */
+    leaveGiveawayMessage: IGiveawayEmbedOptions
+
+    /**
      * Message embed data for cases when rerolling the giveaway.
      * @type {IGiveawayRerollEmbeds}
      */
     reroll: Record<
-        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage',
+        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage' | 'rerollMessage',
         IGiveawayEmbedOptions
     >
 
@@ -226,6 +245,22 @@ export type GiveawayWithoutInternalProps = Omit<
     Record<keyof IGiveaway, string>,
     'entriesArray' | 'state' | 'isEnded'
 >
+
+/**
+ * A type that contains all giveaway properties that may be safely edited.
+ * @typedef {'prize' | 'winnersCount' | 'hostMemberID'} EditableGiveawayProperties
+ */
+export type EditableGiveawayProperties = 'prize' | 'winnersCount' | 'time' | 'hostMemberID'
+
+/**
+ * The type that returns the property's value type based on the specified {@link Giveaway} property in `TProperty`.
+ *
+ * Type parameters:
+ *
+ * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ * @typedef {object} GiveawayPropertyValue<TProperty>
+ */
+export type GiveawayPropertyValue<TProperty extends EditableGiveawayProperties> = IGiveaway[TProperty]
 
 /**
  * An enum that determines the state of a giveaway.
