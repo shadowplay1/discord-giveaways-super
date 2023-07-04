@@ -31,8 +31,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0-alpha.163",
 		"@typescript-eslint/parser": "^6.0.0-alpha.163",
 		"eslint": "^8.43.0",
-		"jsdoc-babel": "^0.5.0",
-		"typescript": "^5.2.0-dev.20230627"
+		"jsdoc-babel": "^0.5.0"
 	},
 	"quick-mongo-super": {
 		"postinstall": false
