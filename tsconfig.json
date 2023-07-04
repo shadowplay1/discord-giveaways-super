@@ -5,8 +5,13 @@
 		"moduleResolution": "Node",
     	"target": "ESNext",
     	"module": "CommonJS",
-    	"lib": ["DOM", "ES2022"],
-		"types": ["@types/node"],
+    	"lib": [
+			"DOM",
+			"ES2022"
+		],
+		"types": [
+			"@types/node"
+		],
 		"outDir": "dist",
 		"rootDir": "./",
 		"declaration": true,
