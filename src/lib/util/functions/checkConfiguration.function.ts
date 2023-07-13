@@ -21,14 +21,15 @@ import { DatabaseType } from '../../../types/databaseType.enum'
  * @returns {Required<IGiveawaysConfiguration<TDatabaseType>>} Completed, filled and fixed {@link Giveaways} configuration.
  */
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
-    configurationToCheck: { [key: string]: any },
+    configurationToCheck: Record<string, any> = {},
     checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}
 ): Required<IGiveawaysConfiguration<TDatabaseType>> => {
     const problems: string[] = []
+    const defaultConfiguration: Record<string, any> = defaultConfig
 
-    const output: { [key: string]: any } = {
+    const output: Record<string, any> = {
         ...configurationToCheck,
-        ...defaultConfig
+        ...defaultConfiguration
     }
 
     if (!checkerConfiguration.ignoreUnspecifiedOptions) {
@@ -44,7 +45,7 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     }
 
     for (const key of Object.keys(configurationToCheck)) {
-        const defaultValue = (defaultConfig as any)[key]
+        const defaultValue = defaultConfiguration[key]
         const value = configurationToCheck[key]
 
         if (key !== 'database' && key !== 'connection') {
@@ -69,8 +70,8 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     }
 
     const checkNestedOptionsObjects = (
-        config: { [key: string]: any },
-        defaultConfig: { [key: string]: any },
+        config: Record<string, any>,
+        defaultConfig: Record<string, any>,
         prefix: string
     ): void => {
         for (const key in defaultConfig) {

@@ -53,7 +53,7 @@ export class MessageUtils {
             : { ...giveaway.messageProps?.embeds?.start || {} } as IGiveawayEmbedOptions
 
         for (const stringKey in embedStrings) {
-            const strings = embedStrings as { [key: string]: string }
+            const strings = embedStrings as Record<string, string>
             strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway, winners)
         }
 
@@ -66,7 +66,7 @@ export class MessageUtils {
 
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: title || null as any,
+                name: title || '',
                 iconURL: titleIcon,
                 url: titleURL
             })
@@ -75,10 +75,10 @@ export class MessageUtils {
                 'Press the button below to join!'
             )
             .setColor(color || '#d694ff')
-            .setImage(imageURL || null as any)
-            .setThumbnail(thumbnailURL || null as any)
+            .setImage(imageURL || null)
+            .setThumbnail(thumbnailURL || null)
             .setFooter({
-                text: footer || null as any,
+                text: footer || '',
                 iconURL: footerIcon
             })
 
@@ -101,7 +101,7 @@ export class MessageUtils {
                     customId: 'joinGiveawayButton',
                     label: joinGiveawayButton?.text || 'Join the giveaway',
                     emoji: joinGiveawayButton?.emoji || '🎉',
-                    style: (joinGiveawayButton?.style as any) || ButtonStyle.Primary
+                    style: joinGiveawayButton?.style || ButtonStyle.Primary
                 })
             )
 
@@ -127,7 +127,7 @@ export class MessageUtils {
                 customId: 'rerollButton',
                 label: rerollButton?.text || 'Reroll',
                 emoji: rerollButton?.emoji || '🔁',
-                style: (rerollButton?.style as any) || ButtonStyle.Primary
+                style: rerollButton?.style || ButtonStyle.Primary
             }),
 
             new ButtonBuilder({
@@ -141,7 +141,7 @@ export class MessageUtils {
                 customId: 'rerollButton',
                 label: rerollButton?.text || 'Reroll',
                 emoji: rerollButton?.emoji || '🔁',
-                style: (rerollButton?.style as any) || ButtonStyle.Primary
+                style: rerollButton?.style || ButtonStyle.Primary
             })
         )
 
@@ -162,7 +162,7 @@ export class MessageUtils {
                     customId: 'rerollButton',
                     label: rerollButton?.text || 'Reroll',
                     emoji: rerollButton?.emoji || '🔁',
-                    style: (rerollButton?.style as any) || ButtonStyle.Primary
+                    style: rerollButton?.style || ButtonStyle.Primary
                 })
             )
 
@@ -281,15 +281,15 @@ export class MessageUtils {
         const finishMessageContent =
             replaceGiveawayKeys(
                 winnersCondition
-                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent
-                    : embedStrings?.noWinnersEndMessage?.messageContent as any,
+                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent as string
+                    : embedStrings?.noWinnersEndMessage?.messageContent as string,
                 giveaway,
                 winners
             )
 
         const finishInputObjectKeys = winnersCondition
-            ? Object.keys(embedStrings?.endMessage || {} as any)
-            : Object.keys(embedStrings?.noWinnersEndMessage || {} as any)
+            ? Object.keys(embedStrings?.endMessage || {})
+            : Object.keys(embedStrings?.noWinnersEndMessage || {})
 
         await message.edit({
             content: giveawayMessageContent,

@@ -13,8 +13,8 @@ import {
 
 import {
     Database, DatabaseConnectionOptions,
-    IEmbedStringsDefinitions, IGiveawayButtonOptions,
-    IGiveawayStartConfig,
+    IGiveawayButtonOptions, IGiveawayRerollMessages,
+    IGiveawayStartConfig, IGiveawayStartMessages,
     IGiveawaysConfiguration
 } from './types/configurations'
 
@@ -114,7 +114,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @param {Client} client Discord Client.
      * @param {IGiveawaysConfiguration<TDatabaseType>} options {@link Giveaways} configuration.
      */
-    public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType> = {} as any) {
+    public constructor(client: Client<boolean>, options?: IGiveawaysConfiguration<TDatabaseType>) {
         super()
 
         /**
@@ -140,7 +140,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
          * @type {Logger}
          * @private
          */
-        this._logger = new Logger(options.debug as boolean)
+        this._logger = new Logger(options?.debug as boolean)
 
         this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
         this._logger.debug('Database type is JSON.', 'lightcyan')
@@ -152,25 +152,25 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
          * Completed, filled and fixed {@link Giveaways} configuration.
          * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
          */
-        this.options = checkConfiguration(options, options.configurationChecker)
+        this.options = checkConfiguration(options, options?.configurationChecker)
 
         /**
          * External database (such as Enmap or MongoDB) if used.
          * @type {?Database<DatabaseType>}
          */
-        this.db = null as any
+        this.db = null as any // specifying 'null' to just initialize the property; for docs purposes
 
         /**
          * Database Manager.
          * @type {DatabaseManager}
          */
-        this.database = null as any
+        this.database = null as any // specifying 'null' to just initialize the property; for docs purposes
 
         /**
          * {@link Giveaways} ending state checking interval.
          * @type {NodeJS.Timeout}
          */
-        this.giveawaysCheckingInterval = null as any
+        this.giveawaysCheckingInterval = null as any // specifying 'null' to just initialize the property; for docs purposes
 
         /**
          * Message utils instance.
@@ -379,7 +379,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                             interaction.reply({
                                 content: giveawayJoinMessage?.messageContent,
-                                embeds: Object.keys(giveawayJoinMessage as any).length == 1 &&
+                                embeds: Object.keys(giveawayJoinMessage).length == 1 &&
                                     giveawayJoinMessage?.messageContent
                                     ? [] : [giveawayLeaveEmbed],
                                 ephemeral: true
@@ -413,7 +413,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                             interaction.reply({
                                 content: giveawayLeaveMessage?.messageContent,
-                                embeds: Object.keys(giveawayLeaveMessage as any).length == 1 &&
+                                embeds: Object.keys(giveawayLeaveMessage).length == 1 &&
                                     giveawayLeaveMessage?.messageContent
                                     ? [] : [giveawayLeaveEmbed],
                                 ephemeral: true
@@ -447,18 +447,18 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                     if (giveaway) {
                         if (interaction.user.id !== giveaway?.host.id) {
-                            const onlyHostCanReroll = rerollEmbedStrings?.onlyHostCanReroll
-                            const rerollErroredMessageContent = onlyHostCanReroll?.messageContent as any
+                            const onlyHostCanReroll = rerollEmbedStrings?.onlyHostCanReroll || {}
+                            const rerollErroredMessageContent = onlyHostCanReroll?.messageContent
 
                             const errorEmbed = this._messageUtils.buildGiveawayEmbed(
                                 giveaway.raw,
-                                rerollErroredMessageContent
+                                onlyHostCanReroll
                             )
 
                             interaction.reply({
                                 content: rerollErroredMessageContent,
                                 embeds: Object.keys(
-                                    onlyHostCanReroll as any
+                                    onlyHostCanReroll
                                 ).length == 1 && rerollErroredMessageContent ? [] : [errorEmbed],
                                 ephemeral: true
                             }).catch((err: Error) => {
@@ -473,20 +473,20 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                                 }
                             })
                         } else {
-                            const rerollSuccess = rerollEmbedStrings?.successMessage
+                            const rerollSuccess = rerollEmbedStrings?.successMessage || {}
                             const rerollSuccessfulMessageCreate = rerollSuccess?.messageContent
 
                             await giveaway?.reroll()
 
                             const successEmbed = this._messageUtils.buildGiveawayEmbed(
                                 giveaway.raw,
-                                rerollSuccess as any
+                                rerollSuccess
                             )
 
                             interaction.reply({
                                 content: rerollSuccessfulMessageCreate,
                                 embeds: Object.keys(
-                                    rerollSuccess as any
+                                    rerollSuccess
                                 ).length == 1 && rerollSuccessfulMessageCreate ? [] : [successEmbed],
                                 ephemeral: true
                             }).catch((err: Error) => {
@@ -631,28 +631,28 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
         if (typeof time !== 'string') {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveawayOptions.time', 'string', time as any),
+                errorMessages.INVALID_TYPE('giveawayOptions.time', 'string', time),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
 
         if (isNaN(winnersCount as number)) {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveawayOptions.winnersCount', 'number', winnersCount as any),
+                errorMessages.INVALID_TYPE('giveawayOptions.winnersCount', 'number', winnersCount),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
 
         if (buttons && typeof buttons !== 'object') {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveawayOptions.buttons', 'object', buttons as any),
+                errorMessages.INVALID_TYPE('giveawayOptions.buttons', 'object', buttons),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
 
         if (typeof defineEmbedStrings !== 'function') {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveawayOptions.defineEmbedStrings', 'function', defineEmbedStrings as any),
+                errorMessages.INVALID_TYPE('giveawayOptions.defineEmbedStrings', 'function', defineEmbedStrings),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
@@ -686,17 +686,15 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             isEnded: false
         }
 
-        const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings(
-            giveawayTemplate as any,
+        const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings<true>(
+            giveawayTemplate,
             this.client.users.cache.get(hostMemberID) as User
-        ) as Required<IEmbedStringsDefinitions> : {} as Required<IEmbedStringsDefinitions>
+        ) : {}
 
-        const startEmbedStrings = definedEmbedStrings?.start
+        const startEmbedStrings = definedEmbedStrings?.start || {}
 
         const finish = definedEmbedStrings?.finish
         const reroll = definedEmbedStrings?.reroll
-
-        const finishWithoutWinnersEmbedStrings = definedEmbedStrings?.start
 
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 
@@ -704,8 +702,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         const buttonsRow = this._messageUtils.buildButtonsRow(joinGiveawayButton)
 
         const [finishEmbedStrings, rerollEmbedStrings] = [
-            finish('{winnersString}', '{numberOfWinners}' as any),
-            reroll('{winnersString}', '{numberOfWinners}' as any)
+            finish ? finish('{winnersString}', '{numberOfWinners}') : {},
+            reroll ? reroll('{winnersString}', '{numberOfWinners}') : {}
         ]
 
         const message = await channel.send({
@@ -724,15 +722,15 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                 start: startEmbedStrings,
                 joinGiveawayMessage: definedEmbedStrings?.joinGiveawayMessage,
                 leaveGiveawayMessage: definedEmbedStrings?.leaveGiveawayMessage,
-                finish: finishEmbedStrings,
-                reroll: rerollEmbedStrings,
-                finishWithoutWinners: finishWithoutWinnersEmbedStrings
-            } as any,
+                finish: finishEmbedStrings as IGiveawayStartMessages,
+                reroll: rerollEmbedStrings as IGiveawayRerollMessages
+            },
+
             buttons: {
                 joinGiveawayButton,
                 rerollButton,
                 goToMessageButton
-            } as any
+            }
         }
 
         this.database.push(`${guildID}.giveaways`, newGiveaway)
@@ -1234,10 +1232,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {object} IGiveawaysEvents<TDatabaseType>
  * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
- * @prop {Giveaway<DatabaseType>} giveawayStart Emits when the giveaway is started.
- * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when the giveaway winners are rerolled.
- * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when the giveaway winners are rerolled.
- * @prop {IGiveawayRerollEvent} giveawayReroll Emits when the giveaway winners are rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
+ * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is rerolled.
+ * @prop {IGiveawayRerollEvent} giveawayReroll Emits when a giveaway is rerolled.
  *
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
  */
@@ -1268,16 +1266,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  *
  * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
- */
-
-/**
- * Giveaway edit event object.
- *
- * @typedef {object} IGiveawayEditEvent
- * @prop {string} key The object key of a giveaway that was changed.
- * @prop {any} oldValue Old value of the changed {@link Giveaway} property.
- * @prop {any} newValue New value of the changed {@link Giveaway} property.
- * @returns {Giveaway<DatabaseType>} {@link Giveaway} instance that was affected.
  */
 
 /**
@@ -1395,44 +1383,25 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  */
 
 /**
- * Emits when the giveaway is started.
+ * Emits when a giveaway is started.
  * @event Giveaways#giveawayStart
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that started.
  */
 
 /**
- * Emits when the giveaway is restarted.
+ * Emits when a giveaway is restarted.
  * @event Giveaways#giveawayRestart
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that restarted.
  */
 
 /**
- * Emits when the giveaway is ended.
+ * Emits when a giveaway is ended.
  * @event Giveaways#giveawayEnd
  * @param {Giveaway<DatabaseType>} giveaway {@link Giveaway} that ended.
  */
 
 /**
- * Emits when the giveaway winners are rerolled.
+ * Emits when a giveaway is rerolled.
  * @event Giveaways#giveawayReroll
- * @param {IGiveawayRerollEvent} data
- * Data object that contains the new array of mentions of winners and the {@link Giveaway} reroll happened in.
- */
-
-/**
- * Emits when the giveaway's length was extended.
- * @event Giveaways#giveawayLengthExtend
- * @param {IGiveawayTimeChangeEvent} data Data object the contains the extension time and the affected {@link Giveaway}.
- */
-
-/**
- * Emits when the giveaway's length was reduced.
- * @event Giveaways#giveawayLengthReduce
- * @param {IGiveawayTimeChangeEvent} data Data object the contains the reduction time and the affected {@link Giveaway}.
- */
-
-/**
- * Emits when the giveaway info was edited.
- * @event Giveaways#giveawayEdit
- * @param {IGiveawayEditEvent} data Data object the contains the changes and the affected {@link Giveaway}.
+ * @param {IGiveawayRerollEvent} giveaway {@link Giveaway} that was rerolled.
  */

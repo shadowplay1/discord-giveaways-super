@@ -7,7 +7,8 @@ import { DatabaseType } from './databaseType.enum'
 import { IDatabaseStructure } from './databaseStructure.interface'
 
 import { IGiveaway } from '../lib/giveaway.interface'
-import { Optional } from './misc/utils'
+import { If, Optional } from './misc/utils'
+import { IGiveawayTemplate } from '../structures/giveawayTemplate'
 
 /**
  * Full {@link Giveaways} class configuration object.
@@ -229,10 +230,10 @@ export interface IGiveawayStartOptions {
      * @param {User} giveawayHost The host of the giveaway.
      * @returns {Partial<IEmbedStringsDefinitions>}
      */
-    defineEmbedStrings(
-        giveaway: IGiveaway,
+    defineEmbedStrings<IsTemplate extends boolean = false>(
+        giveaway: IGiveaway | IGiveawayTemplate,
         giveawayHost: User
-    ): Partial<IEmbedStringsDefinitions>
+    ): Partial<IEmbedStringsDefinitions<IsTemplate>>
 }
 
 /**
@@ -288,9 +289,9 @@ export interface IGiveawayStartMessages {
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayStartMessages} Giveaway message objects.
  */
-export type GiveawayFinishCallback = (
+export type GiveawayFinishCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: string,
-    winnersCount: number
+    winnersCount: If<IsTemplate, string, number>
 ) => Partial<IGiveawayStartMessages>
 
 /**
@@ -344,9 +345,9 @@ export interface IGiveawayRerollMessages {
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayMessages} Giveaway message objects.
  */
-export type GiveawayRerollCallback = (
+export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: string,
-    winnersCount: number
+    winnersCount: If<IsTemplate, string, number>
 ) => Partial<IGiveawayRerollMessages>
 
 /**
@@ -362,7 +363,7 @@ export type GiveawayRerollCallback = (
  * @prop {GiveawayRerollCallback} reroll
  * This function is called and all returned message objects are extracted and used when the giveaway winners are rerolled.
  */
-export interface IEmbedStringsDefinitions {
+export interface IEmbedStringsDefinitions<IsTemplate extends boolean = false> {
 
     /**
      * This object is used in the original giveaway
@@ -388,14 +389,14 @@ export interface IEmbedStringsDefinitions {
      * extracted and used when the giveaway is finished.
      * @type {GiveawayFinishCallback}
      */
-    finish: GiveawayFinishCallback
+    finish: GiveawayFinishCallback<IsTemplate>
 
     /**
      * This function is called and all returned message objects
      * are extracted and used when the giveaway winners are rerolled.
      * @type {GiveawayRerollCallback}
      */
-    reroll: GiveawayRerollCallback
+    reroll: GiveawayRerollCallback<IsTemplate>
 }
 
 /**
@@ -406,7 +407,7 @@ export interface IEmbedStringsDefinitions {
  * @prop {?ButtonStyle} [style] Button style.
  */
 export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & {
-    style: ButtonStyle
+    style?: ButtonStyle.Primary | ButtonStyle.Secondary | ButtonStyle.Success | ButtonStyle.Danger
 }>
 
 /**

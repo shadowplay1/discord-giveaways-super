@@ -315,17 +315,17 @@ export class Giveaway<
         this.raw.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
 
         const strings = this.messageProps
-        const startEmbedStrings = strings?.embeds.start
+        const startEmbedStrings = strings?.embeds.start || {}
 
         const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
-        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton || {})
 
         const message = await this.channel.messages.fetch(this.messageID)
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings as any).length == 1
+            embeds: Object.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -370,17 +370,17 @@ export class Giveaway<
         this.raw.endTimestamp = this.endTimestamp + this._timeToSeconds(extensionTime)
 
         const strings = this.messageProps
-        const startEmbedStrings = strings?.embeds.start
+        const startEmbedStrings = strings?.embeds.start || {}
 
         const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
-        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton || {})
 
         const message = await this.channel.messages.fetch(this.messageID)
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings as any).length == 1
+            embeds: Object.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -428,17 +428,17 @@ export class Giveaway<
         this.raw.endTimestamp = this.endTimestamp - this._timeToSeconds(reductionTime)
 
         const strings = this.messageProps
-        const startEmbedStrings = strings?.embeds.start
+        const startEmbedStrings = strings?.embeds.start || {}
 
         const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
-        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton || {})
 
         const message = await this.channel.messages.fetch(this.messageID)
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings as any).length == 1
+            embeds: Object.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -474,7 +474,7 @@ export class Giveaway<
         this._messageUtils.editFinishGiveawayMessage(
             this.raw,
             winnerIDs,
-            this.messageProps?.embeds.finish?.newGiveawayMessage as any
+            this.messageProps?.embeds.finish?.newGiveawayMessage
         )
 
         this._giveaways.emit('giveawayEnd', this)
@@ -489,7 +489,7 @@ export class Giveaway<
         const winnerIDs = this._pickWinners(giveaway)
 
         const rerollEmbedStrings = giveaway.messageProps?.embeds?.reroll
-        const rerollMessage: { [key: string]: any } = rerollEmbedStrings?.rerollMessage || {}
+        const rerollMessage = rerollEmbedStrings?.rerollMessage as Record<string, any> || {}
 
         for (const key in rerollMessage) {
             rerollMessage[key] = replaceGiveawayKeys(rerollMessage[key], this, winnerIDs)
@@ -500,7 +500,7 @@ export class Giveaway<
 
         giveawayMessage.reply({
             content: rerollMessage?.messageContent,
-            embeds: Object.keys(rerollMessage as any).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
+            embeds: Object.keys(rerollMessage).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
         })
 
         this._messageUtils.editFinishGiveawayMessage(
@@ -778,7 +778,7 @@ export class Giveaway<
         }
 
         const strings = this.messageProps
-        const startEmbedStrings: { [key: string]: any } = strings?.embeds.start || {}
+        const startEmbedStrings = strings?.embeds.start as Record<string, any> || {}
 
         const oldRawGiveaway = { ...this.raw }
         const oldValue = oldRawGiveaway[key]
@@ -796,31 +796,6 @@ export class Giveaway<
 
             for (const key in startEmbedStrings) {
                 if (typeof startEmbedStrings[key] == 'string') {
-
-                    // not working:
-
-                    // for (const newGiveawayHostKey in this.host) {
-                    // const currentHost = { ...this.host } as any
-                    // const newHost = newGiveawayHost as any
-
-                    // console.log({ old: currentHost[newGiveawayHostKey], new: newHost[newGiveawayHostKey] });
-
-                    // console.log({
-                    //     newGiveawayHostKey,
-                    //     includes: startEmbedStrings[key]
-                    //         .includes(currentHost[newGiveawayHostKey]),
-                    //     str: startEmbedStrings[key]
-                    // });
-
-                    // currentHost[newGiveawayHostKey] = newHost[newGiveawayHostKey]
-
-                    // if (startEmbedStrings[key].includes(currentHost[newGiveawayHostKey])) {
-                    //      startEmbedStrings[key] = startEmbedStrings[key]
-                    //          .replaceAll(currentHost[newGiveawayHostKey], newHost[newGiveawayHostKey])
-                    //     }
-                    // }
-
-                    // temporary solution foe the commented out code above:
                     startEmbedStrings[key] = startEmbedStrings[key]
                         .replaceAll(this.host.username, newGiveawayHost.username)
                         .replaceAll(this.host.discriminator, newGiveawayHost.discriminator)
@@ -848,19 +823,21 @@ export class Giveaway<
             this.endTimestamp = Math.floor((Date.now() + ms(time)) / 1000)
             this.raw.endTimestamp = Math.floor((Date.now() + ms(time)) / 1000)
         } else {
-            (this as any)[key] = value;
-            (this.raw as any)[key] = value
+            const that = this as Record<string, any>
+
+            that[key] = value
+            this.raw[key] = value
         }
 
         const embed = this._messageUtils.buildGiveawayEmbed(this.raw, startEmbedStrings)
-        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton as any)
+        const buttonsRow = this._messageUtils.buildButtonsRow(strings?.buttons.joinGiveawayButton || {})
 
         const message = await this.channel.messages.fetch(this.messageID)
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings as any).length == 1
+            embeds: Object.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -905,6 +882,9 @@ export class Giveaway<
      * `INVALID_TYPE` - when argument type is invalid.
      */
     public sync(giveaway: IGiveaway): void {
+        const that = this as Record<string, any>
+        const specifiedGiveaway = giveaway as Record<string, any>
+
         if (!giveaway) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('giveaway', 'Giveaway.sync'),
@@ -914,17 +894,17 @@ export class Giveaway<
 
         if (typeof giveaway !== 'object') {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveaway', 'object', giveaway as any),
+                errorMessages.INVALID_TYPE('giveaway', 'object', giveaway),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
 
         for (const key in giveaway) {
-            (this as any)[key] = (giveaway as any)[key]
+            that[key] = specifiedGiveaway[key]
         }
 
         for (const key in giveaway) {
-            (this.raw as any)[key] = (giveaway as any)[key]
+            that.raw[key] = specifiedGiveaway[key]
         }
     }
 
@@ -985,7 +965,7 @@ export class Giveaway<
 
         if (!Array.isArray(arrayToShuffle)) {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('arrayToShuffle', 'array', arrayToShuffle as any),
+                errorMessages.INVALID_TYPE('arrayToShuffle', 'array', arrayToShuffle),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
@@ -993,7 +973,7 @@ export class Giveaway<
         const shuffledArray = [...arrayToShuffle]
 
         for (let i = shuffledArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)) as any
+            const j = Math.floor(Math.random() * (i + 1)) as number
 
             [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]
         }
@@ -1019,7 +999,7 @@ export class Giveaway<
 
         if (typeof guildID !== 'string') {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('guildID', 'string', guildID as any),
+                errorMessages.INVALID_TYPE('guildID', 'string', guildID),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }

@@ -1,5 +1,5 @@
 import { Giveaways } from '../../Giveaways'
-import { Database } from '../../types/configurations'
+import { Database, IJSONDatabaseConfiguration } from '../../types/configurations'
 import { DatabaseType } from '../../types/databaseType.enum'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
@@ -60,14 +60,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
          */
         this.databaseType = giveaways.options.database
 
-        if (this.databaseType == DatabaseType.JSON) {
-
-            /**
-             * JSON parser instance.
-             * @type {JSONParser}
-             */
-            this.jsonParser = new JSONParser(((giveaways.options.connection) as any).path)
-        }
+        /**
+         * JSON parser instance.
+         * @type {JSONParser}
+         */
+        this.jsonParser = new JSONParser((giveaways.options.connection as IJSONDatabaseConfiguration).path)
     }
 
     /**
@@ -97,7 +94,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
                 const database = this.db as Database<DatabaseType.MONGODB> as any
                 const data = await database.get(key)
 
-                return data
+                return data as any
             }
 
             case DatabaseType.ENMAP: {
@@ -556,15 +553,15 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
 
             case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
+                const database = this.db as Database<DatabaseType.MONGODB>
                 const data = await database.all()
 
                 return data as any
             }
 
             case DatabaseType.ENMAP: {
-                const allData: { [key: string]: any } = {}
-                const database = this.db as Database<DatabaseType.ENMAP> as any
+                const allData: any = {}
+                const database = this.db as Database<DatabaseType.ENMAP>
 
                 for (const databaseKey of database.keys()) {
                     const keys = databaseKey.split('.')
@@ -584,7 +581,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
                     }
                 }
 
-                return allData as any
+                return allData
             }
         }
 

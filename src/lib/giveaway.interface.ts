@@ -1,4 +1,7 @@
-import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configurations'
+import {
+    IGiveawayEmbedOptions, IGiveawayButtonOptions,
+    IGiveawayStartMessages, IGiveawayRerollMessages
+} from '../types/configurations'
 
 /**
  * An object that contains an information about a giveaway.
@@ -197,19 +200,13 @@ export interface IGiveawayEmbeds {
      * Message embed data for cases when rerolling the giveaway.
      * @type {IGiveawayRerollEmbeds}
      */
-    reroll: Record<
-        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage' | 'rerollMessage',
-        IGiveawayEmbedOptions
-    >
+    reroll: IGiveawayRerollMessages
 
     /**
      * Message embed data for cases when the giveaway has finished.
      * @type {IGiveawayFinishEmbeds}
      */
-    finish: Record<
-        'newGiveawayMessage' | 'endMessage' | 'noWinners' | 'noWinnersEndMessage',
-        IGiveawayEmbedOptions
-    >
+    finish: IGiveawayStartMessages
 }
 
 /**
