@@ -103,7 +103,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as V
+        return {} as V
     }
 
     /**
