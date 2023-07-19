@@ -94,16 +94,16 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
                 const database = this.db as Database<DatabaseType.MONGODB> as any
                 const data = await database.get(key)
 
-                return data as any
+                return data
             }
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP> as any
-                return database.get(key) as any
+                return database.get(key)
             }
         }
 
-        return null as any
+        return null as V
     }
 
     /**
@@ -162,13 +162,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP> as any
-                database.set(key, value as any)
+                database.set(key, value)
 
                 return true
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -185,6 +185,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             case DatabaseType.MONGODB: {
                 const database = this.db as Database<DatabaseType.MONGODB> as any
                 await database.clear()
+
                 return true
             }
 
@@ -196,7 +197,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -248,7 +249,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetNumber = database.get(key) as any
+                const targetNumber = database.get(key)
 
                 if (isNaN(targetNumber)) {
                     throw new GiveawaysError(
@@ -262,7 +263,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -304,7 +305,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetNumber = database.get(key) as any
+                const targetNumber = database.get(key)
 
                 if (isNaN(targetNumber)) {
                     throw new GiveawaysError(
@@ -313,12 +314,12 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
                     )
                 }
 
-                database.set(key, (targetNumber - numberToSubtract) as any)
+                database.set(key, targetNumber - numberToSubtract)
                 return true
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -348,7 +349,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -365,7 +366,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -382,7 +383,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -395,23 +396,23 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
             case DatabaseType.ENMAP: {
                 const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetArray = database.get(key) || [] as any[]
+                const targetArray = database.get(key) || []
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
 
                 targetArray.push(value)
-                database.set(key, targetArray as any)
+                database.set(key, targetArray)
 
                 return true
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -425,11 +426,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
     public async pull<V = any>(key: string, index: number, newValue: V): Promise<boolean> {
         switch (this.databaseType) {
             case DatabaseType.JSON: {
-                const targetArray = await this.jsonParser?.get<any[]>(key) || []
+                const targetArray = await this.jsonParser?.get(key) || []
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -446,7 +447,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -463,7 +464,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -475,7 +476,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -491,7 +492,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -508,7 +509,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -525,7 +526,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
                 if (!Array.isArray(targetArray)) {
                     throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray as any),
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
                         GiveawaysErrorCodes.INVALID_TARGET_TYPE
                     )
                 }
@@ -537,7 +538,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return false
     }
 
     /**
@@ -585,6 +586,6 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
             }
         }
 
-        return null as any
+        return {} as V
     }
 }

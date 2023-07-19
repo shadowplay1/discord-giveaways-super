@@ -16,7 +16,7 @@
 	"dependencies": {
 		"discord.js": "^14.11.0",
 		"enmap": "^5.9.8",
-		"quick-mongo-super": "^1.0.15",
+		"quick-mongo-super": "^1.0.16",
 		"typescript": "^5.2.0-dev.20230627"
 	},
 	"devDependencies": {
