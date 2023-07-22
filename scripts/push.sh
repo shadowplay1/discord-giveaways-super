@@ -13,7 +13,7 @@ if ! source ./scripts/docgen.sh; then
     exit 1
 fi
 
-# add missing generics in classes
+# add missing generics in classes & interfaces
 sed -i 's/"name": "Giveaway"/"name": "Giveaway<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "Giveaways"/"name": "Giveaways<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
 

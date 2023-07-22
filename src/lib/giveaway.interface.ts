@@ -76,6 +76,12 @@ export interface IGiveaway {
     endTimestamp: number
 
     /**
+     * Timestamp when the giveaway was ended.
+     * @type {number}
+     */
+    endedTimestamp: number
+
+    /**
      * Giveaway host member ID.
      * @type {string}
      */
@@ -137,7 +143,9 @@ export interface IGiveaway {
  * @typedef {object} IGiveawayFinishEmbeds
  * @prop {IGiveawayEmbedOptions} newGiveawayMessage The options for the embed when sending a new giveaway message.
  * @prop {IGiveawayEmbedOptions} endMessage The options for the embed when the giveaway has ended.
- * @prop {IGiveawayEmbedOptions} noWinners The options for the embed when there are no winners for the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} noWinnersNewGiveawayMessage
+ * The options for the embed when there are no winners for the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
  * The options for the embed when there are no winners for the giveaway and it has ended.

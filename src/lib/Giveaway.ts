@@ -93,6 +93,12 @@ export class Giveaway<
     public endTimestamp: number
 
     /**
+     * Timestamp when the giveaway was ended.
+     * @type {number}
+     */
+    public endedTimestamp: number
+
+    /**
      * Giveaway message ID.
      * @type {string}
      */
@@ -212,6 +218,12 @@ export class Giveaway<
         this.endTimestamp = giveaway.endTimestamp
 
         /**
+         * Giveaway end timestamp.
+         * @type {number}
+         */
+        this.endedTimestamp = giveaway.endedTimestamp
+
+        /**
          * Giveaway message ID.
          * @type {string}
          */
@@ -273,7 +285,7 @@ export class Giveaway<
                 finish: {
                     endMessage: {},
                     newGiveawayMessage: {},
-                    noWinners: {},
+                    noWinnersNewGiveawayMessage: {},
                     noWinnersEndMessage: {}
                 },
 
@@ -466,8 +478,13 @@ export class Giveaway<
             )
         }
 
+        const endedTimestamp = Date.now()
+
         this.isEnded = true
         this.raw.isEnded = true
+
+        this.endedTimestamp = endedTimestamp
+        this.raw.endedTimestamp = endedTimestamp
 
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 

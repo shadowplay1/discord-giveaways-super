@@ -33,13 +33,14 @@ import { Emitter } from './lib/util/classes/Emitter'
 import { DatabaseManager } from './lib/managers/DatabaseManager'
 
 import { checkConfiguration } from './lib/util/functions/checkConfiguration.function'
-import { FindCallback } from './types/misc/utils'
+import { FindCallback, MapCallback, Maybe } from './types/misc/utils'
 
 import { Giveaway } from './lib/Giveaway'
 import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
 
 import { giveawayTemplate } from './structures/giveawayTemplate'
 import { MessageUtils } from './lib/util/classes/MessageUtils'
+import { isTimeStringValid } from './lib/util/functions/isTimeStringValid.function'
 
 /**
  * Main Giveaways class.
@@ -657,9 +658,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             )
         }
 
-        try {
-            ms(time)
-        } catch {
+        if (!isTimeStringValid(time)) {
             throw new GiveawaysError(GiveawaysErrorCodes.INVALID_TIME)
         }
 
@@ -678,6 +677,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             prize,
             startTimestamp: Math.floor(Date.now() / 1000),
             endTimestamp: Math.floor((Date.now() + ms(time as string)) / 1000),
+            endedTimestamp: 0,
             time: time || '1d',
             state: GiveawayState.STARTED,
             winnersCount: winnersCount || 1,
@@ -687,7 +687,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         }
 
         const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings<true>(
-            giveawayTemplate,
+            giveawayTemplate as any,
             this.client.users.cache.get(hostMemberID) as User
         ) : {}
 
@@ -747,11 +747,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @param {FindCallback<Giveaway<TDatabaseType>>} cb
      * The callback function to find the giveaway in the giveaways database.
      *
-     * @returns {Promise<Giveaway<TDatabaseType>>}
+     * @returns {Promise<Maybe<Giveaway<TDatabaseType>>>} Giveaway instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Giveaway<TDatabaseType>> {
+    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Maybe<Giveaway<TDatabaseType>>> {
         if (!cb) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
@@ -773,13 +773,44 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
+     * Returns the mapped giveaways array based on the specified callback function.
+     *
+     * @param {FindCallback<Giveaway<TDatabaseType>>} cb
+     * The callback function to call on the giveaway.
+     *
+     * @returns {Promise<Maybe<Giveaway<TDatabaseType>>>} Mapped giveaways array.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async map<TReturnType>(cb: MapCallback<Giveaway<TDatabaseType>, TReturnType>): Promise<TReturnType[]> {
+        if (!cb) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof cb !== 'function') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('cb', 'function', cb),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        const giveaways = await this.getAll()
+        const giveaway = giveaways.map(cb)
+
+        return giveaway
+    }
+
+    /**
      * Gets all the giveaways from the specified guild in database.
      * @param {string} guildID Guild ID to get the giveaways from.
      * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async getGuildGiveaways(guildID: string): Promise<Array<Giveaway<TDatabaseType>>> {
+    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabaseType>[]> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
@@ -873,7 +904,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {object} IGiveawayFinishEmbeds
  * @prop {IGiveawayEmbedOptions} newGiveawayMessage The options for the embed when sending a new giveaway message.
  * @prop {IGiveawayEmbedOptions} endMessage The options for the embed when the giveaway has ended.
- * @prop {IGiveawayEmbedOptions} noWinners The options for the embed when there are no winners for the giveaway.
+ * @prop {IGiveawayEmbedOptions} noWinnersNewGiveawayMessage The options for the embed when there are no winners for the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
  * The options for the embed when there are no winners for the giveaway and it has ended.
@@ -903,7 +934,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * @prop {IGiveawayEmbedOptions} endMessage
  * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
- * @prop {IGiveawayEmbedOptions} noWinners
+ * @prop {IGiveawayEmbedOptions} noWinnersNewGiveawayMessage
  * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
@@ -1366,6 +1397,16 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @returns {TReturnType} The value returned by the callback function.
  */
 
+/**
+ * A type that represents any value with "null" possible to be returned.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see any) - The type to attach.
+ *
+ * @template T The type to attach.
+ * @typedef {any} Maybe<T>
+ */
 
 
 // Events, for documentation purposes

@@ -66,7 +66,9 @@ export class MessageUtils {
 
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: title || '',
+                // discord.js is only accepting "null" for empty value
+                // even though here it's missing in library's typings :/
+                name: title || null as any,
                 iconURL: titleIcon,
                 url: titleURL
             })
@@ -78,12 +80,14 @@ export class MessageUtils {
             .setImage(imageURL || null)
             .setThumbnail(thumbnailURL || null)
             .setFooter({
-                text: footer || '',
+                // discord.js is only accepting "null" for empty value
+                // even though here it's missing in library's typings :/
+                text: footer || null as any,
                 iconURL: footerIcon
             })
 
         if (timestamp) {
-            embed.setTimestamp(timestamp)
+            embed.setTimestamp(new Date(parseInt(timestamp.toString())))
         }
 
         return embed
@@ -113,7 +117,7 @@ export class MessageUtils {
      * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
      * @param {ILinkButton} [goToMessageButton] String values object to use in the "go to message" button.
      * @param {string} [giveawayMessageURL] Giveaway message URL to be set in the "go to message" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRow(
         rerollButton: IGiveawayButtonOptions,
@@ -151,7 +155,7 @@ export class MessageUtils {
     /**
      * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
      * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayRerollButtonRow(
         rerollButton: IGiveawayButtonOptions,
@@ -173,7 +177,7 @@ export class MessageUtils {
      * Creates a buttons row based on the specified "go to message" button objects.
      * @param {ILinkButton} goToMessageButton String values object to use in the "go to message" link button.
      * @param {string} giveawayMessageURL Giveaway message URL to be set in the "go to message" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRowWithoutRerollButton(
         goToMessageButton: ILinkButton,
@@ -236,7 +240,9 @@ export class MessageUtils {
         const embedStrings = giveaway.messageProps?.embeds?.finish
 
         const finishEmbedStrings = customEmbedStrings || embedStrings?.newGiveawayMessage || {}
-        const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish?.noWinners || {} as IGiveawayEmbedOptions
+
+        const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish
+            ?.noWinnersNewGiveawayMessage || {} as IGiveawayEmbedOptions
 
         const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 

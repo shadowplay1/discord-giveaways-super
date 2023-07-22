@@ -1,6 +1,4 @@
 import fetch from 'node-fetch'
-
-import { IUpdateState } from '../../../types/misc/utils'
 import { name as packageName, version as packageVersion } from '../../../../package.json'
 
 /**
@@ -24,4 +22,32 @@ export const checkUpdates = async (): Promise<IUpdateState> => {
         installedVersion: packageVersion,
         availableVersion: latestVersion
     }
+}
+
+/**
+ * An object containing the data about available module updates.
+ * @typedef {object} IUpdateState
+ * @prop {boolean} updated Whether an update is available or not.
+ * @prop {string} installedVersion The currently installed version.
+ * @prop {string} availableVersion The available version, if any.
+ */
+export interface IUpdateState {
+
+    /**
+     * Whether an update is available or not.
+     * @type {boolean}
+     */
+    updated: boolean
+
+    /**
+     * The currently installed version.
+     * @type {string}
+     */
+    installedVersion: string
+
+    /**
+     * The available version, if any.
+     * @type {string}
+     */
+    availableVersion: string
 }

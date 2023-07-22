@@ -8,7 +8,6 @@ import { IDatabaseStructure } from './databaseStructure.interface'
 
 import { IGiveaway } from '../lib/giveaway.interface'
 import { If, Optional } from './misc/utils'
-import { IGiveawayTemplate } from '../structures/giveawayTemplate'
 
 /**
  * Full {@link Giveaways} class configuration object.
@@ -163,9 +162,9 @@ export interface IJSONDatabaseConfiguration {
 export type IGiveawayData = Omit<
     IGiveaway,
     'id' | 'startTimestamp' | 'endTimestamp' |
-    'messageID' | 'messageURL' | 'entries' |
-    'entriesArray' | 'state' | 'messageProps' |
-    'isEnded'
+    'endedTimestamp' | 'messageID' | 'messageURL' |
+    'entries' | 'entriesArray' | 'state' |
+    'messageProps' | 'isEnded'
 >
 
 /**
@@ -231,7 +230,7 @@ export interface IGiveawayStartOptions {
      * @returns {Partial<IEmbedStringsDefinitions>}
      */
     defineEmbedStrings<IsTemplate extends boolean = false>(
-        giveaway: IGiveaway | IGiveawayTemplate,
+        giveaway: IGiveaway,
         giveawayHost: User
     ): Partial<IEmbedStringsDefinitions<IsTemplate>>
 }
@@ -245,7 +244,7 @@ export interface IGiveawayStartOptions {
  *
  * @prop {IGiveawayEmbedOptions} endMessage
  * The separated message to be sent in the giveaway channel when a giveaway ends with winners.
- * @prop {IGiveawayEmbedOptions} noWinners
+ * @prop {IGiveawayEmbedOptions} noWinnersNewGiveawayMessage
  * The message that will be set to the original giveaway message if there are no winners in the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
@@ -273,7 +272,7 @@ export interface IGiveawayStartMessages {
      * The message that will be set to the original giveaway message if there are no winners in the giveaway.
      * @type {IGiveawayEmbedOptions}
      */
-    noWinners: IGiveawayEmbedOptions
+    noWinnersNewGiveawayMessage: IGiveawayEmbedOptions
 
     /**
      * The separated message to be sent in the giveaway channel if there are no winners in the giveaway.

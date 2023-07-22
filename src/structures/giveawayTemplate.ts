@@ -9,6 +9,7 @@ export const giveawayTemplate: IGiveawayTemplate = {
     prize: '{prize}',
     startTimestamp: '{startTimestamp}',
     endTimestamp: '{endTimestamp}',
+    endedTimestamp: '{endedTimestamp}',
     time: '{time}',
     winnersCount: '{winnersCount}',
     entries: '{entries}',
