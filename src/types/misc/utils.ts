@@ -31,7 +31,22 @@ export type If<T extends boolean,
  *
  * @typedef {object} Optional
  */
-export type Optional<T extends object, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>
+export type OptionalProps<T extends object, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>
+
+/**
+ * Makes the specified properties in `K` from the object in `T` required.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see object) - The object to get the properties from.
+ * - `K` (keyof T) - The properties to make required.
+ *
+ * @template T - The object to get the properties from.
+ * @template K - The properties to make required.
+ *
+ * @typedef {object} RequiredProps
+ */
+export type RequiredProps<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
 
 
 /**

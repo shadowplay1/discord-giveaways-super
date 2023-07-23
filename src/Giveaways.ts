@@ -35,10 +35,11 @@ import { DatabaseManager } from './lib/managers/DatabaseManager'
 import { checkConfiguration } from './lib/util/functions/checkConfiguration.function'
 import { FindCallback, MapCallback, Maybe } from './types/misc/utils'
 
-import { Giveaway } from './lib/Giveaway'
+import { Giveaway, SafeGiveaway, UnsafeGiveaway } from './lib/Giveaway'
 import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
 
 import { giveawayTemplate } from './structures/giveawayTemplate'
+
 import { MessageUtils } from './lib/util/classes/MessageUtils'
 import { isTimeStringValid } from './lib/util/functions/isTimeStringValid.function'
 
@@ -141,7 +142,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
          * @type {Logger}
          * @private
          */
-        this._logger = new Logger(options?.debug as boolean)
+        this._logger = new Logger(!!options?.debug)
 
         this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
         this._logger.debug('Database type is JSON.', 'lightcyan')
@@ -560,13 +561,13 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     /**
      * Starts the giveaway.
      * @param {IGiveawayStartConfig} giveawayOptions {@link Giveaway} options.
-     * @returns {Promise<Giveaway<DatabaseType>>} Created {@link Giveaway} instance.
+     * @returns {Promise<SafeGiveaway<Giveaway<DatabaseType>>>} Created {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
     public async start(
         giveawayOptions: IGiveawayStartConfig
-    ): Promise<Giveaway<TDatabaseType>> {
+    ): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         const {
             channelID, guildID, hostMemberID,
             prize, time, winnersCount,
@@ -742,16 +743,42 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
     }
 
     /**
+     * Finds the giveaway in all giveaways database by its ID.
+     * @param {number} giveawayID Giveaway ID to find the giveaway by.
+     * @returns {Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>>} Giveaway instance.
+     * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
+     * `INVALID_TYPE` - when argument type is invalid.
+     */
+    public async get(giveawayID: number): Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>> {
+        if (!giveawayID) {
+            throw new GiveawaysError(
+                errorMessages.REQUIRED_ARGUMENT_MISSING('giveawayID', 'Giveaways.get'),
+                GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (typeof giveawayID !== 'string') {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('giveawayID', 'string', giveawayID),
+                GiveawaysErrorCodes.INVALID_TYPE
+            )
+        }
+
+        const result = await this.find(giveaway => giveaway.id == giveawayID) || null
+        return result
+    }
+
+    /**
      * Finds the giveaway in all giveaways database by the specified callback function.
      *
      * @param {FindCallback<Giveaway<TDatabaseType>>} cb
      * The callback function to find the giveaway in the giveaways database.
      *
-     * @returns {Promise<Maybe<Giveaway<TDatabaseType>>>} Giveaway instance.
+     * @returns {Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>>} Giveaway instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Maybe<Giveaway<TDatabaseType>>> {
+    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>> {
         if (!cb) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
@@ -767,9 +794,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         }
 
         const giveaways = await this.getAll()
-        const giveaway = giveaways.find(cb)
+        const giveaway = giveaways.find(cb) || null
 
-        return giveaway as Giveaway<TDatabaseType>
+        return giveaway
     }
 
     /**
@@ -778,7 +805,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @param {FindCallback<Giveaway<TDatabaseType>>} cb
      * The callback function to call on the giveaway.
      *
-     * @returns {Promise<Maybe<Giveaway<TDatabaseType>>>} Mapped giveaways array.
+     * @returns {Promise<any[]>} Mapped giveaways array.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -810,7 +837,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async getGuildGiveaways(guildID: string): Promise<Giveaway<TDatabaseType>[]> {
+    public async getGuildGiveaways(guildID: string): Promise<UnsafeGiveaway<Giveaway<TDatabaseType>>[]> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
@@ -1359,10 +1386,24 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * - `T` ({@link object}) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make optional.
  *
- * @typedef {object} Optional<T, K>
+ * @typedef {object} OptionalProps<T, K>
  *
  * @template T - The object to get the properties from.
  * @template K - The properties to make optional.
+ */
+
+/**
+ * Makes the specified properties in `K` from the object in `T` required.
+ *
+ * Type parameters:
+ *
+ * - `T` (@see object) - The object to get the properties from.
+ * - `K` (keyof T) - The properties to make required.
+ *
+ * @template T - The object to get the properties from.
+ * @template K - The properties to make required.
+ *
+ * @typedef {object} RequiredProps
  */
 
 /**

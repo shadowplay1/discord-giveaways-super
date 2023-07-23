@@ -1,4 +1,4 @@
-import { ButtonStyle, Client, Partials, TextChannel } from 'discord.js'
+import { ButtonStyle, ChannelType, Client, Partials, TextChannel } from 'discord.js'
 import { DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
 
 const { Channel, GuildMember, Message, User } = Partials
@@ -60,7 +60,7 @@ client.on('messageCreate', async message => {
             message.mentions.channels.first() ||
             message.guild?.channels.cache.find(channel => channel.name == channelIDOrName) ||
             message.guild?.channels.cache.get(channelIDOrName)
-        ) as TextChannel
+        )
 
         // get the required command arguments
         // get the giveaway details provided by user in the arguemnts
@@ -69,8 +69,18 @@ client.on('messageCreate', async message => {
         const prize = args.slice(3).join(' ')
 
         // performing validation checks
+        if (!message.guild) {
+            message.reply(':x: | Giveaways cannot be started in DMs.')
+            return
+        }
+
         if (!channel) {
             message.reply(':x: | Giveaway channel is not specified or not found.')
+            return
+        }
+
+        if (channel?.type !== ChannelType.GuildText) {
+            message.reply(':x: | Giveaway channel must be a **text** channel.')
             return
         }
 
@@ -97,7 +107,7 @@ client.on('messageCreate', async message => {
         // start the giveaway and read the started giveaway's data
         const newGiveaway = await giveaways.start({
             channelID: channel.id,
-            guildID: message.guild?.id as string,
+            guildID: message.guild.id,
             hostMemberID: message.author.id,
             prize,
             time,
@@ -123,7 +133,7 @@ client.on('messageCreate', async message => {
 
                     // this ephemeral reply will be sent when they leave the giveaway
                     leaveGiveawayMessage: {
-                        messageContent: ':white_check_mark: | You have left the giveaway!'
+                        messageContent: ':exclamation: | You have left the giveaway!'
                     },
 
                     // this embed will be sent on giveaway start
@@ -131,7 +141,7 @@ client.on('messageCreate', async message => {
                         messageContent: ':tada: **GIVEAWAY STARTED!** :tada:',
 
                         // embed properties
-                        title: 'Giveaway',
+                        title: `Giveaway (ID: ${giveaway.id})`,
                         titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                         description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
@@ -157,7 +167,7 @@ client.on('messageCreate', async message => {
                             newGiveawayMessage: {
                                 messageContent: ':tada: **GIVEAWAY FINISHED!** :tada:',
 
-                                title: 'Giveaway',
+                                title: `Giveaway (ID: ${giveaway.id})`,
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
 
@@ -179,7 +189,7 @@ client.on('messageCreate', async message => {
                             noWinnersNewGiveawayMessage: {
                                 messageContent: ':tada: **GIVEAWAY FINISHED!** :tada:',
 
-                                title: 'Giveaway',
+                                title: `Giveaway (ID: ${giveaway.id})`,
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
                                 description: `There was no winners in "**${giveaway.prize}**" giveaway!`,
 
@@ -211,7 +221,7 @@ client.on('messageCreate', async message => {
                             newGiveawayMessage: {
                                 messageContent: ':tada: **GIVEAWAY REROLLED!** :tada:',
 
-                                title: 'Giveaway',
+                                title: `Giveaway (ID: ${giveaway.id})`,
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entries}**\n` +
@@ -247,7 +257,7 @@ client.on('messageCreate', async message => {
                 joinGiveawayButton: {
                     text: 'Join the giveaway',
                     emoji: '🎉', // either an emoji or custom emoji ID is acceptable
-                    style: ButtonStyle.Success
+                    style: ButtonStyle.Primary
                 },
 
                 // the "reroll" button to attach on the separated giveaway end message
@@ -272,49 +282,76 @@ client.on('messageCreate', async message => {
         })
     }
 
+    // Trigger on "!force-end" command
+    // Command usage: "!force-end <giveawayOrMessageID>"
     if (message.content.startsWith(prefix + 'force-end')) {
-        const giveawayID = parseInt(args[0])
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID
+        )
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
 
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            return
+        }
+
+        // Forcefully end the giveaway
         await giveaway.end()
+
         message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was ended forcefully.`)
     }
 
+    // Trigger on "!restart" command
+    // Command usage: "!restart <giveawayOrMessageID>"
     if (message.content.startsWith(prefix + 'restart')) {
-        const giveawayID = parseInt(args[0])
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
 
+        // Restart the giveaway
         await giveaway.restart()
+
         message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was successfully restarted.`)
     }
 
+    // Trigger on "!extend" command
+    // Command usage: "!extend <giveawayOrMessageID> <time>"
     if (message.content.startsWith(prefix + 'extend')) {
-        // get the required command arguments
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
         const time = args[1]
 
-        // perform validation checks
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID and time
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
@@ -329,23 +366,37 @@ client.on('messageCreate', async message => {
             return
         }
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            return
+        }
+
+        // Extend the giveaway's length
         await giveaway.extendLength(time)
 
         message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully extended by **${time}**.`)
     }
 
+    // Trigger on "!reduce" command
+    // Command usage: "!reduce <giveawayOrMessageID> <time>"
     if (message.content.startsWith(prefix + 'reduce')) {
-        // get the required command arguments
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
         const time = args[1]
 
-        // perform validation checks
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID and time
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
@@ -360,102 +411,158 @@ client.on('messageCreate', async message => {
             return
         }
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            return
+        }
+
+        // Reduce the giveaway's length
         await giveaway.reduceLength(time)
 
         message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully reduced by **${time}**.`)
     }
 
+    // Trigger on "!delete" command
+    // Command usage: "!delete <giveawayOrMessageID>"
     if (message.content.startsWith(prefix + 'delete')) {
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
-
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Delete the giveaway
         await giveaway.delete()
 
-        message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully deleted.`)
+        message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was successfully deleted.`)
     }
 
+    // Trigger on "!set-prize" command
+    // Command usage: "!set-prize <giveawayOrMessageID> <prize>"
     if (message.content.startsWith(prefix + 'set-prize')) {
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
-        const prize = args.slice(2).join(' ')
+        // Get the new prize from the arguments
+        const prize = args.slice(1).join(' ')
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Set the new prize for the giveaway
         await giveaway.setPrize(prize)
 
         message.reply(`**${giveaway.prize}** giveaway's prize (ID: **${giveaway.id}**) was successfully set to **${prize}**.`)
     }
 
+    // Trigger on "!set-winners" command
+    // Command usage: "!set-winners <giveawayOrMessageID> <winnersCount>"
     if (message.content.startsWith(prefix + 'set-winners')) {
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
+        // Get the new number of winners from the arguments
         const winners = args.slice(2).join(' ')
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Set the new number of winners for the giveaway
         await giveaway.setWinnersCount(parseInt(winners))
 
         message.reply(`**${giveaway.prize}** giveaway's winners count (ID: **${giveaway.id}**) was successfully set to **${winners}**.`)
     }
 
+    // Trigger on "!set-host" command
+    // Command usage: "!set-host <giveawayOrMessageID> <hostMemberID>"
     if (message.content.startsWith(prefix + 'set-host')) {
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
 
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
 
+        // Get the new host member's ID from the arguments
         const hostMemberID = args[2]
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Set the new host member ID for the giveaway
         await giveaway.setHostMemberID(hostMemberID)
 
         message.reply(`**${giveaway.prize}** giveaway's host (ID: **${giveaway.id}**) was successfully changed to **<@${hostMemberID}>**.`)
     }
 
+    // Trigger on "!set-time" command
+    // Command usage: "!set-time <giveawayOrMessageID> <time>"
     if (message.content.startsWith(prefix + 'set-time')) {
-        // get the required command arguments
-        const giveawayID = parseInt(args[0])
+        // Get the required command arguments
+        const giveawayOrMessageID = args[0]
         const time = args[1]
 
-        // perform validation checks
-        if (!giveawayID) {
+        // Perform validation checks for the giveaway ID and time
+        if (!giveawayOrMessageID) {
             message.reply(':x: | Giveaway ID should be specified.')
             return
         }
@@ -470,18 +577,48 @@ client.on('messageCreate', async message => {
             return
         }
 
-        const giveaway = await giveaways.find(giveaway => giveaway.id == giveawayID)
+        // Find the giveaway by its ID or its message ID
+        const giveaway = await giveaways.find(
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
 
+        // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
         }
+
+        // Set the new time for the giveaway
         await giveaway.setTime(time)
 
         message.reply(`**${giveaway.prize}** giveaway's time (ID: **${giveaway.id}**) was successfully set to **${time}**.`)
     }
 
-    // more examples coming soon!
+    // Trigger on "!help" command
+    // Command usage: "!help"
+    if (message.content.startsWith(prefix + 'help')) {
+        // Available commands array
+        const commands = [
+            '`!help` - **Display the list of available commands.**',
+            '`!giveaway-start <channel> <time> <winnersCount> <prize>` - **Start a new giveaway.**',
+            '`!force-end <giveawayOrMessageID>` - **Forcefully end a giveaway.**',
+            '`!restart <giveawayOrMessageID>` - **Restart a giveaway.**',
+            '`!extend <giveawayOrMessageID> <time>` - **Extend the length of a giveaway.**',
+            '`!reduce <giveawayOrMessageID> <time>` - **Reduce the length of a giveaway.**',
+            '`!delete <giveawayOrMessageID>` - **Delete a giveaway.**',
+            '`!set-prize <giveawayOrMessageID> <prize>` - **Set a new prize for a giveaway.**',
+            '`!set-winners <giveawayOrMessageID> <winnersCount>` - **Set the number of winners for a giveaway.**',
+            '`!set-host <giveawayOrMessageID> <hostMemberID>` - **Change the host of a giveaway.**',
+            '`!set-time <giveawayOrMessageID> <time>` - **Set a new time for a giveaway.**'
+        ]
+
+        message.channel.send(
+            `Commands list [**${commands.length}** commands]:\n\n` +
+            commands
+                .map((commandString, commandIndex) => `**${commandIndex + 1}** - ${commandString}`)
+                .join('\n')
+        )
+    }
 })
 
 // authenticate the bot in discord
-client.login('MTEyMTQ5NDI2NTE2NDQ2ODM3Ng.GSr3gF.A6Dbunh7ierKMm4NLuuOu6jz7YsT7mpcYKJqG0')
+client.login('MTEyMTQ5NDI2NTE2NDQ2ODM3Ng.GEbMqs.4gAVtzagEjaWzRavRqu7mU9Kku2iUIIHhHdrXU')

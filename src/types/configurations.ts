@@ -7,7 +7,7 @@ import { DatabaseType } from './databaseType.enum'
 import { IDatabaseStructure } from './databaseStructure.interface'
 
 import { IGiveaway } from '../lib/giveaway.interface'
-import { If, Optional } from './misc/utils'
+import { If, OptionalProps } from './misc/utils'
 
 /**
  * Full {@link Giveaways} class configuration object.
@@ -179,7 +179,7 @@ export type IGiveawayData = Omit<
  * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
  * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
  */
-export type IGiveawayStartConfig = Optional<
+export type IGiveawayStartConfig = OptionalProps<
     IGiveawayData,
     'time' | 'winnersCount'
 > & Partial<IGiveawayStartOptions>

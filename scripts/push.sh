@@ -19,7 +19,7 @@ sed -i 's/"name": "Giveaways"/"name": "Giveaways<TDatabaseType>"/g' "./docs/gene
 
 # add missing generics in utility types with 2+ type arguments
 sed -i 's/"name": "If<T,/"name": "If<T, IfTrue, IfFalse>/g' "./docs/generated/${package_version}.json"
-sed -i 's/"name": "Optional<T,"/"name": "Optional<T, K>"/g' "./docs/generated/${package_version}.json"
+sed -i 's/"name": "OptionalProps<T,"/"name": "OptionalProps<T, K>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "MapCallback<T,/"name": "MapCallback<T, TReturnType>/g' "./docs/generated/${package_version}.json"
 
 cp "./docs/generated/${package_version}.json" "./docs/generated/master.json"

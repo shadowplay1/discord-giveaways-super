@@ -14,6 +14,7 @@ import { ms } from './misc/ms'
 import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
 import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
+import { OptionalProps, RequiredProps } from '../types/misc/utils'
 
 /**
  * Class that represents the Giveaway object.
@@ -310,7 +311,25 @@ export class Giveaway<
      * @type {boolean}
      */
     public get isFinished(): boolean {
-        return this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp * 1000
+        return (this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp * 1000) || this.isEnded
+    }
+
+    /**
+     * [TYPE GUARD FUNCTION] - Determines if the giveaway is running
+     * and allows to perform actions if it is.
+     * @returns {boolean}
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID) // unsafe
+     *
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" is already ended.`)
+     * }
+     *
+     * giveaway.extendLength('10s') // safe
+     */
+    public isRunning(): this is SafeGiveaway<Giveaway<TDatabaseType>> {
+        return !this.isFinished
     }
 
     /**
@@ -638,12 +657,12 @@ export class Giveaway<
     /**
      * Changes the giveaway's prize and edits the giveaway message.
      * @param {string} prize The new prize to set.
-     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @returns {Promise<SafeGiveaway<Giveaway<TDatabaseType>>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
-    public async setPrize(prize: string): Promise<Giveaway<TDatabaseType>> {
+    public async setPrize(prize: string): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         if (!prize) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('prize', 'Giveaways.setPrize'),
@@ -664,16 +683,23 @@ export class Giveaway<
     /**
      * Changes the giveaway's winners count and edits the giveaway message.
      * @param {string} winnersCount The new winners count to set.
-     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @returns {Promise<SafeGiveaway<Giveaway<TDatabaseType>>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_INPUT` - when the input value is bad or invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
-    public async setWinnersCount(winnersCount: number): Promise<Giveaway<TDatabaseType>> {
+    public async setWinnersCount(winnersCount: number): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         if (winnersCount == null || winnersCount == undefined) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('winnersCount', 'Giveaways.setWinnersCount'),
                 GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
+            )
+        }
+
+        if (isNaN(winnersCount)) {
+            throw new GiveawaysError(
+                errorMessages.INVALID_TYPE('winnersCount', 'number', winnersCount.toString()),
+                GiveawaysErrorCodes.INVALID_TYPE
             )
         }
 
@@ -688,25 +714,18 @@ export class Giveaway<
             )
         }
 
-        if (isNaN(winnersCount)) {
-            throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('winnersCount', 'number', winnersCount.toString()),
-                GiveawaysErrorCodes.INVALID_TYPE
-            )
-        }
-
         return this.edit('winnersCount', winnersCount)
     }
 
     /**
      * Changes the giveaway's host member ID and edits the giveaway message.
      * @param {string} hostMemberID The new host member ID to set.
-     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @returns {Promise<SafeGiveaway<Giveaway<TDatabaseType>>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
-    public async setHostMemberID(hostMemberID: string): Promise<Giveaway<TDatabaseType>> {
+    public async setHostMemberID(hostMemberID: string): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         if (!hostMemberID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('hostMemberID', 'Giveaways.setHostMemberID'),
@@ -727,12 +746,12 @@ export class Giveaway<
     /**
      * Changes the giveaway's time and edits the giveaway message.
      * @param {string} time The new time to set.
-     * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     * @returns {Promise<SafeGiveaway<Giveaway<TDatabaseType>>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
      */
-    public async setTime(time: string): Promise<Giveaway<TDatabaseType>> {
+    public async setTime(time: string): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         if (!time) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('time', 'Giveaways.setTime'),
@@ -762,7 +781,7 @@ export class Giveaway<
     public async edit<TProperty extends EditableGiveawayProperties>(
         key: TProperty,
         value: GiveawayPropertyValue<TProperty>
-    ): Promise<Giveaway<TDatabaseType>> {
+    ): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
 
         if (!key) {
@@ -1059,3 +1078,13 @@ export class Giveaway<
         return this.raw
     }
 }
+
+export type SafeGiveaway<TGiveaway extends Giveaway<any> | UnsafeGiveaway<Giveaway<any>>> = RequiredProps<
+    TGiveaway,
+    'end' | 'edit' | 'extendLength' | 'reduceLength'
+>
+
+export type UnsafeGiveaway<TGiveaway extends Giveaway<any> | SafeGiveaway<Giveaway<any>>> = OptionalProps<
+    TGiveaway,
+    'end' | 'edit' | 'extendLength' | 'reduceLength'
+>
