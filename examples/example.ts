@@ -1,5 +1,5 @@
 import { ButtonStyle, ChannelType, Client, Partials, TextChannel } from 'discord.js'
-import { DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
+import { DatabaseManager, DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
 
 const { Channel, GuildMember, Message, User } = Partials
 

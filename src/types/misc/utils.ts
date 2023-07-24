@@ -3,11 +3,11 @@
  *
  * Type parameters:
  *
- * - `T` (@see boolean) - The boolean type to compare with.
- * - `IfTrue` (@see any) - The type that will be returned if `T` is `true`.
- * - `IfFalse` (@see any) - The type that will be returned if `T` is `false`.
+ * - `T` ({@link boolean}) - The boolean type to compare with.
+ * - `IfTrue` ({@link any}) - The type that will be returned if `T` is `true`.
+ * - `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.
  *
- * @template {boolean} T The boolean type to compare with.
+ * @template T The boolean type to compare with.
  * @template IfTrue The type that will be returned if `T` is `true`.
  * @template IfFalse The type that will be returned if `T` is `false`.
  *
@@ -19,11 +19,26 @@ export type If<T extends boolean,
 > = T extends true ? IfTrue : IfFalse
 
 /**
+ * Compares the values on type level and returns a boolean value.
+ *
+ * Type parameters:
+ *
+ * - `ToCompare` ({@link any}) - The type to compare.
+ * - `CompareWith` ({@link any}) - The type to compare with.
+ *
+ * @template ToCompare The type to compare.
+ * @template CompareWith The type to compare with.
+ *
+ * @typedef {boolean} Equals<ToCompare, CompareWith>
+ */
+export type Equals<ToCompare, CompareWith> = ToCompare extends CompareWith ? true : false
+
+/**
  * Makes the specified properties in `K` from the object in `T` optional.
  *
  * Type parameters:
  *
- * - `T` (@see object) - The object to get the properties from.
+ * - `T` ({@link object}) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make optional.
  *
  * @template T - The object to get the properties from.
@@ -38,7 +53,7 @@ export type OptionalProps<T extends object, K extends keyof T> = Partial<Pick<T,
  *
  * Type parameters:
  *
- * - `T` (@see object) - The object to get the properties from.
+ * - `T` ({@link object}) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make required.
  *
  * @template T - The object to get the properties from.
@@ -54,7 +69,7 @@ export type RequiredProps<T extends object, K extends keyof T> = Required<Pick<T
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type of item to be passed to the callback function.
+ * - `T` ({@link any}) - The type of item to be passed to the callback function.
  *
  * @template T The type of item to be passed to the callback function.
  *
@@ -65,12 +80,12 @@ export type RequiredProps<T extends object, K extends keyof T> = Required<Pick<T
 export type FindCallback<T> = (item: T) => boolean
 
 /**
- * A callback function that calls when mapping the array using the @see Array.prototype.map method.
+ * A callback function that calls when mapping the array using the {@link Array.prototype.map} method.
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type of item to be passed to the callback function.
- * - `TReturnType` - (@see any) The type of value returned by the callback function.
+ * - `T` ({@link any}) - The type of item to be passed to the callback function.
+ * - `TReturnType` - ({@link any}) The type of value returned by the callback function.
  *
  * @template T The type of item to be passed to the callback function.
  * @template TReturnType The type of value returned by the callback function.
@@ -86,7 +101,7 @@ export type MapCallback<T, TReturnType> = (item: T) => TReturnType
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type to attach.
+ * - `T` ({@link any}) - The type to attach.
  *
  * @template T The type to attach.
  * @typedef {any} Maybe<T>
@@ -98,8 +113,8 @@ export type Maybe<T> = T | null
  *
  * Type parameters:
  *
- * - TWord (@see string) The string literal type or union type of them to add the prefix to.
- * - TPrefix (@see string) The string literal type of the prefix to use.
+ * - TWord ({@link string}) The string literal type or union type of them to add the prefix to.
+ * - TPrefix ({@link string}) The string literal type of the prefix to use.
  *
  * @template TWord The string literal type or union type of them to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.
@@ -113,9 +128,9 @@ export type AddPrefix<TWord extends string, TPrefix extends string> = `${TPrefix
  *
  * Type parameters:
  *
- * - TWords (@see string) The union type of string literals to add the prefix to.
- * - TPrefix (@see string) The string literal type of the prefix to use.
- * - Value (@see any) Any value to assign as value of each property of the constructed object.
+ * - TWords ({@link string}) The union type of string literals to add the prefix to.
+ * - TPrefix ({@link string}) The string literal type of the prefix to use.
+ * - Value ({@link any}) Any value to assign as value of each property of the constructed object.
  *
  * @template TWords The union type of string literals to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.

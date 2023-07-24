@@ -42,6 +42,7 @@ import { giveawayTemplate } from './structures/giveawayTemplate'
 
 import { MessageUtils } from './lib/util/classes/MessageUtils'
 import { isTimeStringValid } from './lib/util/functions/isTimeStringValid.function'
+import { IDatabaseStructure } from './types/databaseStructure.interface'
 
 /**
  * Main Giveaways class.
@@ -51,7 +52,7 @@ import { isTimeStringValid } from './lib/util/functions/isTimeStringValid.functi
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that will be used in the module.
  */
 export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
 
@@ -89,7 +90,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * Database Manager.
      * @type {DatabaseManager}
      */
-    public database: DatabaseManager<TDatabaseType>
+    public database: DatabaseManager<TDatabaseType, `${string}.giveaways`, IDatabaseStructure>
 
     /**
      * Giveaways logger.
@@ -157,14 +158,14 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
         this.options = checkConfiguration(options, options?.configurationChecker)
 
         /**
-         * External database (such as Enmap or MongoDB) if used.
+         * External database instance (such as Enmap or MongoDB) if used.
          * @type {?Database<DatabaseType>}
          */
         this.db = null as any // specifying 'null' to just initialize the property; for docs purposes
 
         /**
          * Database Manager.
-         * @type {DatabaseManager}
+         * @type {DatabaseManager<TDatabaseType, `${string}.giveaways`>}
          */
         this.database = null as any // specifying 'null' to just initialize the property; for docs purposes
 
@@ -331,7 +332,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             }
         }
 
-        this.database = new DatabaseManager(this)
+        this.database = new DatabaseManager<TDatabaseType, `${string}.giveaways`, IDatabaseStructure>(this)
         await this._sendUpdateMessage()
 
         this._logger.debug('Waiting for client to be ready...')
@@ -1069,7 +1070,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {Partial} [updatesChecker] Updates checker configuration.
  * @prop {Partial} [configurationChecker] Giveaways config checker configuration.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 
@@ -1238,7 +1239,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 
@@ -1247,7 +1248,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine
+ * which connection configuration should be used.
+ * - `TKey` ({@link string}) - The type of database key that will be used
+ * - `TValue` ({@link any}) - The type of database values that will be used
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
@@ -1260,8 +1264,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * @see Mongo<{IDatabaseStructure> - MongoDB database.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which external database management object should be used.
+ * @template TKey The type of database key that will be used
+ * @template TValue The type of database values that will be used
  */
 
 
@@ -1295,7 +1301,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is rerolled.
  * @prop {IGiveawayRerollEvent} giveawayReroll Emits when a giveaway is rerolled.
  *
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that will be used in the module.
  */
 
 /**
@@ -1309,7 +1315,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  * @prop {string} newWinners Array of the new picked winners after reroll.
  *
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that will be used in the module.
  */
 
 /**
@@ -1323,7 +1329,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} time The time that affected the giveaway's length.
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  *
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that will be used in the module.
  */
 
 /**
@@ -1373,7 +1379,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {IfTrue | IfFalse} If<T, IfTrue, IfFalse>
  *
  *
- * @template {boolean} T The boolean type to compare with.
+ * @template T The boolean type to compare with.
  * @template IfTrue The type that will be returned if `T` is `true`.
  * @template IfFalse The type that will be returned if `T` is `false`.
  */
@@ -1397,7 +1403,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `T` (@see object) - The object to get the properties from.
+ * - `T` ({@link object}) - The object to get the properties from.
  * - `K` (keyof T) - The properties to make required.
  *
  * @template T - The object to get the properties from.
@@ -1443,7 +1449,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - `T` (@see any) - The type to attach.
+ * - `T` ({@link any}) - The type to attach.
  *
  * @template T The type to attach.
  * @typedef {any} Maybe<T>
@@ -1454,8 +1460,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TWord (@see string) The string literal type or union type of them to add the prefix to.
- * - TPrefix (@see string) The string literal type of the prefix to use.
+ * - TWord ({@link string}) The string literal type or union type of them to add the prefix to.
+ * - TPrefix ({@link string}) The string literal type of the prefix to use.
  *
  * @template TWord The string literal type or union type of them to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.
@@ -1468,9 +1474,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 *
 * Type parameters:
 *
-* - TWords (@see string) The union type of string literals to add the prefix to.
-* - TPrefix (@see string) The string literal type of the prefix to use.
-* - Value (@see any) Any value to assign as value of each property of the constructed object.
+* - TWords ({@link string}) The union type of string literals to add the prefix to.
+* - TPrefix ({@link string}) The string literal type of the prefix to use.
+* - Value ({@link any}) Any value to assign as value of each property of the constructed object.
 *
 * @template TWords The union type of string literals to add the prefix to.
 * @template TPrefix The string literal type of the prefix to use.
@@ -1478,6 +1484,21 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 *
 * @typedef {string} PrefixedObject<TWords, TPrefix, Value>
 */
+
+/**
+ * Compares the values on type level and returns a boolean value.
+ *
+ * Type parameters:
+ *
+ * - `ToCompare` ({@link any}) - The type to compare.
+ * - `CompareWith` ({@link any}) - The type to compare with.
+ *
+ * @template ToCompare The type to compare.
+ * @template CompareWith The type to compare with.
+ *
+ * @typedef {boolean} Equals<ToCompare, CompareWith>
+ */
+
 
 // Events, for documentation purposes
 

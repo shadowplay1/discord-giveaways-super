@@ -1,16 +1,27 @@
 import { Giveaways } from '../../Giveaways'
-import { Database, IJSONDatabaseConfiguration } from '../../types/configurations'
+
+import { Database } from '../../types/configurations'
 import { DatabaseType } from '../../types/databaseType.enum'
+
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
 
 /**
  * Database manager class.
  *
- * @template {DatabaseType} TDatabaseType
+ * Type parameters:
+ *
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will determine
+ * which connection configuration should be used.
+ * - `TKey` ({@link string}) - The type of database key that will be used.
+ * - `TValue` ({@link any}) - The type of database values that will be used.
+ *
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
+ * @template TKey The type of database key that will be used.
+ * @template TValue The type of database values that will be used.
  */
-export class DatabaseManager<TDatabaseType extends DatabaseType> {
+export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends string, TValue> {
 
     /**
      * Giveaways instance.
@@ -20,9 +31,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Database instance.
-     * @type {Database<DatabaseType>}
+     * @type {Database<DatabaseType, `${string}.giveaways`, IDatabaseStructure>}
      */
-    public db: Database<TDatabaseType>
+    public db: Database<TDatabaseType, TKey, TValue>
 
     /**
      * Database type.
@@ -50,9 +61,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
         /**
          * Database instance.
-         * @type {Database<DatabaseType>}
+         * @type {Database<DatabaseType, `${string}.giveaways`, IDatabaseStructure>}
          */
-        this.db = giveaways.db
+        this.db = giveaways.db as any
 
         /**
          * Database type.
@@ -62,45 +73,78 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
         /**
          * JSON parser instance.
-         * @type {JSONParser}
+         * @type {?JSONParser}
          */
-        this.jsonParser = new JSONParser((giveaways.options.connection as IJSONDatabaseConfiguration).path)
+        this.jsonParser = null as any
+
+        this._init()
+    }
+
+    /**
+     * Initializes the database manager.
+     * @returns {void}
+     */
+    private _init(): void {
+        if (this.isJSON()) {
+            this.jsonParser = new JSONParser(this.giveaways.options.connection.path as string)
+        }
+    }
+
+    /**
+     * [TYPE GUARD FUNCTION] Determines if the databse type is JSON.
+     * @returns {boolean} Whether the database type is JSON.
+     */
+    public isJSON(): this is Required<DatabaseManager<DatabaseType.JSON, TKey, TValue>> {
+        return this.giveaways.options.database == DatabaseType.JSON
+    }
+
+    /**
+     * [TYPE GUARD FUNCTION] Determines if the databse type is MongoDB.
+     * @returns {boolean} Whether the database type is MongoDB.
+     */
+    public isMongoDB(): this is DatabaseManager<DatabaseType.MONGODB, TKey, TValue> {
+        return this.giveaways.options.database == DatabaseType.MONGODB
+    }
+
+    /**
+     * [TYPE GUARD FUNCTION] Determines if the databse type is Enmap.
+     * @returns {boolean} Whether the database type is Enmap.
+     */
+    public isEnmap(): this is DatabaseManager<DatabaseType.ENMAP, TKey, TValue> {
+        return this.giveaways.options.database == DatabaseType.ENMAP
     }
 
     /**
      * Gets the object keys in database root or in object by specified key.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {string[]} Database object keys array.
      */
-    public async getKeys(key?: string): Promise<string[]> {
+    public async getKeys(key?: TKey): Promise<string[]> {
         const database = key == undefined ? await this.all() : await this.get(key)
         return Object.keys(database)
     }
 
     /**
      * Gets the value from database by specified key.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {V} Value from database.
      * @template V The type that represents the returning value in the method.
      */
-    public async get<V = any>(key: string): Promise<V> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const data = this.jsonParser?.get(key)
-                return data
-            }
+    public async get<V>(key: TKey): Promise<V> {
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const data = await database.get(key)
+        if (this.isJSON()) {
+            const data = this.jsonParser.get<V>(key)
+            return data
+        }
 
-                return data
-            }
+        if (this.isMongoDB()) {
+            const data = await this.db.get<V>(key)
+            return data
+        }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                return database.get(key)
-            }
+        if (this.isEnmap()) {
+            const data = this.db.get(key)
+            return data as V
         }
 
         return {} as V
@@ -110,20 +154,20 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
      * Gets the value from database by specified key.
      *
      * - This method is an alias to {@link DatabaseManager.get()} method.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {V} Value from database.
      * @template V The type that represents the returning value in the method.
      */
-    public async fetch<V = any>(key: string): Promise<V> {
+    public async fetch<V = any>(key: TKey): Promise<V> {
         return this.get<V>(key)
     }
 
     /**
      * Determines if specified key exists in database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {boolean} Boolean value that determines if specified key exists in database.
      */
-    public async has(key: string): Promise<boolean> {
+    public async has(key: TKey): Promise<boolean> {
         const data = await this.get(key)
         return !!data
     }
@@ -132,69 +176,66 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
      * Determines if specified key exists in database.
      *
      * - This method is an alias to {@link DatabaseManager.has()} method.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {boolean} Boolean value that determines if specified key exists in database.
      */
-    public async includes(key: string): Promise<boolean> {
+    public async includes(key: TKey): Promise<boolean> {
         return this.has(key)
     }
 
     /**
      * Sets data in database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {V} value Any data to set.
      * @returns {boolean} `true` if set successfully, `false` otherwise.
      * @template V The type that represents the specified `value` in the method.
      */
-    public async set<V = any>(key: string, value: V): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                await this.jsonParser?.set(key, value)
-                return true
-            }
+    public async set<V = any>(key: TKey, value: V): Promise<boolean> {
+        if (this.isJSON()) {
+            await this.jsonParser.set(key, value)
+            return true
+        }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                await database.set(key, value)
+        if (this.isMongoDB()) {
+            const database = this.db
+            await database.set(key, value as any)
 
-                return true
-            }
+            return true
+        }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                database.set(key, value)
+        if (this.isEnmap()) {
+            const database = this.db
+            database.set(key, value as any)
 
-                return true
-            }
+            return true
         }
 
         return false
     }
+
 
     /**
      * Clears the whole database.
      * @returns {Promise<boolean>} `true` if set successfully, `false` otherwise.
      */
     public async clear(): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                await this.jsonParser?.clear()
-                return true
-            }
+        if (this.isJSON()) {
+            await this.jsonParser.clear()
+            return true
+        }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                await database.clear()
+        if (this.isMongoDB()) {
+            const database = this.db
+            await database.clear()
 
-                return true
-            }
+            return true
+        }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                database.deleteAll()
+        if (this.isEnmap()) {
+            const database = this.db
+            database.deleteAll()
 
-                return true
-            }
+            return true
         }
 
         return false
@@ -212,111 +253,104 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Adds a number to the data in database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {number} numberToAdd Any number to add.
      * @returns {boolean} `true` if added successfully, `false` otherwise.
      */
-    public async add(key: string, numberToAdd: number): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const targetNumber = await this.jsonParser?.get(key)
+    public async add(key: TKey, numberToAdd: number): Promise<boolean> {
+        if (this.isJSON()) {
+            const targetNumber = await this.jsonParser.get<number>(key)
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
-
-                await this.jsonParser?.set(key, targetNumber + numberToAdd)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const targetNumber = await database.get(key)
+            await this.jsonParser.set(key, targetNumber + numberToAdd)
+            return true
+        }
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+        if (this.isMongoDB()) {
+            const targetNumber = await this.db.get<number>(key)
 
-                await database.set(key, targetNumber + numberToAdd)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetNumber = database.get(key)
+            await this.db.set(key, targetNumber + numberToAdd as any)
+            return true
+        }
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+        if (this.isEnmap()) {
+            const targetNumber = this.db.get(key) as number
 
-                database.set(key, targetNumber + numberToAdd)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
+
+            this.db.set(key, targetNumber + numberToAdd as any)
+            return true
         }
 
         return false
     }
 
+
     /**
      * Subtracts a number to the data in database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {number} numberToSubtract Any number to subtract.
      * @returns {boolean} `true` if subtracted successfully, `false` otherwise.
      */
-    public async subtract(key: string, numberToSubtract: number): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const targetNumber = await this.jsonParser?.get(key)
+    public async subtract(key: TKey, numberToSubtract: number): Promise<boolean> {
+        if (this.isJSON()) {
+            const targetNumber = await this.jsonParser.get<number>(key)
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
-
-                await this.jsonParser?.set(key, targetNumber - numberToSubtract)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const targetNumber = await database.get(key)
+            await this.jsonParser.set(key, targetNumber - numberToSubtract)
+            return true
+        }
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+        if (this.isMongoDB()) {
+            const targetNumber = await this.db.get<number>(key)
 
-                await database.set(key, targetNumber - numberToSubtract)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetNumber = database.get(key)
+            await this.db.set(key, targetNumber - numberToSubtract as any)
+            return true
+        }
 
-                if (isNaN(targetNumber)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+        if (this.isEnmap()) {
+            const targetNumber = this.db.get(key) as number
 
-                database.set(key, targetNumber - numberToSubtract)
-                return true
+            if (isNaN(targetNumber)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
+
+            this.db.set(key, targetNumber - numberToSubtract as any)
+            return true
         }
 
         return false
@@ -324,29 +358,23 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Deletes the data from database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @returns {boolean} `true` if deleted successfully, `false` otherwise.
      */
-    public async delete(key: string): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                await this.jsonParser?.delete(key)
-                return true
-            }
+    public async delete(key: TKey): Promise<boolean> {
+        if (this.isJSON()) {
+            await this.jsonParser.delete(key)
+            return true
+        }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                await database.delete(key)
+        if (this.isMongoDB()) {
+            await this.db.delete(key)
+            return true
+        }
 
-                return true
-            }
-
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                database.delete(key)
-
-                return true
-            }
+        if (this.isEnmap()) {
+            this.db.delete(key)
+            return true
         }
 
         return false
@@ -354,62 +382,58 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Pushes a value into specified array in database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {V} value Any value to push into database array.
      * @returns {Promise<boolean>} `true` if pushed successfully, `false` otherwise.
      * @template V The type that represents the specified `value` in the method.
      */
-    public async push<V = any>(key: string, value: V): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const targetArray = await this.jsonParser?.get<any[]>(key) || []
+    public async push<V = any>(key: TKey, value: V): Promise<boolean> {
+        if (this.isJSON()) {
+            const targetArray = await this.jsonParser.get<V[]>(key) || []
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
-
-                targetArray.push(value)
-                await this.jsonParser?.set(key, targetArray)
-
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const targetArray = await database.get(key)
+            targetArray.push(value)
+            await this.jsonParser.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.push(value)
-                await database.set(key, targetArray)
+        if (this.isMongoDB()) {
+            const targetArray = await this.db.get<V[]>(key)
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetArray = database.get(key) || []
+            targetArray.push(value)
+            await this.db.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.push(value)
-                database.set(key, targetArray)
+        if (this.isEnmap()) {
+            const targetArray = (this.db.get(key) || []) as any[]
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
+
+            targetArray.push(value)
+            this.db.set(key, targetArray as any)
+
+            return true
         }
 
         return false
@@ -417,129 +441,123 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
 
     /**
      * Changes the specified element's value in a specified array in the database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {number} index The index in the target array.
      * @param {V} newValue The new value to set.
      * @returns {Promise<boolean>} `true` if pulled successfully, `false` otherwise.
      * @template V The type that represents the specified `newValue` in the method.
      */
-    public async pull<V = any>(key: string, index: number, newValue: V): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const targetArray = await this.jsonParser?.get(key) || []
+    public async pull<V = any>(key: TKey, index: number, newValue: V): Promise<boolean> {
+        if (this.isJSON()) {
+            const targetArray = await this.jsonParser.get<V[]>(key) || []
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
-
-                targetArray.splice(index, 1, newValue)
-                await this.jsonParser?.set(key, targetArray)
-
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const targetArray = await database.get(key)
+            targetArray.splice(index, 1, newValue)
+            await this.jsonParser.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.splice(index, 1, newValue)
-                await database.set(key, targetArray)
+        if (this.isMongoDB()) {
+            const targetArray = await this.db.get<V[]>(key)
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetArray = database.get(key)
+            targetArray.splice(index, 1, newValue)
+            await this.db.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.splice(index, 1, newValue)
-                database.set(key, targetArray)
+        if (this.isEnmap()) {
+            const targetArray = (this.db.get(key) || []) as any[]
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
+
+            targetArray.splice(index, 1, newValue)
+            this.db.set(key, targetArray as any)
+
+            return true
         }
 
         return false
     }
+
 
     /**
      * Removes an element from a specified array in the database.
-     * @param {string} key The key in database.
+     * @param {TKey} key The key in database.
      * @param {number} index The index in the target array.
      * @returns {Promise<boolean>} `true` if popped successfully, `false` otherwise.
      */
-    public async pop(key: string, index: number): Promise<boolean> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const targetArray = await this.jsonParser?.get<any[]>(key) || []
+    public async pop(key: TKey, index: number): Promise<boolean> {
+        if (this.isJSON()) {
+            const targetArray = await this.jsonParser.get<any[]>(key) || []
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
-
-                targetArray.splice(index, 1)
-                await this.jsonParser?.set(key, targetArray)
-
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB> as any
-                const targetArray = await database.get(key)
+            targetArray.splice(index, 1)
+            await this.jsonParser.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.splice(index, 1)
-                await database.set(key, targetArray)
+        if (this.isMongoDB()) {
+            const targetArray = await this.db.get<any[]>(key)
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
 
-            case DatabaseType.ENMAP: {
-                const database = this.db as Database<DatabaseType.ENMAP> as any
-                const targetArray = database.get(key)
+            targetArray.splice(index, 1)
+            await this.db.set(key, targetArray)
 
-                if (!Array.isArray(targetArray)) {
-                    throw new GiveawaysError(
-                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                    )
-                }
+            return true
+        }
 
-                targetArray.splice(index, 1)
-                database.set(key, targetArray)
+        if (this.isEnmap()) {
+            const targetArray = this.db.get(key) || []
 
-                return true
+            if (!Array.isArray(targetArray)) {
+                throw new GiveawaysError(
+                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                )
             }
+
+            targetArray.splice(index, 1)
+            this.db.set(key, targetArray as any)
+
+            return true
         }
 
         return false
     }
+
 
     /**
      * Gets the whole database object.
@@ -547,43 +565,38 @@ export class DatabaseManager<TDatabaseType extends DatabaseType> {
      * @template V The type that represents the returning value in the method.
      */
     public async all<V = any>(): Promise<V> {
-        switch (this.databaseType) {
-            case DatabaseType.JSON: {
-                const data = this.jsonParser?.fetchDatabaseFile()
-                return data
-            }
+        if (this.isJSON()) {
+            const data = this.jsonParser.fetchDatabaseFile<V>()
+            return data
+        }
 
-            case DatabaseType.MONGODB: {
-                const database = this.db as Database<DatabaseType.MONGODB>
-                const data = await database.all<any>()
+        if (this.isMongoDB()) {
+            const data = await this.db.all<V>()
+            return data
+        }
 
-                return data
-            }
+        if (this.isEnmap()) {
+            const allData: Record<string, any> = {}
 
-            case DatabaseType.ENMAP: {
-                const allData: any = {}
-                const database = this.db as Database<DatabaseType.ENMAP>
+            for (const databaseKey of this.db.keys()) {
+                const keys = databaseKey.split('.')
+                let currentObject = allData
 
-                for (const databaseKey of database.keys()) {
-                    const keys = databaseKey.split('.')
-                    let currentObject = allData
+                for (let i = 0; i < keys.length; i++) {
+                    const currentKey = keys[i]
 
-                    for (let i = 0; i < keys.length; i++) {
-                        const currentKey = keys[i]
-
-                        if (keys.length - 1 === i) {
-                            currentObject[currentKey] = database.get(databaseKey) || null
-                        } else {
-                            if (!currentObject[currentKey]) {
-                                currentObject[currentKey] = {}
-                            }
-                            currentObject = currentObject[currentKey]
+                    if (keys.length - 1 === i) {
+                        currentObject[currentKey] = this.db.get(databaseKey) || null
+                    } else {
+                        if (!currentObject[currentKey]) {
+                            currentObject[currentKey] = {}
                         }
+                        currentObject = currentObject[currentKey]
                     }
                 }
-
-                return allData
             }
+
+            return allData as V
         }
 
         return {} as V

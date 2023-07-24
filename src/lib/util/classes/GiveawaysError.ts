@@ -110,11 +110,11 @@ export const errorMessages = {
         return `Required intent "${missingIntent}" is missing.`
     },
 
-    INVALID_TYPE(parameter: string, requiredType: string, receivedType: any): string {
+    INVALID_TYPE<T = any>(parameter: string, requiredType: string, receivedType: T): string {
         return `${parameter} must be a ${requiredType}. Received type: ${typeOf(`${receivedType}`)}.`
     },
 
-    INVALID_TARGET_TYPE(requiredType: string, receivedType: string): string {
+    INVALID_TARGET_TYPE<T = any>(requiredType: string, receivedType: T): string {
         return `Target must be ${requiredType.toLowerCase().startsWith('a') ? 'an' : 'a'} ${requiredType}. ` +
             `Received type: ${typeOf(receivedType)}.`
     },

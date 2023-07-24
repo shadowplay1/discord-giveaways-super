@@ -12,7 +12,7 @@ import { DatabaseType } from '../../../types/databaseType.enum'
  *
  * @callback checkConfiguration
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
  *
  * @param {IGiveawaysConfiguration} configurationToCheck The {@link Giveaways} configuration object to check.

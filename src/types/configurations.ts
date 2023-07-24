@@ -29,7 +29,7 @@ import { If, OptionalProps } from './misc/utils'
  * @prop {IUpdateCheckerConfiguration} [updatesChecker] Updates checker configuration.
  * @prop {IGiveawaysConfigCheckerConfiguration} [configurationChecker] Giveaways config checker configuration.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 export type IGiveawaysConfiguration<TDatabaseType extends DatabaseType> = {
@@ -474,7 +474,7 @@ export type IGiveawayEmbedOptions = Partial<
  *
  * @see IMongoConnectionOptions - MongoDB connection configuration.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
  */
 export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
@@ -487,8 +487,10 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - Database type that will
- * determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine
+ * which connection configuration should be used.
+ * - `TKey` ({@link string}) - The type of database key that will be used
+ * - `TValue` ({@link any}) - The type of database values that will be used
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
@@ -499,12 +501,18 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
- * @see Mongo<string, IDatabaseStructure> - MongoDB database.
+ * @see Mongo<{IDatabaseStructure> - MongoDB database.
  *
- * @template {DatabaseType} TDatabaseType
+ * @template TDatabaseType
  * The database type that will determine which external database management object should be used.
+ * @template TKey The type of database key that will be used.
+ * @template TValue The type of database values that will be used.
  */
-export type Database<TDatabaseType extends DatabaseType> =
+export type Database<
+    TDatabaseType extends DatabaseType,
+    TKey extends string = `${string}.giveaways`,
+    TValue = IDatabaseStructure
+> =
     TDatabaseType extends DatabaseType.JSON ? null :
-    TDatabaseType extends DatabaseType.ENMAP ? Enmap<`${string}.giveaways`, IDatabaseStructure> :
-    TDatabaseType extends DatabaseType.MONGODB ? Mongo<`${string}.giveaways`, IDatabaseStructure> : never
+    TDatabaseType extends DatabaseType.ENMAP ? Enmap<TKey, TValue> :
+    TDatabaseType extends DatabaseType.MONGODB ? Mongo<TKey, TValue, false> : never

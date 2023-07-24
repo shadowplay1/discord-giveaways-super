@@ -7,7 +7,7 @@ import { EventEmitter } from 'events'
  *
  * - E ({@link object}) - The object whose **keys** will be used as event names and **values** for events' return types.
  *
- * @template {object} E The object whose **keys** will be used as event names and **values** for events' return types.
+ * @template E The object whose **keys** will be used as event names and **values** for events' return types.
  * @private
  */
 export class Emitter<E extends object> {
