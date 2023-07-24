@@ -92,3 +92,39 @@ export type MapCallback<T, TReturnType> = (item: T) => TReturnType
  * @typedef {any} Maybe<T>
  */
 export type Maybe<T> = T | null
+
+/**
+ * Adds a prefix at the beginning of a string literal type.
+ *
+ * Type parameters:
+ *
+ * - TWord (@see string) The string literal type to add the prefix to.
+ * - TPrefix (@see string) The string literal type of the prefix to use.
+ *
+ * @template TWord The string literal type to add the prefix to.
+ * @template TPrefix The string literal type of the prefix to use.
+ *
+ * @typedef {string} AddPrefix<TWord, TPrefix>
+ */
+export type AddPrefix<TWord extends string, TPrefix extends string> = TWord extends `${infer FirstLetter}${infer Rest}`
+    ? `${TPrefix}${Uppercase<FirstLetter>}${Rest}`
+    : never
+
+/**
+ * Constructs an object type with prefixed properties and specified value for each of them.
+ *
+ * Type parameters:
+ *
+ * - TWords (@see string) The union type of string literals to add the prefix to.
+ * - TPrefix (@see string) The string literal type of the prefix to use.
+ * - Value (@see any) Any value to assign as value of each property of the constructed object.
+ *
+ * @template TWords The union type of string literals to add the prefix to.
+ * @template TPrefix The string literal type of the prefix to use.
+ * @template Value Any value to assign as value of each property of the constructed object.
+ *
+ * @typedef {string} PrefixedObject<TWords, TPrefix, Value>
+ */
+export type PrefixedObject<TWords extends string, TPrefix extends string, Value = unknown> = {
+    [Word in AddPrefix<TWords, TPrefix>]: Value
+}

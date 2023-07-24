@@ -1449,6 +1449,35 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {any} Maybe<T>
  */
 
+/**
+ * Adds a prefix at the beginning of a string literal type.
+ *
+ * Type parameters:
+ *
+ * - TWord (@see string) The string literal type to add the prefix to.
+ * - TPrefix (@see string) The string literal type of the prefix to use.
+ *
+ * @template TWord The string literal type to add the prefix to.
+ * @template TPrefix The string literal type of the prefix to use.
+ *
+ * @typedef {string} AddPrefix<TWord, TPrefix>
+ */
+
+/**
+* Constructs an object type with prefixed properties and specified value for each of them.
+*
+* Type parameters:
+*
+* - TWords (@see string) The union type of string literals to add the prefix to.
+* - TPrefix (@see string) The string literal type of the prefix to use.
+* - Value (@see any) Any value to assign as value of each property of the constructed object.
+*
+* @template TWords The union type of string literals to add the prefix to.
+* @template TPrefix The string literal type of the prefix to use.
+* @template Value Any value to assign as value of each property of the constructed object.
+*
+* @typedef {string} PrefixedObject<TWords, TPrefix, Value>
+*/
 
 // Events, for documentation purposes
 

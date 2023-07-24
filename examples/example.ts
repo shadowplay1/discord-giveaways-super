@@ -383,7 +383,7 @@ client.on('messageCreate', async message => {
         }
 
         // Extend the giveaway's length
-        await giveaway.extendLength(time)
+        await giveaway.extend(time)
 
         message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully extended by **${time}**.`)
     }
@@ -428,7 +428,7 @@ client.on('messageCreate', async message => {
         }
 
         // Reduce the giveaway's length
-        await giveaway.reduceLength(time)
+        await giveaway.reduce(time)
 
         message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully reduced by **${time}**.`)
     }
@@ -486,6 +486,12 @@ client.on('messageCreate', async message => {
             return
         }
 
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            return
+        }
+
         // Set the new prize for the giveaway
         await giveaway.setPrize(prize)
 
@@ -517,6 +523,12 @@ client.on('messageCreate', async message => {
             return
         }
 
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            return
+        }
+
         // Set the new number of winners for the giveaway
         await giveaway.setWinnersCount(parseInt(winners))
 
@@ -545,6 +557,12 @@ client.on('messageCreate', async message => {
         // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
+        }
+
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
             return
         }
 
@@ -584,6 +602,12 @@ client.on('messageCreate', async message => {
         // Send an error message if the giveaway was not found
         if (!giveaway) {
             message.channel.send(':x: | Giveaway not found.')
+            return
+        }
+
+        // Send an error message if the giveaway is not running and already ended.
+        if (!giveaway.isRunning()) {
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
             return
         }
 
