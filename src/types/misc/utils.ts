@@ -98,17 +98,15 @@ export type Maybe<T> = T | null
  *
  * Type parameters:
  *
- * - TWord (@see string) The string literal type to add the prefix to.
+ * - TWord (@see string) The string literal type or union type of them to add the prefix to.
  * - TPrefix (@see string) The string literal type of the prefix to use.
  *
- * @template TWord The string literal type to add the prefix to.
+ * @template TWord The string literal type or union type of them to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.
  *
  * @typedef {string} AddPrefix<TWord, TPrefix>
  */
-export type AddPrefix<TWord extends string, TPrefix extends string> = TWord extends `${infer FirstLetter}${infer Rest}`
-    ? `${TPrefix}${Uppercase<FirstLetter>}${Rest}`
-    : never
+export type AddPrefix<TWord extends string, TPrefix extends string> = `${TPrefix}${Capitalize<TWord>}`
 
 /**
  * Constructs an object type with prefixed properties and specified value for each of them.
