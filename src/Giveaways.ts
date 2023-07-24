@@ -1454,10 +1454,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TWord (@see string) The string literal type to add the prefix to.
+ * - TWord (@see string) The string literal type or union type of them to add the prefix to.
  * - TPrefix (@see string) The string literal type of the prefix to use.
  *
- * @template TWord The string literal type to add the prefix to.
+ * @template TWord The string literal type or union type of them to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.
  *
  * @typedef {string} AddPrefix<TWord, TPrefix>
