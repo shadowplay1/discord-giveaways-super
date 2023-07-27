@@ -117,7 +117,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * @param {Client} client Discord Client.
      * @param {IGiveawaysConfiguration<TDatabaseType>} options {@link Giveaways} configuration.
      */
-    public constructor(client: Client<boolean>, options?: IGiveawaysConfiguration<TDatabaseType>) {
+    public constructor(client: Client<boolean>, options: IGiveawaysConfiguration<TDatabaseType>) {
         super()
 
         /**
@@ -143,7 +143,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
          * @type {Logger}
          * @private
          */
-        this._logger = new Logger(!!options?.debug)
+        this._logger = new Logger(options.debug || false)
 
         this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
         this._logger.debug('Database type is JSON.', 'lightcyan')
@@ -153,13 +153,13 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
         /**
          * Completed, filled and fixed {@link Giveaways} configuration.
-         * @type {Required<IGiveawaysConfiguration<DatabaseType>>}
+         * @type {Required<IGiveawaysConfiguration<TDatabaseType>>}
          */
-        this.options = checkConfiguration(options, options?.configurationChecker)
+        this.options = checkConfiguration<TDatabaseType>(options, options.configurationChecker)
 
         /**
          * External database instance (such as Enmap or MongoDB) if used.
-         * @type {?Database<DatabaseType>}
+         * @type {?Database<TDatabaseType>}
          */
         this.db = null as any // specifying 'null' to just initialize the property; for docs purposes
 
@@ -1039,7 +1039,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * Type parameters:
  *
  * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ *
  * @typedef {object} GiveawayPropertyValue<TProperty>
+ * @template TProperty {@link Giveaway} property to get its value type.
  */
 
 /**
@@ -1110,7 +1112,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * JSON database configuration.
  * @typedef {object} IJSONDatabaseConfiguration
  * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
- * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
+ * @prop {?boolean} [checkDatabase=true] Enables the error checking for database file. Default: true
  * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
 
@@ -1217,7 +1219,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * JSON database configuration.
  * @typedef {object} IJSONDatabaseConfiguration
  * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
- * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
+ * @prop {?boolean} [checkDatabase=true] Enables the error checking for database file. Default: true
  * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
 
@@ -1262,7 +1264,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
- * @see Mongo<{IDatabaseStructure> - MongoDB database.
+ * @see Mongo<IDatabaseStructure> - MongoDB database.
  *
  * @template TDatabaseType
  * The database type that will determine which external database management object should be used.
@@ -1323,7 +1325,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
  * @typedef {object} IGiveawayTimeChangeEvent
  * @prop {string} time The time that affected the giveaway's length.
@@ -1377,7 +1379,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * - `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.
  *
  * @typedef {IfTrue | IfFalse} If<T, IfTrue, IfFalse>
- *
  *
  * @template T The boolean type to compare with.
  * @template IfTrue The type that will be returned if `T` is `true`.
@@ -1436,7 +1437,6 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * @callback MapCallback<T, TReturnType>
  *
- *
  * @template T The type of item to be passed to the callback function.
  * @template TReturnType The type of value returned by the callback function.
  *
@@ -1460,8 +1460,8 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  *
  * Type parameters:
  *
- * - TWord ({@link string}) The string literal type or union type of them to add the prefix to.
- * - TPrefix ({@link string}) The string literal type of the prefix to use.
+ * - `TWord` ({@link string}) The string literal type or union type of them to add the prefix to.
+ * - `TPrefix` ({@link string}) The string literal type of the prefix to use.
  *
  * @template TWord The string literal type or union type of them to add the prefix to.
  * @template TPrefix The string literal type of the prefix to use.
@@ -1474,9 +1474,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 *
 * Type parameters:
 *
-* - TWords ({@link string}) The union type of string literals to add the prefix to.
-* - TPrefix ({@link string}) The string literal type of the prefix to use.
-* - Value ({@link any}) Any value to assign as value of each property of the constructed object.
+* - `TWords` ({@link string}) The union type of string literals to add the prefix to.
+* - `TPrefix` ({@link string}) The string literal type of the prefix to use.
+* - `Value` ({@link any}) Any value to assign as value of each property of the constructed object.
 *
 * @template TWords The union type of string literals to add the prefix to.
 * @template TPrefix The string literal type of the prefix to use.
@@ -1499,6 +1499,50 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @typedef {boolean} Equals<ToCompare, CompareWith>
  */
 
+/**
+ * Considers the specified giveaway is running and that is safe to edit its data.
+ *
+ * Unlocks the following {@link Giveaway} methods - after performing the {@link Giveaway.isRunning()} type-guard check:
+ *
+ * - {@link Giveaway.end()}
+ * - {@link Giveaway.edit()}
+ * - {@link Giveaway.extend()}
+ * - {@link Giveaway.reduce()}
+ * - {@link Giveaway.setPrize()}
+ * - {@link Giveaway.setWinnersCount()}
+ * - {@link Giveaway.setTime()}
+ * - {@link Giveaway.setHostMemberID()}
+ *
+ * Type parameters:
+ *
+ * - `TGiveaway` ({@link Giveaway<any>} | {@link UnsafeGiveaway<Giveaway<any>>}) - The giveaway to be considered as safe.
+ *
+ * @typedef {SafeGiveaway<TGiveaway>}
+ * @template TGiveaway The giveaway to be considered as safe.
+ */
+
+/**
+* Considers the specified giveaway 'that may be ended' and that is *not* safe to edit its data.
+*
+* Marks the following {@link Giveaway} methods as 'possibly undefined' to prevent them from running
+* before performing the {@link Giveaway.isRunning()} type-guard check:
+*
+* - {@link Giveaway.end()}
+* - {@link Giveaway.edit()}
+* - {@link Giveaway.extend()}
+* - {@link Giveaway.reduce()}
+* - {@link Giveaway.setPrize()}
+* - {@link Giveaway.setWinnersCount()}
+* - {@link Giveaway.setTime()}
+* - {@link Giveaway.setHostMemberID()}
+*
+* Type parameters:
+*
+* - `TGiveaway` ({@link Giveaway<any>} | {@link SafeGiveaway<Giveaway<any>>}) - The giveaway to be considered as unsafe.
+*
+* @typedef {UnsafeGiveaway<TGiveaway>}
+* @template TGiveaway The giveaway to be considered as unsafe.
+*/
 
 // Events, for documentation purposes
 

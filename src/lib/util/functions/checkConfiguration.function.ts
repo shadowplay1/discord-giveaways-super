@@ -12,16 +12,16 @@ import { DatabaseType } from '../../../types/databaseType.enum'
  *
  * @callback checkConfiguration
  *
- * @template TDatabaseType
- * The database type that will determine which connection configuration should be used.
- *
  * @param {IGiveawaysConfiguration} configurationToCheck The {@link Giveaways} configuration object to check.
  * @param {Partial<IGiveawaysConfigCheckerConfiguration>} [checkerConfiguration] Config checker configuration object.
  *
  * @returns {Required<IGiveawaysConfiguration<TDatabaseType>>} Completed, filled and fixed {@link Giveaways} configuration.
+ *
+ * @template TDatabaseType
+ * The database type that will determine which connection configuration should be used.
  */
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
-    configurationToCheck: Record<string, any> = {},
+    configurationToCheck: IGiveawaysConfiguration<TDatabaseType>,
     checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}
 ): Required<IGiveawaysConfiguration<TDatabaseType>> => {
     const problems: string[] = []
@@ -45,8 +45,10 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     }
 
     for (const key of Object.keys(configurationToCheck)) {
+        const config = configurationToCheck as Record<string, any>
+
         const defaultValue = defaultConfiguration[key]
-        const value = configurationToCheck[key]
+        const value = config[key]
 
         if (key !== 'database' && key !== 'connection') {
             if (value == undefined) {

@@ -14,7 +14,7 @@ import { If, OptionalProps } from './misc/utils'
  *
  * Type parameters:
  *
- * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will
  * determine which connection configuration should be used.
  *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
@@ -121,7 +121,7 @@ export type IGiveawaysConfigCheckerConfiguration = Record<
  * JSON database configuration.
  * @typedef {object} IJSONDatabaseConfiguration
  * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
- * @prop {?boolean} [checkDatabase=true] Checks the if there are errors in database file. Default: true.
+ * @prop {?boolean} [checkDatabase=true] Enables the error checking for database file. Default: true
  * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
 export interface IJSONDatabaseConfiguration {
@@ -133,7 +133,13 @@ export interface IJSONDatabaseConfiguration {
     path: string
 
     /**
-     * Checks the if there are errors in database file. Default: true.
+     * Minifies the JSON content in database file to save some space.
+     * @type {boolean}
+     */
+    minifyJSON: boolean
+
+    /**
+     * Enables the error checking for database file. Default: true
      * @type {boolean}
      */
     checkDatabase: boolean
@@ -225,9 +231,16 @@ export interface IGiveawayStartOptions {
 
     /**
      * A function that defines the embed strings used in the giveaway.
+     *
+     * Type parameters:
+     *
+     * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+     *
      * @param {IGiveaway} giveaway An object containing information about the giveaway.
      * @param {User} giveawayHost The host of the giveaway.
-     * @returns {Partial<IEmbedStringsDefinitions>}
+     * @returns {Partial<IEmbedStringsDefinitions<IsTemplate>>}
+     *
+     * @template IsTemplate Determine if the specified giveaway object is a template object.
      */
     defineEmbedStrings<IsTemplate extends boolean = false>(
         giveaway: IGiveaway,
@@ -283,10 +296,18 @@ export interface IGiveawayStartMessages {
 
 /**
  * A function that is called when giveaway is finished.
+ *
+ * Type parameters:
+ *
+ * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+ *
  * @callback GiveawayFinishCallback
+ *
  * @param {string} winnersMentionsString A string that contains the users that won the giveaway separated with comma.
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayStartMessages} Giveaway message objects.
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayFinishCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: string,
@@ -336,6 +357,11 @@ export interface IGiveawayRerollMessages {
 
 /**
  * A function that is called when giveaway winners are rerolled.
+ *
+ * Type parameters:
+ *
+ * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+ *
  * @callback GiveawayRerollCallback
  *
  * @param {string} winnersMentionsString
@@ -343,6 +369,8 @@ export interface IGiveawayRerollMessages {
  *
  * @param {number} winnersCount Number of winners that were picked.
  * @returns {IGiveawayMessages} Giveaway message objects.
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: string,
@@ -351,6 +379,11 @@ export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
 
 /**
  * Object containing embed string definitions used in the IGiveaways class.
+ *
+ * Type parameters:
+ *
+ * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+ *
  * @typedef {object} IEmbedStringsDefinitions
  *
  * @prop {IGiveawayEmbedOptions} start
@@ -361,6 +394,8 @@ export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
  *
  * @prop {GiveawayRerollCallback} reroll
  * This function is called and all returned message objects are extracted and used when the giveaway winners are rerolled.
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export interface IEmbedStringsDefinitions<IsTemplate extends boolean = false> {
 
@@ -461,7 +496,7 @@ export type IGiveawayEmbedOptions = Partial<
  *
  * Type parameters:
  *
- * - TDatabaseType ({@link DatabaseType}) - The database type that will
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will
  * determine which connection configuration should be used.
  *
  * @typedef {(
@@ -501,7 +536,7 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * @see Enmap<string, IDatabaseStructure> - Enmap database.
  *
- * @see Mongo<{IDatabaseStructure> - MongoDB database.
+ * @see Mongo<IDatabaseStructure> - MongoDB database.
  *
  * @template TDatabaseType
  * The database type that will determine which external database management object should be used.

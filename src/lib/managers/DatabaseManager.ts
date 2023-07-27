@@ -91,7 +91,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     }
 
     /**
-     * [TYPE GUARD FUNCTION] Determines if the databse type is JSON.
+     * [TYPE GUARD FUNCTION] - Determines if the databse type is JSON.
      * @returns {boolean} Whether the database type is JSON.
      */
     public isJSON(): this is Required<DatabaseManager<DatabaseType.JSON, TKey, TValue>> {
@@ -99,7 +99,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     }
 
     /**
-     * [TYPE GUARD FUNCTION] Determines if the databse type is MongoDB.
+     * [TYPE GUARD FUNCTION] - Determines if the databse type is MongoDB.
      * @returns {boolean} Whether the database type is MongoDB.
      */
     public isMongoDB(): this is DatabaseManager<DatabaseType.MONGODB, TKey, TValue> {
@@ -107,7 +107,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     }
 
     /**
-     * [TYPE GUARD FUNCTION] Determines if the databse type is Enmap.
+     * [TYPE GUARD FUNCTION] - Determines if the databse type is Enmap.
      * @returns {boolean} Whether the database type is Enmap.
      */
     public isEnmap(): this is DatabaseManager<DatabaseType.ENMAP, TKey, TValue> {
@@ -116,7 +116,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Gets the object keys in database root or in object by specified key.
-     * @param {TKey} key The key in database.
+     * @param {TKey} [key] The key in database. Omitting this argument will get the keys from the root of database.
      * @returns {string[]} Database object keys array.
      */
     public async getKeys(key?: TKey): Promise<string[]> {

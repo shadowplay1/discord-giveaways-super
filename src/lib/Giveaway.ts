@@ -23,7 +23,7 @@ import { AddPrefix, OptionalProps, RequiredProps } from '../types/misc/utils'
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
- * @implements {IGiveaway<DatabaseType>}
+ * @implements {IGiveaway}
  * @template TDatabaseType The database type that will be used in the module.
  */
 export class Giveaway<
@@ -317,17 +317,23 @@ export class Giveaway<
     /**
      * [TYPE GUARD FUNCTION] - Determines if the giveaway is running
      * and allows to perform actions if it is.
-     * @returns {boolean}
+     * @returns {boolean} Whether the giveaway is running.
+     *
      * @example
      *
      * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
-     * giveaway.extend('10s') // unsafe to run - `extend` will be marked as "possibly undefined"
      *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `extend` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.extend('10s')
+     *
+     * // checking if the giveaway is running
      * if (!giveaway.isRunning()) {
-     *     return console.log(`Giveaway "${giveaway.prize}" is already ended.`)
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
      * }
      *
-     * giveaway.extend('10s') // safe to run
+     * giveaway.extend('10s') // we know that giveaway is running - the method is safe to run
      */
     public isRunning(): this is SafeGiveaway<Giveaway<TDatabaseType>> {
         return !this.isFinished
@@ -367,11 +373,32 @@ export class Giveaway<
 
     /**
      * Extends the giveaway length.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} extensionTime The time to extend the giveaway length by.
      * @returns {Promise<void>}
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `extend` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.extend('10s')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.extend('10s') // we know that giveaway is running - the method is safe to run
      */
     public async extend(extensionTime: string): Promise<void> {
         const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
@@ -425,11 +452,32 @@ export class Giveaway<
 
     /**
      * Reduces the giveaway length.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} reductionTime The time to reduce the giveaway length by.
      * @returns {Promise<void>}
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `reduce` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.reduce('10s')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.reduce('10s') // we know that giveaway is running - the method is safe to run
      */
     public async reduce(reductionTime: string): Promise<void> {
         const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
@@ -483,9 +531,30 @@ export class Giveaway<
 
     /**
      * Ends the giveaway.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @returns {Promise<void>}
      *
      * @throws {GiveawaysError} `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `end` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.end()
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.end() // we know that giveaway is running - the method is safe to run
      */
     public async end(): Promise<void> {
         const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
@@ -657,11 +726,32 @@ export class Giveaway<
 
     /**
      * Changes the giveaway's prize and edits the giveaway message.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} prize The new prize to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `setPrize` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.setPrize('My New Prize')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.setPrize('My New Prize') // we know that giveaway is running - the method is safe to run
      */
     public async setPrize(prize: string): Promise<Giveaway<TDatabaseType>> {
         if (!prize) {
@@ -683,11 +773,32 @@ export class Giveaway<
 
     /**
      * Changes the giveaway's winners count and edits the giveaway message.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} winnersCount The new winners count to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_INPUT` - when the input value is bad or invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `setWinnersCount` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.setWinnersCount(2)
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.setWinnersCount(2) // we know that giveaway is running - the method is safe to run
      */
     public async setWinnersCount(winnersCount: number): Promise<Giveaway<TDatabaseType>> {
         if (winnersCount == null || winnersCount == undefined) {
@@ -720,11 +831,32 @@ export class Giveaway<
 
     /**
      * Changes the giveaway's host member ID and edits the giveaway message.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} hostMemberID The new host member ID to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `setHostMemberID` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.setHostMemberID('123456789012345678')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.setHostMemberID('123456789012345678') // we know that giveaway is running - the method is safe to run
      */
     public async setHostMemberID(hostMemberID: string): Promise<Giveaway<TDatabaseType>> {
         if (!hostMemberID) {
@@ -746,11 +878,32 @@ export class Giveaway<
 
     /**
      * Changes the giveaway's time and edits the giveaway message.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} time The new time to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `setTime` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.setTime('10s')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.setTime('10s') // we know that giveaway is running - the method is safe to run
      */
     public async setTime(time: string): Promise<Giveaway<TDatabaseType>> {
         if (!time) {
@@ -772,12 +925,40 @@ export class Giveaway<
 
     /**
      * Sets the specified value to the specified giveaway property and edits the giveaway message.
+     *
+     * Type parameters:
+     *
+     * - `TProperty` ({@link EditableGiveawayProperties}) - Giveaway property to pass in.
+     *
+     * [!!!] To be able to run this method, you need to perform a type-guard check
+     *
+     * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
+     *
      * @param {string} key The key of the giveaway object to set
      * @param {string} value The value to set.
      * @returns {Promise<Giveaway<DatabaseType>>} Updated {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
+     *
+     * @template TProperty Giveaway property to pass in.
+     *
+     * @example
+     *
+     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     *
+     * // we don't know if the giveaway is running,
+     * // so the method is unsafe to run - `edit` will be marked as "possibly undefined"
+     * // to prevent it from running before the check below
+     * giveaway.edit('prize', 'My New Prize')
+     *
+     * // checking if the giveaway is running
+     * if (!giveaway.isRunning()) {
+     *     return console.log(`Giveaway "${giveaway.prize}" has already ended.`)
+     * }
+     *
+     * giveaway.edit('prize', 'My New Prize') // we know that giveaway is running - the method is safe to run
      */
     public async edit<TProperty extends EditableGiveawayProperties>(
         key: TProperty,
@@ -1080,12 +1261,55 @@ export class Giveaway<
     }
 }
 
+/**
+ * Considers the specified giveaway is running and that is safe to edit its data.
+ *
+ * Unlocks the following {@link Giveaway} methods - after performing the {@link Giveaway.isRunning()} type-guard check:
+ *
+ * - {@link Giveaway.end()}
+ * - {@link Giveaway.edit()}
+ * - {@link Giveaway.extend()}
+ * - {@link Giveaway.reduce()}
+ * - {@link Giveaway.setPrize()}
+ * - {@link Giveaway.setWinnersCount()}
+ * - {@link Giveaway.setTime()}
+ * - {@link Giveaway.setHostMemberID()}
+ *
+ * Type parameters:
+ *
+ * - `TGiveaway` ({@link Giveaway<any>} | {@link UnsafeGiveaway<Giveaway<any>>}) - The giveaway to be considered as safe.
+ *
+ * @typedef {SafeGiveaway<TGiveaway>}
+ * @template TGiveaway The giveaway to be considered as safe.
+ */
 export type SafeGiveaway<TGiveaway extends Giveaway<any> | UnsafeGiveaway<Giveaway<any>>> = RequiredProps<
     TGiveaway,
     'end' | 'edit' | 'extend' | 'reduce' |
     AddPrefix<EditableGiveawayProperties, 'set'>
 >
 
+/**
+ * Considers the specified giveaway 'that may be ended' and that is *not* safe to edit its data.
+ *
+ * Marks the following {@link Giveaway} methods as 'possibly undefined' to prevent them from running
+ * before performing the {@link Giveaway.isRunning()} type-guard check:
+ *
+ * - {@link Giveaway.end()}
+ * - {@link Giveaway.edit()}
+ * - {@link Giveaway.extend()}
+ * - {@link Giveaway.reduce()}
+ * - {@link Giveaway.setPrize()}
+ * - {@link Giveaway.setWinnersCount()}
+ * - {@link Giveaway.setTime()}
+ * - {@link Giveaway.setHostMemberID()}
+ *
+ * Type parameters:
+ *
+ * - `TGiveaway` ({@link Giveaway<any>} | {@link SafeGiveaway<Giveaway<any>>}) - The giveaway to be considered as unsafe.
+ *
+ * @typedef {UnsafeGiveaway<TGiveaway>}
+ * @template TGiveaway The giveaway to be considered as unsafe.
+ */
 export type UnsafeGiveaway<TGiveaway extends Giveaway<any> | SafeGiveaway<Giveaway<any>>> = OptionalProps<
     TGiveaway,
     'end' | 'edit' | 'extend' | 'reduce' |

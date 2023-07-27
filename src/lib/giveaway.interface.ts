@@ -263,6 +263,8 @@ export type EditableGiveawayProperties = 'prize' | 'winnersCount' | 'time' | 'ho
  * Type parameters:
  *
  * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ *
+ * @template TProperty {@link Giveaway} property to get its value type.
  * @typedef {object} GiveawayPropertyValue<TProperty>
  */
 export type GiveawayPropertyValue<TProperty extends EditableGiveawayProperties> = IGiveaway[TProperty]

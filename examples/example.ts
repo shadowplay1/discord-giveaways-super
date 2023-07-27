@@ -306,7 +306,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -378,7 +378,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -423,7 +423,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -488,7 +488,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -525,7 +525,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -562,7 +562,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 
@@ -607,7 +607,7 @@ client.on('messageCreate', async message => {
 
         // Send an error message if the giveaway is not running and already ended.
         if (!giveaway.isRunning()) {
-            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" is already ended.`)
+            message.channel.send(`:x: | Giveaway "**${giveaway.prize}**" has already ended.`)
             return
         }
 

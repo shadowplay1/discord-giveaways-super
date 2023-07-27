@@ -13,16 +13,29 @@ export class JSONParser {
     public jsonFilePath: string
 
     /**
+     * Minifies the JSON content in database file to save some space.
+     * @type {boolean}
+     */
+    public minifyJSON: boolean
+
+    /**
      * JSON parser constructor.
      * @param {string} jsonFilePath JSON database file path.
+     * @param {boolean} minifyJSON Minifies the JSON content in database file to save some space.
      */
-    public constructor(jsonFilePath: string) {
+    public constructor(jsonFilePath: string, minifyJSON: boolean = false) {
 
         /**
          * JSON database file path.
          * @type {string}
          */
         this.jsonFilePath = jsonFilePath
+
+        /**
+         * Minifies the JSON content in database file to save some space.
+         * @type {boolean}
+         */
+        this.minifyJSON = minifyJSON
     }
 
     /**
@@ -82,7 +95,7 @@ export class JSONParser {
             }
         }
 
-        await writeFile(this.jsonFilePath, JSON.stringify(data, null, '\t'))
+        await writeFile(this.jsonFilePath, JSON.stringify(data, null, this.minifyJSON ? undefined : '\t'))
         return data
     }
 
@@ -110,7 +123,7 @@ export class JSONParser {
             }
         }
 
-        await writeFile(this.jsonFilePath, JSON.stringify(data, null, '\t'))
+        await writeFile(this.jsonFilePath, JSON.stringify(data, null, this.minifyJSON ? undefined : '\t'))
         return data
     }
 
