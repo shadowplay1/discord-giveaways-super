@@ -33,7 +33,7 @@ import { Emitter } from './lib/util/classes/Emitter'
 import { DatabaseManager } from './lib/managers/DatabaseManager'
 
 import { checkConfiguration } from './lib/util/functions/checkConfiguration.function'
-import { FindCallback, MapCallback, Maybe } from './types/misc/utils'
+import { DiscordID, FindCallback, MapCallback, Maybe } from './types/misc/utils'
 
 import { Giveaway, SafeGiveaway, UnsafeGiveaway } from './lib/Giveaway'
 import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
@@ -372,9 +372,10 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
 
                             const newGiveaway = await giveaway.addEntry(
-                                interaction.guild?.id as string,
-                                interaction.user.id
+                                interaction.guild?.id as never,
+                                interaction.user.id as never
                             )
+
 
                             if (!Object.keys(giveawayJoinMessage).length) {
                                 giveawayJoinMessage.messageContent = 'You have joined the giveaway!'
@@ -833,12 +834,14 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
     /**
      * Gets all the giveaways from the specified guild in database.
-     * @param {string} guildID Guild ID to get the giveaways from.
+     * @param {DiscordID<string>} guildID Guild ID to get the giveaways from.
      * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async getGuildGiveaways(guildID: string): Promise<UnsafeGiveaway<Giveaway<TDatabaseType>>[]> {
+    public async getGuildGiveaways<
+        GuildID extends string
+    >(guildID: DiscordID<GuildID>): Promise<UnsafeGiveaway<Giveaway<TDatabaseType>>[]> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
@@ -907,11 +910,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {number} startTimestamp The timestamp when the giveaway started.
  * @prop {boolean} isEnded Determines if the giveaway was ended in the database.
  * @prop {number} endTimestamp The timestamp when the giveaway ended.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} messageID The ID of the giveaway message.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {number} entries The number of giveaway entries.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
@@ -1019,11 +1022,11 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {number} winnersCount The number of possible winners in the giveaway.
  * @prop {number} startTimestamp The timestamp when the giveaway started.
  * @prop {number} endTimestamp The timestamp when the giveaway ended.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} messageID The ID of the giveaway message.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  */
@@ -1122,9 +1125,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
  * @prop {number} winnersCount The number of possible winners in the giveaway.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  */
 
 /**
@@ -1133,9 +1136,9 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
  * @prop {number} winnersCount The number of possible winners in the giveaway.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
  * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
  */

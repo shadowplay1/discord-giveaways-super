@@ -14,7 +14,7 @@ import { ms } from './misc/ms'
 import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
 import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
-import { AddPrefix, OptionalProps, RequiredProps } from '../types/misc/utils'
+import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/misc/utils'
 
 /**
  * Class that represents the Giveaway object.
@@ -101,9 +101,9 @@ export class Giveaway<
 
     /**
      * Giveaway message ID.
-     * @type {string}
+     * @type {DiscordID<string>}
      */
-    public messageID: string
+    public messageID: DiscordID<string>
 
     /**
      * Giveaway message URL.
@@ -226,7 +226,7 @@ export class Giveaway<
 
         /**
          * Giveaway message ID.
-         * @type {string}
+         * @type {DiscordID<string>}
          */
         this.messageID = giveaway.messageID
 
@@ -420,7 +420,7 @@ export class Giveaway<
         if (this.isEnded) {
             throw new GiveawaysError(
                 'Cannot extend the giveaway\'s length: '
-                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id),
                 GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
             )
         }
@@ -499,7 +499,7 @@ export class Giveaway<
         if (this.isEnded) {
             throw new GiveawaysError(
                 'Cannot reduce the giveaway\'s length: '
-                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                + errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id),
                 GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
             )
         }
@@ -562,7 +562,7 @@ export class Giveaway<
 
         if (this.isEnded) {
             throw new GiveawaysError(
-                errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id.toString()),
+                errorMessages.GIVEAWAY_ALREADY_ENDED(giveaway.prize, giveaway.id),
                 GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
             )
         }
@@ -627,13 +627,16 @@ export class Giveaway<
 
     /**
      * Adds the user ID into the giveaway entries.
-     * @param {string} guildID The guild ID where the giveaway is hosted.
-     * @param {string} userID The user ID to add.
+     * @param {DiscordID<string>} guildID The guild ID where the giveaway is hosted.
+     * @param {DiscordID<string>} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async addEntry(guildID: string, userID: string): Promise<IGiveaway> {
+    public async addEntry<
+        GuildID extends string,
+        UserID extends string
+    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): Promise<IGiveaway> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.addEntry'),
@@ -676,13 +679,16 @@ export class Giveaway<
 
     /**
      * Adds the user ID into the giveaway entries.
-     * @param {string} guildID The guild ID where the giveaway is hosted.
-     * @param {string} userID The user ID to add.
+     * @param {DiscordID<string>} guildID The guild ID where the giveaway is hosted.
+     * @param {DiscordID<string>} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async removeEntry(guildID: string, userID: string): Promise<IGiveaway> {
+    public async removeEntry<
+        GuildID extends string,
+        UserID extends string
+    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): Promise<IGiveaway> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.removeEntry'),
@@ -836,7 +842,7 @@ export class Giveaway<
      *
      * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
      *
-     * @param {string} hostMemberID The new host member ID to set.
+     * @param {DiscordID<string>} hostMemberID The new host member ID to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
@@ -858,7 +864,9 @@ export class Giveaway<
      *
      * giveaway.setHostMemberID('123456789012345678') // we know that giveaway is running - the method is safe to run
      */
-    public async setHostMemberID(hostMemberID: string): Promise<Giveaway<TDatabaseType>> {
+    public async setHostMemberID<
+        HostMemberID extends string
+    >(hostMemberID: DiscordID<HostMemberID>): Promise<Giveaway<TDatabaseType>> {
         if (!hostMemberID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('hostMemberID', 'Giveaways.setHostMemberID'),
@@ -990,7 +998,7 @@ export class Giveaway<
         if (this.isEnded) {
             throw new GiveawaysError(
                 'Cannot edit the giveaway: '
-                + errorMessages.GIVEAWAY_ALREADY_ENDED(this.prize, this.id.toString()),
+                + errorMessages.GIVEAWAY_ALREADY_ENDED(this.prize, this.id),
                 GiveawaysErrorCodes.GIVEAWAY_ALREADY_ENDED
             )
         }
@@ -1201,13 +1209,15 @@ export class Giveaway<
 
     /**
      * Gets the giveaway data and its index in guild giveaways array from database.
-     * @param {string} guildID Guild ID to get the giveaways array from.
+     * @param {DiscordID<string>} guildID Guild ID to get the giveaways array from.
      * @returns {Promise<IDatabaseGiveaway>} Database giveaway object.
      * @private
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    private async _getFromDatabase(guildID: string): Promise<IDatabaseGiveaway> {
+    private async _getFromDatabase<
+        GuildID extends string
+    >(guildID: DiscordID<GuildID>): Promise<IDatabaseGiveaway> {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway._getFromDatabase'),

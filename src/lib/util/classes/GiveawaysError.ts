@@ -1,4 +1,5 @@
 import { DatabaseType } from '../../../types/databaseType.enum'
+import { DiscordID } from '../../../types/misc/utils'
 import { typeOf } from '../functions/typeOf.function'
 
 /**
@@ -102,7 +103,7 @@ export const errorMessages = {
         return `Unknown giveaway with message ID ${giveawayMessageID}.`
     },
 
-    GIVEAWAY_ALREADY_ENDED(giveawayPrize: string, giveawayID: string): string {
+    GIVEAWAY_ALREADY_ENDED(giveawayPrize: string, giveawayID: number): string {
         return `Giveaway "${giveawayPrize}" (ID: ${giveawayID}) has already ended.`
     },
 
@@ -132,7 +133,7 @@ export const errorMessages = {
         return `Required configuration option "${requiredConfigOption}" is missing.`
     },
 
-    USER_NOT_FOUND(userID: string): string {
+    USER_NOT_FOUND<UserID extends string>(userID: DiscordID<UserID>): string {
         return `Specified user with ID ${userID} was not found.`
     }
 }

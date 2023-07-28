@@ -141,3 +141,24 @@ export type AddPrefix<TWord extends string, TPrefix extends string> = `${TPrefix
 export type PrefixedObject<TWords extends string, TPrefix extends string, Value = unknown> = {
     [Word in AddPrefix<TWords, TPrefix>]: Value
 }
+
+// todo: add jsdoc
+export type StringLength<S extends string, LettersArray extends 0[] = []> =
+    S extends `${string}${infer Rest}`
+    ? StringLength<Rest, [...LettersArray, 0]>
+    : LettersArray['length']
+
+// todo: add jsdoc
+export type ExactLengthString<N extends number, S extends string> =
+    StringLength<S> extends 0
+    ? string
+    : StringLength<S> extends N
+    ? S
+    : never
+
+// todo: add jsdoc
+export type DiscordID<ID extends string> =
+    ExactLengthString<17, ID> |
+    ExactLengthString<18, ID> |
+    ExactLengthString<19, ID> |
+    ExactLengthString<20, ID>
