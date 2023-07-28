@@ -1547,6 +1547,41 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 * @template TGiveaway The giveaway to be considered as unsafe.
 */
 
+/**
+ * Returns a length of a string on type level.
+ *
+ * Type parameters:
+ *
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template S The string to check the length of.
+ * @typedef {number} StringLength<S>
+ */
+
+/**
+* Conditional type that will return the specified string if it matches the specified length.
+*
+* Type parameters:
+*
+* - `N` ({@link number}) - The string length to match to.
+* - `S` ({@link string}) - The string to check the length of.
+*
+* @template N The string length to match to.
+* @template S The string to check the length of.
+* @typedef {number} ExactLengthString<N, S>
+*/
+
+/**
+* Conditional type that will return the specified string if it matches any of the possible Discord ID string lengths.
+*
+* Type parameters:
+*
+* - `S` ({@link string}) - The string to check the length of.
+*
+* @template S The string to check the length of.
+* @typedef {number} DiscordID<ID>
+*/
+
 // Events, for documentation purposes
 
 /**

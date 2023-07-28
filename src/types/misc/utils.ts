@@ -142,13 +142,33 @@ export type PrefixedObject<TWords extends string, TPrefix extends string, Value 
     [Word in AddPrefix<TWords, TPrefix>]: Value
 }
 
-// todo: add jsdoc
+/**
+ * Returns a length of a string on type level.
+ *
+ * Type parameters:
+ *
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template S The string to check the length of.
+ * @typedef {number} StringLength<S>
+ */
 export type StringLength<S extends string, LettersArray extends 0[] = []> =
     S extends `${string}${infer Rest}`
     ? StringLength<Rest, [...LettersArray, 0]>
     : LettersArray['length']
 
-// todo: add jsdoc
+/**
+ * Conditional type that will return the specified string if it matches the specified length.
+ *
+ * Type parameters:
+ *
+ * - `N` ({@link number}) - The string length to match to.
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template N The string length to match to.
+ * @template S The string to check the length of.
+ * @typedef {number} ExactLengthString<N, S>
+ */
 export type ExactLengthString<N extends number, S extends string> =
     StringLength<S> extends 0
     ? string
@@ -156,7 +176,16 @@ export type ExactLengthString<N extends number, S extends string> =
     ? S
     : never
 
-// todo: add jsdoc
+/**
+ * Conditional type that will return the specified string if it matches any of the possible Discord ID string lengths.
+ *
+ * Type parameters:
+ *
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template S The string to check the length of.
+ * @typedef {number} DiscordID<ID>
+ */
 export type DiscordID<ID extends string> =
     ExactLengthString<17, ID> |
     ExactLengthString<18, ID> |

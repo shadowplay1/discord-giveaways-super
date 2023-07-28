@@ -25,6 +25,8 @@ sed -i 's/"name": "Equals<ToCompare,/"name": "Equals<ToCompare, CompareWith>/g' 
 sed -i 's/"name": "OptionalProps<T,"/"name": "OptionalProps<T, K>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "MapCallback<T,/"name": "MapCallback<T, TReturnType>/g' "./docs/generated/${package_version}.json"
 
+sed -i 's/"name": "ExactLengthString<N,/"name": "ExactLengthString<N, S>/g' "./docs/generated/${package_version}.json"
+
 sed -i 's/"name": "AddPrefix<TWord,/"name": "AddPrefix<TWord, TPrefix>/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "PrefixedObject<TWords,/"name": "PrefixedObject<TWords, TPrefix, Value>/g' "./docs/generated/${package_version}.json"
 
