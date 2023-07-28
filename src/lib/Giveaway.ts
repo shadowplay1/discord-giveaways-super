@@ -35,7 +35,7 @@ export class Giveaway<
      * @type {Giveaways<DatabaseType>}
      * @private
      */
-    private readonly _giveaways: Giveaways<TDatabaseType>
+    private readonly _giveaways: Giveaways<TDatabaseType, any, any>
 
     /**
      * Message utils instance.
@@ -158,7 +158,7 @@ export class Giveaway<
      * @param {Giveaways<TDatabaseType>} giveaways {@link Giveaways} instance.
      * @param {IGiveaway} giveaway Raw {@link Giveaway} object.
      */
-    public constructor(giveaways: Giveaways<TDatabaseType>, giveaway: IGiveaway) {
+    public constructor(giveaways: Giveaways<TDatabaseType, any, any>, giveaway: IGiveaway) {
 
         /**
          * {@link Giveaways} instance.

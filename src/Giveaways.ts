@@ -54,7 +54,11 @@ import { IDatabaseStructure } from './types/databaseStructure.interface'
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
  * @template TDatabaseType The database type that will be used in the module.
  */
-export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
+export class Giveaways<
+    TDatabaseType extends DatabaseType,
+    TDatabaseKey extends string = `${string}.giveaways`,
+    TDatabaseValue = IDatabaseStructure
+> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
 
     /**
      * Discord Client.
@@ -84,13 +88,13 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
      * External database instanca (such as Enmap or MongoDB) if used.
      * @type {?Database<DatabaseType>}
      */
-    public db: Database<TDatabaseType>
+    public db: Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
 
     /**
      * Database Manager.
      * @type {DatabaseManager}
      */
-    public database: DatabaseManager<TDatabaseType, `${string}.giveaways`, IDatabaseStructure>
+    public database: DatabaseManager<TDatabaseType, any, TDatabaseValue>
 
     /**
      * Giveaways logger.
@@ -310,7 +314,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
 
                 await mongo.connect()
 
-                this.db = mongo as Database<TDatabaseType>
+                this.db = mongo as Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
                 this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
 
                 this.emit('databaseConnect')
@@ -321,7 +325,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
                 this._logger.debug('Initializing Enmap...')
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.ENMAP>
-                this.db = new Enmap(databaseOptions) as Database<TDatabaseType>
+                this.db = new Enmap(databaseOptions) as Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
 
                 this.emit('databaseConnect')
                 break
@@ -332,7 +336,7 @@ export class Giveaways<TDatabaseType extends DatabaseType> extends Emitter<IGive
             }
         }
 
-        this.database = new DatabaseManager<TDatabaseType, `${string}.giveaways`, IDatabaseStructure>(this)
+        this.database = new DatabaseManager<TDatabaseType, TDatabaseKey, TDatabaseValue>(this)
         await this._sendUpdateMessage()
 
         this._logger.debug('Waiting for client to be ready...')

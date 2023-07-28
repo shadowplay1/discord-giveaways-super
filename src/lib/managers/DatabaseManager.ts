@@ -1,6 +1,7 @@
 import { Giveaways } from '../../Giveaways'
 
 import { Database } from '../../types/configurations'
+import { IDatabaseStructure } from '../../types/databaseStructure.interface'
 import { DatabaseType } from '../../types/databaseType.enum'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
@@ -24,14 +25,21 @@ import { JSONParser } from '../util/classes/JSONParser'
 export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends string, TValue> {
 
     /**
+     * Database cache.
+     * @type {Map<string, IDatabaseStructure>}
+     * @private
+     */
+    private _cache: Map<string, IDatabaseStructure>
+
+    /**
      * {@link Giveaways} instance.
      * @type {Giveaways<DatabaseType>}
      */
-    public giveaways: Giveaways<TDatabaseType>
+    public giveaways: Giveaways<TDatabaseType, TKey, TValue>
 
     /**
      * Database instance.
-     * @type {Database<DatabaseType, `${string}.giveaways`, IDatabaseStructure>}
+     * @type {Database<TDatabaseType, TKey, TValue>}
      */
     public db: Database<TDatabaseType, TKey, TValue>
 
@@ -51,7 +59,14 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Database manager constructor.
      * @param {Giveaways<DatabaseType>} giveaways {@link Giveaways} instance.
      */
-    public constructor(giveaways: Giveaways<TDatabaseType>) {
+    public constructor(giveaways: Giveaways<TDatabaseType, TKey, TValue>) {
+
+        /**
+         * Database cache.
+         * @type {Map<string, IDatabaseStructure>}
+         * @private
+         */
+        this._cache = new Map<string, IDatabaseStructure>()
 
         /**
          * {@link Giveaways} instance.
@@ -61,9 +76,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         /**
          * Database instance.
-         * @type {Database<DatabaseType, `${string}.giveaways`, IDatabaseStructure>}
+         * @type {Database<TDatabaseType, TKey, TValue>}
          */
-        this.db = giveaways.db as any
+        this.db = giveaways.db
 
         /**
          * Database type.
