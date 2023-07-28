@@ -1065,7 +1065,8 @@ export class Giveaways<
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.
+ * - `TDatabaseType` ({@link DatabaseType}) - Database type that will
+ * determine which connection configuration should be used.
  *
  * @typedef {object} IGiveawaysConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
@@ -1259,8 +1260,9 @@ export class Giveaways<
  *
  * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine
  * which connection configuration should be used.
- * - `TKey` ({@link string}) - The type of database key that will be used
- * - `TValue` ({@link any}) - The type of database values that will be used
+ *
+ * - `TKey` ({@link string}) - The type of database key that will be used.
+ * - `TValue` ({@link any}) - The type of database values that will be used.
  *
  * @typedef {(
  * null | Enmap<string, IDatabaseStructure> | Mongo<IDatabaseStructure>
@@ -1275,8 +1277,8 @@ export class Giveaways<
  *
  * @template TDatabaseType
  * The database type that will determine which external database management object should be used.
- * @template TKey The type of database key that will be used
- * @template TValue The type of database values that will be used
+ * @template TKey The type of database key that will be used.
+ * @template TValue The type of database values that will be used.
  */
 
 
@@ -1572,6 +1574,7 @@ export class Giveaways<
 *
 * @template N The string length to match to.
 * @template S The string to check the length of.
+*
 * @typedef {number} ExactLengthString<N, S>
 */
 

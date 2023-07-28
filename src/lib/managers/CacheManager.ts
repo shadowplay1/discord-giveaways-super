@@ -1,4 +1,3 @@
-import { readFile, writeFile } from 'fs/promises'
 import { isObject } from '../util/functions/typeOf.function'
 
 /**
@@ -6,11 +5,11 @@ import { isObject } from '../util/functions/typeOf.function'
  *
  * Type parameters:
  *
- * - `K` - The cache map key type
- * - `V` - The cache map value type
+ * - `K` - The cache map key type.
+ * - `V` - The cache map value type.
  *
- * @template K The cache map key type
- * @template V The cache map value type
+ * @template K The cache map key type.
+ * @template V The cache map value type.
  */
 export class CacheManager<K extends string, V> {
 
@@ -66,7 +65,7 @@ export class CacheManager<K extends string, V> {
      *
      * @template V The type of data being returned.
      */
-    public get<V = any>(key: K): V {
+    public get<TValue = V>(key: K): TValue {
         let data = this.getCacheObject()
 
         let parsedData = data
@@ -88,16 +87,16 @@ export class CacheManager<K extends string, V> {
      *
      * Type parameters:
      *
-     * - `V` - The type of data being set.
+     * - `TValue` - The type of data being set.
      * - `R` - The type of data being returned.
      *
      * @param {K} key The key in cache map.
      * @returns {R} The data from cache map.
      *
-     * @template V The type of data being set.
+     * @template TValue The type of data being set.
      * @template R The type of data being returned.
      */
-    public set<V = any, R = any>(key: K, value: V): R {
+    public set<TValue = V, R = any>(key: K, value: TValue): R {
         const data = this.getCacheObject()
 
         let updatedData = data

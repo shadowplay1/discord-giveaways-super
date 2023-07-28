@@ -947,7 +947,7 @@ export class Giveaway<
      *
      * [!!!] using the {@link Giveaway.isRunning()} method. (see the example below)
      *
-     * @param {string} key The key of the giveaway object to set
+     * @param {string} key The key of the giveaway object to set.
      * @param {string} value The value to set.
      * @returns {Promise<Giveaway<DatabaseType>>} Updated {@link Giveaway} instance.
      *
