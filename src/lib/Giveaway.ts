@@ -31,7 +31,7 @@ export class Giveaway<
 > implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
 
     /**
-     * Giveaways instance.
+     * {@link Giveaways} instance.
      * @type {Giveaways<DatabaseType>}
      * @private
      */
@@ -153,10 +153,15 @@ export class Giveaway<
      */
     public messageProps?: IGiveawayMessageProps
 
+    /**
+     * Giveaway constructor.
+     * @param {Giveaways<TDatabaseType>} giveaways {@link Giveaways} instance.
+     * @param {IGiveaway} giveaway Raw {@link Giveaway} object.
+     */
     public constructor(giveaways: Giveaways<TDatabaseType>, giveaway: IGiveaway) {
 
         /**
-         * Giveaways instance.
+         * {@link Giveaways} instance.
          * @type {Giveaways<DatabaseType>}
          * @private
          */

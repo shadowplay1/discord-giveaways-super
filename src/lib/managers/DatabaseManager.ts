@@ -24,7 +24,7 @@ import { JSONParser } from '../util/classes/JSONParser'
 export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends string, TValue> {
 
     /**
-     * Giveaways instance.
+     * {@link Giveaways} instance.
      * @type {Giveaways<DatabaseType>}
      */
     public giveaways: Giveaways<TDatabaseType>
@@ -49,12 +49,12 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Database manager constructor.
-     * @param {Giveaways<DatabaseType>} giveaways Giveaways instance.
+     * @param {Giveaways<DatabaseType>} giveaways {@link Giveaways} instance.
      */
     public constructor(giveaways: Giveaways<TDatabaseType>) {
 
         /**
-         * Giveaways instance.
+         * {@link Giveaways} instance.
          * @type {Giveaways<DatabaseType>}
          */
         this.giveaways = giveaways

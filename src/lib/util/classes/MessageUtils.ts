@@ -22,17 +22,27 @@ export class MessageUtils {
     private _client: Client<boolean>
 
     /**
-     * Giveaways instance.
-     * @type {Giveaways<any>}
+     * {@link Giveaways} instance.
+     * @type {Giveaways<DatabaseType>}
      */
     private _giveaways: Giveaways<any>
 
     /**
      * Message utils class constructor.
-     * @param {Giveaways<any>} giveaways Giveaways instance.
+     * @param {Giveaways<DatabaseType>} giveaways {@link Giveaways} instance.
      */
     public constructor(giveaways: Giveaways<any>) {
+
+        /**
+         * Discord Client.
+         * @type {Client<boolean>}
+         */
         this._giveaways = giveaways
+
+        /**
+         * {@link Giveaways} instance.
+         * @type {Giveaways<DatabaseType>}
+         */
         this._client = giveaways.client
     }
 
