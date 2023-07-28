@@ -6,6 +6,7 @@ import { DatabaseType } from '../../types/databaseType.enum'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
+import { Logger } from '../util/classes/Logger'
 
 /**
  * Database manager class.
@@ -30,6 +31,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @private
      */
     private _cache: Map<string, IDatabaseStructure>
+
+    /**
+     * Giveaways logger.
+     * @type {Logger}
+     * @private
+     */
+    private readonly _logger: Logger
 
     /**
      * {@link Giveaways} instance.
@@ -69,6 +77,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         this._cache = new Map<string, IDatabaseStructure>()
 
         /**
+         * Giveaways logger.
+         * @type {Logger}
+         * @private
+         */
+        this._logger = new Logger(giveaways.options.debug)
+
+        /**
          * {@link Giveaways} instance.
          * @type {Giveaways<DatabaseType>}
          */
@@ -103,6 +118,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         if (this.isJSON()) {
             this.jsonParser = new JSONParser(this.giveaways.options.connection.path as string)
         }
+
+        this._logger.debug('Loading the cache...')
+        this._loadCache()
     }
 
     /**
@@ -575,7 +593,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
 
     /**
-     * Gets the whole database object.
+     * Gets all the data in database.
      * @returns {Promise<V>} Database object.
      * @template V The type that represents the returning value in the method.
      */
@@ -615,5 +633,61 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         return {} as V
+    }
+
+    /**
+     * Gets the whole database object by making a direct database request.
+     * @returns {Promise<V>} Database object.
+     * @template V The type that represents the returning value in the method.
+     * @private
+     */
+    private async _allDatabase<V = any>(): Promise<V> {
+        if (this.isJSON()) {
+            const data = this.jsonParser.fetchDatabaseFile<V>()
+            return data
+        }
+
+        if (this.isMongoDB()) {
+            const data = await this.db.all<V>()
+            return data
+        }
+
+        if (this.isEnmap()) {
+            const allData: Record<string, any> = {}
+
+            for (const databaseKey of this.db.keys()) {
+                const keys = databaseKey.split('.')
+                let currentObject = allData
+
+                for (let i = 0; i < keys.length; i++) {
+                    const currentKey = keys[i]
+
+                    if (keys.length - 1 === i) {
+                        currentObject[currentKey] = this.db.get(databaseKey) || null
+                    } else {
+                        if (!currentObject[currentKey]) {
+                            currentObject[currentKey] = {}
+                        }
+                        currentObject = currentObject[currentKey]
+                    }
+                }
+            }
+
+            return allData as V
+        }
+
+        return {} as V
+    }
+
+    /**
+     * Loads the database into cache.
+     * @returns {Promise<void>}
+     */
+    private async _loadCache(): Promise<void> {
+        const database = await this.all()
+
+        for (const [key, value] of Object.entries(database) as [string, any]) {
+            this._cache.set(key, value)
+        }
     }
 }
