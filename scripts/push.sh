@@ -13,10 +13,13 @@ if ! source ./scripts/docgen.sh; then
     exit 1
 fi
 
+
 # add missing generics in classes & in classes with 2+ type arguments
 sed -i 's/"name": "Giveaway"/"name": "Giveaway<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "Giveaways"/"name": "Giveaways<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
+
 sed -i 's/"name": "DatabaseManager<TDatabaseType,"/"name": "DatabaseManager<TDatabaseType, TKey, TValue>"/g' "./docs/generated/${package_version}.json"
+sed -i 's/"name": "CacheManager<K,"/"name": "CacheManager<K, V>"/g' "./docs/generated/${package_version}.json"
 
 # add missing generics in types &  with 2+ type arguments
 sed -i 's/"name": "If<T,/"name": "If<T, IfTrue, IfFalse>/g' "./docs/generated/${package_version}.json"

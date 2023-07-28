@@ -1180,11 +1180,19 @@ export class Giveaway<
 
     /**
      * Shuffles an array and returns it.
-     * @param {any[]} arrayToShuffle Thr array to shuffle.
+     *
+     * Type parameters:
+     *
+     * - `T` - The type of array to shuffle.
+     *
+     * @param {any[]} arrayToShuffle The array to shuffle.
      * @returns {any[]} Shuffled array.
      * @private
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
+     *
+     * @template T The type of array to shuffle.
      */
     private _shuffleArray<T>(arrayToShuffle: T[]): T[] {
         if (!arrayToShuffle) {

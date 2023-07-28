@@ -1,12 +1,13 @@
 import { Giveaways } from '../../Giveaways'
 
 import { Database } from '../../types/configurations'
-import { IDatabaseStructure } from '../../types/databaseStructure.interface'
+import { IDatabaseGuild } from '../../types/databaseStructure.interface'
 import { DatabaseType } from '../../types/databaseType.enum'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
 import { Logger } from '../util/classes/Logger'
+import { CacheManager } from './CacheManager'
 
 /**
  * Database manager class.
@@ -26,11 +27,11 @@ import { Logger } from '../util/classes/Logger'
 export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends string, TValue> {
 
     /**
-     * Database cache.
-     * @type {Map<string, IDatabaseStructure>}
+     * Database cache manager.
+     * @type {CacheManager<TKey, IDatabaseGuild>}
      * @private
      */
-    private _cache: Map<string, IDatabaseStructure>
+    private _cache: CacheManager<TKey, IDatabaseGuild>
 
     /**
      * Giveaways logger.
@@ -71,10 +72,10 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         /**
          * Database cache.
-         * @type {Map<string, IDatabaseStructure>}
+         * @type {CacheManager<TKey, IDatabaseGuild>}
          * @private
          */
-        this._cache = new Map<string, IDatabaseStructure>()
+        this._cache = new CacheManager<TKey, IDatabaseGuild>()
 
         /**
          * Giveaways logger.
@@ -112,15 +113,17 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Initializes the database manager.
-     * @returns {void}
+     * @returns {Promise<void>}
      */
-    private _init(): void {
+    private async _init(): Promise<void> {
         if (this.isJSON()) {
             this.jsonParser = new JSONParser(this.giveaways.options.connection.path as string)
         }
 
         this._logger.debug('Loading the cache...')
-        this._loadCache()
+        await this._loadCache()
+
+        console.log({ cache: this._cache });
     }
 
     /**
@@ -150,7 +153,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     /**
      * Gets the object keys in database root or in object by specified key.
      * @param {TKey} [key] The key in database. Omitting this argument will get the keys from the root of database.
-     * @returns {string[]} Database object keys array.
+     * @returns {Promise<string[]>} Database object keys array.
      */
     public async getKeys(key?: TKey): Promise<string[]> {
         const database = key == undefined ? await this.all() : await this.get(key)
@@ -159,37 +162,34 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Gets the value from database by specified key.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of data being returned.
+     *
      * @param {TKey} key The key in database.
-     * @returns {V} Value from database.
-     * @template V The type that represents the returning value in the method.
+     * @returns {Promise<V>} Value from database.
+     *
+     * @template V The type of data being returned.
      */
     public async get<V>(key: TKey): Promise<V> {
-
-        if (this.isJSON()) {
-            const data = this.jsonParser.get<V>(key)
-            return data
-        }
-
-        if (this.isMongoDB()) {
-            const data = await this.db.get<V>(key)
-            return data
-        }
-
-        if (this.isEnmap()) {
-            const data = this.db.get(key)
-            return data as V
-        }
-
-        return {} as V
+        const giveawayGuild = this._cache.get(key) as V
+        return giveawayGuild
     }
 
     /**
      * Gets the value from database by specified key.
      *
      * - This method is an alias to {@link DatabaseManager.get()} method.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of data being returned.
+     *
      * @param {TKey} key The key in database.
-     * @returns {V} Value from database.
-     * @template V The type that represents the returning value in the method.
+     * @returns {Promise<V>} Value from database.
+     *
+     * @template V The type of data being returned.
      */
     public async fetch<V = any>(key: TKey): Promise<V> {
         return this.get<V>(key)
@@ -198,7 +198,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     /**
      * Determines if specified key exists in database.
      * @param {TKey} key The key in database.
-     * @returns {boolean} Boolean value that determines if specified key exists in database.
+     * @returns {Promise<boolean>} Boolean value that determines if specified key exists in database.
      */
     public async has(key: TKey): Promise<boolean> {
         const data = await this.get(key)
@@ -209,8 +209,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Determines if specified key exists in database.
      *
      * - This method is an alias to {@link DatabaseManager.has()} method.
+     *
      * @param {TKey} key The key in database.
-     * @returns {boolean} Boolean value that determines if specified key exists in database.
+     * @returns {Promise<boolean>} Boolean value that determines if specified key exists in database.
      */
     public async includes(key: TKey): Promise<boolean> {
         return this.has(key)
@@ -218,56 +219,62 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Sets data in database.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of data being set.
+     * - `R` - The type of data being returned.
+     *
      * @param {TKey} key The key in database.
      * @param {V} value Any data to set.
-     * @returns {boolean} `true` if set successfully, `false` otherwise.
-     * @template V The type that represents the specified `value` in the method.
+     * @returns {Promise<R>} The data from the database.
+     *
+     * @template V The type of data being set.
+     * @template R The type of data being returned.
      */
-    public async set<V = any>(key: TKey, value: V): Promise<boolean> {
+    public async set<V = any, R = any>(key: TKey, value: V): Promise<R> {
+        this._cache.set(key, value as any)
+
         if (this.isJSON()) {
-            await this.jsonParser.set(key, value)
-            return true
+            const data = await this.jsonParser.set<V, R>(key, value)
+            return data
         }
 
         if (this.isMongoDB()) {
-            const database = this.db
-            await database.set(key, value as any)
-
-            return true
+            const data = await this.db.set<V>(key, value as any)
+            return data as R
         }
 
         if (this.isEnmap()) {
-            const database = this.db
-            database.set(key, value as any)
+            this.db.set(key, value as any)
 
-            return true
+            const data = this.db.get(key)
+            return data as R
         }
 
-        return false
+        return {} as R
     }
 
 
     /**
-     * Clears the whole database.
-     * @returns {Promise<boolean>} `true` if set successfully, `false` otherwise.
+     * Clears the database.
+     * @returns {Promise<boolean>} `true` if cleared successfully, `false` otherwise.
      */
     public async clear(): Promise<boolean> {
+        this._cache.clear()
+
         if (this.isJSON()) {
             await this.jsonParser.clear()
             return true
         }
 
         if (this.isMongoDB()) {
-            const database = this.db
-            await database.clear()
-
+            await this.db.clear()
             return true
         }
 
         if (this.isEnmap()) {
-            const database = this.db
-            database.deleteAll()
-
+            this.db.deleteAll()
             return true
         }
 
@@ -275,7 +282,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     }
 
     /**
-     * Clears the whole database.
+     * Clears the database.
      *
      * - This method is an alias to {@link DatabaseManager.clear()} method.
      * @returns {Promise<boolean>} `true` if set successfully, `false` otherwise.
@@ -288,9 +295,15 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Adds a number to the data in database.
      * @param {TKey} key The key in database.
      * @param {number} numberToAdd Any number to add.
-     * @returns {boolean} `true` if added successfully, `false` otherwise.
+     * @returns {Promise<boolean>} `true` if added successfully, `false` otherwise.
      */
     public async add(key: TKey, numberToAdd: number): Promise<boolean> {
+        const targetNumber = this._cache.get(key) as any
+
+        if (!isNaN(targetNumber)) {
+            this._cache.set(key, targetNumber + numberToAdd)
+        }
+
         if (this.isJSON()) {
             const targetNumber = await this.jsonParser.get<number>(key)
 
@@ -336,14 +349,19 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         return false
     }
 
-
     /**
      * Subtracts a number to the data in database.
      * @param {TKey} key The key in database.
      * @param {number} numberToSubtract Any number to subtract.
-     * @returns {boolean} `true` if subtracted successfully, `false` otherwise.
+     * @returns {Promise<boolean>} `true` if subtracted successfully, `false` otherwise.
      */
     public async subtract(key: TKey, numberToSubtract: number): Promise<boolean> {
+        const targetNumber = this._cache.get(key) as any
+
+        if (!isNaN(targetNumber)) {
+            this._cache.set(key, targetNumber + numberToSubtract)
+        }
+
         if (this.isJSON()) {
             const targetNumber = await this.jsonParser.get<number>(key)
 
@@ -392,9 +410,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     /**
      * Deletes the data from database.
      * @param {TKey} key The key in database.
-     * @returns {boolean} `true` if deleted successfully, `false` otherwise.
+     * @returns {Promise<boolean>} `true` if deleted successfully, `false` otherwise.
      */
     public async delete(key: TKey): Promise<boolean> {
+        this._cache.delete(key)
+
         if (this.isJSON()) {
             await this.jsonParser.delete(key)
             return true
@@ -415,12 +435,25 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Pushes a value into specified array in database.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of data being pushed.
+     *
      * @param {TKey} key The key in database.
      * @param {V} value Any value to push into database array.
      * @returns {Promise<boolean>} `true` if pushed successfully, `false` otherwise.
-     * @template V The type that represents the specified `value` in the method.
+     *
+     * @template V The type of data being pushed.
      */
     public async push<V = any>(key: TKey, value: V): Promise<boolean> {
+        const targetArray = this._cache.get<V[]>(key) || []
+
+        if (Array.isArray(targetArray)) {
+            targetArray.push(value)
+            this._cache.set(key, targetArray as any)
+        }
+
         if (this.isJSON()) {
             const targetArray = await this.jsonParser.get<V[]>(key) || []
 
@@ -474,13 +507,26 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Changes the specified element's value in a specified array in the database.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of data being pulled.
+     *
      * @param {TKey} key The key in database.
      * @param {number} index The index in the target array.
      * @param {V} newValue The new value to set.
      * @returns {Promise<boolean>} `true` if pulled successfully, `false` otherwise.
-     * @template V The type that represents the specified `newValue` in the method.
+     *
+     * @template V The type of data being pulled.
      */
     public async pull<V = any>(key: TKey, index: number, newValue: V): Promise<boolean> {
+        const targetArray = (this._cache.get(key) || []) as V[]
+
+        if (Array.isArray(targetArray)) {
+            targetArray.splice(index, 1, newValue)
+            this._cache.set(key, targetArray as any)
+        }
+
         if (this.isJSON()) {
             const targetArray = await this.jsonParser.get<V[]>(key) || []
 
@@ -540,6 +586,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if popped successfully, `false` otherwise.
      */
     public async pop(key: TKey, index: number): Promise<boolean> {
+        const targetArray = (this._cache.get(key) || []) as any[]
+
+        if (Array.isArray(targetArray)) {
+            targetArray.splice(index, 1)
+            this._cache.set(key, targetArray as any)
+        }
+
         if (this.isJSON()) {
             const targetArray = await this.jsonParser.get<any[]>(key) || []
 
@@ -594,8 +647,13 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Gets all the data in database.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of database object to return.
+     *
      * @returns {Promise<V>} Database object.
-     * @template V The type that represents the returning value in the method.
+     * @template V The type of database object to return
      */
     public async all<V = any>(): Promise<V> {
         if (this.isJSON()) {
@@ -637,9 +695,15 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
     /**
      * Gets the whole database object by making a direct database request.
+     *
+     * Type parameters:
+     *
+     * - `V` - The type of database object to return.
+     *
      * @returns {Promise<V>} Database object.
-     * @template V The type that represents the returning value in the method.
      * @private
+     *
+     * @template V The type of database object to return.
      */
     private async _allDatabase<V = any>(): Promise<V> {
         if (this.isJSON()) {
@@ -684,10 +748,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<void>}
      */
     private async _loadCache(): Promise<void> {
-        const database = await this.all()
+        const database = await this._allDatabase<Record<TKey, IDatabaseGuild>>()
 
-        for (const [key, value] of Object.entries(database) as [string, any]) {
-            this._cache.set(key, value)
+        for (const guildID in database) {
+            const guildDatabase = database[guildID]
+            this._cache.set(guildID, guildDatabase)
         }
     }
 }

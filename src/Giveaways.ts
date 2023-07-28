@@ -309,7 +309,7 @@ export class Giveaways<
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.MONGODB>
 
-                const mongo = new QuickMongo<any, any>(databaseOptions)
+                const mongo = new QuickMongo<any, any, any>(databaseOptions)
                 const connectionStartDate = Date.now()
 
                 await mongo.connect()
