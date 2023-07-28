@@ -1,7 +1,8 @@
-import { ButtonStyle, ChannelType, Client, Partials, TextChannel } from 'discord.js'
-import { DatabaseManager, DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
+import { ButtonStyle, ChannelType, Client, Partials } from 'discord.js'
+import { DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
 
 const { Channel, GuildMember, Message, User } = Partials
+
 
 const client = new Client({
     rest: {
@@ -645,4 +646,4 @@ client.on('messageCreate', async message => {
 })
 
 // authenticate the bot in discord
-client.login('MTEyMTQ5NDI2NTE2NDQ2ODM3Ng.GEbMqs.4gAVtzagEjaWzRavRqu7mU9Kku2iUIIHhHdrXU')
+client.login('YOUR_BOT_TOKEN')
