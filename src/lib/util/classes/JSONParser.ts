@@ -148,7 +148,7 @@ export class JSONParser {
      * Clears the database.
      * @returns {Promise<boolean>} `true` if cleared successfully.
      */
-    public async clear(): Promise<boolean> {
+    public async clearDatabase(): Promise<boolean> {
         await writeFile(this.jsonFilePath, '{}')
         return true
     }

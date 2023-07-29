@@ -123,8 +123,6 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         this._logger.debug('Loading the cache...')
         await this._loadCache()
-
-        console.log({ cache: this._cache });
     }
 
     /**
@@ -154,18 +152,18 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     /**
      * Gets the object keys in database root or in object by specified key.
      * @param {TKey} [key] The key in database. Omitting this argument will get the keys from the root of database.
-     * @returns {Promise<string[]>} Database object keys array.
+     * @returns {string[]} Database object keys array.
      */
-    public async getKeys(key?: TKey): Promise<string[]> {
+    public getKeys(key?: TKey): string[] {
         const database = key == undefined
-            ? await this.all<any>()
-            : await this.get(key)
+            ? this.all<any>()
+            : this.get<any>(key)
 
         return Object.keys(database)
     }
 
     /**
-     * Gets the value from database by specified key.
+     * Gets the value from the **cache** by specified key.
      *
      * Type parameters:
      *
@@ -176,13 +174,38 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      *
      * @template V The type of data being returned.
      */
-    public get<V>(key: TKey): V {
+    public get<V = any>(key: TKey): V {
         const data = this._cache.get<V>(key)
         return data
     }
 
     /**
-     * Gets the value from database by specified key.
+     * Gets the value from **database** by specified key.
+     * @param {TKey} key The key in database.
+     * @returns {V} Value from database.
+     * @template V The type that represents the returning value in the method.
+     */
+    public async getFromDatabase<V = any>(key: TKey): Promise<V> {
+        if (this.isJSON()) {
+            const data = await this.jsonParser.get<V>(key)
+            return data
+        }
+
+        if (this.isMongoDB()) {
+            const data = await this.db.get<V>(key)
+            return data
+        }
+
+        if (this.isEnmap()) {
+            const data = this.db.get(key)
+            return data as V
+        }
+
+        return {} as V
+    }
+
+    /**
+     * Gets the value from the **cache** by specified key.
      *
      * - This method is an alias to {@link DatabaseManager.get()} method.
      *
@@ -268,7 +291,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         this._cache.clear()
 
         if (this.isJSON()) {
-            await this.jsonParser.clear()
+            await this.jsonParser.clearDatabase()
             return true
         }
 
@@ -676,9 +699,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      *
      * @template V The type of database object to return.
      */
-    private async _allDatabase<V = TValue>(): Promise<V> {
+    private async _allFromDatabase<V = TValue>(): Promise<V> {
         if (this.isJSON()) {
-            const data = this.jsonParser.fetchDatabaseFile<V>()
+            const data = await this.jsonParser.fetchDatabaseFile<V>()
             return data
         }
 
@@ -703,6 +726,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
                         if (!currentObject[currentKey]) {
                             currentObject[currentKey] = {}
                         }
+
                         currentObject = currentObject[currentKey]
                     }
                 }
@@ -719,7 +743,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<void>}
      */
     private async _loadCache(): Promise<void> {
-        const database = await this._allDatabase<Record<TKey, IDatabaseGuild>>()
+        const database = await this._allFromDatabase<Record<TKey, IDatabaseGuild>>()
 
         for (const guildID in database) {
             const guildDatabase = database[guildID]

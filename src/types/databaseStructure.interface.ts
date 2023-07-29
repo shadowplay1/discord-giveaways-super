@@ -21,11 +21,11 @@ export interface IDatabaseGuild {
 
 /**
  * The giveaway data that stored in database,
- * @typedef {object} IDatabaseGiveaway
+ * @typedef {object} IDatabaseArrayGiveaway
  * @prop {IGiveaway} giveaway Giveaway object.
  * @prop {number} giveawayIndex Giveaway index in the guild giveaways array.
  */
-export interface IDatabaseGiveaway {
+export interface IDatabaseArrayGiveaway {
     giveaway: IGiveaway
     giveawayIndex: number
 }

@@ -11,7 +11,7 @@ import {
 import { MessageUtils } from './util/classes/MessageUtils'
 import { ms } from './misc/ms'
 
-import { IDatabaseGiveaway } from '../types/databaseStructure.interface'
+import { IDatabaseArrayGiveaway } from '../types/databaseStructure.interface'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
 import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
 import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/misc/utils'
@@ -349,7 +349,7 @@ export class Giveaway<
      * @returns {Promise<void>}
      */
     public async restart(): Promise<void> {
-        const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveawayIndex } = this._getFromCache(this.guild.id)
 
         this.isEnded = false
         this.raw.isEnded = false
@@ -406,7 +406,7 @@ export class Giveaway<
      * giveaway.extend('10s') // we know that giveaway is running - the method is safe to run
      */
     public async extend(extensionTime: string): Promise<void> {
-        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
 
         if (!extensionTime) {
             throw new GiveawaysError(
@@ -485,7 +485,7 @@ export class Giveaway<
      * giveaway.reduce('10s') // we know that giveaway is running - the method is safe to run
      */
     public async reduce(reductionTime: string): Promise<void> {
-        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
 
         if (!reductionTime) {
             throw new GiveawaysError(
@@ -562,7 +562,7 @@ export class Giveaway<
      * giveaway.end() // we know that giveaway is running - the method is safe to run
      */
     public async end(): Promise<void> {
-        const { giveaway, giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
         const winnerIDs = this._pickWinners(giveaway)
 
         if (this.isEnded) {
@@ -596,7 +596,7 @@ export class Giveaway<
      * @returns {Promise<string[]>} Rerolled winners users IDs.
      */
     public async reroll(): Promise<string[]> {
-        const { giveaway } = await this._getFromDatabase(this.guild.id)
+        const { giveaway } = this._getFromCache(this.guild.id)
         const winnerIDs = this._pickWinners(giveaway)
 
         const rerollEmbedStrings = giveaway.messageProps?.embeds?.reroll
@@ -638,10 +638,10 @@ export class Giveaway<
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async addEntry<
+    public addEntry<
         GuildID extends string,
         UserID extends string
-    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): Promise<IGiveaway> {
+    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): IGiveaway {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.addEntry'),
@@ -671,7 +671,7 @@ export class Giveaway<
             )
         }
 
-        const { giveaway, giveawayIndex } = await this._getFromDatabase(guildID)
+        const { giveaway, giveawayIndex } = this._getFromCache(guildID)
 
         giveaway.entriesArray.push(userID)
         giveaway.entries = giveaway.entries + 1
@@ -690,10 +690,10 @@ export class Giveaway<
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async removeEntry<
+    public removeEntry<
         GuildID extends string,
         UserID extends string
-    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): Promise<IGiveaway> {
+    >(guildID: DiscordID<GuildID>, userID: DiscordID<UserID>): IGiveaway {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway.removeEntry'),
@@ -723,7 +723,7 @@ export class Giveaway<
             )
         }
 
-        const { giveaway, giveawayIndex } = await this._getFromDatabase(guildID)
+        const { giveaway, giveawayIndex } = this._getFromCache(guildID)
         const entryIndex = this.raw.entriesArray.indexOf(userID)
 
         giveaway.entriesArray.splice(entryIndex, 1)
@@ -977,7 +977,7 @@ export class Giveaway<
         key: TProperty,
         value: GiveawayPropertyValue<TProperty>
     ): Promise<Giveaway<TDatabaseType>> {
-        const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveawayIndex } = this._getFromCache(this.guild.id)
 
         if (!key) {
             throw new GiveawaysError(
@@ -1088,7 +1088,7 @@ export class Giveaway<
      * @returns {Promise<Giveaway<DatabaseType>>} Deleted {@link Giveaway} instance.
      */
     public async delete(): Promise<Giveaway<DatabaseType>> {
-        const { giveawayIndex } = await this._getFromDatabase(this.guild.id)
+        const { giveawayIndex } = this._getFromCache(this.guild.id)
         const giveawayMessage = await this.channel.messages.fetch(this.messageID)
 
         if (giveawayMessage.deletable) {
@@ -1223,17 +1223,15 @@ export class Giveaway<
     /**
      * Gets the giveaway data and its index in guild giveaways array from database.
      * @param {DiscordID<string>} guildID Guild ID to get the giveaways array from.
-     * @returns {Promise<IDatabaseGiveaway>} Database giveaway object.
+     * @returns {IDatabaseArrayGiveaway} Database giveaway object.
      * @private
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    private async _getFromDatabase<
-        GuildID extends string
-    >(guildID: DiscordID<GuildID>): Promise<IDatabaseGiveaway> {
+    private _getFromCache<GuildID extends string>(guildID: DiscordID<GuildID>): IDatabaseArrayGiveaway {
         if (!guildID) {
             throw new GiveawaysError(
-                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway._getFromDatabase'),
+                errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaway._getFromCache'),
                 GiveawaysErrorCodes.REQUIRED_ARGUMENT_MISSING
             )
         }
@@ -1245,7 +1243,7 @@ export class Giveaway<
             )
         }
 
-        const giveaways = await this._giveaways.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+        const giveaways = this._giveaways.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
 
         const giveawayIndex = giveaways.findIndex(giveaway => giveaway.id == this.id)
         const giveaway = giveaways[giveawayIndex]

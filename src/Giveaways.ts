@@ -363,7 +363,7 @@ export class Giveaways<
                 const interactionMessage = interaction.message
 
                 if (interaction.customId == 'joinGiveawayButton') {
-                    const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild?.id as string)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
                     if (giveaway) {
@@ -375,7 +375,7 @@ export class Giveaways<
                             const giveawayLeaveEmbed =
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
 
-                            const newGiveaway = await giveaway.addEntry(
+                            const newGiveaway = giveaway.addEntry(
                                 interaction.guild?.id as never,
                                 interaction.user.id as never
                             )
@@ -410,7 +410,7 @@ export class Giveaways<
                             const giveawayLeaveEmbed =
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayLeaveMessage)
 
-                            const newGiveaway = await giveaway.removeEntry(
+                            const newGiveaway = giveaway.removeEntry(
                                 interaction.guild?.id as string,
                                 interaction.user.id
                             )
@@ -448,7 +448,7 @@ export class Giveaways<
                 }
 
                 if (interaction.customId == 'rerollButton') {
-                    const guildGiveaways = await this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild?.id as string)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
                     const rerollEmbedStrings = giveaway?.messageProps?.embeds?.reroll
@@ -484,7 +484,9 @@ export class Giveaways<
                             const rerollSuccess = rerollEmbedStrings?.successMessage || {}
                             const rerollSuccessfulMessageCreate = rerollSuccess?.messageContent
 
-                            await giveaway?.reroll()
+                            if (giveaway.isRunning()) {
+                                giveaway.reroll()
+                            }
 
                             const successEmbed = this._messageUtils.buildGiveawayEmbed(
                                 giveaway.raw,
@@ -673,7 +675,7 @@ export class Giveaways<
         const rerollButton = buttons?.rerollButton as IGiveawayButtonOptions
         const goToMessageButton = buttons?.goToMessageButton as IGiveawayButtonOptions
 
-        const guildGiveaways = await this.getGuildGiveaways(guildID)
+        const guildGiveaways = this.getGuildGiveaways(guildID)
 
         const newGiveaway: IGiveaway = {
             id: ((guildGiveaways.at(-1)?.id || 0) as number) + 1,
@@ -751,11 +753,11 @@ export class Giveaways<
     /**
      * Finds the giveaway in all giveaways database by its ID.
      * @param {number} giveawayID Giveaway ID to find the giveaway by.
-     * @returns {Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>>} Giveaway instance.
+     * @returns {Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaway instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async get(giveawayID: number): Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>> {
+    public get(giveawayID: number): Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>> {
         if (!giveawayID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('giveawayID', 'Giveaways.get'),
@@ -770,7 +772,7 @@ export class Giveaways<
             )
         }
 
-        const result = await this.find(giveaway => giveaway.id == giveawayID) || null
+        const result = this.find(giveaway => giveaway.id == giveawayID) || null
         return result
     }
 
@@ -780,11 +782,11 @@ export class Giveaways<
      * @param {FindCallback<Giveaway<TDatabaseType>>} cb
      * The callback function to find the giveaway in the giveaways database.
      *
-     * @returns {Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>>} Giveaway instance.
+     * @returns {Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaway instance.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async find(cb: FindCallback<Giveaway<TDatabaseType>>): Promise<Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>> {
+    public find(cb: FindCallback<Giveaway<TDatabaseType>>): Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>> {
         if (!cb) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
@@ -799,7 +801,7 @@ export class Giveaways<
             )
         }
 
-        const giveaways = await this.getAll()
+        const giveaways = this.getAll()
         const giveaway = giveaways.find(cb) || null
 
         return giveaway
@@ -808,14 +810,18 @@ export class Giveaways<
     /**
      * Returns the mapped giveaways array based on the specified callback function.
      *
+     * Type parameters:
+     *
+     * - `TReturnType` - the type being returned in a callback function.
+     *
      * @param {FindCallback<Giveaway<TDatabaseType>>} cb
      * The callback function to call on the giveaway.
      *
-     * @returns {Promise<any[]>} Mapped giveaways array.
+     * @returns {TReturnType[]} Mapped giveaways array.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async map<TReturnType>(cb: MapCallback<Giveaway<TDatabaseType>, TReturnType>): Promise<TReturnType[]> {
+    public map<TReturnType>(cb: MapCallback<Giveaway<TDatabaseType>, TReturnType>): TReturnType[] {
         if (!cb) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('cb', 'Giveaways.find'),
@@ -830,7 +836,7 @@ export class Giveaways<
             )
         }
 
-        const giveaways = await this.getAll()
+        const giveaways = this.getAll()
         const giveaway = giveaways.map(cb)
 
         return giveaway
@@ -839,13 +845,13 @@ export class Giveaways<
     /**
      * Gets all the giveaways from the specified guild in database.
      * @param {DiscordID<string>} guildID Guild ID to get the giveaways from.
-     * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
+     * @returns {UnsafeGiveaway<Giveaway<TDatabaseType>>[]} Giveaways array from the specified guild in database.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
-    public async getGuildGiveaways<
+    public getGuildGiveaways<
         GuildID extends string
-    >(guildID: DiscordID<GuildID>): Promise<UnsafeGiveaway<Giveaway<TDatabaseType>>[]> {
+    >(guildID: DiscordID<GuildID>): UnsafeGiveaway<Giveaway<TDatabaseType>>[] {
         if (!guildID) {
             throw new GiveawaysError(
                 errorMessages.REQUIRED_ARGUMENT_MISSING('guildID', 'Giveaways.getGuildGiveaways'),
@@ -860,20 +866,20 @@ export class Giveaways<
             )
         }
 
-        const giveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+        const giveaways = this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
         return giveaways.map(giveaway => new Giveaway(this, giveaway))
     }
 
     /**
      * Gets all the giveaways from all the guilds in database.
-     * @returns {Promise<Array<Giveaway<TDatabaseType>>>} Giveaways array from all the guilds in database.
+     * @returns {Giveaway<TDatabaseType>[]} Giveaways array from all the guilds in database.
      */
-    public async getAll(): Promise<Array<Giveaway<TDatabaseType>>> {
+    public getAll(): Giveaway<TDatabaseType>[] {
         const giveaways: IGiveaway[] = []
-        const guildIDs = await this.database.getKeys()
+        const guildIDs = this.database.getKeys()
 
         for (const guildID of guildIDs.filter(guildID => !isNaN(parseInt(guildID)))) {
-            const databaseGiveaways = await this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
+            const databaseGiveaways = this.database.get<IGiveaway[]>(`${guildID}.giveaways`) || []
 
             for (const databaseGiveaway of databaseGiveaways) {
                 giveaways.push(databaseGiveaway)
@@ -885,20 +891,19 @@ export class Giveaways<
 
     /**
      * Checks for all giveaways to be finished and end them if they are.
-     * @returns {Promise<void>}
+     * @returns {void}
      * @private
      */
-    private async _checkGiveaways(): Promise<void> {
-        const giveaways = await this.getAll()
+    private _checkGiveaways(): void {
+        const giveaways = this.getAll()
 
         for (const giveaway of giveaways) {
             if (giveaway.isFinished && !giveaway.isEnded) {
-                await giveaway.end()
+                giveaway.end()
             }
         }
     }
 }
-
 
 
 // For documentation purposes
@@ -1291,7 +1296,7 @@ export class Giveaways<
 
 /**
  * The giveaway data that stored in database,
- * @typedef {object} IDatabaseGiveaway
+ * @typedef {object} IDatabaseArrayGiveaway
  * @prop {IGiveaway} giveaway Giveaway object.
  * @prop {number} giveawayIndex Giveaway index in the guild giveaways array.
  */
