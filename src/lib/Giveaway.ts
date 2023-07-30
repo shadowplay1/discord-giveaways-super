@@ -8,13 +8,15 @@ import {
     GiveawayState, IGiveaway, IGiveawayMessageProps
 } from './giveaway.interface'
 
-import { MessageUtils } from './util/classes/MessageUtils'
 import { ms } from './misc/ms'
 
-import { IDatabaseArrayGiveaway } from '../types/databaseStructure.interface'
+import { MessageUtils } from './util/classes/MessageUtils'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
-import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
+
 import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/misc/utils'
+import { IDatabaseArrayGiveaway } from '../types/databaseStructure.interface'
+
+import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
 
 /**
  * Class that represents the Giveaway object.
@@ -23,12 +25,12 @@ import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/mis
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
  *
- * @implements {IGiveaway}
+ * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray'>}
  * @template TDatabaseType The database type that will be used in the module.
  */
 export class Giveaway<
     TDatabaseType extends DatabaseType
-> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID'> {
+> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray'> {
 
     /**
      * {@link Giveaways} instance.
@@ -44,12 +46,12 @@ export class Giveaway<
      */
     private readonly _messageUtils: MessageUtils
 
-
     /**
-     * Raw giveaway object.
+     * Input giveaway object.
      * @type {IGiveaway}
+     * @private
      */
-    public raw: IGiveaway
+    private _inputGiveaway: IGiveaway
 
     /**
      * Giveaway ID.
@@ -133,13 +135,13 @@ export class Giveaway<
      * Number of giveaway entries.
      * @type {number}
      */
-    public entries: number
+    public entriesCount: number
 
     /**
-     * Array of user IDs of users that have entered the giveaway.
-     * @type {string[]}
+     * IDs of users that have entered the giveaway.
+     * @type {Set<DiscordID<string>>}
      */
-    public entriesArray: string[]
+    public entries: Set<DiscordID<string>>
 
     /**
      * Determines if the giveaway was ended in database.
@@ -156,7 +158,7 @@ export class Giveaway<
     /**
      * Giveaway constructor.
      * @param {Giveaways<TDatabaseType>} giveaways {@link Giveaways} instance.
-     * @param {IGiveaway} giveaway Raw {@link Giveaway} object.
+     * @param {IGiveaway} giveaway Input {@link Giveaway} object.
      */
     public constructor(giveaways: Giveaways<TDatabaseType, any, any>, giveaway: IGiveaway) {
 
@@ -174,12 +176,11 @@ export class Giveaway<
          */
         this._messageUtils = new MessageUtils(giveaways)
 
-
         /**
-         * Raw giveaway object.
+         * Input giveaway object.
          * @type {IGiveaway}
          */
-        this.raw = giveaway
+        this._inputGiveaway = giveaway
 
         /**
          * Giveaway ID.
@@ -266,16 +267,16 @@ export class Giveaway<
         this.isEnded = giveaway.isEnded || false
 
         /**
-         * Array of user IDs of users that have entered the giveaway.
-         * @type {string[]}
+         * IDs of users that have entered the giveaway.
+         * @type {Set<DiscordID<string>>}
          */
-        this.entriesArray = []
+        this.entries = new Set<DiscordID<string>>(giveaway.entriesArray)
 
         /**
          * Number of giveaway entries.
          * @type {number}
          */
-        this.entries = 0
+        this.entriesCount = giveaway.entriesArray.length
 
         /**
          * Message data properties for embeds and buttons.
@@ -317,6 +318,17 @@ export class Giveaway<
      */
     public get isFinished(): boolean {
         return (this.state !== GiveawayState.STARTED || Date.now() > this.endTimestamp * 1000) || this.isEnded
+    }
+
+    /**
+     * Raw giveaway object.
+     * @type {IGiveaway}
+     */
+    public get raw(): IGiveaway {
+        const entriesArray = [...this.entries]
+
+        this._inputGiveaway.entriesArray = entriesArray
+        return this._inputGiveaway
     }
 
     /**
@@ -672,11 +684,11 @@ export class Giveaway<
         }
 
         const { giveaway, giveawayIndex } = this._getFromCache(guildID)
-
-        giveaway.entriesArray.push(userID)
-        giveaway.entries = giveaway.entries + 1
-
         this.sync(giveaway)
+
+        this.entries.add(userID)
+        giveaway.entriesCount = this.entries.size
+
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
 
         return giveaway
@@ -724,10 +736,10 @@ export class Giveaway<
         }
 
         const { giveaway, giveawayIndex } = this._getFromCache(guildID)
-        const entryIndex = this.raw.entriesArray.indexOf(userID)
+        this.sync(giveaway)
 
-        giveaway.entriesArray.splice(entryIndex, 1)
-        giveaway.entries = giveaway.entries - 1
+        this.entries.delete(userID)
+        giveaway.entriesCount = this.entries.size
 
         this.sync(giveaway)
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
@@ -1109,6 +1121,7 @@ export class Giveaway<
      * Syncs the constructor properties with specified raw giveaway object.
      * @param {IGiveaway} giveaway Giveaway object to sync the constructor properties with.
      * @returns {void}
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -1141,22 +1154,22 @@ export class Giveaway<
 
     /**
      * Shuffles all the giveaway entries, randomly picks the winner user IDs and converts them into mentions.
-     * @param {IGiveaway} [giveawayTySync] The giveaway object to sync with.
+     * @param {IGiveaway} [giveawayToSyncWith] The giveaway object to sync the {@link Giveaway} instance with.
      * @returns {string[]} Array of mentions of users that were picked as the winners.
      * @private
      */
-    private _pickWinners(giveawayTySync?: IGiveaway): string[] {
+    private _pickWinners(giveawayToSyncWith?: IGiveaway): string[] {
         const winnerIDs: string[] = []
 
-        if (giveawayTySync) {
-            this.sync(giveawayTySync)
+        if (giveawayToSyncWith) {
+            this.sync(giveawayToSyncWith)
         }
 
-        if (!this.entriesArray.length) {
+        if (!this.entries.size) {
             return []
         }
 
-        const shuffledEntries = this._shuffleArray(this.entriesArray)
+        const shuffledEntries = this._shuffleArray([...this.entries])
 
         for (let i = 0; i < this.winnersCount; i++) {
             const recursiveShuffle = (): void => {
@@ -1164,7 +1177,7 @@ export class Giveaway<
                 const winnerUserID = shuffledEntries[randomEntryIndex]
 
                 if (winnerIDs.includes(winnerUserID)) {
-                    if (winnerIDs.length !== this.entriesArray.length) {
+                    if (winnerIDs.length !== this.entries.size) {
                         recursiveShuffle()
                     }
                 } else {

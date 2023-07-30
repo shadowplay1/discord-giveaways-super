@@ -117,7 +117,7 @@ export interface IGiveaway {
      * Number of giveaway entries.
      * @type {number}
      */
-    entries: number
+    entriesCount: number
 
     /**
      * Array of user IDs of users that have entered the giveaway.

@@ -146,7 +146,7 @@ client.on('messageCreate', async message => {
                         titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                         description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
-                            `Entries: **${giveaway.entries}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
+                            `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
 
                         footer: `Ends at:`,
                         timestamp: giveaway.endTimestamp,
@@ -177,8 +177,8 @@ client.on('messageCreate', async message => {
 
                                 // using "winnersCount" in "Winners" string in case if the actual number of winners
                                 // will not match the giveaway's number of winners
-                                description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entries}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString} `,
+                                description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
+                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
 
                                 footer: `Ended at:`,
                                 footerIcon: client.user?.displayAvatarURL({ size: 2048 }),
@@ -225,7 +225,7 @@ client.on('messageCreate', async message => {
                                 title: `Giveaway (ID: ${giveaway.id})`,
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
-                                description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entries}**\n` +
+                                description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
                                     `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString}`,
 
                                 thumbnailURL: client.user?.displayAvatarURL({ size: 2048 }),
@@ -330,7 +330,8 @@ client.on('messageCreate', async message => {
 
         // Find the giveaway by its ID or its message ID
         const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {

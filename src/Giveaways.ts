@@ -367,9 +367,9 @@ export class Giveaways<
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
                     if (giveaway) {
-                        const userEntry = giveaway.raw.entriesArray.find(entryUser => entryUser == interaction.user.id)
+                        const isUserJoined = giveaway.entries.has(interaction.user.id)
 
-                        if (!userEntry) {
+                        if (!isUserJoined) {
                             const giveawayJoinMessage = giveaway.messageProps?.embeds?.joinGiveawayMessage || {}
 
                             const giveawayLeaveEmbed =
@@ -690,7 +690,7 @@ export class Giveaways<
             time: time || '1d',
             state: GiveawayState.STARTED,
             winnersCount: winnersCount || 1,
-            entries: 0,
+            entriesCount: 0,
             entriesArray: [],
             isEnded: false
         }

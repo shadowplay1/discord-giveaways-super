@@ -169,7 +169,7 @@ export type IGiveawayData = Omit<
     IGiveaway,
     'id' | 'startTimestamp' | 'endTimestamp' |
     'endedTimestamp' | 'messageID' | 'messageURL' |
-    'entries' | 'entriesArray' | 'state' |
+    'entriesCount' | 'entriesArray' | 'state' |
     'messageProps' | 'isEnded'
 >
 

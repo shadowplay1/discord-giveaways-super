@@ -83,7 +83,7 @@ export class MessageUtils {
                 url: titleURL
             })
             .setDescription(
-                description || `**${giveaway.prize}** giveaway has started with **${giveaway.entries}** entries! ` +
+                description || `**${giveaway.prize}** giveaway has started with **${giveaway.entriesCount}** entries! ` +
                 'Press the button below to join!'
             )
             .setColor(color || '#d694ff')
