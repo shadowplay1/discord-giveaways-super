@@ -1390,7 +1390,7 @@ const giveaways = new Giveaways(client, {
 	database: DatabaseType.JSON, // or any other database that is provided by module
 
 	connection: {
-		// database configuration object based on selected database
+		// database configuration object based on the chosen database
 	}
 });
 
