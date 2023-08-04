@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1688345612236
+  "date": 1691153902421
  },
  "custom": {
   "general": {
@@ -11,31 +11,37 @@
     "welcome": {
      "name": "Welcome",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## 🙋‍♂️ | Welcome!\nWelcome to the `discord-giveaways-super v1.0.0` documentation!\n\n## 📂 | Installation\n<b>Note:<b>\n</br>\n<b>Node.js 16.9.0 or newer is required. Otherwise, the module won't work.</b><br>\n```console\n$ npm i discord-giveaways-super\n$ yarn add discord-giveaways-super\n$ pnpm add discord-giveaways-super\n```\n\n## ❓ | What is Discord Giveaways Super?\n<b>Discord Giveaways Super is a powerful Node.js module that allows you to make an giveaways system in your bot very easily. Supports **JSON**, **MongoDB** and **Enmap** databases!</b>\n\nFeatures:\n<br>\n<ul>\n<li><b>Clean TypeScript Defenitions 📘</b></li>\n<li><b>Multiple Databases Support 🍃</a></b></li>\n<li><b>Object-Oriented 📝</b></li>\n<li><b>Flexible and Customizable ⚙️</b></li>\n<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>\n<li><b>Handles Crashes/Restarts 🔄</b></li>\n<li><b>Beginner Friendly 😄</b></li>\n</ul>\n\n\n## 🤔 | Help\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n\n## 🕘 | My Other Modules\n<ul>\n<li><b><a href=\"https://www.npmjs.com/package/discord-economy-super\">discord-economy-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-achievements\">discord-achievements</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/quick-mongo-super\">quick-mongo-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super\">discord-leveling-super</a></b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## 🙋‍♂️ | Welcome!\nWelcome to the `discord-giveaways-super v1.0.0` documentation!\n\n## 📂 | Installation\n<b>Note:<b>\n</br>\n<b>Node.js 16.9.0 or newer is required. Otherwise, the module won't work.</b><br>\n```console\n$ npm i discord-giveaways-super\n$ yarn add discord-giveaways-super\n$ pnpm add discord-giveaways-super\n```\n\n## ❓ | What is Discord Giveaways Super?\n<b>Discord Giveaways Super is a powerful Node.js module that allows you to make an giveaways system in your bot very easily. Supports **JSON**, **MongoDB** and **Enmap** databases!</b>\n\nFeatures:\n<br>\n<ul>\n<li><b>Clean TypeScript Defenitions 📘</b></li>\n<li><b>Multiple Databases Support 🍃</a></b></li>\n<li><b>Object-Oriented 📝</b></li>\n<li><b>Flexible and Customizable ⚙️</b></li>\n<li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>\n<li><b>Handles Crashes/Restarts 🔄</b></li>\n<li><b>Easy to Understand 👍</b></li>\n<li><b>Beginner Friendly 😄</b></li>\n</ul>\n\n## 🛠️ | Examples\n**Full bot examples** in both **JavaScript** and **TypeScript** are available [here](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples).\n\n## 🤔 | Help\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n\n## 🕘 | My Other Modules\n<ul>\n<li><b><a href=\"https://www.npmjs.com/package/discord-economy-super\">discord-economy-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-achievements\">discord-achievements</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/quick-mongo-super\">quick-mongo-super</a></b></li>\n<li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super\">discord-leveling-super</a></b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/welcome.md"
     },
     "examples": {
      "name": "Examples",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## Initialation Example\n\n```ts\nimport { ButtonStyle, Client, Partials } from 'discord.js'\nimport { DatabaseType, Giveaways } from '../src/index'\n\nconst { Channel, GuildMember, Message, Reaction, User } = Partials\n\nconst client = new Client({\n    rest: {\n        offset: 0,\n        timeout: 120000\n    },\n\n    partials: [Channel, GuildMember, Message, Reaction, User],\n    intents: [\n        'GuildMembers', 'GuildMessages',\n        'Guilds', 'GuildEmojisAndStickers', 'GuildIntegrations',\n\t\t'GuildMessageReactions', 'MessageContent'\n    ]\n})\n\nconst giveaways = new Giveaways(client, {\n    database: DatabaseType.JSON // either DatabaseType.JSON, DatabaseType.MONGODB or DatabaseType.ENMAP,\n\n    connection: {\n        // database configuration object,\n\t\t// see https://dgs-docs.js.org/#/docs/main/1.0.0/typedef/DatabaseConnectionOptions%3CTDatabaseType%3E\n\t\t// for more info\n    }\n})\n```\n\n### More examples coming soon!\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## Initialation Example\n\n```ts\nimport { ButtonStyle, Client, Partials } from 'discord.js'\nimport { DatabaseType, Giveaways } from '../src/index'\n\nconst { Channel, GuildMember, Message, Reaction, User } = Partials\n\nconst client = new Client({\n    rest: {\n        offset: 0,\n        timeout: 120000\n    },\n\n    partials: [Channel, GuildMember, Message, Reaction, User],\n    intents: [\n        'GuildMembers', 'GuildMessages',\n        'Guilds', 'GuildEmojisAndStickers', 'GuildIntegrations',\n\t\t'GuildMessageReactions', 'MessageContent'\n    ]\n})\n\nconst giveaways = new Giveaways(client, {\n    database: DatabaseType.JSON // either DatabaseType.JSON, DatabaseType.MONGODB or DatabaseType.ENMAP,\n\n    connection: {\n        // database configuration object,\n\t\t// see https://dgs-docs.js.org/#/docs/main/1.0.0/general/configuring\n\t\t// for more info\n    }\n})\n```\n\n## Start a Giveaway\n```js\n// Trigger on \"!giveaway-start\" command\n// Command usage: \"!giveaway-start <channel> <time> <winnersCount> <prize>\"\nif (message.content.startsWith(prefix + 'giveaway-start')) {\n    const channelIDOrName = args[0]\n\n    // Get the channel by mention, name, or id\n    const channel = (\n        message.mentions.channels.first() ||\n        message.guild?.channels.cache.find(channel => channel.name == channelIDOrName) ||\n        message.guild?.channels.cache.get(channelIDOrName)\n    )\n\n    // Get the required command arguments\n    const time = args[1]\n    const winnersCount = parseInt(args[2])\n    const prize = args.slice(3).join(' ')\n\n    // Performing validation checks\n    if (!message.guild) {\n        message.reply(':x: | Giveaways cannot be started in DMs.')\n        return\n    }\n\n    if (!channel) {\n        message.reply(':x: | Giveaway channel is not specified or not found.')\n        return\n    }\n\n    if (channel?.type !== ChannelType.GuildText) {\n        message.reply(':x: | Giveaway channel must be a **text** channel.')\n        return\n    }\n\n    if (!time) {\n        message.reply(':x: | Giveaway time should be specified.')\n        return\n    }\n\n    if (!isTimeStringValid(time)) {\n        message.reply(`:x: | Giveaway time \"${time}\" is not valid.`)\n        return\n    }\n\n    if (!winnersCount) {\n        message.reply(':x: | Giveaway winners count should be specified.')\n        return\n    }\n\n    if (!prize) {\n        message.reply(':x: | Giveaway prize should be specified.')\n        return\n    }\n\n    // Start the giveaway and read the started giveaway's data\n    const newGiveaway = await giveaways.start({\n        channelID: channel.id,\n        guildID: message.guild.id,\n        hostMemberID: message.author.id,\n        prize,\n        time,\n        winnersCount,\n\n        // defining *all* the messages for the giveaway\n\n        // please note that all the properties\n        // in all \"defineEmbedStrings\" returning objects and\n        // in all \"buttons\" objects are optional\n\n        // all buttons will be replaced with placeholders\n        // if not specified, and some of the message objects properties\n        // of \"defineEmbedStrings\" function are also will be replaced with\n        // placeholder values\n\n\t\t// see https://dgs-docs.js.org/#/docs/main/1.0.0/general/embed-strings\n\t\t// for more info about defining embeds\n\t\tdefineEmbedStrings(giveaway, host) {\n    \t\treturn {\n\n                // this ephemeral reply will be sent when they join the giveaway (embeds may also be used here)\n                joinGiveawayMessage: {\n                    messageContent: ':white_check_mark: | You have joined the giveaway!'\n            \t\t// ... (other properties)\n                },\n\n                // this ephemeral reply will be sent when they leave the giveaway (embeds may also be used here)\n                leaveGiveawayMessage: {\n                    messageContent: ':exclamation: | You have left the giveaway!'\n            \t\t// ... (other properties)\n                },\n\n                // this embed will be sent on giveaway start\n        \t\tstart: {\n            \t\tmessageContent: ':tada: **GIVEAWAY STARTED!** :tada:',\n            \t\ttitle: 'Giveaway Info',\n            \t\tdescription: `Prize: ${giveaway.prize}\\nWinners: ${giveaway.winnersCount}`,\n            \t\t// ... (other properties)\n        \t\t},\n\n                // defining all messages that are related\n                // to giveaway finish\n        \t\tfinish(mentionsString, winnersCount) {\n            \t\treturn {\n\n                        // this message will be sent separately in the giveaway channel when the giveaway ends\n                        // used to mention the giveaway winners\n                \t\tendMessage: {\n                    \t\tmessageContent: `Congratulations ${mentionsString} on winning!`\n            \t\t\t\t// ... (other properties)\n                \t\t},\n\n                        // the new separated message that the giveaway message in giveaway channel\n                        // will be changed to after the giveaway is finished\n                        newGiveawayMessage: {\n                            messageContent: ':tada: **GIVEAWAY FINISHED!** :tada:',\n\n                            title: `Giveaway (ID: ${giveaway.id})`,\n                            description: `Prize: **${giveaway.prize}**\\nEntries: **${giveaway.entriesCount}**\\n` +\n                                `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,\n\n                            footer: `Ended at:`,\n                            timestamp: giveaway.endedTimestamp\n\n            \t\t\t\t// ... (other properties)\n                        },\n\n                        // the new message that the giveaway message in giveaway channel will be changed to\n                        // after the giveaway is finished with no winners\n                        noWinnersNewGiveawayMessage: {\n                            messageContent: ':tada: **GIVEAWAY FINISHED!** :tada:',\n\n                            title: `Giveaway (ID: ${giveaway.id})`,\n                            description: `There was no winners in \"**${giveaway.prize}**\" giveaway!`,\n\n                            footer: `Ended at:`,\n                            timestamp: giveaway.endedTimestamp,\n            \t\t\t\t// ... (other properties)\n                        },\n\n                        // the new separated message that the giveaway message in giveaway channel\n                        // will be changed to after the giveaway is finished with no winners (embeds may also be used here)\n                        noWinnersEndMessage: {\n                            messageContent: `Unfortunetly, there are no winners in the **${giveaway.prize}** giveaway.`\n            \t\t\t\t// ... (other properties)\n                        }\n            \t\t}\n        \t\t},\n\n                // defining all messages that are related\n                // to rerolling the giveaway winners\n                reroll(mentionsString, winnersCount) {\n                    return {\n                        // this ephemeral reply will be sent when they're not a host\n                        // of the giveaway and trying to reroll the winners (embeds may also be used here)\n                        onlyHostCanReroll: {\n                            messageContent: ':x: | Only host of this giveaway can reroll the winners.'\n            \t\t\t\t// ... (other properties)\n                        },\n\n                        // the new message that the giveaway message in giveaway channel will be changed to\n                        // after the reroll\n                        newGiveawayMessage: {\n\t\t\t\t\t\t\tmessageContent: ':tada: **GIVEAWAY FINISHED!** :tada:',\n\n                            title: `Giveaway (ID: ${giveaway.id})`,\n                            description: `There was no winners in \"**${giveaway.prize}**\" giveaway!`,\n\n                            footer: `Ended at:`,\n                            timestamp: giveaway.endedTimestamp,\n            \t\t\t\t// ... (other properties)\n                        },\n\n                        // this message will be sent separately in the giveaway channel after the reroll\n                        // used to mention the new giveaway winners (embeds may also be used here)\n                        rerollMessage: {\n                            messageContent: `${giveaway.winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +\n                                `${mentionsString}, congratulations!`\n            \t\t\t\t// ... (other properties)\n                        },\n\n                        // this ephemeral reply will be sent after the successful reroll (embeds may also be used here)\n                        successMessage: {\n                            messageContent: ':white_check_mark: | Successfully rerolled the winners!'\n            \t\t\t\t// ... (other properties)\n                        }\n                    }\n                }\n    \t\t}\n\t\t}\n\t})\n\n    // Send the success message\n    message.channel.send({\n        content: `**${newGiveaway.prize}** giveaway (ID: **${newGiveaway.id}**) has started ------> ${newGiveaway.messageURL}`\n    })\n}\n```\n\n## Force-End Giveaway\n```js\n// Trigger on \"!force-end\" command\n// Command usage: \"!force-end <giveawayOrMessageID>\"\nif (message.content.startsWith(prefix + 'force-end')) {\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n    )\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Forcefully end the giveaway\n    await giveaway.end()\n\n    message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was ended forcefully.`)\n}\n```\n\n## Restart Giveaway\n```js\n// Trigger on \"!restart\" command\n// Command usage: \"!restart <giveawayOrMessageID>\"\nif (message.content.startsWith(prefix + 'restart')) {\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n    )\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Restart the giveaway\n    await giveaway.restart()\n\n    message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was successfully restarted.`)\n}\n```\n\n## Extend Giveaway Length\n```js\n// Trigger on \"!extend\" command\n// Command usage: \"!extend <giveawayOrMessageID> <time>\"\nif (message.content.startsWith(prefix + 'extend')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n    const time = args[1]\n\n    // Perform validation checks for the giveaway ID and time\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    if (!time) {\n        message.reply(':x: | Giveaway time should be specified.')\n        return\n    }\n\n    if (!isTimeStringValid(time)) {\n        message.reply(`:x: | Giveaway time \"**${time}**\" is not valid.`)\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n    )\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Extend the giveaway's length\n    await giveaway.extend(time)\n\n    message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully extended by **${time}**.`)\n}\n```\n\n## Reduce Giveaway Length\n```js\n// Trigger on \"!reduce\" command\n// Command usage: \"!reduce <giveawayOrMessageID> <time>\"\nif (message.content.startsWith(prefix + 'reduce')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n    const time = args[1]\n\n    // Perform validation checks for the giveaway ID and time\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    if (!time) {\n        message.reply(':x: | Giveaway time should be specified.')\n        return\n    }\n\n    if (!isTimeStringValid(time)) {\n        message.reply(`:x: | Giveaway time \"**${time}**\" is not valid.`)\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n    )\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Reduce the giveaway's length\n    await giveaway.reduce(time)\n\n    message.reply(`**${giveaway.prize}** giveaway's length (ID: **${giveaway.id}**) was successfully reduced by **${time}**.`)\n}\n```\n\n## Delete Giveaway\n```js\n// Trigger on \"!delete\" command\n// Command usage: \"!delete <giveawayOrMessageID>\"\nif (message.content.startsWith(prefix + 'delete')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n    )\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Delete the giveaway\n    await giveaway.delete()\n\n    message.reply(`**${giveaway.prize}** giveaway (ID: **${giveaway.id}**) was successfully deleted.`)\n}\n```\n\n## Change Prize of the Giveaway\n```js\n// Trigger on \"!set-prize\" command\n// Command usage: \"!set-prize <giveawayOrMessageID> <prize>\"\nif (message.content.startsWith(prefix + 'set-prize')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Get the new prize from the arguments\n    const prize = args.slice(1).join(' ')\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n\t)\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Set the new prize for the giveaway\n    await giveaway.setPrize(prize)\n\n    message.reply(`**${giveaway.prize}** giveaway's prize (ID: **${giveaway.id}**) was successfully set to **${prize}**.`)\n}\n```\n\n## Change Winners Count of the Giveaway\n```js\n// Trigger on \"!set-winners\" command\n// Command usage: \"!set-winners <giveawayOrMessageID> <winnersCount>\"\nif (message.content.startsWith(prefix + 'set-winners')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Get the new number of winners from the arguments\n    const winnersCount = parseInt(args[1])\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n\t)\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Set the new number of winners for the giveaway\n    await giveaway.setWinnersCount(winnersCount)\n\n    message.reply(`**${giveaway.prize}** giveaway's winners count (ID: **${giveaway.id}**) was successfully set to **${winnersCount}**.`)\n}\n```\n\n## Change Host of the Giveaway\n```js\n// Trigger on \"!set-host\" command\n// Command usage: \"!set-host <giveawayOrMessageID> <hostMemberID>\"\nif (message.content.startsWith(prefix + 'set-host')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n\n    // Perform validation checks for the giveaway ID\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    // Get the new host member's ID from the arguments\n    const hostMemberID = args[1]\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n\t)\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Set the new host member ID for the giveaway\n    await giveaway.setHostMemberID(hostMemberID)\n\n    message.reply(`**${giveaway.prize}** giveaway's host (ID: **${giveaway.id}**) was successfully changed to **<@${hostMemberID}>**.`)\n}\n```\n\n## Change Time of the Giveaway\n```js\n// Trigger on \"!set-time\" command\n// Command usage: \"!set-time <giveawayOrMessageID> <time>\"\nif (message.content.startsWith(prefix + 'set-time')) {\n    // Get the required command arguments\n    const giveawayOrMessageID = args[0]\n    const time = args[1]\n\n    // Perform validation checks for the giveaway ID and time\n    if (!giveawayOrMessageID) {\n        message.reply(':x: | Giveaway ID should be specified.')\n        return\n    }\n\n    if (!time) {\n        message.reply(':x: | Giveaway time should be specified.')\n        return\n    }\n\n    if (!isTimeStringValid(time)) {\n        message.reply(`:x: | Giveaway time \"**${time}**\" is not valid.`)\n        return\n    }\n\n    // Find the giveaway by its ID or its message ID\n    const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(\n        giveaway => giveaway.messageID == giveawayOrMessageID\n\t)\n\n    // Send an error message if the giveaway was not found\n    if (!giveaway) {\n        message.channel.send(':x: | Giveaway not found.')\n        return\n    }\n\n    // Send an error message if the giveaway is not running and already ended.\n    if (!giveaway.isRunning()) {\n        message.channel.send(`:x: | Giveaway \"**${giveaway.prize}**\" has already ended.`)\n        return\n    }\n\n    // Set the new time for the giveaway\n    await giveaway.setTime(time)\n\n    message.reply(`**${giveaway.prize}** giveaway's time (ID: **${giveaway.id}**) was successfully set to **${time}**.`)\n}\n```\n\nView the **full bot examples** in both **JavaScript** and **TypeScript** [here](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples).\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/examples.md"
     },
     "configuring": {
      "name": "Configuring",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## Introduction\n\n### Coming soon!\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## Introduction\n\nYou know that the module has a lot of different settings and you can set them up like you want. In this article, we will go through everything about configuring the Giveaways system!\n\n## Available Databases\n\nThe module has support for **3** types of databases: **__JSON__**, **__MongoDB__** and **__Enmap__**.\n\nTo set up the database to work in Discord Giveaways Super, we need to specify 2 important configuration properties: [`database`](https://dgs-docs.js.org/#/docs/main/1.0.0/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E) and [`connection`](https://dgs-docs.js.org/#/docs/main/1.0.0/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E)\n\n- `database` is the type of database we want to use\n- `connection` is the configuration for the database which we have chosen\n\n```js\nconst { Giveaways, DatabaseType } = require('discord-giveaways-super')\n\nconst giveaways = new Giveaways(client, {\n\tdatabase: DatabaseType.JSON, // or any other database that is provided by module: DatabaseType.MONGODB or DatabaseType.ENMAP\n\n\tconnection: {\n\t\t// database configuration object based on the chosen database\n\t}\n})\n```\n\n## Configuring Giveaways\n\nTo configure Discord Giveaways Super, follow these steps:\n\n1. **Import the Module and Dependencies**:\nFirst, make sure you've imported the necessary dependencies and the `Giveaways` class from the module. Your import statements would look something like this:\n\n```js\nconst { Giveaways, DatabaseType } = require('discord-giveaways-super')\nconst { Client } = require('discord.js')\n\n// or\n\nimport { Giveaways, DatabaseType } from 'discord-giveaways-super'\nimport { Client } from 'discord.js'\n```\n\n1. **Initialize Discord Client**:\n\n```js\nconst client = new Client({\n    intents: [\n        'Guilds', 'GuildMembers',\n        'GuildMessages', 'GuildMessageReactions',\n    ]\n})\n\nclient.on('ready', () => {\n\tconsole.log(`${client.user.username} is ready!`)\n})\n\nclient.login('YOUR_BOT_TOKEN_HERE')\n```\n\n3. **Initialize or **Giveaways** class from the module**:\n```js\nconst giveaways = new Giveaways(client, {\n\tdatabase: DatabaseType.JSON, // or any other database that is provided by module\n\n\tconnection: {\n\t\t// database configuration object based on the chosen database\n\t}\n})\n\ngiveaways.on('ready', () => {\n\tconsole.log(`Giveaways module is ready!`)\n})\n```\n\n### The full initialation code should look like this:\n```js\nconst client = new Client({\n    intents: [\n        'Guilds', 'GuildMembers',\n        'GuildMessages', 'GuildMessageReactions',\n    ]\n})\n\nclient.on('ready', () => {\n\tconsole.log(`${client.user.username} is ready!`)\n})\n\nconst giveaways = new Giveaways(client, {\n\tdatabase: DatabaseType.JSON, // or any other database that is provided by module\n\n\tconnection: {\n\t\t// database configuration object based on the chosen database\n\t}\n})\n\ngiveaways.on('ready', () => {\n\tconsole.log(`Giveaways module is ready!`)\n})\n\nclient.login('YOUR_BOT_TOKEN_HERE')\n```\n\n## Full Configuration Example\n\nHere's the **full** example of Giveaways configuration object and how everything should look like.\n\nThis example will contain default values for each setting.\n\nNote that all settings (except `database` and `connection`) are optional and you don't have to specify them all!\n\n```js\n/**\n * Default configuration options for Discord Giveaways Super.\n */\nconst giveawaysConfigExample = {\n\n    /**\n     * Determines how often the giveaways ending state will be checked (in ms).\n     * This interval controls how frequently the module will check for giveaways that have ended.\n     * Type: number\n     */\n    giveawaysCheckingInterval: 1000,\n\n    /**\n     * Determines the minimum required giveaway entries to draw the winner.\n     * If the number of entries in a giveaway is below this threshold, a winner will not be drawn.\n     * Type: number\n     */\n    minGiveawayEntries: 1,\n\n    /**\n     * Updates checker configuration.\n     * Controls whether the module should check for updates and display update-related messages.\n     * Type: IUpdateCheckerConfiguration\n     */\n    updatesChecker: {\n\n        /**\n         * Determines if the module should check for updates on start.\n         * If enabled, the module will check for updates and display relevant messages.\n         * Type: boolean\n         */\n        checkUpdates: true,\n\n        /**\n         * Determines if an \"up to date\" message should be displayed if the module is already up to date.\n         * If enabled, a message will be displayed indicating that the module is up to date.\n         * Type: boolean\n         */\n        upToDateMessage: false\n    },\n\n    /**\n     * Giveaways config checker configuration.\n     * Controls various aspects of the configuration checking process.\n     * Type: IGiveawaysConfigCheckerConfiguration\n     */\n    configurationChecker: {\n\n        /**\n         * Allows the method to ignore options with invalid types during configuration checks.\n         * If enabled, the configuration checker will ignore options with invalid data types.\n         * Type: boolean\n         */\n        ignoreInvalidTypes: false,\n\n        /**\n         * Allows the method to ignore unspecified options during configuration checks.\n         * If enabled, the configuration checker will ignore options that are not specified in the configuration.\n         * Type: boolean\n         */\n        ignoreUnspecifiedOptions: true,\n\n        /**\n         * Allows the method to ignore options that do not exist during configuration checks.\n         * If enabled, the configuration checker will ignore options that are not recognized by the module.\n         * Type: boolean\n         */\n        ignoreInvalidOptions: false,\n\n        /**\n         * Determines if problems found during configuration checks should be shown in the console.\n         * If enabled, the configuration checker will display problems it encounters during checks.\n         * Type: boolean\n         */\n        showProblems: true,\n\n        /**\n         * Determines if the results of configuration checks should be sent to the console.\n         * If enabled, the configuration checker will send the overall result to the console.\n         * Requires 'showProblems' or 'sendLog' options to be set.\n         * Type: boolean\n         */\n        sendLog: true,\n\n        /**\n         * Determines if the results of successful configuration checks should be sent to the console.\n         * If enabled, the configuration checker will send the result if no problems were found.\n         * Type: boolean\n         */\n        sendSuccessLog: false\n    },\n\n    /**\n     * Determines if debug mode is enabled.\n     * If enabled, the module will run in debug mode, which may provide additional information for debugging.\n     * Type: boolean\n     */\n    debug: false\n}\n```\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/configuring.md"
+    },
+    "embed-strings": {
+     "name": "Embed Strings",
+     "type": "md",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## Introduction\n\nIn giveaway options object object in `start` method of the `Giveaways` class, you can customize the appearance of giveaway-related messages by defining \"embed strings\" Embed strings allow you to create and style messages using Discord Embeds.\n\n## Overview\n\nEmbed strings are objects that define the content and appearance of various messages associated with a giveaway. These messages include:\n\n- The message sent when a user joins the giveaway.\n- The message sent when a user leaves the giveaway.\n- The initial giveaway start message.\n- The giveaway finish messages to be edited to (when winners are chosen).\n- The giveaway reroll messages to be edited to (when winners are rerolled).\n\n## Available Embed Strings Properties\nHere are some common properties you can use within the embed strings:\n\n`messageContent`: The text content of the message.\n`title`: The title of the embed.\n`description`: The main content of the embed.\n`footer`: The text displayed in the footer of the embed.\n`timestamp`: The timestamp displayed in the embed footer.\n`thumbnailURL`: The URL of the thumbnail image.\n`imageURL`: The URL of the main image in the embed.\n\n**Important Notice**: specifying only `messageContent` property will generate a normal text message without any embeds. Using `messageContent` alongside other embed properties will attach the text of `messageContent` above the displayed embed as message content.\n\nYou can also include dynamic giveaway variables provided by the strings definitions functions like `${giveaway.prize}`, `${giveaway.winnersCount}`, and ${mentionsString} to insert the actual values during runtime.\n\n## Defining Embed Strings\n\nTo customize these messages, you can define different properties within the embed string objects. Here's an example of how to define embed strings in the `defineEmbedStrings` function:\n\n```ts\ndefineEmbedStrings(giveaway, host) {\n    return {\n        joinGiveawayMessage: {\n            messageContent: 'You have joined the giveaway!'\n        },\n\n\t\tleaveGiveawayMessage: {\n            messageContent: 'You have left the giveaway!'\n        },\n\n        // ... (other messages)\n\n        start: {\n            messageContent: ':tada: **GIVEAWAY STARTED!** :tada:',\n\n            // embed properties\n            title: `Giveaway (ID: ${giveaway.id})`,\n            titleIcon: client.user?.displayAvatarURL({ size: 2048 }),\n\n            description: `Prize: **${giveaway.prize}**.\\nWinners: **${giveaway.winnersCount}**\\n` +\n                `Entries: **${giveaway.entriesCount}**\\nHost: **${host.username}**\\nEnds at: <t:${giveaway.endTimestamp}:R>`,\n\n            footer: `Ends at:`,\n            timestamp: giveaway.endTimestamp,\n            footerIcon: client.user?.displayAvatarURL({ size: 2048 })\n\n        \t// ... (other properties)\n        }\n    },\n\n    finish(mentionsString, winnersCount) {\n        return {\n            endMessage: {\n                messageContent: `Congratulations ${mentionsString} on winning!`\n            },\n            // ... (other properties)\n        }\n    },\n\n    // ... (other messages)\n}\n```\n\nYou can also view the full Embed Strings configuration in the full [bot examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples).\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "path": "docs/general/embed-strings.md"
     },
     "faq": {
      "name": "FAQ",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## ❓ | Frequently Asked Questions\n\n### Coming soon!\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## ❓ | Frequently Asked Questions\n\n### **Q:** Is there `EmbedBuilder` support to configure giveaway messages as embeds?\n### **A:** Not at the moment, but this will added in the future!\n\n### **Q:** Is there support for (X) database?\n### **A:** At the moment, there's only support for 3 databases: **JSON**, **MongoDB** and **Enmap**, but support for other databases may be added in the future as well!\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/faq.md"
     },
     "changelog": {
      "name": "Changelog",
      "type": "md",
-     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## ⏰ | Changelog\n\n<b>v1.0.0</b>\n\n<ul>\n  <li><b>Initial module release.</b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://des-docs.js.org/#/docs/main/1.5.2general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
+     "content": "# Discord Giveaways Super\n\n[![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n[![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)\n\n<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).\n\n## ⏰ | Changelog\n\n<b>v1.0.0</b>\n\n<ul>\n  <li><b>Initial module release.</b></li>\n</ul>\n\n## ❗ | Useful Links\n<ul>\n<li><b><a href = \"https://www.npmjs.com/package/discord-giveaways-super\">NPM</a></b></li>\n<li><b><a href = \"https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq\">Frequently Asked Questions</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super\">GitHub</a></b></li>\n<li><b><a href = \"https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples\">Examples</a></b></li>\n<li><b><a href = \"https://discord.gg/4pWKq8vUnb\">Discord Server</a></b></li>\n</ul>\n<br>\n<b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\n<br>\n<b>Module Created by ShadowPlay.</b>\n\n# ❤️ Thanks for choosing Discord Giveaways Super ❤️\n",
      "path": "docs/general/changelog.md"
     }
    }
@@ -67,7 +73,7 @@
     "params": [
      {
       "name": "client",
-      "description": "Discord Client.",
+      "description": "Discord client.",
       "type": [
        [
         [
@@ -106,7 +112,7 @@
       ]
      ],
      "meta": {
-      "line": 126,
+      "line": 133,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -122,7 +128,7 @@
       ]
      ],
      "meta": {
-      "line": 132,
+      "line": 139,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -139,7 +145,7 @@
       ]
      ],
      "meta": {
-      "line": 138,
+      "line": 145,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -158,20 +164,20 @@
         "<"
        ],
        [
-        "DatabaseType",
+        "TDatabaseType",
         ">>"
        ]
       ]
      ],
      "meta": {
-      "line": 151,
+      "line": 158,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "db",
-     "description": "External database (such as Enmap or MongoDB) if used.",
+     "description": "External database instance (such as Enmap or MongoDB) if used.",
      "nullable": true,
      "type": [
       [
@@ -180,13 +186,13 @@
         "<"
        ],
        [
-        "DatabaseType",
+        "TDatabaseType",
         ">"
        ]
       ]
      ],
      "meta": {
-      "line": 157,
+      "line": 164,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -197,12 +203,25 @@
      "type": [
       [
        [
-        "DatabaseManager"
+        "DatabaseManager",
+        "<"
+       ],
+       [
+        "TDatabaseType",
+        ", "
+       ],
+       [
+        "TDatabaseKey",
+        ", "
+       ],
+       [
+        "TDatabaseValue",
+        ">"
        ]
       ]
      ],
      "meta": {
-      "line": 163,
+      "line": 170,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -222,7 +241,7 @@
       ]
      ],
      "meta": {
-      "line": 169,
+      "line": 176,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -239,7 +258,7 @@
       ]
      ],
      "meta": {
-      "line": 175,
+      "line": 182,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -264,7 +283,7 @@
       ]
      ],
      "meta": {
-      "line": 185,
+      "line": 192,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -287,7 +306,7 @@
       ]
      ],
      "meta": {
-      "line": 515,
+      "line": 525,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -317,19 +336,68 @@
          "<"
         ],
         [
+         "SafeGiveaway",
+         "<"
+        ],
+        [
          "Giveaway",
          "<"
         ],
         [
          "DatabaseType",
-         ">>"
+         ">>>"
         ]
        ]
       ],
       "description": "Created {@link Giveaway} instance."
      },
      "meta": {
-      "line": 559,
+      "line": 569,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "get",
+     "description": "Finds the giveaway in all giveaways database by its ID.",
+     "params": [
+      {
+       "name": "giveawayID",
+       "description": "Giveaway ID to find the giveaway by.",
+       "type": [
+        [
+         [
+          "number"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "Maybe",
+         "<"
+        ],
+        [
+         "UnsafeGiveaway",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">>>"
+        ]
+       ]
+      ],
+      "description": "Giveaway instance."
+     },
+     "meta": {
+      "line": 753,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -359,25 +427,77 @@
        ]
       }
      ],
-     "async": true,
-     "returns": [
-      [
+     "returns": {
+      "types": [
        [
-        "Promise",
-        "<"
-       ],
-       [
-        "Giveaway",
-        "<"
-       ],
-       [
-        "TDatabaseType",
-        ">>"
+        [
+         "Maybe",
+         "<"
+        ],
+        [
+         "UnsafeGiveaway",
+         "<"
+        ],
+        [
+         "Giveaway",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">>>"
+        ]
        ]
-      ]
-     ],
+      ],
+      "description": "Giveaway instance."
+     },
      "meta": {
-      "line": 746,
+      "line": 779,
+      "file": "Giveaways.ts",
+      "path": "src"
+     }
+    },
+    {
+     "name": "map",
+     "description": "Returns the mapped giveaways array based on the specified callback function.\n\nType parameters:\n\n- `TReturnType` - the type being returned in a callback function.",
+     "params": [
+      {
+       "name": "cb",
+       "description": "The callback function to call on the giveaway.",
+       "type": [
+        [
+         [
+          "FindCallback",
+          "<"
+         ],
+         [
+          "Giveaway",
+          "<"
+         ],
+         [
+          "TDatabaseType",
+          ">>"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "Array",
+         "<"
+        ],
+        [
+         "TReturnType",
+         ">"
+        ]
+       ]
+      ],
+      "description": "Mapped giveaways array."
+     },
+     "meta": {
+      "line": 810,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -392,22 +512,26 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
         [
-         "Promise",
+         "Array",
          "<"
         ],
         [
-         "Array",
+         "UnsafeGiveaway",
          "<"
         ],
         [
@@ -423,7 +547,7 @@
       "description": "Giveaways array from the specified guild in database."
      },
      "meta": {
-      "line": 777,
+      "line": 845,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -431,14 +555,9 @@
     {
      "name": "getAll",
      "description": "Gets all the giveaways from all the guilds in database.",
-     "async": true,
      "returns": {
       "types": [
        [
-        [
-         "Promise",
-         "<"
-        ],
         [
          "Array",
          "<"
@@ -449,14 +568,14 @@
         ],
         [
          "TDatabaseType",
-         ">>>"
+         ">>"
         ]
        ]
       ],
       "description": "Giveaways array from all the guilds in database."
      },
      "meta": {
-      "line": 803,
+      "line": 873,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -465,21 +584,15 @@
      "name": "_checkGiveaways",
      "description": "Checks for all giveaways to be finished and end them if they are.",
      "access": "private",
-     "async": true,
      "returns": [
       [
        [
-        "Promise",
-        "<"
-       ],
-       [
-        "void",
-        ">"
+        "void"
        ]
       ]
      ],
      "meta": {
-      "line": 822,
+      "line": 892,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -508,7 +621,7 @@
       }
      ],
      "meta": {
-      "line": 1385,
+      "line": 1599,
       "file": "Giveaways.ts",
       "path": "src"
      }
@@ -530,14 +643,14 @@
       }
      ],
      "meta": {
-      "line": 1391,
+      "line": 1605,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayStart",
-     "description": "Emits when the giveaway is started.",
+     "description": "Emits when a giveaway is started.",
      "params": [
       {
        "name": "giveaway",
@@ -557,14 +670,14 @@
       }
      ],
      "meta": {
-      "line": 1397,
+      "line": 1611,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayRestart",
-     "description": "Emits when the giveaway is restarted.",
+     "description": "Emits when a giveaway is restarted.",
      "params": [
       {
        "name": "giveaway",
@@ -584,14 +697,14 @@
       }
      ],
      "meta": {
-      "line": 1403,
+      "line": 1617,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayEnd",
-     "description": "Emits when the giveaway is ended.",
+     "description": "Emits when a giveaway is ended.",
      "params": [
       {
        "name": "giveaway",
@@ -611,18 +724,18 @@
       }
      ],
      "meta": {
-      "line": 1409,
+      "line": 1623,
       "file": "Giveaways.ts",
       "path": "src"
      }
     },
     {
      "name": "giveawayReroll",
-     "description": "Emits when the giveaway winners are rerolled.",
+     "description": "Emits when a giveaway is rerolled.",
      "params": [
       {
-       "name": "data",
-       "description": "Data object that contains the new array of mentions of winners and the {@link Giveaway} reroll happened in.",
+       "name": "giveaway",
+       "description": "{@link Giveaway} that was rerolled.",
        "type": [
         [
          [
@@ -633,80 +746,14 @@
       }
      ],
      "meta": {
-      "line": 1415,
-      "file": "Giveaways.ts",
-      "path": "src"
-     }
-    },
-    {
-     "name": "giveawayLengthExtend",
-     "description": "Emits when the giveaway's length was extended.",
-     "params": [
-      {
-       "name": "data",
-       "description": "Data object the contains the extension time and the affected {@link Giveaway}.",
-       "type": [
-        [
-         [
-          "IGiveawayTimeChangeEvent"
-         ]
-        ]
-       ]
-      }
-     ],
-     "meta": {
-      "line": 1422,
-      "file": "Giveaways.ts",
-      "path": "src"
-     }
-    },
-    {
-     "name": "giveawayLengthReduce",
-     "description": "Emits when the giveaway's length was reduced.",
-     "params": [
-      {
-       "name": "data",
-       "description": "Data object the contains the reduction time and the affected {@link Giveaway}.",
-       "type": [
-        [
-         [
-          "IGiveawayTimeChangeEvent"
-         ]
-        ]
-       ]
-      }
-     ],
-     "meta": {
-      "line": 1428,
-      "file": "Giveaways.ts",
-      "path": "src"
-     }
-    },
-    {
-     "name": "giveawayEdit",
-     "description": "Emits when the giveaway info was edited.",
-     "params": [
-      {
-       "name": "data",
-       "description": "Data object the contains the changes and the affected {@link Giveaway}.",
-       "type": [
-        [
-         [
-          "IGiveawayEditEvent"
-         ]
-        ]
-       ]
-      }
-     ],
-     "meta": {
-      "line": 1434,
+      "line": 1629,
       "file": "Giveaways.ts",
       "path": "src"
      }
     }
    ],
    "meta": {
-    "line": 44,
+    "line": 47,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -717,19 +764,68 @@
    "implements": [
     [
      [
-      "IGiveaway",
+      "Omit",
       "<"
      ],
      [
-      "DatabaseType",
+      "IGiveaway",
+      ", '"
+     ],
+     [
+      "hostMemberID'",
+      " | '"
+     ],
+     [
+      "channelID'",
+      " | '"
+     ],
+     [
+      "guildID'",
+      " | '"
+     ],
+     [
+      "entriesArray'",
       ">"
      ]
     ]
    ],
+   "construct": {
+    "name": "Giveaway<TDatabaseType>",
+    "description": "Giveaway constructor.",
+    "params": [
+     {
+      "name": "giveaways",
+      "description": "{@link Giveaways} instance.",
+      "type": [
+       [
+        [
+         "Giveaways",
+         "<"
+        ],
+        [
+         "TDatabaseType",
+         ">"
+        ]
+       ]
+      ]
+     },
+     {
+      "name": "giveaway",
+      "description": "Input {@link Giveaway} object.",
+      "type": [
+       [
+        [
+         "IGiveaway"
+        ]
+       ]
+      ]
+     }
+    ]
+   },
    "props": [
     {
      "name": "_giveaways",
-     "description": "Giveaways instance.",
+     "description": "{@link Giveaways} instance.",
      "access": "private",
      "type": [
       [
@@ -744,7 +840,7 @@
       ]
      ],
      "meta": {
-      "line": 151,
+      "line": 165,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -761,14 +857,14 @@
       ]
      ],
      "meta": {
-      "line": 158,
+      "line": 172,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
-     "name": "raw",
-     "description": "Raw giveaway object.",
+     "name": "_inputGiveaway",
+     "description": "Input giveaway object.",
      "type": [
       [
        [
@@ -777,7 +873,7 @@
       ]
      ],
      "meta": {
-      "line": 166,
+      "line": 179,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -793,7 +889,7 @@
       ]
      ],
      "meta": {
-      "line": 172,
+      "line": 185,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -809,7 +905,7 @@
       ]
      ],
      "meta": {
-      "line": 178,
+      "line": 191,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -825,7 +921,7 @@
       ]
      ],
      "meta": {
-      "line": 184,
+      "line": 197,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -841,7 +937,7 @@
       ]
      ],
      "meta": {
-      "line": 190,
+      "line": 203,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -857,7 +953,7 @@
       ]
      ],
      "meta": {
-      "line": 196,
+      "line": 209,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -873,7 +969,7 @@
       ]
      ],
      "meta": {
-      "line": 202,
+      "line": 215,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -889,7 +985,23 @@
       ]
      ],
      "meta": {
-      "line": 208,
+      "line": 227,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "endedTimestamp",
+     "description": "Giveaway end timestamp.",
+     "type": [
+      [
+       [
+        "number"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 227,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -900,12 +1012,17 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ],
      "meta": {
-      "line": 214,
+      "line": 233,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -921,7 +1038,7 @@
       ]
      ],
      "meta": {
-      "line": 220,
+      "line": 239,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -937,7 +1054,7 @@
       ]
      ],
      "meta": {
-      "line": 226,
+      "line": 245,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -953,7 +1070,7 @@
       ]
      ],
      "meta": {
-      "line": 232,
+      "line": 251,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -969,7 +1086,7 @@
       ]
      ],
      "meta": {
-      "line": 238,
+      "line": 257,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -985,34 +1102,38 @@
       ]
      ],
      "meta": {
-      "line": 244,
-      "file": "Giveaway.ts",
-      "path": "src/lib"
-     }
-    },
-    {
-     "name": "entriesArray",
-     "description": "Array of user IDs of users that have entered the giveaway.",
-     "type": [
-      [
-       [
-        "Array",
-        "<"
-       ],
-       [
-        "string",
-        ">"
-       ]
-      ]
-     ],
-     "meta": {
-      "line": 250,
+      "line": 263,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "entries",
+     "description": "IDs of users that have entered the giveaway.",
+     "type": [
+      [
+       [
+        "Set",
+        "<"
+       ],
+       [
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">>"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 269,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "entriesCount",
      "description": "Number of giveaway entries.",
      "type": [
       [
@@ -1022,7 +1143,7 @@
       ]
      ],
      "meta": {
-      "line": 256,
+      "line": 275,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1038,7 +1159,7 @@
       ]
      ],
      "meta": {
-      "line": 262,
+      "line": 281,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1054,13 +1175,51 @@
       ]
      ],
      "meta": {
-      "line": 296,
+      "line": 315,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
+    {
+     "name": "raw",
+     "description": "Raw giveaway object.",
+     "type": [
+      [
+       [
+        "IGiveaway"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 323,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "methods": [
+    {
+     "name": "isRunning",
+     "description": "[TYPE GUARD FUNCTION] - Determines if the giveaway is running\nand allows to perform actions if it is.",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `extend` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.extend('10s')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.extend('10s') // we know that giveaway is running - the method is safe to run"
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Whether the giveaway is running."
+     },
+     "meta": {
+      "line": 334,
+      "file": "Giveaway.ts",
+      "path": "src/lib"
+     }
+    },
     {
      "name": "restart",
      "description": "Restarts the giveaway.",
@@ -1078,14 +1237,17 @@
       ]
      ],
      "meta": {
-      "line": 304,
+      "line": 359,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
-     "name": "extendLength",
-     "description": "Extends the giveaway length.",
+     "name": "extend",
+     "description": "Extends the giveaway length.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `extend` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.extend('10s')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.extend('10s') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "extensionTime",
@@ -1113,14 +1275,17 @@
       ]
      ],
      "meta": {
-      "line": 336,
+      "line": 391,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
-     "name": "reduceLength",
-     "description": "Reduces the giveaway length.",
+     "name": "reduce",
+     "description": "Reduces the giveaway length.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `reduce` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.reduce('10s')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.reduce('10s') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "reductionTime",
@@ -1148,14 +1313,17 @@
       ]
      ],
      "meta": {
-      "line": 394,
+      "line": 470,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "end",
-     "description": "Ends the giveaway.",
+     "description": "Ends the giveaway.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `end` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.end()\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.end() // we know that giveaway is running - the method is safe to run"
+     ],
      "async": true,
      "returns": [
       [
@@ -1170,7 +1338,7 @@
       ]
      ],
      "meta": {
-      "line": 452,
+      "line": 549,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1199,7 +1367,7 @@
       "description": "Rerolled winners users IDs."
      },
      "meta": {
-      "line": 483,
+      "line": 606,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1214,7 +1382,12 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
@@ -1225,13 +1398,17 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -1243,7 +1420,7 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 571,
+      "line": 697,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1258,7 +1435,12 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
@@ -1269,13 +1451,17 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -1287,14 +1473,17 @@
       "description": "Updated giveaway object."
      },
      "meta": {
-      "line": 571,
+      "line": 697,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "setPrize",
-     "description": "Changes the giveaway's prize and edits the giveaway message.",
+     "description": "Changes the giveaway's prize and edits the giveaway message.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `setPrize` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.setPrize('My New Prize')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.setPrize('My New Prize') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "prize",
@@ -1329,14 +1518,17 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 621,
+      "line": 750,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "setWinnersCount",
-     "description": "Changes the giveaway's winners count and edits the giveaway message.",
+     "description": "Changes the giveaway's winners count and edits the giveaway message.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `setWinnersCount` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.setWinnersCount(2)\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.setWinnersCount(2) // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "winnersCount",
@@ -1371,14 +1563,17 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 647,
+      "line": 797,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "setHostMemberID",
-     "description": "Changes the giveaway's host member ID and edits the giveaway message.",
+     "description": "Changes the giveaway's host member ID and edits the giveaway message.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `setHostMemberID` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.setHostMemberID('123456789012345678')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.setHostMemberID('123456789012345678') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "hostMemberID",
@@ -1386,7 +1581,12 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
@@ -1413,14 +1613,17 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 684,
+      "line": 855,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "setTime",
-     "description": "Changes the giveaway's time and edits the giveaway message.",
+     "description": "Changes the giveaway's time and edits the giveaway message.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `setTime` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.setTime('10s')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.setTime('10s') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "time",
@@ -1455,18 +1658,21 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 710,
+      "line": 904,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "edit",
-     "description": "Sets the specified value to the specified giveaway property and edits the giveaway message.",
+     "description": "Sets the specified value to the specified giveaway property and edits the giveaway message.\n\nType parameters:\n\n- `TProperty` ({@link EditableGiveawayProperties}) - Giveaway property to pass in.\n\n[!!!] To be able to run this method, you need to perform a type-guard check\n\n[!!!] using the {@link Giveaway.isRunning()} method. (see the example below)",
+     "examples": [
+      "const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)\n\n// we don't know if the giveaway is running,\n// so the method is unsafe to run - `edit` will be marked as \"possibly undefined\"\n// to prevent it from running before the check below\ngiveaway.edit('prize', 'My New Prize')\n\n// checking if the giveaway is running\nif (!giveaway.isRunning()) {\n    return console.log(`Giveaway \"${giveaway.prize}\" has already ended.`)\n}\n\ngiveaway.edit('prize', 'My New Prize') // we know that giveaway is running - the method is safe to run"
+     ],
      "params": [
       {
        "name": "key",
-       "description": "The key of the giveaway object to set",
+       "description": "The key of the giveaway object to set.",
        "type": [
         [
          [
@@ -1508,7 +1714,7 @@
       "description": "Updated {@link Giveaway} instance."
      },
      "meta": {
-      "line": 736,
+      "line": 951,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1537,7 +1743,7 @@
       "description": "Deleted {@link Giveaway} instance."
      },
      "meta": {
-      "line": 878,
+      "line": 1098,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1566,7 +1772,7 @@
       ]
      ],
      "meta": {
-      "line": 900,
+      "line": 1120,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1577,8 +1783,8 @@
      "access": "private",
      "params": [
       {
-       "name": "giveawayTySync",
-       "description": "The giveaway object to sync with.",
+       "name": "giveawayToSyncWith",
+       "description": "The giveaway object to sync the {@link Giveaway} instance with.",
        "optional": true,
        "type": [
         [
@@ -1605,19 +1811,19 @@
       "description": "Array of mentions of users that were picked as the winners."
      },
      "meta": {
-      "line": 931,
+      "line": 1155,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
      "name": "_shuffleArray",
-     "description": "Shuffles an array and returns it.",
+     "description": "Shuffles an array and returns it.\n\nType parameters:\n\n- `T` - The type of array to shuffle.",
      "access": "private",
      "params": [
       {
        "name": "arrayToShuffle",
-       "description": "Thr array to shuffle.",
+       "description": "The array to shuffle.",
        "type": [
         [
          [
@@ -1648,13 +1854,13 @@
       "description": "Shuffled array."
      },
      "meta": {
-      "line": 970,
+      "line": 1194,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     },
     {
-     "name": "_getFromDatabase",
+     "name": "_getFromCache",
      "description": "Gets the giveaway data and its index in guild giveaways array from database.",
      "access": "private",
      "params": [
@@ -1664,30 +1870,29 @@
        "type": [
         [
          [
-          "string"
+          "DiscordID",
+          "<"
+         ],
+         [
+          "string",
+          ">"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
         [
-         "Promise",
-         "<"
-        ],
-        [
-         "IDatabaseGiveaway",
-         ">"
+         "IDatabaseArrayGiveaway"
         ]
        ]
       ],
       "description": "Database giveaway object."
      },
      "meta": {
-      "line": 1004,
+      "line": 1236,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1720,7 +1925,7 @@
       "description": "Converted time string into seconds."
      },
      "meta": {
-      "line": 1040,
+      "line": 1272,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
@@ -1739,28 +1944,205 @@
       "description": "Plain object representation of {@link Giveaway} instance."
      },
      "meta": {
-      "line": 1057,
+      "line": 1289,
       "file": "Giveaway.ts",
       "path": "src/lib"
      }
     }
    ],
    "meta": {
-    "line": 18,
+    "line": 21,
     "file": "Giveaway.ts",
     "path": "src/lib"
    }
   },
   {
+   "name": "CacheManager",
+   "description": "Cache manager class.\n\nType parameters:\n\n- `K` - The cache map key type.\n- `V` - The cache map value type.",
+   "construct": {
+    "name": "CacheManager",
+    "description": "Cache manager constructor."
+   },
+   "props": [
+    {
+     "name": "_cache",
+     "description": "Database cache.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "Map",
+        "<"
+       ],
+       [
+        "K",
+        ", "
+       ],
+       [
+        "V",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 28,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "methods": [
+    {
+     "name": "getCacheObject",
+     "description": "Gets the cache map as an object.\n\nType parameters:\n\n- `V` - The type of cache object to return.",
+     "returns": {
+      "types": [
+       [
+        [
+         "any"
+        ]
+       ]
+      ],
+      "description": "Object representation of the cache map."
+     },
+     "meta": {
+      "line": 36,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "get",
+     "description": "Parses the key and fetches the value from cache map.\n\nType parameters:\n\n- `V` - The type of data being returned.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in cache map.",
+       "type": [
+        [
+         [
+          "K"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "The data from cache map."
+     },
+     "meta": {
+      "line": 56,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "set",
+     "description": "Parses the key and sets the value in cache map.\n\nType parameters:\n\n- `TValue` - The type of data being set.\n- `R` - The type of data being returned.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in cache map.",
+       "type": [
+        [
+         [
+          "K"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "R"
+        ]
+       ]
+      ],
+      "description": "The data from cache map."
+     },
+     "meta": {
+      "line": 85,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "delete",
+     "description": "Parses the key and deletes it from cache map.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in cache map.",
+       "type": [
+        [
+         [
+          "K"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if deleted successfully."
+     },
+     "meta": {
+      "line": 120,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "clear",
+     "description": "Clears the cache.",
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "`true` if cleared successfully."
+     },
+     "meta": {
+      "line": 146,
+      "file": "CacheManager.ts",
+      "path": "src/lib/managers"
+     }
+    }
+   ],
+   "meta": {
+    "line": 3,
+    "file": "CacheManager.ts",
+    "path": "src/lib/managers"
+   }
+  },
+  {
    "name": "DatabaseManager",
-   "description": "Database manager class.",
+   "description": "Database manager class.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will determine\nwhich connection configuration should be used.\n\n- `TKey` ({@link string}) - The type of database key that will be used.\n- `TValue` ({@link any}) - The type of database values that will be used.",
    "construct": {
     "name": "DatabaseManager",
     "description": "Database manager constructor.",
     "params": [
      {
       "name": "giveaways",
-      "description": "Giveaways instance.",
+      "description": "{@link Giveaways} instance.",
       "type": [
        [
         [
@@ -1778,8 +2160,51 @@
    },
    "props": [
     {
+     "name": "_cache",
+     "description": "Database cache.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "CacheManager",
+        "<"
+       ],
+       [
+        "TKey",
+        ", "
+       ],
+       [
+        "IDatabaseGuild",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 74,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "_logger",
+     "description": "Giveaways logger.",
+     "access": "private",
+     "type": [
+      [
+       [
+        "Logger"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 81,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
      "name": "giveaways",
-     "description": "Giveaways instance.",
+     "description": "{@link Giveaways} instance.",
      "type": [
       [
        [
@@ -1793,7 +2218,7 @@
       ]
      ],
      "meta": {
-      "line": 45,
+      "line": 88,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -1808,13 +2233,21 @@
         "<"
        ],
        [
-        "DatabaseType",
+        "TDatabaseType",
+        ", "
+       ],
+       [
+        "TKey",
+        ", "
+       ],
+       [
+        "TValue",
         ">"
        ]
       ]
      ],
      "meta": {
-      "line": 51,
+      "line": 94,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -1830,7 +2263,7 @@
       ]
      ],
      "meta": {
-      "line": 57,
+      "line": 100,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -1838,6 +2271,7 @@
     {
      "name": "jsonParser",
      "description": "JSON parser instance.",
+     "nullable": true,
      "type": [
       [
        [
@@ -1846,7 +2280,7 @@
       ]
      ],
      "meta": {
-      "line": 65,
+      "line": 106,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -1854,22 +2288,101 @@
    ],
    "methods": [
     {
+     "name": "_init",
+     "description": "Initializes the database manager.",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 115,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "isJSON",
+     "description": "[TYPE GUARD FUNCTION] - Determines if the databse type is JSON.",
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Whether the database type is JSON."
+     },
+     "meta": {
+      "line": 128,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "isMongoDB",
+     "description": "[TYPE GUARD FUNCTION] - Determines if the databse type is MongoDB.",
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Whether the database type is MongoDB."
+     },
+     "meta": {
+      "line": 136,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "isEnmap",
+     "description": "[TYPE GUARD FUNCTION] - Determines if the databse type is Enmap.",
+     "returns": {
+      "types": [
+       [
+        [
+         "boolean"
+        ]
+       ]
+      ],
+      "description": "Whether the database type is Enmap."
+     },
+     "meta": {
+      "line": 144,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
      "name": "getKeys",
      "description": "Gets the object keys in database root or in object by specified key.",
      "params": [
       {
        "name": "key",
-       "description": "The key in database.",
+       "description": "The key in database. Omitting this argument will get the keys from the root of database.",
+       "optional": true,
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -1886,14 +2399,14 @@
       "description": "Database object keys array."
      },
      "meta": {
-      "line": 73,
+      "line": 152,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "get",
-     "description": "Gets the value from database by specified key.",
+     "description": "Gets the value from the **cache** by specified key.\n\nType parameters:\n\n- `V` - The type of data being returned.",
      "params": [
       {
        "name": "key",
@@ -1901,7 +2414,39 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
+         ]
+        ]
+       ]
+      }
+     ],
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Value from database."
+     },
+     "meta": {
+      "line": 165,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "getFromDatabase",
+     "description": "Gets the value from **database** by specified key.",
+     "params": [
+      {
+       "name": "key",
+       "description": "The key in database.",
+       "type": [
+        [
+         [
+          "TKey"
          ]
         ]
        ]
@@ -1919,14 +2464,14 @@
       "description": "Value from database."
      },
      "meta": {
-      "line": 83,
+      "line": 182,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "fetch",
-     "description": "Gets the value from database by specified key.\n\n- This method is an alias to {@link DatabaseManager.get()} method.",
+     "description": "Gets the value from the **cache** by specified key.\n\n- This method is an alias to {@link DatabaseManager.get()} method.\n\nType parameters:\n\n- `V` - The type of data being returned.",
      "params": [
       {
        "name": "key",
@@ -1934,13 +2479,12 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -1952,7 +2496,7 @@
       "description": "Value from database."
      },
      "meta": {
-      "line": 112,
+      "line": 207,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -1967,13 +2511,12 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -1985,7 +2528,7 @@
       "description": "Boolean value that determines if specified key exists in database."
      },
      "meta": {
-      "line": 124,
+      "line": 225,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -2000,13 +2543,12 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
       }
      ],
-     "async": true,
      "returns": {
       "types": [
        [
@@ -2018,14 +2560,14 @@
       "description": "Boolean value that determines if specified key exists in database."
      },
      "meta": {
-      "line": 134,
+      "line": 235,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "set",
-     "description": "Sets data in database.",
+     "description": "Sets data in database.\n\nType parameters:\n\n- `V` - The type of data being set.\n- `R` - The type of data being returned.",
      "params": [
       {
        "name": "key",
@@ -2033,7 +2575,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2055,21 +2597,26 @@
       "types": [
        [
         [
-         "boolean"
+         "Promise",
+         "<"
+        ],
+        [
+         "R",
+         ">"
         ]
        ]
       ],
-      "description": "`true` if set successfully, `false` otherwise."
+      "description": "The data from the database."
      },
      "meta": {
-      "line": 145,
+      "line": 247,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "clear",
-     "description": "Clears the whole database.",
+     "description": "Clears the database.",
      "async": true,
      "returns": {
       "types": [
@@ -2084,17 +2631,17 @@
         ]
        ]
       ],
-      "description": "`true` if set successfully, `false` otherwise."
+      "description": "`true` if cleared successfully, `false` otherwise."
      },
      "meta": {
-      "line": 177,
+      "line": 286,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "deleteAll",
-     "description": "Clears the whole database.\n\n- This method is an alias to {@link DatabaseManager.clear()} method.",
+     "description": "Clears the database.\n\n- This method is an alias to {@link DatabaseManager.clear()} method.",
      "async": true,
      "returns": {
       "types": [
@@ -2112,7 +2659,7 @@
       "description": "`true` if set successfully, `false` otherwise."
      },
      "meta": {
-      "line": 205,
+      "line": 311,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -2127,7 +2674,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2149,14 +2696,19 @@
       "types": [
        [
         [
-         "boolean"
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
         ]
        ]
       ],
       "description": "`true` if added successfully, `false` otherwise."
      },
      "meta": {
-      "line": 215,
+      "line": 321,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -2171,7 +2723,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2193,14 +2745,19 @@
       "types": [
        [
         [
-         "boolean"
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
         ]
        ]
       ],
       "description": "`true` if subtracted successfully, `false` otherwise."
      },
      "meta": {
-      "line": 271,
+      "line": 379,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -2215,7 +2772,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2226,21 +2783,26 @@
       "types": [
        [
         [
-         "boolean"
+         "Promise",
+         "<"
+        ],
+        [
+         "boolean",
+         ">"
         ]
        ]
       ],
       "description": "`true` if deleted successfully, `false` otherwise."
      },
      "meta": {
-      "line": 327,
+      "line": 437,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "push",
-     "description": "Pushes a value into specified array in database.",
+     "description": "Pushes a value into specified array in database.\n\nType parameters:\n\n- `V` - The type of data being pushed.",
      "params": [
       {
        "name": "key",
@@ -2248,7 +2810,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2282,14 +2844,14 @@
       "description": "`true` if pushed successfully, `false` otherwise."
      },
      "meta": {
-      "line": 357,
+      "line": 463,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "pull",
-     "description": "Changes the specified element's value in a specified array in the database.",
+     "description": "Changes the specified element's value in a specified array in the database.\n\nType parameters:\n\n- `V` - The type of data being pulled.",
      "params": [
       {
        "name": "key",
@@ -2297,7 +2859,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2342,7 +2904,7 @@
       "description": "`true` if pulled successfully, `false` otherwise."
      },
      "meta": {
-      "line": 420,
+      "line": 535,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
@@ -2357,7 +2919,7 @@
        "type": [
         [
          [
-          "string"
+          "TKey"
          ]
         ]
        ]
@@ -2391,14 +2953,34 @@
       "description": "`true` if popped successfully, `false` otherwise."
      },
      "meta": {
-      "line": 484,
+      "line": 609,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     },
     {
      "name": "all",
-     "description": "Gets the whole database object.",
+     "description": "Gets all the data in database.\n\nType parameters:\n\n- `V` - The type of database object to return.",
+     "returns": {
+      "types": [
+       [
+        [
+         "V"
+        ]
+       ]
+      ],
+      "description": "Database object."
+     },
+     "meta": {
+      "line": 675,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "_allFromDatabase",
+     "description": "Gets the whole database object by making a direct database request.\n\nType parameters:\n\n- `V` - The type of database object to return.",
+     "access": "private",
      "async": true,
      "returns": {
       "types": [
@@ -2416,14 +2998,36 @@
       "description": "Database object."
      },
      "meta": {
-      "line": 546,
+      "line": 690,
+      "file": "DatabaseManager.ts",
+      "path": "src/lib/managers"
+     }
+    },
+    {
+     "name": "_loadCache",
+     "description": "Loads the database into cache.",
+     "async": true,
+     "returns": [
+      [
+       [
+        "Promise",
+        "<"
+       ],
+       [
+        "void",
+        ">"
+       ]
+      ]
+     ],
+     "meta": {
+      "line": 741,
       "file": "DatabaseManager.ts",
       "path": "src/lib/managers"
      }
     }
    ],
    "meta": {
-    "line": 7,
+    "line": 12,
     "file": "DatabaseManager.ts",
     "path": "src/lib/managers"
    }
@@ -2536,7 +3140,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -2547,7 +3156,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -2558,7 +3172,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -2580,7 +3199,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -2625,7 +3249,7 @@
     }
    ],
    "meta": {
-    "line": 3,
+    "line": 8,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2676,7 +3300,7 @@
     }
    ],
    "meta": {
-    "line": 124,
+    "line": 135,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2715,7 +3339,7 @@
      ]
     },
     {
-     "name": "noWinners",
+     "name": "noWinnersNewGiveawayMessage",
      "description": "The options for the embed when there are no winners for the giveaway.",
      "type": [
       [
@@ -2738,7 +3362,7 @@
     }
    ],
    "meta": {
-    "line": 132,
+    "line": 143,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2778,7 +3402,7 @@
     }
    ],
    "meta": {
-    "line": 143,
+    "line": 156,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2851,7 +3475,7 @@
     }
    ],
    "meta": {
-    "line": 164,
+    "line": 177,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -2890,7 +3514,7 @@
      ]
     },
     {
-     "name": "noWinners",
+     "name": "noWinnersNewGiveawayMessage",
      "description": "The message that will be set to the original giveaway message if there are no winners in the giveaway.",
      "type": [
       [
@@ -2913,7 +3537,7 @@
     }
    ],
    "meta": {
-    "line": 899,
+    "line": 968,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -2963,7 +3587,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 915,
+    "line": 984,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3014,7 +3638,7 @@
     }
    ],
    "meta": {
-    "line": 923,
+    "line": 992,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3064,7 +3688,7 @@
     "description": "Giveaway message objects."
    },
    "meta": {
-    "line": 937,
+    "line": 1006,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3115,7 +3739,7 @@
     }
    ],
    "meta": {
-    "line": 215,
+    "line": 222,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -3203,7 +3827,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3214,7 +3843,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3225,7 +3859,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3247,7 +3886,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3281,7 +3925,7 @@
     }
    ],
    "meta": {
-    "line": 227,
+    "line": 234,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -3310,7 +3954,7 @@
     ]
    ],
    "meta": {
-    "line": 249,
+    "line": 256,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -3326,7 +3970,7 @@
     ]
    ],
    "meta": {
-    "line": 255,
+    "line": 262,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
@@ -3366,14 +4010,14 @@
     }
    ],
    "meta": {
-    "line": 265,
+    "line": 274,
     "file": "giveaway.interface.ts",
     "path": "src/lib"
    }
   },
   {
    "name": "IGiveawaysConfiguration<TDatabaseType>",
-   "description": "Full {@link Giveaways} class configuration object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
+   "description": "Full {@link Giveaways} class configuration object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will\ndetermine which connection configuration should be used.",
    "type": [
     [
      [
@@ -3472,7 +4116,7 @@
     }
    ],
    "meta": {
-    "line": 997,
+    "line": 1068,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3556,7 +4200,7 @@
     }
    ],
    "meta": {
-    "line": 1020,
+    "line": 1092,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3602,7 +4246,7 @@
     }
    ],
    "meta": {
-    "line": 1033,
+    "line": 1105,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3692,7 +4336,7 @@
     }
    ],
    "meta": {
-    "line": 1040,
+    "line": 1112,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3724,7 +4368,7 @@
     },
     {
      "name": "checkDatabase",
-     "description": "Checks the if there are errors in database file. Default: true.",
+     "description": "Enables the error checking for database file. Default: true",
      "optional": true,
      "default": true,
      "nullable": true,
@@ -3752,7 +4396,7 @@
     }
    ],
    "meta": {
-    "line": 1159,
+    "line": 1231,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3807,7 +4451,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3818,7 +4467,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3829,14 +4483,19 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
     }
    ],
    "meta": {
-    "line": 1060,
+    "line": 1132,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -3891,7 +4550,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3902,7 +4566,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3913,7 +4582,12 @@
      "type": [
       [
        [
-        "string"
+        "DiscordID",
+        "<"
+       ],
+       [
+        "string",
+        ">"
        ]
       ]
      ]
@@ -3944,7 +4618,7 @@
     }
    ],
    "meta": {
-    "line": 1071,
+    "line": 1143,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4001,7 +4675,7 @@
     }
    ],
    "meta": {
-    "line": 1084,
+    "line": 1156,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4054,7 +4728,7 @@
     }
    ],
    "meta": {
-    "line": 1092,
+    "line": 1164,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4104,7 +4778,7 @@
     "description": "- An object containing the defined embed strings."
    },
    "meta": {
-    "line": 1102,
+    "line": 1174,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4146,7 +4820,7 @@
     }
    ],
    "meta": {
-    "line": 1110,
+    "line": 1182,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4197,7 +4871,7 @@
     }
    ],
    "meta": {
-    "line": 1117,
+    "line": 1189,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4254,7 +4928,7 @@
     }
    ],
    "meta": {
-    "line": 1131,
+    "line": 1203,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4415,7 +5089,7 @@
     }
    ],
    "meta": {
-    "line": 1139,
+    "line": 1211,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4460,18 +5134,18 @@
     ]
    ],
    "meta": {
-    "line": 1167,
+    "line": 1239,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "Database<TDatabaseType>",
-   "description": "External database object based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine which connection configuration should be used.",
+   "description": "External database object based on the used database type.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - Database type that will determine\nwhich connection configuration should be used.\n\n- `TKey` ({@link string}) - The type of database key that will be used.\n- `TValue` ({@link any}) - The type of database values that will be used.",
    "see": [
     "null - JSON database management object - `null`\nis because it's not an external database - JSON is being parsed by the module itself.",
     "Enmap<string, IDatabaseStructure> - Enmap database.",
-    "Mongo<{IDatabaseStructure> - MongoDB database."
+    "Mongo<IDatabaseStructure> - MongoDB database."
    ],
    "type": [
     [
@@ -4505,7 +5179,7 @@
     ]
    ],
    "meta": {
-    "line": 1189,
+    "line": 1261,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4550,13 +5224,13 @@
     }
    ],
    "meta": {
-    "line": 1212,
+    "line": 1290,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "IDatabaseGiveaway",
+   "name": "IDatabaseArrayGiveaway",
    "description": "The giveaway data that stored in database,",
    "type": [
     [
@@ -4590,7 +5264,7 @@
     }
    ],
    "meta": {
-    "line": 1219,
+    "line": 1297,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4635,7 +5309,7 @@
     },
     {
      "name": "giveawayStart",
-     "description": "Emits when the giveaway is started.",
+     "description": "Emits when a giveaway is started.",
      "type": [
       [
        [
@@ -4651,7 +5325,7 @@
     },
     {
      "name": "giveawayRestart",
-     "description": "Emits when the giveaway winners are rerolled.",
+     "description": "Emits when a giveaway is rerolled.",
      "type": [
       [
        [
@@ -4667,7 +5341,7 @@
     },
     {
      "name": "giveawayEnd",
-     "description": "Emits when the giveaway winners are rerolled.",
+     "description": "Emits when a giveaway is rerolled.",
      "type": [
       [
        [
@@ -4683,7 +5357,7 @@
     },
     {
      "name": "giveawayReroll",
-     "description": "Emits when the giveaway winners are rerolled.",
+     "description": "Emits when a giveaway is rerolled.",
      "type": [
       [
        [
@@ -4694,7 +5368,7 @@
     }
    ],
    "meta": {
-    "line": 1227,
+    "line": 1305,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -4739,14 +5413,14 @@
     }
    ],
    "meta": {
-    "line": 1245,
+    "line": 1323,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
    "name": "IGiveawayTimeChangeEvent",
-   "description": "Giveaway time change event object.\n\nType parameters:\n\n- TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.",
+   "description": "Giveaway time change event object.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.",
    "type": [
     [
      [
@@ -4784,73 +5458,7 @@
     }
    ],
    "meta": {
-    "line": 1259,
-    "file": "Giveaways.ts",
-    "path": "src"
-   }
-  },
-  {
-   "name": "IGiveawayEditEvent",
-   "description": "Giveaway edit event object.",
-   "type": [
-    [
-     [
-      "object"
-     ]
-    ]
-   ],
-   "props": [
-    {
-     "name": "key",
-     "description": "The object key of a giveaway that was changed.",
-     "type": [
-      [
-       [
-        "string"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "oldValue",
-     "description": "Old value of the changed {@link Giveaway} property.",
-     "type": [
-      [
-       [
-        "any"
-       ]
-      ]
-     ]
-    },
-    {
-     "name": "newValue",
-     "description": "New value of the changed {@link Giveaway} property.",
-     "type": [
-      [
-       [
-        "any"
-       ]
-      ]
-     ]
-    }
-   ],
-   "returns": {
-    "types": [
-     [
-      [
-       "Giveaway",
-       "<"
-      ],
-      [
-       "DatabaseType",
-       ">"
-      ]
-     ]
-    ],
-    "description": "{@link Giveaway} instance that was affected."
-   },
-   "meta": {
-    "line": 1273,
+    "line": 1337,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5066,7 +5674,7 @@
     }
    ],
    "meta": {
-    "line": 1283,
+    "line": 1351,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5117,7 +5725,7 @@
     }
    ],
    "meta": {
-    "line": 1306,
+    "line": 1374,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5138,13 +5746,13 @@
     ]
    ],
    "meta": {
-    "line": 1318,
+    "line": 1386,
     "file": "Giveaways.ts",
     "path": "src"
    }
   },
   {
-   "name": "Optional<T, K>",
+   "name": "OptionalProps<T, K>",
    "description": "Makes the specified properties in `K` from the object in `T` optional.\n\nType parameters:\n\n- `T` ({@link object}) - The object to get the properties from.\n- `K` (keyof T) - The properties to make optional.",
    "type": [
     [
@@ -5154,7 +5762,23 @@
     ]
    ],
    "meta": {
-    "line": 1335,
+    "line": 1402,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "RequiredProps",
+   "description": "Makes the specified properties in `K` from the object in `T` required.\n\nType parameters:\n\n- `T` ({@link object}) - The object to get the properties from.\n- `K` (keyof T) - The properties to make required.",
+   "type": [
+    [
+     [
+      "object"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1416,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5193,7 +5817,7 @@
     "description": "The boolean value returned by the callback function."
    },
    "meta": {
-    "line": 1349,
+    "line": 1430,
     "file": "Giveaways.ts",
     "path": "src"
    }
@@ -5232,9 +5856,142 @@
     "description": "The value returned by the callback function."
    },
    "meta": {
-    "line": 1363,
+    "line": 1444,
     "file": "Giveaways.ts",
     "path": "src"
+   }
+  },
+  {
+   "name": "Maybe<T>",
+   "description": "A type that represents any value with \"null\" possible to be returned.\n\nType parameters:\n\n- `T` ({@link any}) - The type to attach.",
+   "type": [
+    [
+     [
+      "any"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1461,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "AddPrefix<TWord, TPrefix>",
+   "description": "Adds a prefix at the beginning of a string literal type.\n\nType parameters:\n\n- `TWord` ({@link string}) The string literal type or union type of them to add the prefix to.\n- `TPrefix` ({@link string}) The string literal type of the prefix to use.",
+   "type": [
+    [
+     [
+      "string"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1472,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "PrefixedObject<TWords, TPrefix, Value>",
+   "description": "Constructs an object type with prefixed properties and specified value for each of them.\n\nType parameters:\n\n- `TWords` ({@link string}) The union type of string literals to add the prefix to.\n- `TPrefix` ({@link string}) The string literal type of the prefix to use.\n- `Value` ({@link any}) Any value to assign as value of each property of the constructed object.",
+   "type": [
+    [
+     [
+      "string"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1486,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "Equals<ToCompare, CompareWith>",
+   "description": "Compares the values on type level and returns a boolean value.\n\nType parameters:\n\n- `ToCompare` ({@link any}) - The type to compare.\n- `CompareWith` ({@link any}) - The type to compare with.",
+   "type": [
+    [
+     [
+      "boolean"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1502,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "StringLength<S>",
+   "description": "Returns a length of a string on type level.\n\nType parameters:\n\n- `S` ({@link string}) - The string to check the length of.",
+   "type": [
+    [
+     [
+      "number"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1561,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "ExactLengthString<N, S>",
+   "description": "Conditional type that will return the specified string if it matches the specified length.\n\nType parameters:\n\n- `N` ({@link number}) - The string length to match to.\n- `S` ({@link string}) - The string to check the length of.",
+   "type": [
+    [
+     [
+      "number"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1572,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "DiscordID<ID>",
+   "description": "Conditional type that will return the specified string if it matches any of the possible Discord ID string lengths.\n\nType parameters:\n\n- `S` ({@link string}) - The string to check the length of.",
+   "type": [
+    [
+     [
+      "number"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1586,
+    "file": "Giveaways.ts",
+    "path": "src"
+   }
+  },
+  {
+   "name": "Giveaway<TDatabaseType>",
+   "description": "Considers the specified giveaway 'that may be ended' and that is *not* safe to edit its data.\n\nMarks the following {@link Giveaway} methods as 'possibly undefined' to prevent them from running\nbefore performing the {@link Giveaway.isRunning()} type-guard check:\n\n- {@link Giveaway.end()}\n- {@link Giveaway.edit()}\n- {@link Giveaway.extend()}\n- {@link Giveaway.reduce()}\n- {@link Giveaway.setPrize()}\n- {@link Giveaway.setWinnersCount()}\n- {@link Giveaway.setTime()}\n- {@link Giveaway.setHostMemberID()}\n\nType parameters:\n\n- `TGiveaway` ({@link Giveaway<any>} | {@link SafeGiveaway<Giveaway<any>>}) - The giveaway to be considered as unsafe.",
+   "type": [
+    [
+     [
+      "UnsafeGiveaway",
+      "<"
+     ],
+     [
+      "TGiveaway",
+      ">"
+     ]
+    ]
+   ],
+   "meta": {
+    "line": 1325,
+    "file": "Giveaway.ts",
+    "path": "src/lib"
    }
   },
   {
