@@ -18,7 +18,7 @@ fi
 sed -i 's/"name": "Giveaway"/"name": "Giveaway<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "Giveaways"/"name": "Giveaways<TDatabaseType>"/g' "./docs/generated/${package_version}.json"
 
-sed -i 's/"name": "DatabaseManager<TDatabaseType,"/"name": "DatabaseManager<TDatabaseType, TKey, TValue>"/g' "./docs/generated/${package_version}.json"
+sed -i 's/"name": "DatabaseManager"/"name": "DatabaseManager<TDatabaseType, TKey, TValue>"/g' "./docs/generated/${package_version}.json"
 sed -i 's/"name": "CacheManager"/"name": "CacheManager<K, V>"/g' "./docs/generated/${package_version}.json"
 
 # add missing generics in types &  with 2+ type arguments
