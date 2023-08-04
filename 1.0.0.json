@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1691154130885
+  "date": 1691154240946
  },
  "custom": {
   "general": {
@@ -2134,10 +2134,10 @@
    }
   },
   {
-   "name": "DatabaseManager",
+   "name": "DatabaseManager<TDatabaseType, TKey, TValue>",
    "description": "Database manager class.\n\nType parameters:\n\n- `TDatabaseType` ({@link DatabaseType}) - The database type that will determine\nwhich connection configuration should be used.\n\n- `TKey` ({@link string}) - The type of database key that will be used.\n- `TValue` ({@link any}) - The type of database values that will be used.",
    "construct": {
-    "name": "DatabaseManager",
+    "name": "DatabaseManager<TDatabaseType, TKey, TValue>",
     "description": "Database manager constructor.",
     "params": [
      {
