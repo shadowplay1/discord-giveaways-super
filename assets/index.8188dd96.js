@@ -1386,7 +1386,7 @@ const vs = [{
               , n = s(W`
 const { Giveaways, DatabaseType } = require('discord-giveaways-super')
 
-let giveaways = new Giveaways(this, {
+const giveaways = new Giveaways(client, {
 	database: DatabaseType.JSON, // or any other database that is provided by module
 
 	connection: {
