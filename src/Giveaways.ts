@@ -169,7 +169,7 @@ export class Giveaways<
 
         /**
          * Database Manager.
-         * @type {DatabaseManager<TDatabaseType, `${string}.giveaways`>}
+         * @type {DatabaseManager<TDatabaseType, TDatabaseKey, TDatabaseValue>}
          */
         this.database = null as any // specifying 'null' to just initialize the property; for docs purposes
 
@@ -845,7 +845,7 @@ export class Giveaways<
     /**
      * Gets all the giveaways from the specified guild in database.
      * @param {DiscordID<string>} guildID Guild ID to get the giveaways from.
-     * @returns {UnsafeGiveaway<Giveaway<TDatabaseType>>[]} Giveaways array from the specified guild in database.
+     * @returns {Array<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -872,7 +872,7 @@ export class Giveaways<
 
     /**
      * Gets all the giveaways from all the guilds in database.
-     * @returns {Giveaway<TDatabaseType>[]} Giveaways array from all the guilds in database.
+     * @returns {Array<Giveaway<TDatabaseType>>} Giveaways array from all the guilds in database.
      */
     public getAll(): Giveaway<TDatabaseType>[] {
         const giveaways: IGiveaway[] = []
