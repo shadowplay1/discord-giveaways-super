@@ -16,7 +16,7 @@
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://des-docs.js.org/#/docs/main/1.5.2general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

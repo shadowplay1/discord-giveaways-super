@@ -10,6 +10,9 @@
     - name: Configuring
       path: configuring.md
 
+	- name: Embed Strings
+      path: embed-strings.md
+
     - name: FAQ
       path: faq.md
 

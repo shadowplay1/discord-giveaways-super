@@ -80,7 +80,7 @@ client.on('messageCreate', async message => {
             return
         }
 
-        if (channel?.type !== ChannelType.GuildText) {
+        if (channel.type !== ChannelType.GuildText) {
             message.reply(':x: | Giveaway channel must be a **text** channel.')
             return
         }
@@ -114,7 +114,7 @@ client.on('messageCreate', async message => {
             time,
             winnersCount,
 
-            // defining all the messages for the giveaway
+            // defining *all* the messages for the giveaway
             // "EmbedBuilder" support will be added later
 
             // please note that all the properties
@@ -127,12 +127,12 @@ client.on('messageCreate', async message => {
             // placeholder values
             defineEmbedStrings(giveaway, host) {
                 return {
-                    // this ephemeral reply will be sent when they join the giveaway
+                    // this ephemeral reply will be sent when they join the giveaway (embeds may also be used here)
                     joinGiveawayMessage: {
                         messageContent: ':white_check_mark: | You have joined the giveaway!'
                     },
 
-                    // this ephemeral reply will be sent when they leave the giveaway
+                    // this ephemeral reply will be sent when they leave the giveaway (embeds may also be used here)
                     leaveGiveawayMessage: {
                         messageContent: ':exclamation: | You have left the giveaway!'
                     },
@@ -178,7 +178,7 @@ client.on('messageCreate', async message => {
                                 // using "winnersCount" in "Winners" string in case if the actual number of winners
                                 // will not match the giveaway's number of winners
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (**${winnersCount}**)`}: ${mentionsString} `,
+                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
 
                                 footer: `Ended at:`,
                                 footerIcon: client.user?.displayAvatarURL({ size: 2048 }),
@@ -200,7 +200,7 @@ client.on('messageCreate', async message => {
                             },
 
                             // the new separated message that the giveaway message in giveaway channel
-                            // will be changed to after the giveaway is finished with no winners
+                            // will be changed to after the giveaway is finished with no winners (embeds may also be used here)
                             noWinnersEndMessage: {
                                 messageContent: `Unfortunetly, there are no winners in the **${giveaway.prize}** giveaway.`
                             }
@@ -212,7 +212,7 @@ client.on('messageCreate', async message => {
                     reroll(mentionsString, winnersCount) {
                         return {
                             // this ephemeral reply will be sent when they're not a host
-                            // of the giveaway and trying to reroll the winners
+                            // of the giveaway and trying to reroll the winners (embeds may also be used here)
                             onlyHostCanReroll: {
                                 messageContent: ':x: | Only host of this giveaway can reroll the winners.'
                             },
@@ -237,13 +237,13 @@ client.on('messageCreate', async message => {
                             },
 
                             // this message will be sent separately in the giveaway channel after the reroll
-                            // used to mention the new giveaway winners
+                            // used to mention the new giveaway winners (embeds may also be used here)
                             rerollMessage: {
                                 messageContent: `${giveaway.winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
                                     `${mentionsString}, congratulations!`
                             },
 
-                            // this ephemeral reply will be sent after the successful reroll
+                            // this ephemeral reply will be sent after the successful reroll (embeds may also be used here)
                             successMessage: {
                                 messageContent: ':white_check_mark: | Successfully rerolled the winners!'
                             }
@@ -295,8 +295,8 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
         )
 
         // Send an error message if the giveaway was not found
@@ -329,8 +329,8 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
         )
 
         // Send an error message if the giveaway was not found
@@ -369,8 +369,9 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -414,8 +415,9 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -448,8 +450,9 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -479,8 +482,9 @@ client.on('messageCreate', async message => {
         const prize = args.slice(1).join(' ')
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -516,8 +520,9 @@ client.on('messageCreate', async message => {
         const winners = args.slice(2).join(' ')
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -553,8 +558,9 @@ client.on('messageCreate', async message => {
         const hostMemberID = args[2]
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {
@@ -598,8 +604,9 @@ client.on('messageCreate', async message => {
         }
 
         // Find the giveaway by its ID or its message ID
-        const giveaway = await giveaways.find(
-            giveaway => giveaway.id == parseInt(giveawayOrMessageID) || giveaway.messageID == giveawayOrMessageID)
+        const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(
+            giveaway => giveaway.messageID == giveawayOrMessageID
+        )
 
         // Send an error message if the giveaway was not found
         if (!giveaway) {

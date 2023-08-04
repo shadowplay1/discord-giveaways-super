@@ -338,7 +338,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `extend` will be marked as "possibly undefined"
@@ -403,7 +403,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `extend` will be marked as "possibly undefined"
@@ -482,7 +482,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `reduce` will be marked as "possibly undefined"
@@ -559,7 +559,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `end` will be marked as "possibly undefined"
@@ -762,7 +762,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `setPrize` will be marked as "possibly undefined"
@@ -809,7 +809,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `setWinnersCount` will be marked as "possibly undefined"
@@ -867,7 +867,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `setHostMemberID` will be marked as "possibly undefined"
@@ -916,7 +916,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `setTime` will be marked as "possibly undefined"
@@ -971,7 +971,7 @@ export class Giveaway<
      *
      * @example
      *
-     * const giveaway = giveaways.find(giveaway => giveaway.id == giveawayID)
+     * const giveaway = giveaways.get(parseInt(giveawayOrMessageID)) || giveaways.find(giveaway => giveaway.id == giveawayID)
      *
      * // we don't know if the giveaway is running,
      * // so the method is unsafe to run - `edit` will be marked as "possibly undefined"

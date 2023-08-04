@@ -14,6 +14,7 @@
 <li><b>Flexible and Customizable ⚙️</b></li>
 <li><b>Giveaway <u>start</u>, <u>edit</u>, <u>delete</u>, <u>reroll</u>, <u>extension</u> and <i>many more</i> 🚀</b></li>
 <li><b>Handles Crashes/Restarts 🔄</b></li>
+<li><b>Easy to Understand 👍</b></li>
 <li><b>Beginner Friendly 😄</b></li>
 </ul>
 
@@ -28,7 +29,7 @@ $ pnpm add discord-giveaways-super
 ## [[Module Documentation]](https://dgs-docs.js.org)
 
 ## 🛠️ | Examples
-[Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
+**Full bot examples** in both **JavaScript** and **TypeScript** are available [here](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples).
 
 ## 🤔 | Help
 <b>If you don't understand something in the documentation or you are experiencing problems, feel free to join our <a href = "https://discord.gg/4pWKq8vUnb">Support Server</a>.</b>
