@@ -2,7 +2,7 @@
  "meta": {
   "generator": "0.11.1",
   "format": 22,
-  "date": 1691153902421
+  "date": 1691154130885
  },
  "custom": {
   "general": {
@@ -1957,10 +1957,10 @@
    }
   },
   {
-   "name": "CacheManager",
+   "name": "CacheManager<K, V>",
    "description": "Cache manager class.\n\nType parameters:\n\n- `K` - The cache map key type.\n- `V` - The cache map value type.",
    "construct": {
-    "name": "CacheManager",
+    "name": "CacheManager<K, V>",
     "description": "Cache manager constructor."
    },
    "props": [
