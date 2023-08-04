@@ -12,23 +12,24 @@ import { DatabaseType } from '../../../types/databaseType.enum'
  *
  * @callback checkConfiguration
  *
- * @template {DatabaseType} TDatabaseType
- * The database type that will determine which connection configuration should be used.
- *
  * @param {IGiveawaysConfiguration} configurationToCheck The {@link Giveaways} configuration object to check.
  * @param {Partial<IGiveawaysConfigCheckerConfiguration>} [checkerConfiguration] Config checker configuration object.
  *
  * @returns {Required<IGiveawaysConfiguration<TDatabaseType>>} Completed, filled and fixed {@link Giveaways} configuration.
+ *
+ * @template TDatabaseType
+ * The database type that will determine which connection configuration should be used.
  */
 export const checkConfiguration = <TDatabaseType extends DatabaseType>(
-    configurationToCheck: { [key: string]: any },
+    configurationToCheck: IGiveawaysConfiguration<TDatabaseType>,
     checkerConfiguration: Partial<IGiveawaysConfigCheckerConfiguration> = {}
 ): Required<IGiveawaysConfiguration<TDatabaseType>> => {
     const problems: string[] = []
+    const defaultConfiguration: Record<string, any> = defaultConfig
 
-    const output: { [key: string]: any } = {
+    const output: Record<string, any> = {
         ...configurationToCheck,
-        ...defaultConfig
+        ...defaultConfiguration
     }
 
     if (!checkerConfiguration.ignoreUnspecifiedOptions) {
@@ -44,8 +45,10 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     }
 
     for (const key of Object.keys(configurationToCheck)) {
-        const defaultValue = (defaultConfig as any)[key]
-        const value = configurationToCheck[key]
+        const config = configurationToCheck as Record<string, any>
+
+        const defaultValue = defaultConfiguration[key]
+        const value = config[key]
 
         if (key !== 'database' && key !== 'connection') {
             if (value == undefined) {
@@ -69,8 +72,8 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
     }
 
     const checkNestedOptionsObjects = (
-        config: { [key: string]: any },
-        defaultConfig: { [key: string]: any },
+        config: Record<string, any>,
+        defaultConfig: Record<string, any>,
         prefix: string
     ): void => {
         for (const key in defaultConfig) {

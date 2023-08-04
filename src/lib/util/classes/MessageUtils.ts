@@ -22,17 +22,27 @@ export class MessageUtils {
     private _client: Client<boolean>
 
     /**
-     * Giveaways instance.
-     * @type {Giveaways<any>}
+     * {@link Giveaways} instance.
+     * @type {Giveaways<DatabaseType>}
      */
-    private _giveaways: Giveaways<any>
+    private _giveaways: Giveaways<any, any, any>
 
     /**
      * Message utils class constructor.
-     * @param {Giveaways<any>} giveaways Giveaways instance.
+     * @param {Giveaways<DatabaseType>} giveaways {@link Giveaways} instance.
      */
-    public constructor(giveaways: Giveaways<any>) {
+    public constructor(giveaways: Giveaways<any, any, any>) {
+
+        /**
+         * Discord Client.
+         * @type {Client<boolean>}
+         */
         this._giveaways = giveaways
+
+        /**
+         * {@link Giveaways} instance.
+         * @type {Giveaways<DatabaseType>}
+         */
         this._client = giveaways.client
     }
 
@@ -53,7 +63,7 @@ export class MessageUtils {
             : { ...giveaway.messageProps?.embeds?.start || {} } as IGiveawayEmbedOptions
 
         for (const stringKey in embedStrings) {
-            const strings = embedStrings as { [key: string]: string }
+            const strings = embedStrings as Record<string, string>
             strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway, winners)
         }
 
@@ -66,24 +76,28 @@ export class MessageUtils {
 
         const embed = new EmbedBuilder()
             .setAuthor({
+                // discord.js is only accepting "null" for empty value
+                // even though here it's missing in library's typings :/
                 name: title || null as any,
                 iconURL: titleIcon,
                 url: titleURL
             })
             .setDescription(
-                description || `**${giveaway.prize}** giveaway has started with **${giveaway.entries}** entries! ` +
+                description || `**${giveaway.prize}** giveaway has started with **${giveaway.entriesCount}** entries! ` +
                 'Press the button below to join!'
             )
             .setColor(color || '#d694ff')
-            .setImage(imageURL || null as any)
-            .setThumbnail(thumbnailURL || null as any)
+            .setImage(imageURL || null)
+            .setThumbnail(thumbnailURL || null)
             .setFooter({
+                // discord.js is only accepting "null" for empty value
+                // even though here it's missing in library's typings :/
                 text: footer || null as any,
                 iconURL: footerIcon
             })
 
         if (timestamp) {
-            embed.setTimestamp(timestamp)
+            embed.setTimestamp(new Date(parseInt(timestamp.toString())))
         }
 
         return embed
@@ -101,7 +115,7 @@ export class MessageUtils {
                     customId: 'joinGiveawayButton',
                     label: joinGiveawayButton?.text || 'Join the giveaway',
                     emoji: joinGiveawayButton?.emoji || '🎉',
-                    style: (joinGiveawayButton?.style as any) || ButtonStyle.Primary
+                    style: joinGiveawayButton?.style || ButtonStyle.Primary
                 })
             )
 
@@ -113,7 +127,7 @@ export class MessageUtils {
      * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
      * @param {ILinkButton} [goToMessageButton] String values object to use in the "go to message" button.
      * @param {string} [giveawayMessageURL] Giveaway message URL to be set in the "go to message" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRow(
         rerollButton: IGiveawayButtonOptions,
@@ -127,7 +141,7 @@ export class MessageUtils {
                 customId: 'rerollButton',
                 label: rerollButton?.text || 'Reroll',
                 emoji: rerollButton?.emoji || '🔁',
-                style: (rerollButton?.style as any) || ButtonStyle.Primary
+                style: rerollButton?.style || ButtonStyle.Primary
             }),
 
             new ButtonBuilder({
@@ -141,7 +155,7 @@ export class MessageUtils {
                 customId: 'rerollButton',
                 label: rerollButton?.text || 'Reroll',
                 emoji: rerollButton?.emoji || '🔁',
-                style: (rerollButton?.style as any) || ButtonStyle.Primary
+                style: rerollButton?.style || ButtonStyle.Primary
             })
         )
 
@@ -151,7 +165,7 @@ export class MessageUtils {
     /**
      * Creates a buttons row based on the specified "reroll" and "go to message" button objects.
      * @param {IGiveawayButtonOptions} rerollButton String values object to use in the "reroll" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayRerollButtonRow(
         rerollButton: IGiveawayButtonOptions,
@@ -162,7 +176,7 @@ export class MessageUtils {
                     customId: 'rerollButton',
                     label: rerollButton?.text || 'Reroll',
                     emoji: rerollButton?.emoji || '🔁',
-                    style: (rerollButton?.style as any) || ButtonStyle.Primary
+                    style: rerollButton?.style || ButtonStyle.Primary
                 })
             )
 
@@ -173,7 +187,7 @@ export class MessageUtils {
      * Creates a buttons row based on the specified "go to message" button objects.
      * @param {ILinkButton} goToMessageButton String values object to use in the "go to message" link button.
      * @param {string} giveawayMessageURL Giveaway message URL to be set in the "go to message" button.
-     * @returns {EmbedBuilder} Generated buttons row.
+     * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildGiveawayFinishedButtonsRowWithoutRerollButton(
         goToMessageButton: ILinkButton,
@@ -236,7 +250,9 @@ export class MessageUtils {
         const embedStrings = giveaway.messageProps?.embeds?.finish
 
         const finishEmbedStrings = customEmbedStrings || embedStrings?.newGiveawayMessage || {}
-        const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish?.noWinners || {} as IGiveawayEmbedOptions
+
+        const noWinnersEmbedStrings = giveaway.messageProps?.embeds?.finish
+            ?.noWinnersNewGiveawayMessage || {} as IGiveawayEmbedOptions
 
         const channel = this._client.channels.cache.get(giveaway.channelID) as TextChannel
 
@@ -281,15 +297,15 @@ export class MessageUtils {
         const finishMessageContent =
             replaceGiveawayKeys(
                 winnersCondition
-                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent
-                    : embedStrings?.noWinnersEndMessage?.messageContent as any,
+                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent as string
+                    : embedStrings?.noWinnersEndMessage?.messageContent as string,
                 giveaway,
                 winners
             )
 
         const finishInputObjectKeys = winnersCondition
-            ? Object.keys(embedStrings?.endMessage || {} as any)
-            : Object.keys(embedStrings?.noWinnersEndMessage || {} as any)
+            ? Object.keys(embedStrings?.endMessage || {})
+            : Object.keys(embedStrings?.noWinnersEndMessage || {})
 
         await message.edit({
             content: giveawayMessageContent,

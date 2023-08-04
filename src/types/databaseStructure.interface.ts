@@ -7,18 +7,25 @@ import { IGiveaway } from '../lib/giveaway.interface'
  * @prop {IGiveaway[]} giveaways Giveaways array property inside the [guildID] object in database.
  */
 export interface IDatabaseStructure {
-    [guildID: string]: {
-        giveaways: IGiveaway[]
-    }
+    [guildID: string]: IDatabaseGuild
+}
+
+/**
+ * An interface containing the structure of the guild object in database.
+ * @typedef {object} IDatabaseGuild
+ * @prop {IGiveaway[]} giveaways Giveaways array property inside the [guildID] object in database.
+ */
+export interface IDatabaseGuild {
+    giveaways: IGiveaway[]
 }
 
 /**
  * The giveaway data that stored in database,
- * @typedef {object} IDatabaseGiveaway
+ * @typedef {object} IDatabaseArrayGiveaway
  * @prop {IGiveaway} giveaway Giveaway object.
  * @prop {number} giveawayIndex Giveaway index in the guild giveaways array.
  */
-export interface IDatabaseGiveaway {
+export interface IDatabaseArrayGiveaway {
     giveaway: IGiveaway
     giveawayIndex: number
 }

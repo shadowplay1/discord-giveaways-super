@@ -18,6 +18,7 @@ export * from './lib/util/functions/checkConfiguration.function'
 export * from './lib/util/functions/checkUpdates.function'
 
 export * from './lib/util/functions/typeOf.function'
+export * from './lib/util/functions/isTimeStringValid.function'
 
 export * from './lib/util/classes/Logger'
 export * from './lib/util/classes/JSONParser'

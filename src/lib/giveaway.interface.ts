@@ -1,4 +1,9 @@
-import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configurations'
+import {
+    IGiveawayEmbedOptions, IGiveawayButtonOptions,
+    IGiveawayStartMessages, IGiveawayRerollMessages
+} from '../types/configurations'
+
+import { DiscordID } from '../types/misc/utils'
 
 /**
  * An object that contains an information about a giveaway.
@@ -11,11 +16,11 @@ import { IGiveawayEmbedOptions, IGiveawayButtonOptions } from '../types/configur
  * @prop {number} startTimestamp The timestamp when the giveaway started.
  * @prop {boolean} isEnded Determines if the giveaway was ended in the database.
  * @prop {number} endTimestamp The timestamp when the giveaway ended.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} messageID The ID of the giveaway message.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {number} entries The number of giveaway entries.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
@@ -73,22 +78,28 @@ export interface IGiveaway {
     endTimestamp: number
 
     /**
-     * Giveaway host member ID.
-     * @type {string}
+     * Timestamp when the giveaway was ended.
+     * @type {number}
      */
-    hostMemberID: string
+    endedTimestamp: number
+
+    /**
+     * Giveaway host member ID.
+     * @type {DiscordID<string>}
+     */
+    hostMemberID: DiscordID<string>
 
     /**
      * Giveaway channel ID.
-     * @type {string}
+     * @type {DiscordID<string>}
      */
-    channelID: string
+    channelID: DiscordID<string>
 
     /**
      * Giveaway message ID.
-     * @type {string}
+     * @type {DiscordID<string>}
      */
-    messageID: string
+    messageID: DiscordID<string>
 
     /**
      * Giveaway message URL.
@@ -98,21 +109,21 @@ export interface IGiveaway {
 
     /**
      * Giveaway guild ID.
-     * @type {string}
+     * @type {DiscordID<string>}
      */
-    guildID: string
+    guildID: DiscordID<string>
 
     /**
      * Number of giveaway entries.
      * @type {number}
      */
-    entries: number
+    entriesCount: number
 
     /**
      * Array of user IDs of users that have entered the giveaway.
-     * @type {string[]}
+     * @type {DiscordID<string>[]}
      */
-    entriesArray: string[]
+    entriesArray: DiscordID<string>[]
 
     /**
      * Message data properties for embeds and buttons.
@@ -134,7 +145,9 @@ export interface IGiveaway {
  * @typedef {object} IGiveawayFinishEmbeds
  * @prop {IGiveawayEmbedOptions} newGiveawayMessage The options for the embed when sending a new giveaway message.
  * @prop {IGiveawayEmbedOptions} endMessage The options for the embed when the giveaway has ended.
- * @prop {IGiveawayEmbedOptions} noWinners The options for the embed when there are no winners for the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} noWinnersNewGiveawayMessage
+ * The options for the embed when there are no winners for the giveaway.
  *
  * @prop {IGiveawayEmbedOptions} noWinnersEndMessage
  * The options for the embed when there are no winners for the giveaway and it has ended.
@@ -197,19 +210,13 @@ export interface IGiveawayEmbeds {
      * Message embed data for cases when rerolling the giveaway.
      * @type {IGiveawayRerollEmbeds}
      */
-    reroll: Record<
-        'onlyHostCanReroll' | 'newGiveawayMessage' | 'successMessage' | 'rerollMessage',
-        IGiveawayEmbedOptions
-    >
+    reroll: IGiveawayRerollMessages
 
     /**
      * Message embed data for cases when the giveaway has finished.
      * @type {IGiveawayFinishEmbeds}
      */
-    finish: Record<
-        'newGiveawayMessage' | 'endMessage' | 'noWinners' | 'noWinnersEndMessage',
-        IGiveawayEmbedOptions
-    >
+    finish: IGiveawayStartMessages
 }
 
 /**
@@ -233,11 +240,11 @@ export type IGiveawayMessageButtons = Record<
  * @prop {number} winnersCount The number of possible winners in the giveaway.
  * @prop {number} startTimestamp The timestamp when the giveaway started.
  * @prop {number} endTimestamp The timestamp when the giveaway ended.
- * @prop {string} hostMemberID The ID of the host member.
- * @prop {string} channelID The ID of the channel where the giveaway is held.
- * @prop {string} messageID The ID of the giveaway message.
+ * @prop {DiscordID<string>} hostMemberID The ID of the host member.
+ * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
+ * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
- * @prop {string} guildID The ID of the guild where the giveaway is held.
+ * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  */
@@ -258,6 +265,8 @@ export type EditableGiveawayProperties = 'prize' | 'winnersCount' | 'time' | 'ho
  * Type parameters:
  *
  * - `TProperty` ({@link EditableGiveawayProperties}) - {@link Giveaway} property to get its value type.
+ *
+ * @template TProperty {@link Giveaway} property to get its value type.
  * @typedef {object} GiveawayPropertyValue<TProperty>
  */
 export type GiveawayPropertyValue<TProperty extends EditableGiveawayProperties> = IGiveaway[TProperty]

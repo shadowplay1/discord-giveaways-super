@@ -24,7 +24,7 @@ import { EditableGiveawayProperties, IGiveaway } from '../lib/giveaway.interface
  */
 export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
     databaseConnect: void
-    ready: Giveaways<TDatabaseType>
+    ready: Giveaways<TDatabaseType, any, any>
     giveawayReroll: IGiveawayRerollEvent<TDatabaseType>
     giveawayEdit: IGiveawayEditEvent<TDatabaseType>
 } & Record<'giveawayStart' | 'giveawayRestart' | 'giveawayEnd', Giveaway<TDatabaseType>>

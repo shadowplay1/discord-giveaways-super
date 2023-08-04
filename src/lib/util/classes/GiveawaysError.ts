@@ -1,4 +1,5 @@
 import { DatabaseType } from '../../../types/databaseType.enum'
+import { DiscordID } from '../../../types/misc/utils'
 import { typeOf } from '../functions/typeOf.function'
 
 /**
@@ -18,7 +19,7 @@ export class GiveawaysError extends Error {
      * @param {GiveawaysErrorCodes} errorCode Error code to throw.
      */
     public constructor(error: GiveawaysErrorCodes | string, errorCode?: GiveawaysErrorCodes) {
-        const errorMsg = errorMessages as any
+        const errorMsg: Record<string, any> = errorMessages
         const isErrorCode = errorMsg[error]
 
         super(isErrorCode ? errorMsg[error] : error)
@@ -102,7 +103,7 @@ export const errorMessages = {
         return `Unknown giveaway with message ID ${giveawayMessageID}.`
     },
 
-    GIVEAWAY_ALREADY_ENDED(giveawayPrize: string, giveawayID: string): string {
+    GIVEAWAY_ALREADY_ENDED(giveawayPrize: string, giveawayID: number): string {
         return `Giveaway "${giveawayPrize}" (ID: ${giveawayID}) has already ended.`
     },
 
@@ -110,11 +111,11 @@ export const errorMessages = {
         return `Required intent "${missingIntent}" is missing.`
     },
 
-    INVALID_TYPE(parameter: string, requiredType: string, receivedType: string): string {
-        return `${parameter} must be a ${requiredType}. Received type: ${typeOf(receivedType)}.`
+    INVALID_TYPE<T = any>(parameter: string, requiredType: string, receivedType: T): string {
+        return `${parameter} must be a ${requiredType}. Received type: ${typeOf(`${receivedType}`)}.`
     },
 
-    INVALID_TARGET_TYPE(requiredType: string, receivedType: string): string {
+    INVALID_TARGET_TYPE<T = any>(requiredType: string, receivedType: T): string {
         return `Target must be ${requiredType.toLowerCase().startsWith('a') ? 'an' : 'a'} ${requiredType}. ` +
             `Received type: ${typeOf(receivedType)}.`
     },
@@ -132,7 +133,7 @@ export const errorMessages = {
         return `Required configuration option "${requiredConfigOption}" is missing.`
     },
 
-    USER_NOT_FOUND(userID: string): string {
+    USER_NOT_FOUND<UserID extends string>(userID: DiscordID<UserID>): string {
         return `Specified user with ID ${userID} was not found.`
     }
 }
