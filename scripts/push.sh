@@ -68,6 +68,7 @@ git add "${package_version}.json"
 git commit -m "docs: documentation update for v${package_version}"
 git push -u origin docs
 
+git reset --hard origin/docs > /dev/null 2>&1
 
 echo
 echo "[3/3] - Pushing sources..."
@@ -90,6 +91,8 @@ git add .
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "$package_version"
 
+git reset --hard "origin/$package_version" > /dev/null 2>&1
+
 
 is_master_branch_existing="$(git rev-parse --verify "master")"
 
@@ -105,6 +108,8 @@ cp -r "/tmp/src" "./"
 git add .
 git commit -m "docs: sources update for v${package_version}"
 git push -u origin "master"
+
+git reset --hard "origin/master" > /dev/null 2>&1
 
 
 clean_up
