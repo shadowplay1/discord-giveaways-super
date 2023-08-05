@@ -150,7 +150,7 @@ export class Giveaways<
         this._logger = new Logger(options.debug || false)
 
         this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
-        this._logger.debug('Database type is JSON.', 'lightcyan')
+        this._logger.debug(`Database type is ${options.database}.`, 'lightcyan')
         this._logger.debug('Debug mode is enabled.', 'lightcyan')
 
         this._logger.debug('Checking the configuration...')
