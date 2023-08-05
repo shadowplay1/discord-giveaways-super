@@ -12,6 +12,7 @@
 - Now the compiled code is being minified.
 - Fixed documentation links leading to the incorrect docs website.
 - Replaced the homepage URL with documentation website.
+- Reworked main README.md file.
 
 **v1.0.0**
 - Initial module release.
