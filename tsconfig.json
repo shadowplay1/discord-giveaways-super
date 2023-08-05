@@ -17,7 +17,7 @@
 		"declaration": true,
 		"strictNullChecks": true,
 		"declarationDir": "./types",
-		"sourceMap": true,
+		"sourceMap": false,
 		"esModuleInterop": true,
 		"removeComments": false,
 		"preserveConstEnums": true,

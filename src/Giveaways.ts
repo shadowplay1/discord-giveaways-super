@@ -544,7 +544,7 @@ export class Giveaways<
                 console.log(this._logger.colors.cyan + '║             Run "npm i discord-giveaways-super@latest"          ║')
                 console.log(this._logger.colors.cyan + '║                               to update!                            ║')
                 console.log(this._logger.colors.white + '║                     View the full changelog here:                   ║')
-                console.log(this._logger.colors.red + `║     https://des-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog     ║`)
+                console.log(this._logger.colors.red + `║     https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog     ║`)
                 console.log(this._logger.colors.green + '╚═════════════════════════════════════════════════════════════════════╝\x1b[37m')
                 console.log('\n\n')
             } else {
@@ -558,7 +558,7 @@ export class Giveaways<
                     console.log(this._logger.colors.blue + `║                      Current version is ${result.availableVersion}.                  ║`)
                     console.log(this._logger.colors.cyan + '║                               Enjoy!                            ║')
                     console.log(this._logger.colors.white + '║                   View the full changelog here:                 ║')
-                    console.log(this._logger.colors.red + `║   https://des-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog   ║`)
+                    console.log(this._logger.colors.red + `║   https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog   ║`)
                     console.log(this._logger.colors.green + '╚═════════════════════════════════════════════════════════════════╝\x1b[37m')
                     console.log('\n\n')
                 }

@@ -64,7 +64,7 @@ client.on('ready', () => {
 client.login('YOUR_BOT_TOKEN_HERE')
 ```
 
-3. **Initialize or **Giveaways** class from the module**:
+3. **Initialize our Giveaways class from the module**:
 ```js
 const giveaways = new Giveaways(client, {
 	database: DatabaseType.JSON, // or any other database that is provided by module

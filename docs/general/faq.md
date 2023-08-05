@@ -3,7 +3,7 @@
 [![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
 [![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
 
-<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).
+<b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/).
 
 ## ❓ | Frequently Asked Questions
 
@@ -12,6 +12,8 @@
 
 ### **Q:** Is there support for (X) database?
 ### **A:** At the moment, there's only support for 3 databases: **JSON**, **MongoDB** and **Enmap**, but support for other databases may be added in the future as well!
+
+Got a question? Feel free to ask it in our [Support Server](https://discord.gg/4pWKq8vUnb)!
 
 ## ❗ | Useful Links
 <ul>

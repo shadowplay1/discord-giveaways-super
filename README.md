@@ -2,7 +2,7 @@
 
 [![Downloads](https://img.shields.io/npm/dt/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
 [![Stable Version](https://img.shields.io/npm/v/discord-giveaways-super?style=for-the-badge)](https://www.npmjs.com/package/discord-giveaways-super)
-[![Build Status](https://github.com/shadowplay1/discord-giveaways-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-giveaways-super)
+[![Build Status](https://github.com/shadowplay1/discord-economy-super/workflows/build/badge.svg)](https://www.npmjs.com/package/discord-economy-super)
 
 <b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).
 
@@ -44,9 +44,9 @@ $ pnpm add discord-giveaways-super
 
 ## ❗ | Useful Links
 <ul>
-<li><b><a href = "https://des-docs.js.org">Documentation</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org">Documentation</a></b></li>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://des-docs.js.org/#/docs/main/1.7.7/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

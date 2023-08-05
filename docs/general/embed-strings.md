@@ -36,53 +36,101 @@ You can also include dynamic giveaway variables provided by the strings definiti
 
 ## Defining Embed Strings
 
-To customize these messages, you can define different properties within the embed string objects. Here's an example of how to define embed strings in the `defineEmbedStrings` function:
+To customize these messages, you can define different properties within the embed string objects. Here's an example of how to define embed strings in the `defineEmbedStrings` function of giveaway starting options:
 
 ```ts
-defineEmbedStrings(giveaway, host) {
-    return {
-        joinGiveawayMessage: {
-            messageContent: 'You have joined the giveaway!'
-        },
+await giveaway.start({
+	// ... (other giveaway starting options)
 
-		leaveGiveawayMessage: {
-            messageContent: 'You have left the giveaway!'
-        },
+	defineEmbedStrings(giveaway, host) {
+	    return {
+	        joinGiveawayMessage: {
+	            messageContent: 'You have joined the giveaway!'
+	        },
 
-        // ... (other messages)
+			leaveGiveawayMessage: {
+	            messageContent: 'You have left the giveaway!'
+	        },
 
-        start: {
-            messageContent: ':tada: **GIVEAWAY STARTED!** :tada:',
+	        // ... (other messages)
 
-            // embed properties
-            title: `Giveaway (ID: ${giveaway.id})`,
-            titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
+	        start: {
+	            messageContent: ':tada: **GIVEAWAY STARTED!** :tada:',
 
-            description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
-                `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
+	            // embed properties
+	            title: `Giveaway (ID: ${giveaway.id})`,
+	            titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
-            footer: `Ends at:`,
-            timestamp: giveaway.endTimestamp,
-            footerIcon: client.user?.displayAvatarURL({ size: 2048 })
+	            description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
+	                `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
 
-        	// ... (other properties)
-        }
-    },
+	            footer: `Ends at:`,
+	            timestamp: giveaway.endTimestamp,
+	            footerIcon: client.user?.displayAvatarURL({ size: 2048 })
 
-    finish(mentionsString, winnersCount) {
-        return {
-            endMessage: {
-                messageContent: `Congratulations ${mentionsString} on winning!`
-            },
-            // ... (other properties)
-        }
-    },
+	        	// ... (other properties)
+	        }
+	    },
 
-    // ... (other messages)
-}
+	    finish(mentionsString, winnersCount) {
+	        return {
+	            endMessage: {
+	                messageContent: `Congratulations ${mentionsString} on winning!`
+	            },
+	            // ... (other properties)
+	        }
+	    },
+
+	    // ... (other messages)
+	}
+
+	// ... (other giveaway starting options)
+})
 ```
 
 You can also view the full Embed Strings configuration in the full [bot examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples).
+
+## Buttons
+You can also define buttons within the embed strings to provide interactive actions to users (such as "join giveaway", "go to message" and "reroll"). Buttons can have properties like text, emoji, and style.
+
+There are 3 available buttons objects to set up:
+- `joinGiveawayButton`
+- `goToMessageButton`
+- `rerollButton`
+
+That's how the buttons configuration looks like:
+
+```ts
+await giveaway.start({
+	// ... (other giveaway starting options)
+
+	buttons: {
+		// the "join giveaway" button to attach on the initial giveaway message
+        joinGiveawayButton: {
+            text: 'Join the giveaway',
+            emoji: '🎉', // either an emoji or custom emoji ID is acceptable
+            style: ButtonStyle.Primary
+        },
+
+        // the "reroll" button to attach on the separated giveaway end message
+        rerollButton: {
+            text: 'Reroll Winners',
+            emoji: '🔁', // either an emoji or custom emoji ID is acceptable
+            style: ButtonStyle.Primary
+        },
+
+        // the "go to nessage" link button to attach on the separated giveaway end message
+        // that will bring to the initial giveaway message
+        goToMessageButton: {
+            text: 'Go to Message',
+            emoji: '↗️' // either an emoji or custom emoji ID is acceptable
+        }
+	}
+
+	// ... (other giveaway starting options)
+})
+
+```
 
 ## ❗ | Useful Links
 <ul>

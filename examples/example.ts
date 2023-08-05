@@ -263,7 +263,7 @@ client.on('messageCreate', async message => {
 
                 // the "reroll" button to attach on the separated giveaway end message
                 rerollButton: {
-                    text: 'совершить план-скам',
+                    text: 'Reroll Winners',
                     emoji: '🔁', // either an emoji or custom emoji ID is acceptable
                     style: ButtonStyle.Primary
                 },
