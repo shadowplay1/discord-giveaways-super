@@ -1,14 +1,16 @@
 {
 	"name": "discord-giveaways-super",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Create and manage giveaways in Discord.",
 	"types": "./types/src/index.d.ts",
 	"main": "dist/src/index.js",
 	"scripts": {
+		"prep": "npx husky install",
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
 		"build": "tsc -p tsconfig.json",
-		"docs:generate": "bash ./scripts/docgen.sh"
+		"docs:generate": "bash ./scripts/docgen.sh",
+		"commitlint:install": "npm i -g @commitlint/cli @commitlint/config-conventional -f"
 	},
 	"keywords": [],
 	"author": "shadowplay1 <shadowplay483@gmail.com>",

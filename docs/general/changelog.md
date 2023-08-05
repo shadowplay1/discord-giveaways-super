@@ -7,11 +7,14 @@
 
 ## ⏰ | Changelog
 
-<b>v1.0.0</b>
+**v1.0.1**
+- Reduced the package size by 3 times.
+- Now the compiled code is being minified.
+- Fixed documentation links leading to the incorrect docs website.
+- Replaced the homepage URL with documentation website.
 
-<ul>
-  <li><b>Initial module release.</b></li>
-</ul>
+**v1.0.0**
+- Initial module release.
 
 ## ❗ | Useful Links
 <ul>

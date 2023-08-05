@@ -198,7 +198,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         if (this.isEnmap()) {
             const data = this.db.get(key)
-            return data as V
+            return data as any
         }
 
         return {} as V
@@ -269,14 +269,14 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         if (this.isMongoDB()) {
             const data = await this.db.set<V>(key, value as any)
-            return data as R
+            return data as any
         }
 
         if (this.isEnmap()) {
             this.db.set(key, value as any)
 
             const data = this.db.get(key)
-            return data as R
+            return data as any
         }
 
         return {} as R
@@ -360,7 +360,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         if (this.isEnmap()) {
-            const targetNumber = this.db.get(key) as number
+            const targetNumber = this.db.get(key) as any as number
 
             if (isNaN(targetNumber)) {
                 throw new GiveawaysError(
@@ -418,7 +418,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         if (this.isEnmap()) {
-            const targetNumber = this.db.get(key) as number
+            const targetNumber = this.db.get(key) as any as number
 
             if (isNaN(targetNumber)) {
                 throw new GiveawaysError(
@@ -747,7 +747,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         for (const guildID in database) {
             const guildDatabase = database[guildID]
-            this._cache.set(guildID, guildDatabase)
+            this._cache.set(guildID as any, guildDatabase)
         }
     }
 }
