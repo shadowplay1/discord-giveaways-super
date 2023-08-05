@@ -5,7 +5,7 @@
 	"types": "./types/src/index.d.ts",
 	"main": "dist/src/index.js",
 	"scripts": {
-		"prep": "npx husky install",
+		"prep": "npx husky install && npm run commitlint:install",
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
 		"build": "tsc -p tsconfig.json",
