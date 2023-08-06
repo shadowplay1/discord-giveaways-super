@@ -15,6 +15,7 @@
 - Handles Crashes/Restarts 🔄
 - Easy to Understand 👍
 - Beginner Friendly 😄
+- Extremely Fast 💨
 
 ## 📂 | Installation
 **Node.js v16.9.0 or newer is required to install.**

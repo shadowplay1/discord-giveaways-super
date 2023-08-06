@@ -9,6 +9,8 @@
 ## ⏰ | Changelog
 
 **v1.0.1**
+- Fixed the `INVALID_TARGET_TYPE` error on first-time giveaway creation in MongoDB.
+- Fixed typos.
 - Reduced the package size by 3 times.
 - Now the compiled code is being minified.
 - Fixed documentation links leading to the incorrect docs website.
@@ -16,6 +18,7 @@
 - Reworked main README.md file.
 - Added keywords in `package.json` file.
 - Fixed the incorrect database type being displayed in debug logs.
+- Added debug logs on all database operations.
 
 **v1.0.0**
 - Initial module release.

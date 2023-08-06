@@ -315,7 +315,7 @@ export class Giveaways<
                 await mongo.connect()
 
                 this.db = mongo as Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
-                this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}`, 'lightgreen')
+                this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}ms`, 'lightgreen')
 
                 this.emit('databaseConnect')
                 break

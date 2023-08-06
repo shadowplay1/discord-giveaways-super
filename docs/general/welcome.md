@@ -33,6 +33,8 @@ Features:
 <li><b>Handles Crashes/Restarts 🔄</b></li>
 <li><b>Easy to Understand 👍</b></li>
 <li><b>Beginner Friendly 😄</b></li>
+<li><b>Extremely Fast 💨</b></li>
+
 </ul>
 
 ## 🛠️ | Examples

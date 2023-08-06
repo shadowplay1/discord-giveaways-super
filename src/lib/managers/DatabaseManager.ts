@@ -498,7 +498,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         if (this.isMongoDB()) {
-            const targetArray = await this.db.get<V[]>(key)
+            const targetArray = (await this.db.get<V[]>(key)) || []
 
             if (!Array.isArray(targetArray)) {
                 throw new GiveawaysError(
@@ -571,7 +571,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         if (this.isMongoDB()) {
-            const targetArray = await this.db.get<V[]>(key)
+            const targetArray = (await this.db.get<V[]>(key)) || []
 
             if (!Array.isArray(targetArray)) {
                 throw new GiveawaysError(
@@ -637,7 +637,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         }
 
         if (this.isMongoDB()) {
-            const targetArray = await this.db.get<any[]>(key)
+            const targetArray = (await this.db.get<any[]>(key)) || []
 
             if (!Array.isArray(targetArray)) {
                 throw new GiveawaysError(

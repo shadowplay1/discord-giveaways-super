@@ -113,7 +113,7 @@ export class CacheManager<K extends string, V> {
             updatedData = updatedData?.[keys[i]]
         }
 
-        this._cache.set(key, data)
+        this._cache.set(keys[0] as K, data[keys[0]])
         return data
     }
 
@@ -139,7 +139,7 @@ export class CacheManager<K extends string, V> {
             updatedData = updatedData?.[keys[i]]
         }
 
-        this._cache.set(key, data)
+        this._cache.set(keys[0] as K, data[keys[0]])
         return true
     }
 
