@@ -1,5 +1,5 @@
 import { ButtonStyle, ChannelType, Client, Partials } from 'discord.js'
-import { DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
+import { DatabaseType, Giveaways, isTimeStringValid } from 'discord-giveaways-super'
 
 const { Channel, GuildMember, Message, User } = Partials
 
@@ -654,4 +654,4 @@ client.on('messageCreate', async message => {
 })
 
 // authenticate the bot in discord
-client.login('MTEyMTQ5NDI2NTE2NDQ2ODM3Ng.GaIugS.hH1k52vM_93OZdR2bxMlutug5Mux1dm3As8heU')
+client.login('YOUR_BOT_TOKEN')

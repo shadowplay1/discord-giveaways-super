@@ -177,7 +177,7 @@ client.on('messageCreate', async message => {
                                 // using "winnersCount" in "Winners" string in case if the actual number of winners
                                 // will not match the giveaway's number of winners
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
+                                    `${winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
 
                                 footer: `Ended at:`,
                                 footerIcon: client.user?.displayAvatarURL({ size: 2048 }),
@@ -225,7 +225,7 @@ client.on('messageCreate', async message => {
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString}`,
+                                    `${winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString}`,
 
                                 footer: `Ended at:`,
                                 timestamp: giveaway.endedTimestamp,
@@ -235,7 +235,7 @@ client.on('messageCreate', async message => {
                             // this message will be sent separately in the giveaway channel after the reroll
                             // used to mention the new giveaway winners (embeds may also be used here)
                             rerollMessage: {
-                                messageContent: `${giveaway.winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
+                                messageContent: `${winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
                                     `${mentionsString}, congratulations!`
                             },
 
