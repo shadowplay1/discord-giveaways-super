@@ -191,3 +191,15 @@ export type DiscordID<ID extends string> =
     ExactLengthString<18, ID> |
     ExactLengthString<19, ID> |
     ExactLengthString<20, ID>
+
+/**
+ * Extracts the type that was passed into `Promise<...>` type.
+ *
+ * Type parameters:
+ *
+ * - `P` ({@link Promise<any>}) - The Promise to extract the type from.
+ *
+ * @template P The Promise to extract the type from.
+ * @typedef {any} ExtractPromisedType<P>
+ */
+export type ExtractPromisedType<P> = P extends Promise<infer T> ? T : never

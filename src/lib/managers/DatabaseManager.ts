@@ -3,6 +3,7 @@ import { Giveaways } from '../../Giveaways'
 import { Database } from '../../types/configurations'
 import { IDatabaseGuild } from '../../types/databaseStructure.interface'
 import { DatabaseType } from '../../types/databaseType.enum'
+import { ExtractPromisedType } from '../../types/misc/utils'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
@@ -123,6 +124,44 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
 
         this._logger.debug('Loading the cache...')
         await this._loadCache()
+    }
+
+    /**
+     * Evaluates a database operation ands sends a debug log in the console.
+     *
+     * Type parameters:
+     *
+     * - `F` ({@link Function}) - The function type to be passed as database operation callback.
+     *
+     * @param {string} operation The database operation to put in the debug log.
+     * @param {string} key The key of the database the operation was performed on.
+     * @param {Function} toDebug The database operation callback function to call.
+     * @param {boolean} [sendDebugLog=true] Whether the debug log should be sent in the console if debug mode is enabled.
+     * @returns {Promise<ExtractPromisedType<ReturnType<R>>>} Return type of the database callback operation function.
+     * @template F The function type to be passed as database operation callback.
+     * @private
+     */
+    private async _debug<F extends () => Promise<any>>(
+        operation: string,
+        key: string,
+        toDebug: F,
+        sendDebugLog: boolean = true
+    ): Promise<ExtractPromisedType<ReturnType<F>>> {
+        try {
+            const callbackResult = await toDebug()
+
+            if (this.giveaways.options.debug && sendDebugLog) {
+                this._logger.debug(`Performed "${operation}" operation on key "${key}".`)
+            }
+
+            return callbackResult
+        } catch (err: any) {
+            if (this.giveaways.options.debug && sendDebugLog) {
+                this._logger.error(`Failed to perform "${operation}" operation on key "${key}": ${err.stack}`)
+            }
+
+            return null as any
+        }
     }
 
     /**
@@ -254,41 +293,49 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      *
      * @param {TKey} key The key in database.
      * @param {V} value Any data to set.
+     * @param {boolean} [sendDebugLog=true] Whether the debug log should be sent in the console if debug mode is enabled.
      * @returns {Promise<R>} The data from the database.
      *
      * @template V The type of data being set.
      * @template R The type of data being returned.
      */
-    public async set<V = TValue, R = any>(key: TKey, value: V): Promise<R> {
-        this._cache.set<V, R>(key, value)
+    public async set<V = TValue, R = any>(key: TKey, value: V, sendDebugLog: boolean = true): Promise<R> {
+        return this._debug('set', key, async (): Promise<R> => {
+            this._cache.set<V, R>(key, value)
 
-        if (this.isJSON()) {
-            const data = await this.jsonParser.set<V, R>(key, value)
-            return data
-        }
+            if (this.isJSON()) {
+                const data = await this.jsonParser.set<V, R>(key, value)
+                return data
+            }
 
-        if (this.isMongoDB()) {
-            const data = await this.db.set<V>(key, value as any)
-            return data as any
-        }
+            if (this.isMongoDB()) {
+                const data = await this.db.set<V>(key, value as any)
+                return data as any
+            }
 
-        if (this.isEnmap()) {
-            this.db.set(key, value as any)
+            if (this.isEnmap()) {
+                this.db.set(key, value as any)
 
-            const data = this.db.get(key)
-            return data as any
-        }
+                const data = this.db.get(key)
+                return data as any
+            }
 
-        return {} as R
+            return {} as R
+        }, sendDebugLog)
     }
 
 
     /**
      * Clears the database.
+     * @param {boolean} [sendDebugLog=true] Whether the debug log should be sent in the console if debug mode is enabled.
      * @returns {Promise<boolean>} `true` if cleared successfully, `false` otherwise.
      */
-    public async clear(): Promise<boolean> {
+    public async clear(sendDebugLog: boolean = true): Promise<boolean> {
         this._cache.clear()
+
+        if (this.giveaways.options.debug && sendDebugLog) {
+            this._logger.debug('Performed "clear" operation on all database.')
+        }
 
         if (this.isJSON()) {
             await this.jsonParser.clearDatabase()
@@ -315,7 +362,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if set successfully, `false` otherwise.
      */
     public async deleteAll(): Promise<boolean> {
-        return this.clear()
+        if (this.giveaways.options.debug) {
+            this._logger.debug('Performed "deleteAll" operation on all database.')
+        }
+
+        return this.clear(false)
     }
 
     /**
@@ -325,55 +376,57 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if added successfully, `false` otherwise.
      */
     public async add(key: TKey, numberToAdd: number): Promise<boolean> {
-        const targetNumber = this._cache.get<number>(key)
+        return this._debug('add', key, async (): Promise<boolean> => {
+            const targetNumber = this._cache.get<number>(key)
 
-        if (!isNaN(targetNumber)) {
-            this._cache.set<number>(key, targetNumber + numberToAdd)
-        }
-
-        if (this.isJSON()) {
-            const targetNumber = await this.jsonParser.get<number>(key)
-
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+            if (!isNaN(targetNumber)) {
+                this._cache.set<number>(key, targetNumber + numberToAdd)
             }
 
-            await this.jsonParser.set(key, targetNumber + numberToAdd)
-            return true
-        }
+            if (this.isJSON()) {
+                const targetNumber = await this.jsonParser.get<number>(key)
 
-        if (this.isMongoDB()) {
-            const targetNumber = await this.db.get<number>(key)
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                await this.jsonParser.set(key, targetNumber + numberToAdd)
+                return true
             }
 
-            await this.db.set(key, targetNumber + numberToAdd as any)
-            return true
-        }
+            if (this.isMongoDB()) {
+                const targetNumber = await this.db.get<number>(key)
 
-        if (this.isEnmap()) {
-            const targetNumber = this.db.get(key) as any as number
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                await this.db.set(key, targetNumber + numberToAdd as any)
+                return true
             }
 
-            this.db.set(key, targetNumber + numberToAdd as any)
-            return true
-        }
+            if (this.isEnmap()) {
+                const targetNumber = this.db.get(key) as any as number
 
-        return false
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
+
+                this.db.set(key, targetNumber + numberToAdd as any)
+                return true
+            }
+
+            return false
+        })
     }
 
     /**
@@ -383,55 +436,57 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if subtracted successfully, `false` otherwise.
      */
     public async subtract(key: TKey, numberToSubtract: number): Promise<boolean> {
-        const targetNumber = this._cache.get<number>(key)
+        return this._debug('subtract', key, async (): Promise<boolean> => {
+            const targetNumber = this._cache.get<number>(key)
 
-        if (!isNaN(targetNumber)) {
-            this._cache.set<number>(key, targetNumber + numberToSubtract)
-        }
-
-        if (this.isJSON()) {
-            const targetNumber = await this.jsonParser.get<number>(key)
-
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+            if (!isNaN(targetNumber)) {
+                this._cache.set<number>(key, targetNumber + numberToSubtract)
             }
 
-            await this.jsonParser.set(key, targetNumber - numberToSubtract)
-            return true
-        }
+            if (this.isJSON()) {
+                const targetNumber = await this.jsonParser.get<number>(key)
 
-        if (this.isMongoDB()) {
-            const targetNumber = await this.db.get<number>(key)
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                await this.jsonParser.set(key, targetNumber - numberToSubtract)
+                return true
             }
 
-            await this.db.set(key, targetNumber - numberToSubtract as any)
-            return true
-        }
+            if (this.isMongoDB()) {
+                const targetNumber = await this.db.get<number>(key)
 
-        if (this.isEnmap()) {
-            const targetNumber = this.db.get(key) as any as number
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-            if (isNaN(targetNumber)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                await this.db.set(key, targetNumber - numberToSubtract as any)
+                return true
             }
 
-            this.db.set(key, targetNumber - numberToSubtract as any)
-            return true
-        }
+            if (this.isEnmap()) {
+                const targetNumber = this.db.get(key) as any as number
 
-        return false
+                if (isNaN(targetNumber)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('number', targetNumber),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
+
+                this.db.set(key, targetNumber - numberToSubtract as any)
+                return true
+            }
+
+            return false
+        })
     }
 
     /**
@@ -440,24 +495,26 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if deleted successfully, `false` otherwise.
      */
     public async delete(key: TKey): Promise<boolean> {
-        this._cache.delete(key)
+        return this._debug('delete', key, async (): Promise<boolean> => {
+            this._cache.delete(key)
 
-        if (this.isJSON()) {
-            await this.jsonParser.delete(key)
-            return true
-        }
+            if (this.isJSON()) {
+                await this.jsonParser.delete(key)
+                return true
+            }
 
-        if (this.isMongoDB()) {
-            await this.db.delete(key)
-            return true
-        }
+            if (this.isMongoDB()) {
+                await this.db.delete(key)
+                return true
+            }
 
-        if (this.isEnmap()) {
-            this.db.delete(key)
-            return true
-        }
+            if (this.isEnmap()) {
+                this.db.delete(key)
+                return true
+            }
 
-        return false
+            return false
+        })
     }
 
     /**
@@ -474,62 +531,64 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @template V The type of data being pushed.
      */
     public async push<V = TValue>(key: TKey, value: V): Promise<boolean> {
-        const targetArray = this._cache.get<V[]>(key) || []
+        return this._debug('push', key, async (): Promise<boolean> => {
+            const targetArray = this._cache.get<V[]>(key) || []
 
-        if (Array.isArray(targetArray)) {
-            targetArray.push(value)
-            this._cache.set<V[]>(key, targetArray)
-        }
-
-        if (this.isJSON()) {
-            const targetArray = await this.jsonParser.get<V[]>(key) || []
-
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+            if (Array.isArray(targetArray)) {
+                targetArray.push(value)
+                this._cache.set<V[]>(key, targetArray)
             }
 
-            targetArray.push(value)
-            await this.jsonParser.set(key, targetArray)
+            if (this.isJSON()) {
+                const targetArray = await this.jsonParser.get<V[]>(key) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isMongoDB()) {
-            const targetArray = (await this.db.get<V[]>(key)) || []
+                targetArray.push(value)
+                await this.jsonParser.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.push(value)
-            await this.db.set(key, targetArray)
+            if (this.isMongoDB()) {
+                const targetArray = (await this.db.get<V[]>(key)) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isEnmap()) {
-            const targetArray = (this.db.get(key) || []) as any[]
+                targetArray.push(value)
+                await this.db.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.push(value)
-            this.db.set(key, targetArray as any)
+            if (this.isEnmap()) {
+                const targetArray = (this.db.get(key) || []) as any[]
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        return false
+                targetArray.push(value)
+                this.db.set(key, targetArray as any)
+
+                return true
+            }
+
+            return false
+        })
     }
 
     /**
@@ -547,62 +606,65 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @template V The type of data being pulled.
      */
     public async pull<V = TValue>(key: TKey, index: number, newValue: V): Promise<boolean> {
-        const targetArray = this._cache.get<V[]>(key) || []
+        return this._debug('pull', key, async (): Promise<boolean> => {
 
-        if (Array.isArray(targetArray)) {
-            targetArray.splice(index, 1, newValue)
-            this._cache.set<V[]>(key, targetArray as any)
-        }
+            const targetArray = this._cache.get<V[]>(key) || []
 
-        if (this.isJSON()) {
-            const targetArray = await this.jsonParser.get<V[]>(key) || []
-
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+            if (Array.isArray(targetArray)) {
+                targetArray.splice(index, 1, newValue)
+                this._cache.set<V[]>(key, targetArray as any)
             }
 
-            targetArray.splice(index, 1, newValue)
-            await this.jsonParser.set(key, targetArray)
+            if (this.isJSON()) {
+                const targetArray = await this.jsonParser.get<V[]>(key) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isMongoDB()) {
-            const targetArray = (await this.db.get<V[]>(key)) || []
+                targetArray.splice(index, 1, newValue)
+                await this.jsonParser.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.splice(index, 1, newValue)
-            await this.db.set(key, targetArray)
+            if (this.isMongoDB()) {
+                const targetArray = (await this.db.get<V[]>(key)) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isEnmap()) {
-            const targetArray = (this.db.get(key) || []) as any[]
+                targetArray.splice(index, 1, newValue)
+                await this.db.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.splice(index, 1, newValue)
-            this.db.set(key, targetArray as any)
+            if (this.isEnmap()) {
+                const targetArray = (this.db.get(key) || []) as any[]
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        return false
+                targetArray.splice(index, 1, newValue)
+                this.db.set(key, targetArray as any)
+
+                return true
+            }
+
+            return false
+        })
     }
 
 
@@ -613,62 +675,64 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @returns {Promise<boolean>} `true` if popped successfully, `false` otherwise.
      */
     public async pop(key: TKey, index: number): Promise<boolean> {
-        const targetArray = this._cache.get<any[]>(key) || []
+        return this._debug('pop', key, async (): Promise<boolean> => {
+            const targetArray = this._cache.get<any[]>(key) || []
 
-        if (Array.isArray(targetArray)) {
-            targetArray.splice(index, 1)
-            this._cache.set<any[]>(key, targetArray)
-        }
-
-        if (this.isJSON()) {
-            const targetArray = await this.jsonParser.get<any[]>(key) || []
-
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+            if (Array.isArray(targetArray)) {
+                targetArray.splice(index, 1)
+                this._cache.set<any[]>(key, targetArray)
             }
 
-            targetArray.splice(index, 1)
-            await this.jsonParser.set(key, targetArray)
+            if (this.isJSON()) {
+                const targetArray = await this.jsonParser.get<any[]>(key) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isMongoDB()) {
-            const targetArray = (await this.db.get<any[]>(key)) || []
+                targetArray.splice(index, 1)
+                await this.jsonParser.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.splice(index, 1)
-            await this.db.set(key, targetArray)
+            if (this.isMongoDB()) {
+                const targetArray = (await this.db.get<any[]>(key)) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        if (this.isEnmap()) {
-            const targetArray = this.db.get(key) || []
+                targetArray.splice(index, 1)
+                await this.db.set(key, targetArray)
 
-            if (!Array.isArray(targetArray)) {
-                throw new GiveawaysError(
-                    errorMessages.INVALID_TARGET_TYPE('array', targetArray),
-                    GiveawaysErrorCodes.INVALID_TARGET_TYPE
-                )
+                return true
             }
 
-            targetArray.splice(index, 1)
-            this.db.set(key, targetArray as any)
+            if (this.isEnmap()) {
+                const targetArray = this.db.get(key) || []
 
-            return true
-        }
+                if (!Array.isArray(targetArray)) {
+                    throw new GiveawaysError(
+                        errorMessages.INVALID_TARGET_TYPE('array', targetArray),
+                        GiveawaysErrorCodes.INVALID_TARGET_TYPE
+                    )
+                }
 
-        return false
+                targetArray.splice(index, 1)
+                this.db.set(key, targetArray as any)
+
+                return true
+            }
+
+            return false
+        })
     }
 
 

@@ -1,5 +1,5 @@
 import { ButtonStyle, ChannelType, Client, Partials } from 'discord.js'
-import { DatabaseType, Giveaways, isTimeStringValid } from 'discord-giveaways-super'
+import { DatabaseType, Giveaways, isTimeStringValid } from '../src/index'
 
 const { Channel, GuildMember, Message, User } = Partials
 
@@ -181,7 +181,7 @@ client.on('messageCreate', async message => {
                                 // using "winnersCount" in "Winners" string in case if the actual number of winners
                                 // will not match the giveaway's number of winners
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
+                                    `${winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
 
                                 footer: `Ended at:`,
                                 footerIcon: client.user?.displayAvatarURL({ size: 2048 }),
@@ -213,9 +213,6 @@ client.on('messageCreate', async message => {
                     // defining all messages that are related
                     // to rerolling the giveaway winners
                     reroll(mentionsString, winnersCount) {
-                        console.log(giveaway);
-                        console.log({winnersCount: giveaway.winnersCount});
-
                         return {
                             // this ephemeral reply will be sent when they're not a host
                             // of the giveaway and trying to reroll the winners (embeds may also be used here)
@@ -232,7 +229,7 @@ client.on('messageCreate', async message => {
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString}`,
+                                    `${winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString}`,
 
                                 footer: `Ended at:`,
                                 timestamp: giveaway.endedTimestamp,
@@ -242,7 +239,7 @@ client.on('messageCreate', async message => {
                             // this message will be sent separately in the giveaway channel after the reroll
                             // used to mention the new giveaway winners (embeds may also be used here)
                             rerollMessage: {
-                                messageContent: `${giveaway.winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
+                                messageContent: `${winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
                                     `${mentionsString}, congratulations!`
                             },
 
@@ -657,4 +654,4 @@ client.on('messageCreate', async message => {
 })
 
 // authenticate the bot in discord
-client.login('YOUR_BOT_TOKEN')
+client.login('MTEyMTQ5NDI2NTE2NDQ2ODM3Ng.GaIugS.hH1k52vM_93OZdR2bxMlutug5Mux1dm3As8heU')

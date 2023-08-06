@@ -762,9 +762,9 @@ export class Giveaways<
             )
         }
 
-        if (typeof giveawayID !== 'string') {
+        if (isNaN(giveawayID)) {
             throw new GiveawaysError(
-                errorMessages.INVALID_TYPE('giveawayID', 'string', giveawayID),
+                errorMessages.INVALID_TYPE('giveawayID', 'number', giveawayID),
                 GiveawaysErrorCodes.INVALID_TYPE
             )
         }
@@ -1590,6 +1590,18 @@ export class Giveaways<
 * @template S The string to check the length of.
 * @typedef {number} DiscordID<ID>
 */
+
+/**
+ * Extracts the type that was passed into `Promise<...>` type.
+ *
+ * Type parameters:
+ *
+ * - `P` ({@link Promise<any>}) - The Promise to extract the type from.
+ *
+ * @template P The Promise to extract the type from.
+ * @typedef {any} ExtractPromisedType<P>
+ */
+
 
 // Events, for documentation purposes
 

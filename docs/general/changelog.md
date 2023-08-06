@@ -8,7 +8,7 @@
 
 ## ⏰ | Changelog
 
-**v1.0.1**
+**v1.0.1**:
 - Fixed the `INVALID_TARGET_TYPE` error on first-time giveaway creation in MongoDB.
 - Fixed the giveaway winners reroll not happening after sending the success reroll message.
 - Fixed typos.
@@ -23,7 +23,7 @@
 - Added missing types in type arguments descriptions in `CacheManager`.
 - Added debug logs on all database operations.
 
-**v1.0.0**
+**v1.0.0**:
 - Initial module release.
 
 ## ❗ | Useful Links
