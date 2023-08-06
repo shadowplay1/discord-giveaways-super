@@ -14,7 +14,7 @@ You know that the module has a lot of different settings and you can set them up
 
 The module has support for **3** types of databases: **__JSON__**, **__MongoDB__** and **__Enmap__**.
 
-To set up the database to work in Discord Giveaways Super, we need to specify 2 important configuration properties: [`database`](https://dgs-docs.js.org/#/docs/main/1.0.0/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E) and [`connection`](https://dgs-docs.js.org/#/docs/main/1.0.0/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E)
+To set up the database to work in Discord Giveaways Super, we need to specify 2 important configuration properties: [`database`](https://dgs-docs.js.org/#/docs/main/1.0.1/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E) and [`connection`](https://dgs-docs.js.org/#/docs/main/1.0.1/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E)
 
 - `database` is the type of database we want to use
 - `connection` is the configuration for the database which we have chosen
@@ -221,7 +221,7 @@ const giveawaysConfigExample = {
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.0/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.1/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>
