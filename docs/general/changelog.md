@@ -10,14 +10,17 @@
 
 **v1.0.1**
 - Fixed the `INVALID_TARGET_TYPE` error on first-time giveaway creation in MongoDB.
+- Fixed the giveaway winners reroll not happening after sending the success reroll message.
 - Fixed typos.
+- Various minor fixes & improvements.
 - Reduced the package size by 3 times.
 - Now the compiled code is being minified.
 - Fixed documentation links leading to the incorrect docs website.
 - Replaced the homepage URL with documentation website.
-- Reworked main README.md file.
-- Added keywords in `package.json` file.
+- Reworked the main README.md file.
+- Added module's keywords in `package.json` file.
 - Fixed the incorrect database type being displayed in debug logs.
+- Added missing types in type arguments descriptions in `CacheManager`.
 - Added debug logs on all database operations.
 
 **v1.0.0**

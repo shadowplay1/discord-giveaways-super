@@ -5,8 +5,8 @@ import { isObject } from '../util/functions/typeOf.function'
  *
  * Type parameters:
  *
- * - `K` - The cache map key type.
- * - `V` - The cache map value type.
+ * - `K` ({@link any}) - The cache map key type.
+ * - `V` ({@link any}) - The cache map value type.
  *
  * @template K The cache map key type.
  * @template V The cache map value type.
@@ -38,7 +38,7 @@ export class CacheManager<K extends string, V> {
      *
      * Type parameters:
      *
-     * - `V` - The type of cache object to return.
+     * - `V` ({@link any}) - The type of cache object to return.
      *
      * @returns {any} Object representation of the cache map.
      * @template V The type of cache object to return.
@@ -58,7 +58,7 @@ export class CacheManager<K extends string, V> {
      *
      * Type parameters:
      *
-     * - `V` - The type of data being returned.
+     * - `V` ({@link any}) - The type of data being returned.
      *
      * @param {K} key The key in cache map.
      * @returns {V} The data from cache map.
@@ -87,8 +87,8 @@ export class CacheManager<K extends string, V> {
      *
      * Type parameters:
      *
-     * - `TValue` - The type of data being set.
-     * - `R` - The type of data being returned.
+     * - `TValue` ({@link any}) - The type of data being set.
+     * - `R` ({@link any}) - The type of data being returned.
      *
      * @param {K} key The key in cache map.
      * @returns {R} The data from cache map.

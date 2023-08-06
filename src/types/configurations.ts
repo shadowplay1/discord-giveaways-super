@@ -310,8 +310,8 @@ export interface IGiveawayStartMessages {
  * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayFinishCallback<IsTemplate extends boolean = false> = (
-    winnersMentionsString: string,
-    winnersCount: If<IsTemplate, string, number>
+    winnersMentionsString: If<IsTemplate, '{winnersString}', string>,
+    winnersCount: If<IsTemplate, '{numberOfWinners}', number>
 ) => Partial<IGiveawayStartMessages>
 
 /**
@@ -373,8 +373,8 @@ export interface IGiveawayRerollMessages {
  * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
-    winnersMentionsString: string,
-    winnersCount: If<IsTemplate, string, number>
+    winnersMentionsString: If<IsTemplate, '{winnersString}', string>,
+    winnersCount: If<IsTemplate, '{numberOfWinners}', number>
 ) => Partial<IGiveawayRerollMessages>
 
 /**

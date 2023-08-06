@@ -14,6 +14,15 @@
 ### **Q:** Is there support for (X) database?
 ### **A:** At the moment, there's only support for 3 databases: **JSON**, **MongoDB** and **Enmap**, but support for other databases may be added in the future as well!
 
+### **Q:** How do I disable the post-install console message?
+### **A:** Head to your `package.json` and add the following property:
+```json
+"discord-giveaways-super": {
+  "postinstall": false
+}
+```
+To enable the message back, just change the value of `postinstall` property back to `true` or completely delete this property as `postinstall` always defaults to `true`.
+
 Got a question? Feel free to ask it in our [Support Server](https://discord.gg/4pWKq8vUnb)!
 
 ## ❗ | Useful Links

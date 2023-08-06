@@ -621,11 +621,6 @@ export class Giveaway<
         const rerolledEmbed = this._messageUtils.buildGiveawayEmbed(this.raw, rerollMessage, winnerIDs)
         const giveawayMessage = await this.channel.messages.fetch(this.messageID)
 
-        giveawayMessage.reply({
-            content: rerollMessage?.messageContent,
-            embeds: Object.keys(rerollMessage).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
-        })
-
         this._messageUtils.editFinishGiveawayMessage(
             this.raw,
             winnerIDs,
@@ -633,6 +628,11 @@ export class Giveaway<
             false,
             rerollEmbedStrings?.successMessage,
         )
+
+        giveawayMessage.reply({
+            content: rerollMessage?.messageContent,
+            embeds: Object.keys(rerollMessage).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
+        })
 
         this._giveaways.emit('giveawayReroll', {
             newWinners: winnerIDs,

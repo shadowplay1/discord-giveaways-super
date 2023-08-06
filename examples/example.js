@@ -3,7 +3,6 @@ const { DatabaseType, Giveaways, isTimeStringValid } = require('discord-giveaway
 
 const { Channel, GuildMember, Message, User } = Partials
 
-
 const client = new Client({
     rest: {
         offset: 0,
@@ -227,9 +226,6 @@ client.on('messageCreate', async message => {
 
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
                                     `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString}`,
-
-                                thumbnailURL: client.user?.displayAvatarURL({ size: 2048 }),
-                                imageURL: client.user?.displayAvatarURL({ size: 2048 }),
 
                                 footer: `Ended at:`,
                                 timestamp: giveaway.endedTimestamp,

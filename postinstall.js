@@ -13,6 +13,4 @@ try {
         console.log('\x1b[32m╚══════════════════════════════════════════════════════════════════════╝\x1b[37m')
         console.log()
     }
-} catch {
-    // console.log('\x1b[91mFailed to open the project\'s `package.json` file.')
-}
+} catch {}

@@ -484,9 +484,7 @@ export class Giveaways<
                             const rerollSuccess = rerollEmbedStrings?.successMessage || {}
                             const rerollSuccessfulMessageCreate = rerollSuccess?.messageContent
 
-                            if (giveaway.isRunning()) {
-                                giveaway.reroll()
-                            }
+                            giveaway.reroll()
 
                             const successEmbed = this._messageUtils.buildGiveawayEmbed(
                                 giveaway.raw,
@@ -528,7 +526,6 @@ export class Giveaways<
      * @private
      */
     private async _sendUpdateMessage(): Promise<void> {
-
         /* eslint-disable max-len */
         if (this.options.updatesChecker?.checkUpdates) {
             const result = await checkUpdates()
@@ -538,11 +535,11 @@ export class Giveaways<
                 console.log(this._logger.colors.green + '╔═════════════════════════════════════════════════════════════════════╗')
                 console.log(this._logger.colors.green + '║ @ discord-giveaways-super                                    - [] X ║')
                 console.log(this._logger.colors.green + '║═════════════════════════════════════════════════════════════════════║')
-                console.log(this._logger.colors.yellow + `║                       The module is ${this._logger.colors.red}out of date!${this._logger.colors.yellow}                    ║`)
-                console.log(this._logger.colors.magenta + '║                       New version is available!                   ║')
-                console.log(this._logger.colors.blue + `║                              ${result.installedVersion} --> ${result.availableVersion}                        ║`)
-                console.log(this._logger.colors.cyan + '║             Run "npm i discord-giveaways-super@latest"          ║')
-                console.log(this._logger.colors.cyan + '║                               to update!                            ║')
+                console.log(this._logger.colors.yellow + `║                      The module is ${this._logger.colors.red}out of date!${this._logger.colors.yellow}                     ║`)
+                console.log(this._logger.colors.magenta + '║                       New version is available!                     ║')
+                console.log(this._logger.colors.blue + `║                             ${result.installedVersion} --> ${result.availableVersion}                         ║`)
+                console.log(this._logger.colors.cyan + '║                Run "npm i discord-giveaways-super@latest"           ║')
+                console.log(this._logger.colors.cyan + '║                              to update!                             ║')
                 console.log(this._logger.colors.white + '║                     View the full changelog here:                   ║')
                 console.log(this._logger.colors.red + `║     https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog     ║`)
                 console.log(this._logger.colors.green + '╚═════════════════════════════════════════════════════════════════════╝\x1b[37m')

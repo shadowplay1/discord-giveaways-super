@@ -3,7 +3,6 @@ import { DatabaseType, Giveaways, isTimeStringValid } from 'discord-giveaways-su
 
 const { Channel, GuildMember, Message, User } = Partials
 
-
 const client = new Client({
     rest: {
         offset: 0,
@@ -24,12 +23,16 @@ const client = new Client({
 // using JSON database for this example
 // you can use any database the module provides:
 // JSON, MongoDB or Enmap
-const giveaways = new Giveaways(client, {
-    database: DatabaseType.JSON,
+const giveaways = new Giveaways<DatabaseType.MONGODB>(client, {
+    database: DatabaseType.MONGODB,
 
     connection: {
-        path: './data/json/giveaways.json'
-    }
+        connectionURI: 'mongodb://user:hannelbannel123@ac-s2jrfjk-shard-00-00.lame8ex.mongodb.net:27017,ac-s2jrfjk-shard-00-01.lame8ex.mongodb.net:27017,ac-s2jrfjk-shard-00-02.lame8ex.mongodb.net:27017/?ssl=true&replicaSet=atlas-12href-shard-0&authSource=admin&retryWrites=true&w=majority',
+        collectionName: 'giveawaystest1',
+        dbName: 'giveawaystest'
+    },
+
+    debug: true
 })
 
 
@@ -210,6 +213,9 @@ client.on('messageCreate', async message => {
                     // defining all messages that are related
                     // to rerolling the giveaway winners
                     reroll(mentionsString, winnersCount) {
+                        console.log(giveaway);
+                        console.log({winnersCount: giveaway.winnersCount});
+
                         return {
                             // this ephemeral reply will be sent when they're not a host
                             // of the giveaway and trying to reroll the winners (embeds may also be used here)
@@ -226,10 +232,7 @@ client.on('messageCreate', async message => {
                                 titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                                 description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners (${winnersCount})`}: ${mentionsString}`,
-
-                                thumbnailURL: client.user?.displayAvatarURL({ size: 2048 }),
-                                imageURL: client.user?.displayAvatarURL({ size: 2048 }),
+                                    `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString}`,
 
                                 footer: `Ended at:`,
                                 timestamp: giveaway.endedTimestamp,
