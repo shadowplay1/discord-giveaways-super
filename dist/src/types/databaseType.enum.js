@@ -1,0 +1,1 @@
+"use strict";var DatabaseType;Object.defineProperty(exports,"__esModule",{value:!0}),exports.DatabaseType=void 0,function(e){e.JSON="JSON",e.MONGODB="MongoDB",e.ENMAP="Enmap"}(DatabaseType||(exports.DatabaseType=DatabaseType={}));

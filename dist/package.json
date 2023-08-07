@@ -1,0 +1,89 @@
+{
+    "name": "discord-giveaways-super",
+    "version": "1.0.5",
+    "description": "Create and manage giveaways in Discord.",
+    "types": "./types/src/index.d.ts",
+    "main": "dist/src/index.js",
+    "scripts": {
+        "prep": "npx husky install && npm run commitlint:install",
+        "lint": "eslint ./src",
+        "lint:fix": "eslint ./src --fix",
+        "build": "tsc -p tsconfig.json",
+        "docs:generate": "bash ./scripts/docgen.sh",
+        "commitlint:install": "npm i -g @commitlint/cli @commitlint/config-conventional -f"
+    },
+    "keywords": [
+        "discord",
+        "bot",
+        "bots",
+        "discord-bot",
+        "discord bot",
+        "discord-bots",
+        "discord bots",
+        "giveaway",
+        "giveaways",
+        "giveaway-bot",
+        "giveaways-bot",
+        "giveaways-bots",
+        "discord-giveaway-bot",
+        "discord-giveaway-bots",
+        "easy-giveaway",
+        "easy-giveaways",
+        "giveaway-bots",
+        "discord-giveaways",
+        "discord-giveaways-super",
+        "fast",
+        "easy",
+        "easy-to-use",
+        "json",
+        "mongodb",
+        "enmap",
+        "djs",
+        "discord.js",
+        "discord.js-v14",
+        "discord.js-v15",
+        "djs-v14",
+        "djs-v15",
+        "v14",
+        "v15",
+        "shadowplay"
+    ],
+    "author": "shadowplay1 <shadowplay483@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "discord.js": "^14.11.0",
+        "enmap": "^5.9.8",
+        "quick-mongo-super": "^1.0.18"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.22.5",
+        "@babel/plugin-proposal-class-properties": "^7.18.6",
+        "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+        "@babel/preset-env": "^7.22.5",
+        "@babel/preset-typescript": "^7.22.5",
+        "@distube/docgen": "github:distubejs/docgen",
+        "@types/node": "^20.3.3",
+        "@types/node-fetch": "^2.6.4",
+        "@typescript-eslint/eslint-plugin": "^6.0.0-alpha.163",
+        "@typescript-eslint/parser": "^6.0.0-alpha.163",
+        "eslint": "^8.43.0",
+        "jsdoc-babel": "^0.5.0"
+    },
+    "quick-mongo-super": {
+        "postinstall": false
+    },
+    "engines": {
+        "node": ">=16.9.0"
+    },
+    "directories": {
+        "lib": "./src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shadowplay1/discord-giveaawys-super.git"
+    },
+    "bugs": {
+        "url": "https://github.com/shadowplay1/discord-giveaawys-super/issues"
+    },
+    "homepage": "https://dgs-docs.js.org"
+}

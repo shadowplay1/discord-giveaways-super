@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.isObject=exports.typeOf=void 0;const typeOf=e=>"object"!=typeof e&&"function"!=typeof e||!e?.prototype?null==e||null==e||"number"==typeof e&&isNaN(e)?`${e}`:e.constructor.name:e.name;exports.typeOf=typeOf;const isObject=e=>!Array.isArray(e)&&"object"==typeof e&&null!==e;exports.isObject=isObject;

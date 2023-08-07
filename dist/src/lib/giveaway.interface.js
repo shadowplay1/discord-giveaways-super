@@ -1,0 +1,1 @@
+"use strict";var GiveawayState;Object.defineProperty(exports,"__esModule",{value:!0}),exports.GiveawayState=void 0,function(e){e[e.STARTED=1]="STARTED",e[e.ENDED=2]="ENDED"}(GiveawayState||(exports.GiveawayState=GiveawayState={}));

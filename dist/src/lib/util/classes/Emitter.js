@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.Emitter=void 0;const events_1=require("events");class Emitter{_emitter=new events_1.EventEmitter({captureRejections:!0});on(e,t){return this._emitter.on(e,t),this}once(e,t){return this._emitter.once(e,t),this}emit(e,...t){return this._emitter.emit(e,t)}}exports.Emitter=Emitter;

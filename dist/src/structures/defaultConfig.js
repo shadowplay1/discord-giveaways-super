@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.defaultConfig=void 0,exports.defaultConfig={giveawaysCheckingInterval:1e3,minGiveawayEntries:1,updatesChecker:{checkUpdates:!0,upToDateMessage:!1},configurationChecker:{ignoreInvalidTypes:!1,ignoreUnspecifiedOptions:!0,ignoreInvalidOptions:!1,showProblems:!0,sendLog:!0,sendSuccessLog:!1},debug:!1};
