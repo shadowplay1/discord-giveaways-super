@@ -148,7 +148,7 @@ export interface IJSONDatabaseConfiguration {
      * Determines how often the database file will be checked (in ms). Default: 1000.
      * @type {number}
      */
-    checkingCountdown: number
+    checkingInterval: number
 }
 
 

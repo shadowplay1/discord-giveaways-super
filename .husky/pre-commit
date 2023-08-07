@@ -1,7 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-rm -rf dist && npm run build
+cleanup() {
+    rm -rf dist
+    rm -rf types
+}
+
+cleanup && npm run build
 bash scripts/minify.sh
 
 git add .

@@ -277,7 +277,7 @@ export class Giveaways<
 
                             const databaseFile = await readFile(databaseOptions.path as string, 'utf-8')
                             JSON.parse(databaseFile)
-                        }, databaseOptions.checkingCountdown)
+                        }, databaseOptions.checkingInterval)
                     } catch (err: any) {
                         if (err.message.includes('Unexpected token') || err.message.includes('Unexpected end')) {
                             throw new GiveawaysError(
@@ -1123,7 +1123,7 @@ export class Giveaways<
  * @typedef {object} IJSONDatabaseConfiguration
  * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
  * @prop {?boolean} [checkDatabase=true] Enables the error checking for database file. Default: true
- * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
+ * @prop {?number} [checkingInterval=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
 
 /**
@@ -1230,7 +1230,7 @@ export class Giveaways<
  * @typedef {object} IJSONDatabaseConfiguration
  * @prop {?string} [path='./giveaways.json'] Full path to a JSON storage file. Default: './giveaways.json'.
  * @prop {?boolean} [checkDatabase=true] Enables the error checking for database file. Default: true
- * @prop {?number} [checkingCountdown=1000] Determines how often the database file will be checked (in ms). Default: 1000.
+ * @prop {?number} [checkingInterval=1000] Determines how often the database file will be checked (in ms). Default: 1000.
  */
 
 /**

@@ -14,26 +14,68 @@ You know that the module has a lot of different settings and you can set them up
 
 The module has support for **3** types of databases: **__JSON__**, **__MongoDB__** and **__Enmap__**.
 
-To set up the database to work in Discord Giveaways Super, we need to specify 2 important configuration properties: [`database`](https://dgs-docs.js.org/#/docs/main/1.0.1/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E) and [`connection`](https://dgs-docs.js.org/#/docs/main/1.0.1/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E)
+To set up the database to work in Discord Giveaways Super, we need to specify 2 important configuration properties: [`database`](https://dgs-docs.js.org/#/docs/main/1.0.5/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E) and [`connection`](https://dgs-docs.js.org/#/docs/main/1.0.5/typedef/IGiveawaysConfiguration%3CTDatabaseType%3E)
 
 - `database` is the type of database we want to use
 - `connection` is the configuration for the database which we have chosen
+
+**JSON** database configuration example:
 
 ```js
 const { Giveaways, DatabaseType } = require('discord-giveaways-super')
 
 const giveaways = new Giveaways(client, {
-	database: DatabaseType.JSON, // or any other database that is provided by module: DatabaseType.MONGODB or DatabaseType.ENMAP
+	database: DatabaseType.JSON,
 
 	connection: {
-		// database configuration object based on the chosen database
-	}
+		path: 'path/where/saving/giveaways.json', // the path where JSON database file will be located (optional)
+		checkDatabase: true, // enables checking the JSON database file for errors (optional)
+		checkingInterval: 1000 // how often the  JSON database file will be checked for errors (optional)
+	},
+
+	// ... (other Giveaways configuration options)
+})
+```
+
+**MongoDB** database configuration example:
+
+```js
+const { Giveaways, DatabaseType } = require('discord-giveaways-super')
+
+const giveaways = new Giveaways(client, {
+	database: DatabaseType.MONGODB,
+
+	connection: {
+		connectionURI: 'YOUR_MONGODB_CLUSTER_CONNECTION_URI', // your mongo cluster connection URI (required)
+		collectionName: 'collectionName', // collection name where the giveaways data will be stored (optional)
+		dbName: 'dbName' // database name where the giveaways data will be stored (optional)
+	},
+
+	// ... (other Giveaways configuration options)
+})
+```
+
+**Enmap** database configuration example:
+
+```js
+const { Giveaways, DatabaseType } = require('discord-giveaways-super')
+
+const giveaways = new Giveaways(client, {
+	databaseType: DatabaseType.ENMAP,
+
+    connection: {
+        name: 'giveaways', // enmap table name (optional)
+        dataDir: './path/where/saving/enmap', // enmap table name (optional)
+        wal: false // disable single threading and allow multiple sqlite requests at once (optional)
+    }
+
+	// ... (other Giveaways configuration options)
 })
 ```
 
 ## Configuring Giveaways
 
-To configure Discord Giveaways Super, follow these steps:
+To configure the `Giveaways` class, follow these steps:
 
 1. **Import the Module and Dependencies**:
 First, make sure you've imported the necessary dependencies and the `Giveaways` class from the module. Your import statements would look something like this:
@@ -66,6 +108,7 @@ client.login('YOUR_BOT_TOKEN_HERE')
 ```
 
 3. **Initialize our Giveaways class from the module**:
+
 ```js
 const giveaways = new Giveaways(client, {
 	database: DatabaseType.JSON, // or any other database that is provided by module
@@ -81,6 +124,7 @@ giveaways.on('ready', () => {
 ```
 
 ### The full initialation code should look like this:
+
 ```js
 const client = new Client({
     intents: [
@@ -221,7 +265,7 @@ const giveawaysConfigExample = {
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.1/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

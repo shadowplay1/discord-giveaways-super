@@ -31,6 +31,7 @@ Features:
 <li><b>Flexible and Customizable ⚙️</b></li>
 <li><b>Giveaway **start**, **edit**, **delete**, **reroll**, **extension** and *many more* 🚀</b></li>
 <li><b>Handles Crashes/Restarts 🔄</b></li>
+<li><b>Database Caching System 📚</b></li>
 <li><b>Easy to Understand 👍</b></li>
 <li><b>Beginner Friendly 😄</b></li>
 <li><b>Extremely Fast 💨</b></li>
@@ -55,7 +56,7 @@ Features:
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.1/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

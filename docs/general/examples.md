@@ -33,7 +33,7 @@ const giveaways = new Giveaways(client, {
 
     connection: {
         // database configuration object,
-		// see https://dgs-docs.js.org/#/docs/main/1.0.1/general/configuring
+		// see https://dgs-docs.js.org/#/docs/main/1.0.5/general/configuring
 		// for more info
     }
 })
@@ -114,7 +114,7 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
         // of "defineEmbedStrings" function are also will be replaced with
         // placeholder values
 
-		// see https://dgs-docs.js.org/#/docs/main/1.0.1/general/embed-strings
+		// see https://dgs-docs.js.org/#/docs/main/1.0.5/general/embed-strings
 		// for more info about defining embeds
 		defineEmbedStrings(giveaway, host) {
     		return {
@@ -613,7 +613,7 @@ View the **full bot examples** in both **JavaScript** and **TypeScript** [here](
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.1/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

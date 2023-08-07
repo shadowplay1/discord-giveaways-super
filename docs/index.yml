@@ -7,7 +7,7 @@
     - name: Examples
       path: examples.md
 
-    - name: Configuring
+    - name: Configuring Giveaways
       path: configuring.md
 
     - name: Embed Strings
