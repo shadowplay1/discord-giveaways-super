@@ -1,6 +1,7 @@
 import {
     IGiveawayEmbedOptions, IGiveawayButtonOptions,
-    IGiveawayStartMessages, IGiveawayRerollMessages
+    IGiveawayStartMessages, IGiveawayRerollMessages,
+    IParticipantsFilter
 } from '../types/configurations'
 
 import { DiscordID } from '../types/misc/utils'
@@ -122,6 +123,12 @@ export interface IGiveaway<
      * @type {number}
      */
     entriesCount: number
+
+    /**
+     * An object with conditions for members to join the giveaway.
+     * @type {?IParticipantsFilter}
+     */
+    participantsFilter?: Partial<IParticipantsFilter>
 
     /**
      * Array of user IDs of users that have entered the giveaway.

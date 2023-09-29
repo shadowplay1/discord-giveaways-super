@@ -7,7 +7,7 @@ import { DatabaseType } from './databaseType.enum'
 import { IDatabaseStructure } from './databaseStructure.interface'
 
 import { IGiveaway } from '../lib/giveaway.interface'
-import { If, OptionalProps } from './misc/utils'
+import { DiscordID, If, OptionalProps } from './misc/utils'
 
 /**
  * Full {@link Giveaways} class configuration object.
@@ -186,8 +186,8 @@ export type IGiveawayData<
  * @prop {string} hostMemberID The ID of the host member.
  * @prop {string} channelID The ID of the channel where the giveaway is held.
  * @prop {string} guildID The ID of the guild where the giveaway is held.
- * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
- * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ * @prop {IGiveawayButtons} [buttons] An object with all the available giveaway buttons.
+ * @prop {IGiveawayButtons} [defineEmbedStrings] An object with all the available giveaway buttons.
  */
 export type IGiveawayStartConfig<
     HostMemberID extends string = string,
@@ -195,7 +195,7 @@ export type IGiveawayStartConfig<
     GuildID extends string = string
 > = OptionalProps<
     IGiveawayData<HostMemberID, ChannelID, GuildID>,
-    'time' | 'winnersCount'
+    'time' | 'winnersCount' | 'participantsFilter'
 > & Partial<IGiveawayStartOptions>
 
 /**
@@ -218,24 +218,41 @@ export type IGiveawayButtons = Partial<Record<'joinGiveawayButton' | 'rerollButt
  * @prop {string} [emoji] Emoji string.
  * @prop {ButtonStyle} url URL that the button will take to.
  */
-export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'link' | 'style'>>
+export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'style'>>
 
 /**
  * A function that defines the embed strings used in the giveaway.
+ *
+ * Type parameters:
+ *
+ * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+ *
  * @callback DefineEmbedStringsCallback
- * @param {Omit} giveaway An object containing information about the giveaway.
+ * @param {IGiveaway} giveaway An object containing information about the giveaway.
  * @param {User} giveawayHost The host of the giveaway.
- * @returns {Partial<IEmbedStringsDefinitions>} An object containing the defined embed strings.
+ * @returns {Partial<IEmbedStringsDefinitions<IsTemplate>>}
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 
 /**
  * Giveaway start options.
  * @typedef {object} IGiveawayStartOptions
- * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
- * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ * @prop {IGiveawayButtons} [buttons] An object with all the available giveaway buttons.
+ * @prop {Partial<IParticipantsFilter>} [participantsFilter] An object with conditions for members to join the giveaway.
+ * @prop {DefineEmbedStringsCallback} [defineEmbedStrings] A function that defines the embed strings used in the giveaway.
  */
 export interface IGiveawayStartOptions {
+
+    /**
+     * An object with all the available giveaway buttons.
+     */
     buttons: IGiveawayButtons
+
+    /**
+     * An object with conditions for members to join the giveaway.
+     */
+    participantsFilter: Partial<IParticipantsFilter>
 
     /**
      * A function that defines the embed strings used in the giveaway.
@@ -254,6 +271,28 @@ export interface IGiveawayStartOptions {
         giveaway: IGiveaway,
         giveawayHost: User
     ): Partial<IEmbedStringsDefinitions<IsTemplate>>
+}
+
+/**
+ * An object with conditions for members to join the giveaway.
+ * @typedef {object} IParticipantsFilter
+ * @prop {DiscordID<string>[]} [requiredRoles]
+ * Array of role IDs that the user *required* to have in order to join the giveaway.
+ *
+ * @prop {DiscordID<string>[]} [forbiddenRoles]
+ * Array of role IDs that the user *cannot have* in order to join the giveaway.
+ */
+export interface IParticipantsFilter {
+
+    /**
+     * Array of role IDs that the user *required* to have in order to join the giveaway.
+     */
+    requiredRoles: DiscordID<string>[]
+
+    /**
+     * Array of role IDs that the user *cannot have* in order to join the giveaway.
+     */
+    forbiddenRoles: DiscordID<string>[]
 }
 
 /**

@@ -8,6 +8,7 @@ import Enmap from 'enmap'
 
 import {
     Client, GatewayIntentBits,
+    GuildMember,
     IntentsBitField, TextChannel, User
 } from 'discord.js'
 
@@ -369,6 +370,48 @@ export class Giveaways<
                     if (giveaway) {
                         const isUserJoined = giveaway.entries.has(interaction.user.id)
 
+                        if (giveaway.participantsFilter?.requiredRoles?.length) {
+                            if (!(interaction.member instanceof GuildMember)) return
+                            const requiredRoles = giveaway.participantsFilter?.requiredRoles
+
+                            for (const requiredRole of requiredRoles) {
+                                const isMemberHasRequiredRole = interaction.member.roles.cache
+                                    .find(role => role.id == requiredRole)
+
+                                // TODO: add definitions in embed strings for this case
+                                if (!isMemberHasRequiredRole) {
+                                    interaction.reply({
+                                        content: `you must have ${requiredRoles.map(role => `<@${role}>`)} ` +
+                                            'roles to participate in this giveaway',
+                                        ephemeral: true
+                                    })
+
+                                    return
+                                }
+                            }
+                        }
+
+                        if (giveaway.participantsFilter?.forbiddenRoles?.length) {
+                            if (!(interaction.member instanceof GuildMember)) return
+                            const forbiddenRoles = giveaway.participantsFilter?.forbiddenRoles
+
+                            for (const forbiddenRole of forbiddenRoles) {
+                                const isMemberHasForbiddenRole = interaction.member.roles.cache
+                                    .find(role => role.id == forbiddenRole)
+
+                                // TODO: add definitions in embed strings for this case
+                                if (isMemberHasForbiddenRole) {
+                                    interaction.reply({
+                                        content: 'you cannot participate with roles ' +
+                                            forbiddenRoles.map(role => `<@${role}>`) + 'in this giveaway',
+                                        ephemeral: true
+                                    })
+
+                                    return
+                                }
+                            }
+                        }
+
                         if (!isUserJoined) {
                             const giveawayJoinMessage = giveaway.messageProps?.embeds?.joinGiveawayMessage || {}
 
@@ -580,7 +623,8 @@ export class Giveaways<
         const {
             channelID, guildID, hostMemberID,
             prize, time, winnersCount,
-            defineEmbedStrings, buttons
+            defineEmbedStrings, buttons,
+            participantsFilter
         } = giveawayOptions
 
         if (!channelID) {
@@ -693,6 +737,7 @@ export class Giveaways<
             winnersCount: winnersCount || 1,
             entriesCount: 0,
             entriesArray: [],
+            participantsFilter,
             isEnded: false
         }
 

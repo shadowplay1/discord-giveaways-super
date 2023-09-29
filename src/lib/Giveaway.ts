@@ -15,6 +15,7 @@ import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/class
 
 import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/misc/utils'
 import { IDatabaseArrayGiveaway } from '../types/databaseStructure.interface'
+import { IParticipantsFilter } from '../types/configurations'
 
 import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
 
@@ -30,7 +31,7 @@ import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
  */
 export class Giveaway<
     TDatabaseType extends DatabaseType
-> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray'> {
+> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray' | 'participantsFilter'> {
 
     /**
      * {@link Giveaways} instance.
@@ -148,6 +149,12 @@ export class Giveaway<
      * @type {boolean}
      */
     public isEnded: boolean
+
+    /**
+     * An object with conditions for members to join the giveaway.
+     * @type {?IParticipantsFilter}
+     */
+    public participantsFilter?: Partial<IParticipantsFilter> = {}
 
     /**
      * Message data properties for embeds and buttons.
