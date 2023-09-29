@@ -571,10 +571,10 @@ export class Giveaways<
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
     public async start<
-    HostMemberID extends string = string,
-    ChannelID extends string = string,
-    GuildID extends string = string
->(
+        HostMemberID extends string = string,
+        ChannelID extends string = string,
+        GuildID extends string = string
+    >(
         giveawayOptions: IGiveawayStartConfig<HostMemberID, ChannelID, GuildID>
     ): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         const {
