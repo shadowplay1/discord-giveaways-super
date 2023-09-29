@@ -8,6 +8,12 @@
 
 ## ⏰ | Changelog
 
+**v1.1.0**:
+- Fixed Discord ID typings bug in `Giveaways.start()` method.
+- Added giveaways participants filters object in `Giveaways.start()` method - now you can restrict members from participating in a giveaway if they don't have any of the required roles or have any of the forbidden roles.
+- Updated `discord.js` to the latest stable version.
+- Minor bugfixes.
+
 **v1.0.5**:
 - Renamed the `checkingCountdown` option from JSON configuration options to `checkingInterval` so it would make more sense.
 - Added the database configurtion examples in documentation.
