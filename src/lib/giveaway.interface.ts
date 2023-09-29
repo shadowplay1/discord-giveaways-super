@@ -261,7 +261,7 @@ export type IGiveawayMessageButtons = Record<
  */
 export type GiveawayWithoutInternalProps = Omit<
     Record<keyof IGiveaway, string>,
-    'entriesArray' | 'state' | 'isEnded'
+    'entriesArray' | 'state' | 'isEnded' | 'participantsFilter'
 >
 
 /**
