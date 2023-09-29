@@ -27,7 +27,11 @@ import { DiscordID } from '../types/misc/utils'
  *
  * @template TDatabaseType The database type that will be used in the module.
  */
-export interface IGiveaway {
+export interface IGiveaway<
+    HostMemberID extends string = string,
+    ChannelID extends string = string,
+    GuildID extends string = string
+> {
 
     /**
      * Giveaway ID.
@@ -85,15 +89,15 @@ export interface IGiveaway {
 
     /**
      * Giveaway host member ID.
-     * @type {DiscordID<string>}
+     * @type {DiscordID<HostMemberID>}
      */
-    hostMemberID: DiscordID<string>
+    hostMemberID: DiscordID<HostMemberID>
 
     /**
      * Giveaway channel ID.
-     * @type {DiscordID<string>}
+     * @type {DiscordID<ChannelID>}
      */
-    channelID: DiscordID<string>
+    channelID: DiscordID<ChannelID>
 
     /**
      * Giveaway message ID.
@@ -109,9 +113,9 @@ export interface IGiveaway {
 
     /**
      * Giveaway guild ID.
-     * @type {DiscordID<string>}
+     * @type {DiscordID<GuildID>}
      */
-    guildID: DiscordID<string>
+    guildID: DiscordID<GuildID>
 
     /**
      * Number of giveaway entries.

@@ -165,8 +165,12 @@ export interface IJSONDatabaseConfiguration {
  * @prop {string} channelID The ID of the channel where the giveaway is held.
  * @prop {string} guildID The ID of the guild where the giveaway is held.
  */
-export type IGiveawayData = Omit<
-    IGiveaway,
+export type IGiveawayData<
+    HostMemberID extends string = string,
+    ChannelID extends string = string,
+    GuildID extends string = string
+> = Omit<
+    IGiveaway<HostMemberID, ChannelID, GuildID>,
     'id' | 'startTimestamp' | 'endTimestamp' |
     'endedTimestamp' | 'messageID' | 'messageURL' |
     'entriesCount' | 'entriesArray' | 'state' |
@@ -185,8 +189,12 @@ export type IGiveawayData = Omit<
  * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
  * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
  */
-export type IGiveawayStartConfig = OptionalProps<
-    IGiveawayData,
+export type IGiveawayStartConfig<
+    HostMemberID extends string = string,
+    ChannelID extends string = string,
+    GuildID extends string = string
+> = OptionalProps<
+    IGiveawayData<HostMemberID, ChannelID, GuildID>,
     'time' | 'winnersCount'
 > & Partial<IGiveawayStartOptions>
 

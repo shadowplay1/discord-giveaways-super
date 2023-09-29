@@ -570,8 +570,12 @@ export class Giveaways<
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
-    public async start(
-        giveawayOptions: IGiveawayStartConfig
+    public async start<
+    HostMemberID extends string = string,
+    ChannelID extends string = string,
+    GuildID extends string = string
+>(
+        giveawayOptions: IGiveawayStartConfig<HostMemberID, ChannelID, GuildID>
     ): Promise<SafeGiveaway<Giveaway<TDatabaseType>>> {
         const {
             channelID, guildID, hostMemberID,
