@@ -741,9 +741,17 @@ export class Giveaways<
             isEnded: false
         }
 
+        const hostMember = await this.client.users.fetch(hostMemberID).catch(console.error) as User;
+        if (!hostMember) {
+          throw new GiveawaysError(
+            errorMessages.USER_NOT_FOUND(hostMemberID),
+            GiveawaysErrorCodes.USER_NOT_FOUND
+          );
+        }
+
         const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings<true>(
-            giveawayTemplate as any,
-            this.client.users.cache.get(hostMemberID) as User
+          giveawayTemplate as any,
+          hostMember
         ) : {}
 
         const startEmbedStrings = definedEmbedStrings?.start || {}
