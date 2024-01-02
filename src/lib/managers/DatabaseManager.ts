@@ -3,11 +3,14 @@ import { Giveaways } from '../../Giveaways'
 import { Database } from '../../types/configurations'
 import { IDatabaseGuild } from '../../types/databaseStructure.interface'
 import { DatabaseType } from '../../types/databaseType.enum'
+
 import { ExtractPromisedType } from '../../types/misc/utils'
+import { IDebugResult } from '../../types/debug.interface'
 
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from '../util/classes/GiveawaysError'
 import { JSONParser } from '../util/classes/JSONParser'
 import { Logger } from '../util/classes/Logger'
+
 import { CacheManager } from './CacheManager'
 
 /**
@@ -146,7 +149,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
         key: string,
         toDebug: F,
         sendDebugLog: boolean = true
-    ): Promise<ExtractPromisedType<ReturnType<F>>> {
+    ): Promise<IDebugResult<ExtractPromisedType<ReturnType<F>>>> {
         try {
             const callbackResult = await toDebug()
 
@@ -154,13 +157,19 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
                 this._logger.debug(`Performed "${operation}" operation on key "${key}".`)
             }
 
-            return callbackResult
+            return {
+                error: null,
+                result: callbackResult
+            }
         } catch (err: any) {
             if (this.giveaways.options.debug && sendDebugLog) {
                 this._logger.error(`Failed to perform "${operation}" operation on key "${key}": ${err.stack}`)
             }
 
-            return null as any
+            return {
+                error: err,
+                result: null
+            }
         }
     }
 
@@ -294,12 +303,12 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @param {TKey} key The key in database.
      * @param {V} value Any data to set.
      * @param {boolean} [sendDebugLog=true] Whether the debug log should be sent in the console if debug mode is enabled.
-     * @returns {Promise<R>} The data from the database.
+     * @returns {Promise<IDebugResult<R>>} The data from the database.
      *
      * @template V The type of data being set.
      * @template R The type of data being returned.
      */
-    public async set<V = TValue, R = any>(key: TKey, value: V, sendDebugLog: boolean = true): Promise<R> {
+    public async set<V = TValue, R = any>(key: TKey, value: V, sendDebugLog: boolean = true): Promise<IDebugResult<R>> {
         return this._debug('set', key, async (): Promise<R> => {
             this._cache.set<V, R>(key, value)
 
@@ -373,9 +382,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Adds a number to the data in database.
      * @param {TKey} key The key in database.
      * @param {number} numberToAdd Any number to add.
-     * @returns {Promise<boolean>} `true` if added successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if added successfully, `false` otherwise.
      */
-    public async add(key: TKey, numberToAdd: number): Promise<boolean> {
+    public async add(key: TKey, numberToAdd: number): Promise<IDebugResult<boolean>> {
         return this._debug('add', key, async (): Promise<boolean> => {
             const targetNumber = this._cache.get<number>(key)
 
@@ -433,9 +442,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Subtracts a number to the data in database.
      * @param {TKey} key The key in database.
      * @param {number} numberToSubtract Any number to subtract.
-     * @returns {Promise<boolean>} `true` if subtracted successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if subtracted successfully, `false` otherwise.
      */
-    public async subtract(key: TKey, numberToSubtract: number): Promise<boolean> {
+    public async subtract(key: TKey, numberToSubtract: number): Promise<IDebugResult<boolean>> {
         return this._debug('subtract', key, async (): Promise<boolean> => {
             const targetNumber = this._cache.get<number>(key)
 
@@ -492,9 +501,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
     /**
      * Deletes the data from database.
      * @param {TKey} key The key in database.
-     * @returns {Promise<boolean>} `true` if deleted successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if deleted successfully, `false` otherwise.
      */
-    public async delete(key: TKey): Promise<boolean> {
+    public async delete(key: TKey): Promise<IDebugResult<boolean>> {
         return this._debug('delete', key, async (): Promise<boolean> => {
             this._cache.delete(key)
 
@@ -526,11 +535,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      *
      * @param {TKey} key The key in database.
      * @param {V} value Any value to push into database array.
-     * @returns {Promise<boolean>} `true` if pushed successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if pushed successfully, `false` otherwise.
      *
      * @template V The type of data being pushed.
      */
-    public async push<V = TValue>(key: TKey, value: V): Promise<boolean> {
+    public async push<V = TValue>(key: TKey, value: V): Promise<IDebugResult<boolean>> {
         return this._debug('push', key, async (): Promise<boolean> => {
             const targetArray = this._cache.get<V[]>(key) || []
 
@@ -601,11 +610,11 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @param {TKey} key The key in database.
      * @param {number} index The index in the target array.
      * @param {V} newValue The new value to set.
-     * @returns {Promise<boolean>} `true` if pulled successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if pulled successfully, `false` otherwise.
      *
      * @template V The type of data being pulled.
      */
-    public async pull<V = TValue>(key: TKey, index: number, newValue: V): Promise<boolean> {
+    public async pull<V = TValue>(key: TKey, index: number, newValue: V): Promise<IDebugResult<boolean>> {
         return this._debug('pull', key, async (): Promise<boolean> => {
 
             const targetArray = this._cache.get<V[]>(key) || []
@@ -672,9 +681,9 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * Removes an element from a specified array in the database.
      * @param {TKey} key The key in database.
      * @param {number} index The index in the target array.
-     * @returns {Promise<boolean>} `true` if popped successfully, `false` otherwise.
+     * @returns {Promise<IDebugResult<boolean>>} `true` if popped successfully, `false` otherwise.
      */
-    public async pop(key: TKey, index: number): Promise<boolean> {
+    public async pop(key: TKey, index: number): Promise<IDebugResult<boolean>> {
         return this._debug('pop', key, async (): Promise<boolean> => {
             const targetArray = this._cache.get<any[]>(key) || []
 

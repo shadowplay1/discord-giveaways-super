@@ -7,6 +7,6 @@ cleanup() {
 }
 
 cleanup && npm run build
-bash scripts/minify.sh
+# bash scripts/minify.sh
 
 git add .
