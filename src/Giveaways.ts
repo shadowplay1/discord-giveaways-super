@@ -1185,7 +1185,7 @@ export class Giveaways<
  */
 
 /**
- * An object that contains an information about a giveaway that is required fo starting..
+ * An object that contains an information about a giveaway that is required fo starting.
  * @typedef {object} IGiveawayData
  * @prop {string} prize The prize of the giveaway.
  * @prop {string} time The time of the giveaway.
