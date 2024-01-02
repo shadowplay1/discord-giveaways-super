@@ -8,7 +8,7 @@ node_modules/
 dist/
 
 # compiled types
-types/
+*.d.ts
 
 # testing data
 data/
