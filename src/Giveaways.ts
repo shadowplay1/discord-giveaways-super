@@ -50,13 +50,13 @@ import { IDatabaseStructure } from './types/databaseStructure.interface'
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
  * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
  *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>>}
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  * @template TDatabaseKey The type of database key that will be used in database operations.
  * @template TDatabaseValue The type of database content that will be used in database operations.
  */
@@ -988,7 +988,7 @@ export class Giveaways<
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  */
 
 /**
@@ -1367,17 +1367,22 @@ export class Giveaways<
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
- *
- * @typedef {object} IGiveawaysEvents<TDatabaseType>
- * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} is ready.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
+ * 
+ * @typedef {object} IGiveawaysEvents
+ * @prop {Giveaways<DatabaseType, TDatabaseKey, TDatabaseValue>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
- * @prop {Giveaway<DatabaseType>} giveawayStart Emits when a giveaway is started.
- * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when a giveaway is rerolled.
- * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when a giveaway is rerolled.
- * @prop {IGiveawayRerollEvent} giveawayReroll Emits when a giveaway is rerolled.
+ * @prop {Giveaway<DatabaseType>} giveawayStart Emits when the giveaway is started.
+ * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when the giveaway is restarted.
+ * @prop {Giveaway<DatabaseType>} giveawayEnd Emits when the giveaway is ended.
+ * @prop {IGiveawayRerollEvent<DatabaseType>} giveawayReroll Emits when the giveaway winners are rerolled.
+ * @prop {IGiveawayEditEvent<DatabaseType>} giveawayEdit Emits when the giveaway info was edited.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
+ * @template TDatabaseKey The type of database key that will be used in database operations.
+ * @template TDatabaseValue The type of database content that will be used in database operations.
  */
 
 /**
@@ -1385,13 +1390,13 @@ export class Giveaways<
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  *
  * @typedef {object} IGiveawayRerollEvent<TDatabaseType>
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  * @prop {string} newWinners Array of the new picked winners after reroll.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  */
 
 /**
@@ -1399,13 +1404,13 @@ export class Giveaways<
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  *
  * @typedef {object} IGiveawayTimeChangeEvent
  * @prop {string} time The time that affected the giveaway's length.
  * @prop {Giveaway<DatabaseType>} giveaway Giveaway instance.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  */
 
 /**
@@ -1671,7 +1676,7 @@ export class Giveaways<
 /**
  * Emits when the {@link Giveaways} module is ready.
  * @event Giveaways#ready
- * @param {Giveaways<DatabaseType>} giveaways Initialized {@link Giveaways} instance.
+ * @param {Giveaways<DatabaseType, TDatabaseKey, TDatabaseValue>} giveaways Initialized {@link Giveaways} instance.
  */
 
 /**

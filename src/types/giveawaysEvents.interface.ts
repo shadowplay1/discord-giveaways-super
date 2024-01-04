@@ -11,7 +11,7 @@ import { IDatabaseStructure } from './databaseStructure.interface'
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
  * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
  * 
@@ -24,7 +24,7 @@ import { IDatabaseStructure } from './databaseStructure.interface'
  * @prop {IGiveawayRerollEvent<DatabaseType>} giveawayReroll Emits when the giveaway winners are rerolled.
  * @prop {IGiveawayEditEvent<DatabaseType>} giveawayEdit Emits when the giveaway info was edited.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  * @template TDatabaseKey The type of database key that will be used in database operations.
  * @template TDatabaseValue The type of database content that will be used in database operations.
  */

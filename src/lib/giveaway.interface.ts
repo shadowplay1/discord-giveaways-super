@@ -26,7 +26,7 @@ import { DiscordID } from '../types/misc/utils'
  * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  *
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  */
 export interface IGiveaway<
     HostMemberID extends string = string,

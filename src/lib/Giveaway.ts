@@ -24,10 +24,10 @@ import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  *
  * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray'>}
- * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that is used.
  */
 export class Giveaway<
     TDatabaseType extends DatabaseType
