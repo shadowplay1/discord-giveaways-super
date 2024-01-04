@@ -2,15 +2,19 @@ import { Giveaways } from '../Giveaways'
 import { Giveaway } from '../lib/Giveaway'
 
 import { DatabaseType } from './databaseType.enum'
+
 import { EditableGiveawayProperties, IGiveaway } from '../lib/giveaway.interface'
+import { IDatabaseStructure } from './databaseStructure.interface'
 
 /**
  * A type containing all the {@link Giveaways} events and their return types.
  *
  * Type parameters:
  *
- * - TDatabaseType ({@link DatabaseType}) - The database type that will be used in the module.
- *
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
+ * 
  * @typedef {object} IGiveawaysEvents
  * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
@@ -20,11 +24,17 @@ import { EditableGiveawayProperties, IGiveaway } from '../lib/giveaway.interface
  * @prop {IGiveawayRerollEvent<DatabaseType>} giveawayReroll Emits when the giveaway winners are rerolled.
  * @prop {IGiveawayEditEvent<DatabaseType>} giveawayEdit Emits when the giveaway info was edited.
  *
- * @template {DatabaseType} TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseKey The type of database key that will be used in database operations.
+ * @template TDatabaseValue The type of database content that will be used in database operations.
  */
-export type IGiveawaysEvents<TDatabaseType extends DatabaseType> = {
+export type IGiveawaysEvents<
+    TDatabaseType extends DatabaseType,
+    TDatabaseKey extends string = `${string}.giveaways`,
+    TDatabaseValue = IDatabaseStructure
+> = {
+    ready: Giveaways<TDatabaseType, TDatabaseKey, TDatabaseValue>
     databaseConnect: void
-    ready: Giveaways<TDatabaseType, any, any>
     giveawayReroll: IGiveawayRerollEvent<TDatabaseType>
     giveawayEdit: IGiveawayEditEvent<TDatabaseType>
 } & Record<'giveawayStart' | 'giveawayRestart' | 'giveawayEnd', Giveaway<TDatabaseType>>

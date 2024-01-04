@@ -51,15 +51,20 @@ import { IDatabaseStructure } from './types/databaseStructure.interface'
  * Type parameters:
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
  *
- * @extends {Emitter<IGiveawaysEvents<TDatabaseType>>}
+ * @extends {Emitter<IGiveawaysEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>>}
+ *
  * @template TDatabaseType The database type that will be used in the module.
+ * @template TDatabaseKey The type of database key that will be used in database operations.
+ * @template TDatabaseValue The type of database content that will be used in database operations.
  */
 export class Giveaways<
     TDatabaseType extends DatabaseType,
     TDatabaseKey extends string = `${string}.giveaways`,
     TDatabaseValue = IDatabaseStructure
-> extends Emitter<IGiveawaysEvents<TDatabaseType>> {
+> extends Emitter<IGiveawaysEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>> {
 
     /**
      * Discord Client.
