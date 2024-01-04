@@ -346,11 +346,11 @@ export class Giveaways<
             if (this.client.isReady()) {
                 clearInterval(clientReadyInterval)
 
-                const giveawatCheckingInterval = setInterval(() => {
+                const giveawayCheckingInterval = setInterval(() => {
                     this._checkGiveaways()
                 }, this.options.giveawaysCheckingInterval)
 
-                this.giveawaysCheckingInterval = giveawatCheckingInterval
+                this.giveawaysCheckingInterval = giveawayCheckingInterval
 
                 this.ready = true
                 this.emit('ready', this)
