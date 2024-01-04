@@ -16,7 +16,7 @@ import { IDatabaseStructure } from './databaseStructure.interface'
  * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
  * 
  * @typedef {object} IGiveawaysEvents
- * @prop {Giveaways<DatabaseType>} ready Emits when the {@link Giveaways} module is ready.
+ * @prop {Giveaways<DatabaseType, TDatabaseKey, TDatabaseValue>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.
  * @prop {Giveaway<DatabaseType>} giveawayStart Emits when the giveaway is started.
  * @prop {Giveaway<DatabaseType>} giveawayRestart Emits when the giveaway is restarted.
