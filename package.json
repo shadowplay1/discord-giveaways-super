@@ -80,10 +80,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/shadowplay1/discord-giveaawys-super.git"
+		"url": "git+https://github.com/shadowplay1/discord-giveaways-super.git"
 	},
 	"bugs": {
-		"url": "https://github.com/shadowplay1/discord-giveaawys-super/issues"
+		"url": "https://github.com/shadowplay1/discord-giveaways-super/issues"
 	},
 	"homepage": "https://dgs-docs.js.org"
 }
