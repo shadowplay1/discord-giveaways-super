@@ -20,7 +20,6 @@ import { CacheManager } from './CacheManager'
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will determine
  * which connection configuration should be used.
- *
  * - `TKey` ({@link string}) - The type of database key that will be used.
  * - `TValue` ({@link any}) - The type of database values that will be used.
  *
