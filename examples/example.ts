@@ -27,7 +27,7 @@ const giveaways = new Giveaways<DatabaseType.MONGODB>(client, {
     database: DatabaseType.MONGODB,
 
     connection: {
-        connectionURI: 'mongodb://user:hannelbannel123@ac-s2jrfjk-shard-00-00.lame8ex.mongodb.net:27017,ac-s2jrfjk-shard-00-01.lame8ex.mongodb.net:27017,ac-s2jrfjk-shard-00-02.lame8ex.mongodb.net:27017/?ssl=true&replicaSet=atlas-12href-shard-0&authSource=admin&retryWrites=true&w=majority',
+        connectionURI: 'mongodb://localhost:25017',
         collectionName: 'giveawaystest1',
         dbName: 'giveawaystest'
     },
