@@ -47,7 +47,7 @@ export class CacheManager<K extends string, V> {
         const mapData: Record<any, any> = {}
 
         for (const [key, value] of this._cache.entries()) {
-            mapData[key] = value as any
+            mapData[key] = value as keyof V
         }
 
         return mapData

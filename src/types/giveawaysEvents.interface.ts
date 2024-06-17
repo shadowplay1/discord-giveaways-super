@@ -12,9 +12,13 @@ import { IDatabaseStructure } from './databaseStructure.interface'
  * Type parameters:
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
- * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
- * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
- * 
+ *
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) -
+ * The type of database key that will be used in database operations.
+ *
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) -
+ * The type of database content that will be used in database operations.
+ *
  * @typedef {object} IGiveawaysEvents
  * @prop {Giveaways<DatabaseType, TDatabaseKey, TDatabaseValue>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.

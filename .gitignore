@@ -19,5 +19,6 @@ data/
 # vim swap files
 *.sw[nop]
 
-# test scripts
+# test scripts & data
 test/
+test123.json

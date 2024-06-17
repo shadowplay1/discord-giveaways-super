@@ -28,8 +28,8 @@ export class Emitter<E extends object> {
      *
      * @template T Event name to get the callback function type for.
      */
-    public on<T extends keyof E>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
-        this._emitter.on(event as string, listener)
+    public on<T extends Exclude<keyof E, number>>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
+        this._emitter.on(event, listener)
         return this
     }
 
@@ -46,8 +46,8 @@ export class Emitter<E extends object> {
      *
      * @template T Event name to get the callback function type for.
      */
-    public once<T extends keyof E>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
-        this._emitter.once(event as string, listener)
+    public once<T extends Exclude<keyof E, number>>(event: T, listener: (...args: E[T][]) => any): Emitter<E> {
+        this._emitter.once(event, listener)
         return this
     }
 
@@ -64,7 +64,7 @@ export class Emitter<E extends object> {
      *
      * @template T Event name to get the event argument type for.
      */
-    public emit<T extends keyof E>(event: T, ...args: E[T][]): boolean {
-        return this._emitter.emit(event as string, args)
+    public emit<T extends Exclude<keyof E, number>>(event: T, ...args: E[T][]): boolean {
+        return this._emitter.emit(event, args)
     }
 }

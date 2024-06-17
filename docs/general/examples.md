@@ -33,7 +33,7 @@ const giveaways = new Giveaways(client, {
 
     connection: {
         // database configuration object,
-		// see https://dgs-docs.js.org/#/docs/main/1.0.5/general/configuring
+		// see https://dgs-docs.js.org/#/docs/main/1.1.0/general/configuring
 		// for more info
     }
 })
@@ -103,6 +103,13 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
         time,
         winnersCount,
 
+        // example usage of participants filtering (only IDs are supported)
+        participantsFilter: {
+            requiredRoles: ['<@&841642867100221452>', '<@&669259475156205583>', '841642867100221452', '669259475156205583'],
+            restrictedRoles: ['<@&692002313187098677>', '<@&765209398318465075>', '692002313187098677', '765209398318465075']
+            restrictedMembers: ['<@1121494265164468376>', '1121494265164468376']
+        },
+
         // defining *all* the messages for the giveaway
 
         // please note that all the properties
@@ -114,9 +121,9 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
         // of "defineEmbedStrings" function are also will be replaced with
         // placeholder values
 
-		// see https://dgs-docs.js.org/#/docs/main/1.0.5/general/embed-strings
+		// see https://dgs-docs.js.org/#/docs/main/1.1.0/general/embed-strings
 		// for more info about defining embeds
-		defineEmbedStrings(giveaway, host) {
+		defineEmbedStrings(giveaway, host, participantsFilters) {
     		return {
 
                 // this ephemeral reply will be sent when they join the giveaway (embeds may also be used here)
@@ -135,7 +142,10 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
         		start: {
             		messageContent: ':tada: **GIVEAWAY STARTED!** :tada:',
             		title: 'Giveaway Info',
-            		description: `Prize: ${giveaway.prize}\nWinners: ${giveaway.winnersCount}`,
+                    description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
+                        `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>\n\n` + 
+                        `- Required roles: ${participantsFilters.requiredRoles?.join(', ') || 'none'}\n` +
+                        `- Forbidden roles: ${participantsFilters.restrictedRoles?.join(', ') || 'none'}\n`,
             		// ... (other properties)
         		},
 
@@ -147,7 +157,7 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
                         // this message will be sent separately in the giveaway channel when the giveaway ends
                         // used to mention the giveaway winners
                 		endMessage: {
-                    		messageContent: `Congratulations ${mentionsString} on winning!`
+                    		messageContent: `Congratulations ${mentionsString} on winning **${giveaway.prize}**!`
             				// ... (other properties)
                 		},
 
@@ -158,7 +168,7 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
 
                             title: `Giveaway (ID: ${giveaway.id})`,
                             description: `Prize: **${giveaway.prize}**\nEntries: **${giveaway.entriesCount}**\n` +
-                                `${giveaway.winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
+                                `${winnersCount == 1 ? 'Winner' : `Winners **(${winnersCount})**`}: ${mentionsString} `,
 
                             footer: `Ended at:`,
                             timestamp: giveaway.endedTimestamp
@@ -215,7 +225,7 @@ if (message.content.startsWith(prefix + 'giveaway-start')) {
                         // this message will be sent separately in the giveaway channel after the reroll
                         // used to mention the new giveaway winners (embeds may also be used here)
                         rerollMessage: {
-                            messageContent: `${giveaway.winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
+                            messageContent: `${winnersCount == 1 ? 'New winner is' : 'New winners are'} ` +
                                 `${mentionsString}, congratulations!`
             				// ... (other properties)
                         },
@@ -613,7 +623,7 @@ View the **full bot examples** in both **JavaScript** and **TypeScript** [here](
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.1.0/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

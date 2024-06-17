@@ -19,10 +19,14 @@ export const giveawayTemplate: IGiveawayTemplate = {
     winnersString: '{winnersString}',
     isEnded: '{isEnded}',
     state: '{state}',
-    entriesArray: ''
+    entries: ''
 }
 
-export function replaceGiveawayKeys(input: string, giveawayObject: Record<string, any>, winners: string[] = []): string {
+export function replaceGiveawayKeys(
+    input: string,
+    giveawayObject: Record<string, any>,
+    winners: string[] = []
+): string {
     for (const key in giveawayTemplate) {
         input = input?.replaceAll(
             `{${key}}`,
@@ -37,4 +41,4 @@ export function replaceGiveawayKeys(input: string, giveawayObject: Record<string
 
 export type IGiveawayTemplate = GiveawayWithoutInternalProps & Record<
     'numberOfWinners' | 'winnersString' | 'isEnded' | 'state', string
-> & { entriesArray: '' }
+> & { entries: '' }

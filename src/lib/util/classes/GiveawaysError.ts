@@ -1,5 +1,6 @@
 import { DatabaseType } from '../../../types/databaseType.enum'
 import { DiscordID } from '../../../types/misc/utils'
+
 import { typeOf } from '../functions/typeOf.function'
 
 /**

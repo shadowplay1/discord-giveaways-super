@@ -1,5 +1,5 @@
 /**
- * An interface containing different colors that may be used in a logger.
+ * An interface containing colors that may be used in the console.
  * @typedef {object} ILoggerColors
  * @prop {string} red The color red.
  * @prop {string} green The color green.

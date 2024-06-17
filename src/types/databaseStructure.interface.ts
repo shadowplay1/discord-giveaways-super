@@ -3,7 +3,7 @@ import { IGiveaway } from '../lib/giveaway.interface'
 /**
  * An interface containing the structure of the database used in the IGiveaways class.
  * @typedef {object} IDatabaseStructure
- * @prop {any} guildID Guild ID that stores the giveaways array
+ * @prop {DiscordID<string>} guildID Guild ID that stores the giveaways array
  * @prop {IGiveaway[]} giveaways Giveaways array property inside the [guildID] object in database.
  */
 export interface IDatabaseStructure {

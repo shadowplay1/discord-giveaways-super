@@ -26,8 +26,8 @@ import { DiscordID, If, OptionalProps } from './misc/utils'
  *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {?number} [minGiveawayEntries=1] Determines the minimum required giveaway entries to draw the winner. Default: 1
- * @prop {IUpdateCheckerConfiguration} [updatesChecker] Updates checker configuration.
- * @prop {IGiveawaysConfigCheckerConfiguration} [configurationChecker] Giveaways config checker configuration.
+ * @prop {?IUpdateCheckerConfiguration} [updatesChecker] Updates checker configuration.
+ * @prop {?IGiveawaysConfigCheckerConfiguration} [configurationChecker] Giveaways config checker configuration.
  *
  * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -173,8 +173,8 @@ export type IGiveawayData<
     IGiveaway<HostMemberID, ChannelID, GuildID>,
     'id' | 'startTimestamp' | 'endTimestamp' |
     'endedTimestamp' | 'messageID' | 'messageURL' |
-    'entriesCount' | 'entriesArray' | 'state' |
-    'messageProps' | 'isEnded'
+    'entriesCount' | 'entries' | 'state' |
+    'messageProps' | 'isEnded' | 'winners'
 >
 
 /**
@@ -227,9 +227,10 @@ export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'style'>>
  *
  * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
  *
- * @callback DefineEmbedStringsCallback
+ * @callback DefineEmbedStringsCallback<IsTemplate>
  * @param {IGiveaway} giveaway An object containing information about the giveaway.
  * @param {User} giveawayHost The host of the giveaway.
+ * @param {Partial<IParticipantsFilter>} participantsFilter The members filters applied to the giveaway.
  * @returns {Partial<IEmbedStringsDefinitions<IsTemplate>>}
  *
  * @template IsTemplate Determine if the specified giveaway object is a template object.
@@ -240,7 +241,9 @@ export type ILinkButton = Partial<Omit<IGiveawayButtonOptions, 'style'>>
  * @typedef {object} IGiveawayStartOptions
  * @prop {IGiveawayButtons} [buttons] An object with all the available giveaway buttons.
  * @prop {Partial<IParticipantsFilter>} [participantsFilter] An object with conditions for members to join the giveaway.
- * @prop {DefineEmbedStringsCallback} [defineEmbedStrings] A function that defines the embed strings used in the giveaway.
+ *
+ * @prop {DefineEmbedStringsCallback<IsTemplate>} [defineEmbedStrings]
+ * A function that defines the embed strings used in the giveaway.
  */
 export interface IGiveawayStartOptions {
 
@@ -252,7 +255,7 @@ export interface IGiveawayStartOptions {
     /**
      * An object with conditions for members to join the giveaway.
      */
-    participantsFilter: Partial<IParticipantsFilter>
+    participantsFilter?: Partial<IParticipantsFilter>
 
     /**
      * A function that defines the embed strings used in the giveaway.
@@ -268,31 +271,40 @@ export interface IGiveawayStartOptions {
      * @template IsTemplate Determine if the specified giveaway object is a template object.
      */
     defineEmbedStrings<IsTemplate extends boolean = false>(
-        giveaway: IGiveaway,
-        giveawayHost: User
+        giveaway: Omit<IGiveaway, 'participantsFilter' | 'winners'>,
+        giveawayHost: User,
+        participantsFilter: Partial<IParticipantsFilter>
     ): Partial<IEmbedStringsDefinitions<IsTemplate>>
 }
 
 /**
  * An object with conditions for members to join the giveaway.
  * @typedef {object} IParticipantsFilter
- * @prop {DiscordID<string>[]} [requiredRoles]
- * Array of role IDs that the user *required* to have in order to join the giveaway.
+ * @prop {Array<DiscordID<string>>} [requiredRoles]
+ * Array of role IDs that the user *required* to have in order to participate in a giveaway.
  *
- * @prop {DiscordID<string>[]} [forbiddenRoles]
- * Array of role IDs that the user *cannot have* in order to join the giveaway.
+ * @prop {Array<DiscordID<string>>} [restrictedRoles]
+ * Array of role IDs that the user *cannot have* in order to participate in a giveaway.
+ *
+ * @prop {Array<DiscordID<string>>} [restrictedMembers]
+ * Array of member IDs of the users who *cannot participate* in the giveaway.
  */
 export interface IParticipantsFilter {
 
     /**
-     * Array of role IDs that the user *required* to have in order to join the giveaway.
+     * Array of role IDs that the user *required* to have in order to participate in a giveaway.
      */
-    requiredRoles: DiscordID<string>[]
+    requiredRoles: Array<DiscordID<string>>
 
     /**
-     * Array of role IDs that the user *cannot have* in order to join the giveaway.
+     * Array of role IDs that the user *cannot have* in order to participate in a giveaway.
      */
-    forbiddenRoles: DiscordID<string>[]
+    restrictedRoles: Array<DiscordID<string>>
+
+    /**
+     * Array of member IDs of the users who *cannot participate* in the giveaway.
+     */
+    restrictedMembers: Array<DiscordID<string>>
 }
 
 /**
@@ -348,17 +360,17 @@ export interface IGiveawayStartMessages {
  *
  * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
  *
- * @callback GiveawayFinishCallback
+ * @callback GiveawayFinishCallback<IsTemplate>
  *
- * @param {string} winnersMentionsString A string that contains the users that won the giveaway separated with comma.
+ * @param {string} winnersMentionsString A string that contains the users who won the giveaway separated with comma.
  * @param {number} winnersCount Number of winners that were picked.
- * @returns {IGiveawayStartMessages} Giveaway message objects.
+ * @returns {Partial<IGiveawayStartMessages>} Giveaway finish message object.
  *
  * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayFinishCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: If<IsTemplate, '{winnersString}', string>,
-    winnersCount: If<IsTemplate, '{numberOfWinners}', number>
+    winnersCount: number
 ) => Partial<IGiveawayStartMessages>
 
 /**
@@ -409,19 +421,19 @@ export interface IGiveawayRerollMessages {
  *
  * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
  *
- * @callback GiveawayRerollCallback
+ * @callback GiveawayRerollCallback<IsTemplate>
  *
  * @param {string} winnersMentionsString
- * A string that contains the mentions of users that won the giveaway, separated with comma.
+ * A string that contains the mentions of users who won the giveaway, separated with comma.
  *
  * @param {number} winnersCount Number of winners that were picked.
- * @returns {IGiveawayMessages} Giveaway message objects.
+ * @returns {Partial<IGiveawayMessages>} Giveaway message object.
  *
  * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
 export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
     winnersMentionsString: If<IsTemplate, '{winnersString}', string>,
-    winnersCount: If<IsTemplate, '{numberOfWinners}', number>
+    winnersCount: number
 ) => Partial<IGiveawayRerollMessages>
 
 /**
@@ -436,11 +448,16 @@ export type GiveawayRerollCallback<IsTemplate extends boolean = false> = (
  * @prop {IGiveawayEmbedOptions} start
  * This object is used in the original giveaway message that people will use to join the giveaway.
  *
- * @prop {GiveawayFinishCallback} finish
- * This function is called and all returned message objects are extracted and used when the giveaway is finished.
+ * @prop {GiveawayFinishCallback<IsTemplate>} finish
+ * This function is called and all returned message objects are extracted when the giveaway is finished.
  *
- * @prop {GiveawayRerollCallback} reroll
- * This function is called and all returned message objects are extracted and used when the giveaway winners are rerolled.
+ * @prop {GiveawayRerollCallback<IsTemplate>} reroll
+ * This function is called and all returned message objects are extracted when the giveaway winners are rerolled.
+ *
+ * @prop {GiveawayJoinRestrictionsCallback<IsTemplate>} restrictionsMessages
+ * This function is called and all returned message objects are extracted when any case
+ * of the user not being able to participate in a giveaway has triggered
+ * (such as not having the required role or being completely restricted).
  *
  * @template IsTemplate Determine if the specified giveaway object is a template object.
  */
@@ -467,25 +484,67 @@ export interface IEmbedStringsDefinitions<IsTemplate extends boolean = false> {
 
     /**
      * This function is called and all returned message objects are
-     * extracted and used when the giveaway is finished.
-     * @type {GiveawayFinishCallback}
+     * extracted when the giveaway is finished.
+     * @type {GiveawayFinishCallback<IsTemplate>}
      */
     finish: GiveawayFinishCallback<IsTemplate>
 
     /**
      * This function is called and all returned message objects
-     * are extracted and used when the giveaway winners are rerolled.
-     * @type {GiveawayRerollCallback}
+     * are extracted when the giveaway winners are rerolled.
+     * @type {GiveawayRerollCallback<IsTemplate>}
      */
     reroll: GiveawayRerollCallback<IsTemplate>
+
+    /**
+     * This function is called and all returned message objects are extracted when any case
+     * of the user not being able to participate in a giveaway has triggered
+     * (such as not having the required role or being completely restricted).
+     * @type {GiveawayJoinRestrictionsCallback<IsTemplate>}
+     */
+    restrictionsMessages: GiveawayJoinRestrictionsCallback<IsTemplate>
 }
+
+/**
+ * The object where all the giveaway restrictions messages may be specified.
+ * @typedef {object} IGiveawayJoinRestrictionsMessages
+ * @prop {IGiveawayEmbedOptions} memberRestricted
+ * The message to reply with if the member is restricted from participating in the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} hasNoRequiredRoles
+ * The message to reply with if the member doesn't have at least one
+ * of the **required** roles to participate in the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} hasRestrictedRoles
+ * The message to reply with if the member has at least one
+ * of the **restricted** roles that are not allowing to participate in the giveaway.
+ */
+export type IGiveawayJoinRestrictionsMessages = Record<
+    'memberRestricted' | 'hasNoRequiredRoles' | 'hasRestrictedRoles',
+    IGiveawayEmbedOptions
+>
+
+/**
+ * A function that is called when the member cannot join the giveaway
+ * due to participants filter being set up.
+ *
+ * @callback GiveawayJoinRestrictionsCallback<IsTemplate>
+ *
+ * @param {string} memberMention The mention of the user who attempted to join the giveaway.
+ * @returns {Partial<IGiveawayJoinRestrictionsMessages>} Giveaway join restrictions messages object.
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
+ */
+export type GiveawayJoinRestrictionsCallback<IsTemplate extends boolean = false> = (
+    memberMention: If<IsTemplate, '{memberMention}', string>
+) => Partial<IGiveawayJoinRestrictionsMessages>
 
 /**
  * Button object.
  * @typedef {object} IGiveawayButtonOptions
  * @prop {?string} [text] Button text string.
  * @prop {?string} [emoji] Emoji string.
- * @prop {?ButtonStyle} [style] Button style.
+ * @prop {?ButtonStyle} [style] Button style.why
  */
 export type IGiveawayButtonOptions = Partial<Record<'text' | 'emoji', string> & {
     style?: ButtonStyle.Primary | ButtonStyle.Secondary | ButtonStyle.Success | ButtonStyle.Danger
@@ -571,6 +630,7 @@ export type DatabaseConnectionOptions<TDatabaseType extends DatabaseType> =
  *
  * - `TDatabaseType` ({@link DatabaseType}) - Database type that will determine
  * which connection configuration should be used.
+ *
  * - `TKey` ({@link string}) - The type of database key that will be used
  * - `TValue` ({@link any}) - The type of database values that will be used
  *

@@ -1,8 +1,6 @@
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
 
-import { ms } from './lib/misc/ms'
-
 import QuickMongo from 'quick-mongo-super'
 import Enmap from 'enmap'
 
@@ -14,7 +12,8 @@ import {
 
 import {
     Database, DatabaseConnectionOptions,
-    IGiveawayButtonOptions, IGiveawayRerollMessages,
+    IGiveawayButtonOptions, IGiveawayEmbedOptions,
+    IGiveawayJoinRestrictionsMessages, IGiveawayRerollMessages,
     IGiveawayStartConfig, IGiveawayStartMessages,
     IGiveawaysConfiguration
 } from './types/configurations'
@@ -42,8 +41,13 @@ import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
 import { giveawayTemplate } from './structures/giveawayTemplate'
 
 import { MessageUtils } from './lib/util/classes/MessageUtils'
-import { isTimeStringValid } from './lib/util/functions/isTimeStringValid.function'
 import { IDatabaseStructure } from './types/databaseStructure.interface'
+
+import {
+    convertTimeToMilliseconds,
+    isTimeStringValid
+} from './lib/util/functions/time.function'
+import { TypedObject } from './lib/util/classes/TypedObject'
 
 /**
  * Main Giveaways class.
@@ -51,8 +55,12 @@ import { IDatabaseStructure } from './types/databaseStructure.interface'
  * Type parameters:
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
- * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
- * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
+ *
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) -
+ * The type of database key that will be used in database operations.
+ *
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) -
+ * The type of database content that will be used in database operations.
  *
  * @extends {Emitter<IGiveawaysEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>>}
  *
@@ -158,6 +166,8 @@ export class Giveaways<
         this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
         this._logger.debug(`Database type is ${options.database}.`, 'lightcyan')
         this._logger.debug('Debug mode is enabled.', 'lightcyan')
+
+        this._logger.sendDevVersionWarning()
 
         this._logger.debug('Checking the configuration...')
 
@@ -266,22 +276,22 @@ export class Giveaways<
                 this._logger.debug('Checking the database file...')
 
                 const databaseOptions = this.options.connection as Required<DatabaseConnectionOptions<DatabaseType.JSON>>
-                const isFileExists = existsSync(databaseOptions.path as string)
+                const isFileExists = existsSync(databaseOptions.path)
 
                 if (!isFileExists) {
-                    await writeFile(databaseOptions.path as string, '{}')
+                    await writeFile(databaseOptions.path, '{}')
                 }
 
                 if (databaseOptions.checkDatabase) {
                     try {
                         setInterval(async () => {
-                            const isFileExists = existsSync(databaseOptions.path as string)
+                            const isFileExists = existsSync(databaseOptions.path)
 
                             if (!isFileExists) {
-                                await writeFile(databaseOptions.path as string, '{}')
+                                await writeFile(databaseOptions.path, '{}')
                             }
 
-                            const databaseFile = await readFile(databaseOptions.path as string, 'utf-8')
+                            const databaseFile = await readFile(databaseOptions.path, 'utf-8')
                             JSON.parse(databaseFile)
                         }, databaseOptions.checkingInterval)
                     } catch (err: any) {
@@ -369,46 +379,116 @@ export class Giveaways<
                 const interactionMessage = interaction.message
 
                 if (interaction.customId == 'joinGiveawayButton') {
-                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild!.id)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
                     if (giveaway) {
                         const isUserJoined = giveaway.entries.has(interaction.user.id)
+                        const restrictedMessages = giveaway.messageProps?.embeds.restrictionsMessages
 
-                        if (giveaway.participantsFilter?.requiredRoles?.length) {
-                            if (!(interaction.member instanceof GuildMember)) return
-                            const requiredRoles = giveaway.participantsFilter?.requiredRoles
+                        for (const messageObjectName of TypedObject.keys(restrictedMessages || {})) {
+                            const messageObject = restrictedMessages![messageObjectName] as Omit<
+                                IGiveawayEmbedOptions,
+                                'color' | 'timestamp'
+                            >
 
-                            for (const requiredRole of requiredRoles) {
-                                const isMemberHasRequiredRole = interaction.member.roles.cache
-                                    .find(role => role.id == requiredRole)
-
-                                // TODO: add definitions in embed strings for this case
-                                if (!isMemberHasRequiredRole) {
-                                    interaction.reply({
-                                        content: `you must have ${requiredRoles.map(role => `<@${role}>`)} ` +
-                                            'roles to participate in this giveaway',
-                                        ephemeral: true
-                                    })
-
-                                    return
-                                }
+                            for (const [key, value] of TypedObject.entries(messageObject || {})) {
+                                messageObject[key] = value
+                                    ?.toString()
+                                    ?.replaceAll('{memberMention}', interaction.user.toString())
                             }
                         }
 
-                        if (giveaway.participantsFilter?.forbiddenRoles?.length) {
+                        const memberRestrictionMessage = restrictedMessages?.memberRestricted || {}
+                        const hasNoRequiredRolesMessage = restrictedMessages?.hasNoRequiredRoles || {}
+                        const hasRestrictedRolesMessage = restrictedMessages?.hasRestrictedRoles || {}
+
+                        if (giveaway.participantsFilter?.restrictedMembers?.length) {
                             if (!(interaction.member instanceof GuildMember)) return
-                            const forbiddenRoles = giveaway.participantsFilter?.forbiddenRoles
 
-                            for (const forbiddenRole of forbiddenRoles) {
-                                const isMemberHasForbiddenRole = interaction.member.roles.cache
-                                    .find(role => role.id == forbiddenRole)
+                            const restrictedMembers = giveaway.participantsFilter?.restrictedMembers
+                                .map(role => role.replaceAll('<@', '').replaceAll('>', ''))
 
-                                // TODO: add definitions in embed strings for this case
-                                if (isMemberHasForbiddenRole) {
+                            if (restrictedMembers.includes(interaction.user.id)) {
+                                if (!Object.keys(memberRestrictionMessage!).length) {
+                                    memberRestrictionMessage!.messageContent = 'You **cannot** participate in this giveaway.'
+                                }
+
+                                const memberRestrictedEmbed =
+                                    this._messageUtils.buildGiveawayEmbed(giveaway.raw, memberRestrictionMessage)
+
+                                interaction.reply({
+                                    content: memberRestrictionMessage?.messageContent,
+                                    embeds: Object.keys(memberRestrictionMessage!).length == 1 &&
+                                        memberRestrictionMessage?.messageContent
+                                        ? [] : [memberRestrictedEmbed],
+                                    ephemeral: true
+                                })
+
+                                return
+                            }
+                        }
+
+                        if (giveaway.participantsFilter?.requiredRoles?.length) {
+                            if (!(interaction.member instanceof GuildMember)) return
+
+                            const requiredRoles = giveaway.participantsFilter?.requiredRoles
+                                .map(role => role.replaceAll('<@&', '').replaceAll('>', ''))
+
+                            let memberHasAtLeastOneRequiredRole = false
+
+                            for (const roleID of interaction.member.roles.cache.keys()) {
+                                if (requiredRoles.includes(roleID)) {
+                                    memberHasAtLeastOneRequiredRole = true
+                                }
+                            }
+
+                            if (!memberHasAtLeastOneRequiredRole) {
+                                if (!Object.keys(hasNoRequiredRolesMessage!).length) {
+                                    hasNoRequiredRolesMessage!.messageContent =
+                                        'You **don\'t** have any of the **required** roles' +
+                                        `to join this giveaway: ${giveaway.participantsFilter.requiredRoles.join(', ')}.`
+                                }
+
+                                const hasNoRequiredRolesEmbed =
+                                    this._messageUtils.buildGiveawayEmbed(giveaway.raw, hasNoRequiredRolesMessage)
+
+                                interaction.reply({
+                                    content: hasNoRequiredRolesMessage?.messageContent,
+                                    embeds: Object.keys(hasNoRequiredRolesMessage!).length == 1 &&
+                                        hasNoRequiredRolesMessage?.messageContent
+                                        ? [] : [hasNoRequiredRolesEmbed],
+                                    ephemeral: true
+                                })
+
+                                return
+                            }
+                        }
+
+                        if (giveaway.participantsFilter?.restrictedRoles?.length) {
+                            if (!(interaction.member instanceof GuildMember)) return
+
+                            const restrictedRoles = giveaway.participantsFilter?.restrictedRoles
+                                .map(role => role.replaceAll('<@&', '').replaceAll('>', ''))
+
+                            for (const restrictedRole of restrictedRoles) {
+                                const memberHasRestrictedRole = interaction.member.roles.cache.has(restrictedRole)
+
+                                if (memberHasRestrictedRole) {
+                                    if (!Object.keys(hasRestrictedRolesMessage!).length) {
+                                        hasRestrictedRolesMessage!.messageContent =
+                                            'You **cannot** have any of these roles to join this giveaway: ' +
+                                            `${giveaway.participantsFilter.restrictedRoles.join(', ')}.`
+                                    }
+
+                                    const hasRestrictedRolesEmbed =
+                                        this._messageUtils.buildGiveawayEmbed(giveaway.raw, hasRestrictedRolesMessage)
+
                                     interaction.reply({
-                                        content: 'you cannot participate with roles ' +
-                                            forbiddenRoles.map(role => `<@${role}>`) + 'in this giveaway',
+                                        content: hasRestrictedRolesMessage?.messageContent,
+                                        embeds: Object.keys(hasRestrictedRolesMessage!).length == 1 &&
+                                            hasRestrictedRolesMessage?.messageContent
+                                            ? [] : [hasRestrictedRolesEmbed],
                                         ephemeral: true
                                     })
 
@@ -424,10 +504,9 @@ export class Giveaways<
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayJoinMessage)
 
                             const newGiveaway = giveaway.addEntry(
-                                interaction.guild?.id as never,
-                                interaction.user.id as never
+                                interaction.guild!.id,
+                                interaction.user.id
                             )
-
 
                             if (!Object.keys(giveawayJoinMessage).length) {
                                 giveawayJoinMessage.messageContent = 'You have joined the giveaway!'
@@ -441,7 +520,7 @@ export class Giveaways<
                                 ephemeral: true
                             }).catch((err: Error) => {
                                 // catching the "unknown interaction" error
-                                // while still sending the responce on the button click somehow
+                                // while still sending the response on the button click somehow
 
                                 if (!err.message.toLowerCase().includes('interaction')) {
                                     throw new GiveawaysError(
@@ -459,7 +538,7 @@ export class Giveaways<
                                 this._messageUtils.buildGiveawayEmbed(giveaway.raw, giveawayLeaveMessage)
 
                             const newGiveaway = giveaway.removeEntry(
-                                interaction.guild?.id as string,
+                                interaction.guild!.id,
                                 interaction.user.id
                             )
 
@@ -496,7 +575,7 @@ export class Giveaways<
                 }
 
                 if (interaction.customId == 'rerollButton') {
-                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild?.id as string)
+                    const guildGiveaways = this.getGuildGiveaways(interactionMessage.guild!.id)
                     const giveaway = guildGiveaways.find(giveaway => giveaway.messageID == interactionMessage.id)
 
                     const rerollEmbedStrings = giveaway?.messageProps?.embeds?.reroll
@@ -615,6 +694,7 @@ export class Giveaways<
      * Starts the giveaway.
      * @param {IGiveawayStartConfig} giveawayOptions {@link Giveaway} options.
      * @returns {Promise<SafeGiveaway<Giveaway<DatabaseType>>>} Created {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified.
      */
@@ -696,7 +776,7 @@ export class Giveaways<
             )
         }
 
-        if (isNaN(winnersCount as number)) {
+        if (isNaN(winnersCount!)) {
             throw new GiveawaysError(
                 errorMessages.INVALID_TYPE('giveawayOptions.winnersCount', 'number', winnersCount),
                 GiveawaysErrorCodes.INVALID_TYPE
@@ -728,25 +808,26 @@ export class Giveaways<
         const guildGiveaways = this.getGuildGiveaways(guildID)
 
         const newGiveaway: IGiveaway = {
-            id: ((guildGiveaways.at(-1)?.id || 0) as number) + 1,
+            id: ((guildGiveaways.at(-1)?.id || 0)) + 1,
             hostMemberID,
             guildID,
             channelID,
             messageID: '',
             prize,
             startTimestamp: Math.floor(Date.now() / 1000),
-            endTimestamp: Math.floor((Date.now() + ms(time as string)) / 1000),
+            endTimestamp: Math.floor((Date.now() + convertTimeToMilliseconds(time)!) / 1000),
             endedTimestamp: 0,
             time: time || '1d',
             state: GiveawayState.STARTED,
             winnersCount: winnersCount || 1,
             entriesCount: 0,
-            entriesArray: [],
-            participantsFilter,
+            entries: [],
+            winners: [],
+            participantsFilter: participantsFilter || {},
             isEnded: false
         }
 
-        const hostMember = await this.client.users.fetch(hostMemberID).catch(console.error) as User
+        const hostMember = await this.client.users.fetch(hostMemberID).catch(console.error) as Maybe<User>
 
         if (!hostMember) {
             throw new GiveawaysError(
@@ -757,22 +838,25 @@ export class Giveaways<
 
         const definedEmbedStrings = defineEmbedStrings ? defineEmbedStrings<true>(
             giveawayTemplate as any,
-            hostMember
+            hostMember,
+            newGiveaway.participantsFilter
         ) : {}
 
         const startEmbedStrings = definedEmbedStrings?.start || {}
 
         const finish = definedEmbedStrings?.finish
         const reroll = definedEmbedStrings?.reroll
+        const restrictionsMessages = definedEmbedStrings?.restrictionsMessages
 
         const channel = this.client.channels.cache.get(channelID) as TextChannel
 
         const giveawayEmbed = this._messageUtils.buildGiveawayEmbed(newGiveaway, startEmbedStrings)
         const buttonsRow = this._messageUtils.buildButtonsRow(joinGiveawayButton)
 
-        const [finishEmbedStrings, rerollEmbedStrings] = [
-            finish ? finish('{winnersString}', '{numberOfWinners}') : {},
-            reroll ? reroll('{winnersString}', '{numberOfWinners}') : {}
+        const [finishEmbedStrings, rerollEmbedStrings, restrictionsMessagesStrings] = [
+            finish ? finish('{winnersString}', winnersCount!) : {},
+            reroll ? reroll('{winnersString}', winnersCount!) : {},
+            restrictionsMessages ? restrictionsMessages('{memberMention}') : {}
         ]
 
         const message = await channel.send({
@@ -784,15 +868,16 @@ export class Giveaways<
         newGiveaway.messageID = message.id
         newGiveaway.messageURL = message.url
 
-        newGiveaway.endTimestamp = Math.floor((Date.now() + ms(newGiveaway.time)) / 1000)
+        newGiveaway.endTimestamp = Math.floor((Date.now() + convertTimeToMilliseconds(newGiveaway.time)!) / 1000)
 
         newGiveaway.messageProps = {
             embeds: {
                 start: startEmbedStrings,
                 joinGiveawayMessage: definedEmbedStrings?.joinGiveawayMessage,
                 leaveGiveawayMessage: definedEmbedStrings?.leaveGiveawayMessage,
-                finish: finishEmbedStrings as IGiveawayStartMessages,
-                reroll: rerollEmbedStrings as IGiveawayRerollMessages
+                finish: finishEmbedStrings as Required<IGiveawayStartMessages>,
+                reroll: rerollEmbedStrings as Required<IGiveawayRerollMessages>,
+                restrictionsMessages: restrictionsMessagesStrings as Required<IGiveawayJoinRestrictionsMessages>
             },
 
             buttons: {
@@ -814,6 +899,7 @@ export class Giveaways<
      * Finds the giveaway in all giveaways database by its ID.
      * @param {number} giveawayID Giveaway ID to find the giveaway by.
      * @returns {Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaway instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -843,6 +929,7 @@ export class Giveaways<
      * The callback function to find the giveaway in the giveaways database.
      *
      * @returns {Maybe<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaway instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -878,6 +965,7 @@ export class Giveaways<
      * The callback function to call on the giveaway.
      *
      * @returns {TReturnType[]} Mapped giveaways array.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -906,6 +994,7 @@ export class Giveaways<
      * Gets all the giveaways from the specified guild in database.
      * @param {DiscordID<string>} guildID Guild ID to get the giveaways from.
      * @returns {Array<UnsafeGiveaway<Giveaway<TDatabaseType>>>} Giveaways array from the specified guild in database.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -984,11 +1073,28 @@ export class Giveaways<
  * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
  * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
- * @prop {number} entries The number of giveaway entries.
- * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
+ * @prop {Array<DiscordID<string>>} entries The array of user Set of IDs of users who have joined the giveaway.
+ * @prop {Array<DiscordID<string>>} winners Array of used ID who have won in the giveaway.
+ *
+ * Don't confuse this property with `winnersCount`, the setting that dertermines how many users can win in the giveaway.
+ * @prop {number} entriesCount The number of users who have joined the giveaway.
+ * @prop {Partial<IParticipantsFilter>} participantsFilter An object with conditions for members to join the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  *
  * @template TDatabaseType The database type that is used.
+ */
+
+/**
+ * An object with conditions for members to join the giveaway.
+ * @typedef {object} IParticipantsFilter
+ * @prop {Array<DiscordID<string>>} [requiredRoles]
+ * Array of role IDs that the user *required* to have in order to participate in a giveaway.
+ *
+ * @prop {Array<DiscordID<string>>} [restrictedRoles]
+ * Array of role IDs that the user *cannot have* in order to participate in a giveaway.
+ *
+ * @prop {Array<DiscordID<string>>} [restrictedMembers]
+ * Array of member IDs of the users who *cannot participate* in the giveaway.
  */
 
 /**
@@ -1021,8 +1127,16 @@ export class Giveaways<
  * An interface containing different types of giveaway embeds in the IGiveaways class.
  * @typedef {object} IGiveawayEmbeds
  * @prop {IGiveawayEmbedOptions} start Message embed data for cases when the giveaway has started.
+ * @prop {IGiveawayEmbedOptions} joinGiveawayMessage The message to reply to user with when they join the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} leaveGiveawayMejoinGiveawayMessage
+ * The message to reply to user with when they leave the giveaway.
+ *
  * @prop {IGiveawayRerollEmbeds} reroll Message embed data for cases when rerolling the giveaway.
  * @prop {IGiveawayFinishEmbeds} finish Message embed data for cases when the giveaway has finished.
+ *
+ * @prop {IGiveawayJoinRestrictionsMessages} restrictionsMessages
+ * Message embed data for all the giveaway joining restrictions cases.
  */
 
 /**
@@ -1043,10 +1157,10 @@ export class Giveaways<
 
 /**
  * A function that is called when giveaway is finished.
- * @callback GiveawayFinishCallback
- * @param {string} winnersString A string that contains the users that won the giveaway separated with comma.
+ * @callback GiveawayFinishCallback<IsTemplate>
+ * @param {string} winnersString A string that contains the users who won the giveaway separated with comma.
  * @param {number} winnersCount Number of winners that were picked.
- * @returns {IGiveawayFinishMessages} Giveaway message objects.
+ * @returns {IGiveawayFinishMessages} Giveaway message object.
  */
 
 /**
@@ -1065,13 +1179,13 @@ export class Giveaways<
 
 /**
  * A function that is called when giveaway winners are rerolled.
- * @callback GiveawayRerollCallback
+ * @callback GiveawayRerollCallback<IsTemplate>
  *
  * @param {string} winnersMentionsString
- * A string that contains the mentions of users that won the giveaway, separated with comma.
+ * A string that contains the mentions of users who won the giveaway, separated with comma.
  *
  * @param {number} winnersCount Number of winners that were picked.
- * @returns {IGiveawayRerollMessages} Giveaway message objects.
+ * @returns {IGiveawayRerollMessages} Giveaway message object.
  */
 
 /**
@@ -1096,7 +1210,7 @@ export class Giveaways<
  * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
  * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
- * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
+ * @prop {Array<DiscordID<string>>} entries The array of user Set of IDs of users who have joined the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  */
 
@@ -1142,8 +1256,8 @@ export class Giveaways<
  *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {?number} [minGiveawayEntries=1] Determines the minimum required giveaway entries to draw the winner. Default: 1
- * @prop {Partial} [updatesChecker] Updates checker configuration.
- * @prop {Partial} [configurationChecker] Giveaways config checker configuration.
+ * @prop {Partial<IUpdateCheckerConfiguration>} [updatesChecker] Updates checker configuration.
+ * @prop {Partial<IGiveawaysConfigCheckerConfiguration>} [configurationChecker] Giveaways config checker configuration.
  *
  * @template TDatabaseType
  * The database type that will determine which connection configuration should be used.
@@ -1158,8 +1272,8 @@ export class Giveaways<
  *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {?number} [minGiveawayEntries=1] Determines the minimum required giveaway entries to draw the winner. Default: 1
- * @prop {Partial} [updatesChecker] Updates checker configuration.
- * @prop {Partial} [configurationChecker] Giveaways config checker configuration.
+ * @prop {Partial<IUpdateCheckerConfiguration>} [updatesChecker] Updates checker configuration.
+ * @prop {Partial<IGiveawaysConfigCheckerConfiguration>} [configurationChecker] Giveaways config checker configuration.
  */
 
 /**
@@ -1210,7 +1324,7 @@ export class Giveaways<
  * @prop {DiscordID<string>} channelID The ID of the channel where the giveaway is held.
  * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
  * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
- * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ * @prop {DefineEmbedStringsCallback<IsTemplate>} [defineEmbedStrings] A function that defines the embed strings used in the giveaway.
  */
 
 /**
@@ -1233,31 +1347,70 @@ export class Giveaways<
 
 /**
  * A function that defines the embed strings used in the giveaway.
- * @callback DefineEmbedStringsCallback
- * @param {Omit} giveaway - An object containing information about the giveaway.
+ * @callback DefineEmbedStringsCallback<IsTemplate>
+ * @param {IGiveaway} giveaway - An object containing information about the giveaway.
  * @param {User} giveawayHost - The host of the giveaway.
- * @returns {Partial} - An object containing the defined embed strings.
+ * @returns {Partial<IEmbedStringsDefinitions<IsTemplate>>} - An object containing the defined embed strings.
  */
 
 /**
  * Giveaway start options.
  * @typedef {object} IGiveawayStartOptions
  * @prop {IGiveawayButtons} [buttons] Giveaway buttons object.
- * @prop {IGiveawayButtons} [defineEmbedStrings] Giveaway buttons object.
+ * @prop {DefineEmbedStringsCallback<IsTemplate>} [defineEmbedStrings] A function that defines the embed strings used in the giveaway.
  */
 
 /**
  * Object containing embed string definitions used in the IGiveaways class.
+ *
+ * Type parameters:
+ *
+ * - `IsTemplate` ({@link boolean}) - Determine if the specified giveaway object is a template object.
+ *
  * @typedef {object} IEmbedStringsDefinitions
  *
  * @prop {IGiveawayEmbedOptions} start
  * This object is used in the original giveaway message that people will use to join the giveaway.
  *
- * @prop {GiveawayFinishCallback} finish
- * This function is called and all returned message objects are extracted and used when the giveaway is finished.
+ * @prop {GiveawayFinishCallback<IsTemplate>} finish
+ * This function is called and all returned message objects are extracted when the giveaway is finished.
  *
- * @prop {GiveawayRerollCallback} reroll
- * This function is called and all returned message objects are extracted and used when the giveaway winners are rerolled.
+ * @prop {GiveawayRerollCallback<IsTemplate>} reroll
+ * This function is called and all returned message objects are extracted when the giveaway winners are rerolled.
+ *
+ * @prop {GiveawayJoinRestrictionsCallback<IsTemplate>} restrictionsMessages
+ * This function is called and all returned message objects are extracted when any case
+ * of the user not being able to participate in a giveaway has triggered
+ * (such as not having the required role or being completely restricted).
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
+ */
+
+/**
+ * A function that is called when the member cannot join the giveaway
+ * due to participants filter being set up.
+ *
+ * @callback GiveawayJoinRestrictionsCallback<IsTemplate>
+ *
+ * @param {string} memberMention The mention of the user who attempted to join the giveaway.
+ * @returns {Partial<IGiveawayJoinRestrictionsMessages>} Giveaway join restrictions messages object.
+ *
+ * @template IsTemplate Determine if the specified giveaway object is a template object.
+ */
+
+/**
+ * The object where all the giveaway restrictions messages may be specified.
+ * @typedef {object} IGiveawayJoinRestrictionsMessages
+ * @prop {IGiveawayEmbedOptions} memberRestricted
+ * The message to reply with if the member is restricted from participating in the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} hasNoRequiredRoles
+ * The message to reply with if the member doesn't have at least one
+ * of the **required** roles to participate in the giveaway.
+ *
+ * @prop {IGiveawayEmbedOptions} hasRestrictedRoles
+ * The message to reply with if the member has at least one
+ * of the **restricted** roles that are not allowing to participate in the giveaway.
  */
 
 /**
@@ -1350,7 +1503,7 @@ export class Giveaways<
 /**
  * An interface containing the structure of the database used in the IGiveaways class.
  * @typedef {object} IDatabaseStructure
- * @prop {any} guildID Guild ID that stores the giveaways array
+ * @prop {DiscordID<string>} guildID Guild ID that stores the giveaways array
  * @prop {IGiveaway[]} giveaways Giveaways array property inside the [guildID] object in database.
  */
 
@@ -1368,9 +1521,13 @@ export class Giveaways<
  * Type parameters:
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
- * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
- * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
- * 
+ *
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) -
+ * The type of database key that will be used in database operations.
+ *
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) -
+ * The type of database content that will be used in database operations.
+ *
  * @typedef {object} IGiveawaysEvents
  * @prop {Giveaways<DatabaseType, TDatabaseKey, TDatabaseValue>} ready Emits when the {@link Giveaways} module is ready.
  * @prop {void} databaseConnect Emits when the connection to the database is established.

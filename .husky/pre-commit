@@ -6,7 +6,7 @@ cleanup() {
     rm -rf types
 }
 
-cleanup && npm run build
-# bash scripts/minify.sh
+cleanup
 
+npm run build
 git add .

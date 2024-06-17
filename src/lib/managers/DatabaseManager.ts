@@ -20,6 +20,7 @@ import { CacheManager } from './CacheManager'
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that will determine
  * which connection configuration should be used.
+ *
  * - `TKey` ({@link string}) - The type of database key that will be used.
  * - `TValue` ({@link any}) - The type of database values that will be used.
  *
@@ -121,7 +122,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      */
     private async _init(): Promise<void> {
         if (this.isJSON()) {
-            this.jsonParser = new JSONParser(this.giveaways.options.connection.path as string)
+            this.jsonParser = new JSONParser(this.giveaways.options.connection.path!)
         }
 
         this._logger.debug('Loading the cache...')
@@ -139,7 +140,10 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
      * @param {string} key The key of the database the operation was performed on.
      * @param {Function} toDebug The database operation callback function to call.
      * @param {boolean} [sendDebugLog=true] Whether the debug log should be sent in the console if debug mode is enabled.
-     * @returns {Promise<ExtractPromisedType<ReturnType<R>>>} Return type of the database callback operation function.
+     *
+     * @returns {Promise<IDebugResult<ExtractPromisedType<ReturnType<F>>>>}
+     * Return type of the database callback operation function.
+     *
      * @template F The function type to be passed as database operation callback.
      * @private
      */

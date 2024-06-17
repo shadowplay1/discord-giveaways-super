@@ -43,7 +43,7 @@ To customize these messages, you can define different properties within the embe
 await giveaway.start({
 	// ... (other giveaway starting options)
 
-	defineEmbedStrings(giveaway, host) {
+	defineEmbedStrings(giveaway, host, participantsFilters) {
 	    return {
 	        joinGiveawayMessage: {
 	            messageContent: 'You have joined the giveaway!'
@@ -62,8 +62,10 @@ await giveaway.start({
 	            title: `Giveaway (ID: ${giveaway.id})`,
 	            titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
-	            description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
-	                `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
+                description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
+                    `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>\n\n` + 
+                    `- Required roles: ${participantsFilters.requiredRoles?.join(', ') || 'none'}\n` +
+                    `- Forbidden roles: ${participantsFilters.restrictedRoles?.join(', ') || 'none'}\n`,
 
 	            footer: `Ends at:`,
 	            timestamp: giveaway.endTimestamp,
@@ -76,7 +78,7 @@ await giveaway.start({
 	    finish(mentionsString, winnersCount) {
 	        return {
 	            endMessage: {
-	                messageContent: `Congratulations ${mentionsString} on winning!`
+	                messageContent: `Congratulations ${mentionsString} on winning **${giveaway.prize}**!`
 	            },
 	            // ... (other properties)
 	        }
@@ -136,7 +138,7 @@ await giveaway.start({
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.1.0/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

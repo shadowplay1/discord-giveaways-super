@@ -90,7 +90,7 @@ client.on('messageCreate', async message => {
         }
 
         if (!isTimeStringValid(time)) {
-            message.reply(`:x: | Giveaway time "${time}" is not valid.`)
+            message.reply(`:x: | Giveaway time "${time}" is not a valid time string.`)
             return
         }
 
@@ -113,6 +113,13 @@ client.on('messageCreate', async message => {
             time,
             winnersCount,
 
+            // example usage of participants filtering (only IDs are supported)
+            participantsFilter: {
+                requiredRoles: ['<@&841642867100221452>', '<@&669259475156205583>', '841642867100221452', '669259475156205583'],
+                restrictedRoles: ['<@&692002313187098677>', '<@&765209398318465075>', '692002313187098677', '765209398318465075'],
+                restrictedMembers: ['<@1121494265164468376>', '1121494265164468376']
+            },
+
             // defining *all* the messages for the giveaway
             // "EmbedBuilder" support will be added later
 
@@ -124,7 +131,7 @@ client.on('messageCreate', async message => {
             // if not specified, and some of the message objects properties
             // of "defineEmbedStrings" function are also will be replaced with
             // placeholder values
-            defineEmbedStrings(giveaway, host) {
+            defineEmbedStrings(giveaway, host, participantsFilters) {
                 return {
                     // this ephemeral reply will be sent when they join the giveaway (embeds may also be used here)
                     joinGiveawayMessage: {
@@ -145,7 +152,9 @@ client.on('messageCreate', async message => {
                         titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                         description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
-                            `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>`,
+                            `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>\n\n` + 
+                            `- Required roles: ${participantsFilters.requiredRoles?.join(', ') || 'none'}\n` +
+                            `- Forbidden roles: ${participantsFilters.restrictedRoles?.join(', ') || 'none'}\n`,
 
                         footer: `Ends at:`,
                         timestamp: giveaway.endTimestamp,
@@ -360,7 +369,7 @@ client.on('messageCreate', async message => {
         }
 
         if (!isTimeStringValid(time)) {
-            message.reply(`:x: | Giveaway time "**${time}**" is not valid.`)
+            message.reply(`:x: | Giveaway time "**${time}**" is not a valid time string.`)
             return
         }
 
@@ -406,7 +415,7 @@ client.on('messageCreate', async message => {
         }
 
         if (!isTimeStringValid(time)) {
-            message.reply(`:x: | Giveaway time "**${time}**" is not valid.`)
+            message.reply(`:x: | Giveaway time "**${time}**" is not a valid time string.`)
             return
         }
 
@@ -595,7 +604,7 @@ client.on('messageCreate', async message => {
         }
 
         if (!isTimeStringValid(time)) {
-            message.reply(`:x: | Giveaway time "**${time}**" is not valid.`)
+            message.reply(`:x: | Giveaway time "**${time}**" is not a valid time string.`)
             return
         }
 

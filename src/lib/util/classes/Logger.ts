@@ -108,10 +108,10 @@ export class Logger {
     }
 
     /**
-     * Check if the module version is development version and send the warning in the console.
+     * Checks if the module version is development version and sends the corresponding warning in the console.
      * @returns {void}
      */
-    public checkDevVersion(): void {
+    public sendDevVersionWarning(): void {
         if (packageVersion.includes('dev')) {
             console.log()
 

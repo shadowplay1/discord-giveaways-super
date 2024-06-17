@@ -16,7 +16,7 @@
 - Database Caching System 📚
 - Easy to Understand 👍
 - Beginner Friendly 😄
-- Extremely Fast 💨
+- High Performance 💨
 
 ## 📂 | Installation
 **Node.js v16.9.0 or newer is required to install.**
@@ -44,7 +44,7 @@ $ pnpm add discord-giveaways-super
 ## ❗ | Useful Links
 - [Documentation](https://dgs-docs.js.org)
 - [NPM](https://www.npmjs.com/package/discord-giveaways-super)
-- [Frequently Asked Questions](https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq)
+- [Frequently Asked Questions](https://dgs-docs.js.org/#/docs/main/1.1.0/general/faq)
 - [GitHub](https://github.com/shadowplay1/discord-giveaways-super)
 - [Examples](https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples)
 - [Discord Server](https://discord.gg/4pWKq8vUnb)

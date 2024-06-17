@@ -9,10 +9,62 @@
 ## ⏰ | Changelog
 
 **v1.1.0**:
-- Fixed Discord ID typings bug in `Giveaways.start()` method.
-- Added giveaways participants filters object in `Giveaways.start()` method - now you can restrict members from participating in a giveaway if they don't have any of the required roles or have any of the forbidden roles.
-- Updated `discord.js` to the latest stable version.
-- Minor bugfixes.
+- Fixed `DiscordID` types bug in `Giveaways.start()` method.
+- Fixed the incorrect giveaway end timestamp being assigned on giveaway start.
+- Fixed inconsistencies after the giveaway being deleted.
+- Improved the time strings validation.
+- Improved internal types.
+- Added the `Giveaway.winners` property that saves an array of user IDs who won the giveaway.
+- Added giveaways participants filters object in `Giveaways.start()` method - now you can **restrict** members from participating in a giveaway if they don't have any of the **required** roles or if they have any of the **forbidden** roles, or you can now restrict the **members** themselves from joining your giveaway!
+- - Added a `participantsFilter` object in `Giveaway.start()` configuration;
+- - Added the `restrictionsMessages` embed strings definition callback so you could define the messages that are being sent in various join rejection cases! 
+
+Here's how you can use this new feature:
+
+```ts
+const newGiveaway = await giveaways.start({
+    // ... (other giveaway settings)
+    
+    // example usage of participants filtering (only IDs are supported)
+    participantsFilter: {
+        requiredRoles: ['<@&841642867100221452>', '<@&669259475156205583>', '841642867100221452', '669259475156205583'],
+        restrictedRoles: ['<@&692002313187098677>', '<@&765209398318465075>', '692002313187098677', '765209398318465075'],
+        restrictedMembers: ['<@1121494265164468376>', '1121494265164468376']
+    },
+
+    defineEmbedStrings(giveaway, host, participantsFilters) {
+        return {
+            // ... (other strings definitions)
+
+            restrictionsMessages(memberMention) {
+                return {
+                    hasNoRequiredRoles: {
+                        messageContent: `:x: | ${memberMention}, you **must** have at least one of the following roles ` +
+                            `to join this giveaway: ${participantsFilters.requiredRoles?.join(', ')}`
+                    },
+
+                    hasRestrictedRoles: {
+                        messageContent: `:x: | ${memberMention}, you **cannot** have any of the following roles ` +
+                            `to join this giveaway: ${participantsFilters.restrictedRoles?.join(', ')}`
+                    },
+
+                    memberRestricted: {
+                        messageContent: `:x: | ${memberMention}, you're **not allowed** to join this giveaway.`
+                    }
+                }
+            }
+
+            // ... (other strings definitions)
+        }
+    }
+})
+```
+
+- Bumped `discord.js` to the latest stable version.
+- Renamed the `Giveaway.entriesArray` property to `Giveaway.entries`. Please note that this is **not** the type of `Object.entries()` method, but a property that shows all the users who joined the giveaway.
+- Improved **[Frequently Asked Questions](https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq)** page and added more useful and frequently asked questions about the module.
+- Fixed some documentation typos and mismatches.
+- Made some minor bugfixes, types improvements & JSDoc improvements.
 
 **v1.0.5**:
 - Renamed the `checkingCountdown` option from JSON configuration options to `checkingInterval` so it would make more sense.
@@ -39,7 +91,7 @@
 ## ❗ | Useful Links
 <ul>
 <li><b><a href = "https://www.npmjs.com/package/discord-giveaways-super">NPM</a></b></li>
-<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.0.5/general/faq">Frequently Asked Questions</a></b></li>
+<li><b><a href = "https://dgs-docs.js.org/#/docs/main/1.1.0/general/faq">Frequently Asked Questions</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super">GitHub</a></b></li>
 <li><b><a href = "https://github.com/shadowplay1/discord-giveaways-super/tree/main/examples">Examples</a></b></li>
 <li><b><a href = "https://discord.gg/4pWKq8vUnb">Discord Server</a></b></li>

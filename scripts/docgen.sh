@@ -11,4 +11,4 @@ js_config_path="./jsconfig.json"
 
 mkdir docs/generated > /dev/null 2>&1
 
-docgen -s ${source_pattern} -o ${output_path} -c ${customPath} -g -S 1 -j ${js_config_path}
+node node_modules/@distube/docgen/src/index.js -s ${source_pattern} -o ${output_path} -c ${customPath} -g -S 1 -j ${js_config_path}

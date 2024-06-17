@@ -1,7 +1,8 @@
 import {
     IGiveawayEmbedOptions, IGiveawayButtonOptions,
     IGiveawayStartMessages, IGiveawayRerollMessages,
-    IParticipantsFilter
+    IParticipantsFilter,
+    IGiveawayJoinRestrictionsMessages
 } from '../types/configurations'
 
 import { DiscordID } from '../types/misc/utils'
@@ -22,8 +23,12 @@ import { DiscordID } from '../types/misc/utils'
  * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
  * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
- * @prop {number} entries The number of giveaway entries.
- * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
+ * @prop {Array<DiscordID<string>>} entries The array of user Set of IDs of users who have joined the giveaway.
+ * @prop {Array<DiscordID<string>>} winners Array of used ID who have won in the giveaway.
+ *
+ * Don't confuse this property with `winnersCount`, the setting that dertermines how many users can win in the giveaway.
+ * @prop {number} entriesCount The number of users who have joined the giveaway.
+ * @prop {Partial<IParticipantsFilter>} participantsFilter An object with conditions for members to join the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  *
  * @template TDatabaseType The database type that is used.
@@ -119,7 +124,7 @@ export interface IGiveaway<
     guildID: DiscordID<GuildID>
 
     /**
-     * Number of giveaway entries.
+     * Number of users who have joined the giveaway.
      * @type {number}
      */
     entriesCount: number
@@ -128,13 +133,21 @@ export interface IGiveaway<
      * An object with conditions for members to join the giveaway.
      * @type {?IParticipantsFilter}
      */
-    participantsFilter?: Partial<IParticipantsFilter>
+    participantsFilter: Partial<IParticipantsFilter>
 
     /**
-     * Array of user IDs of users that have entered the giveaway.
-     * @type {DiscordID<string>[]}
+     * Array of user Set of IDs of users who have joined the giveaway.
+     * @type {Array<DiscordID<string>>}
      */
-    entriesArray: DiscordID<string>[]
+    entries: Array<DiscordID<string>>
+
+    /**
+     * Array of used ID who have won in the giveaway.
+     *
+     * Don't confuse this property with `winnersCount`, the setting that dertermines how many users can win in the giveaway.
+     * @type {Array<DiscordID<string>>}
+     */
+    winners: Array<DiscordID<string>>
 
     /**
      * Message data properties for embeds and buttons.
@@ -196,6 +209,9 @@ export interface IGiveawayMessageProps {
  *
  * @prop {IGiveawayRerollEmbeds} reroll Message embed data for cases when rerolling the giveaway.
  * @prop {IGiveawayFinishEmbeds} finish Message embed data for cases when the giveaway has finished.
+ *
+ * @prop {IGiveawayJoinRestrictionsMessages} restrictionsMessages
+ * Message embed data for all the giveaway joining restrictions cases.
  */
 export interface IGiveawayEmbeds {
 
@@ -228,6 +244,12 @@ export interface IGiveawayEmbeds {
      * @type {IGiveawayFinishEmbeds}
      */
     finish: IGiveawayStartMessages
+
+    /**
+     * Message embed data for all the giveaway joining restrictions cases.
+     * @type {IGiveawayJoinRestrictionsMessages}
+     */
+    restrictionsMessages: IGiveawayJoinRestrictionsMessages
 }
 
 /**
@@ -256,12 +278,12 @@ export type IGiveawayMessageButtons = Record<
  * @prop {DiscordID<string>} messageID The ID of the giveaway message.
  * @prop {string} messageURL The URL of the giveaway message.
  * @prop {DiscordID<string>} guildID The ID of the guild where the giveaway is held.
- * @prop {string[]} entriesArray The array of user IDs of users that have entered the giveaway.
+ * @prop {Array<DiscordID<string>>} entries The array of user Set of IDs of users who have joined the giveaway.
  * @prop {IGiveawayMessageProps} messageProps The message data properties for embeds and buttons.
  */
 export type GiveawayWithoutInternalProps = Omit<
     Record<keyof IGiveaway, string>,
-    'entriesArray' | 'state' | 'isEnded' | 'participantsFilter'
+    'entries' | 'state' | 'isEnded' | 'participantsFilter' | 'winners'
 >
 
 /**

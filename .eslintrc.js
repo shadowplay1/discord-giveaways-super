@@ -81,7 +81,13 @@ module.exports = {
             'interface'
         ],
 
-        '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+                varsIgnorePattern: '^_'
+            }
+        ],
+
         '@typescript-eslint/explicit-function-return-type': 'warn',
 
         '@typescript-eslint/explicit-module-boundary-types': 'off',

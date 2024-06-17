@@ -1,5 +1,9 @@
 import fetch from 'node-fetch'
-import { name as packageName, version as packageVersion } from '../../../../package.json'
+
+import {
+    name as packageName,
+    version as packageVersion
+} from '../../../../package.json'
 
 /**
  * Checks the latest available module version and compares it with installed one.

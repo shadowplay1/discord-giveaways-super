@@ -51,7 +51,7 @@
 	"author": "shadowplay1 <shadowplay483@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
-		"discord.js": "^14.13.0",
+		"discord.js": "^14.15.3",
 		"enmap": "^5.9.8",
 		"quick-mongo-super": "^1.0.19"
 	},
@@ -62,7 +62,7 @@
 		"@babel/preset-env": "^7.22.5",
 		"@babel/preset-typescript": "^7.22.5",
 		"@distube/docgen": "github:distubejs/docgen",
-		"@types/node": "^20.3.3",
+		"@types/node": "^20.14.3",
 		"@types/node-fetch": "^2.6.4",
 		"@typescript-eslint/eslint-plugin": "^6.0.0-alpha.163",
 		"@typescript-eslint/parser": "^6.0.0-alpha.163",

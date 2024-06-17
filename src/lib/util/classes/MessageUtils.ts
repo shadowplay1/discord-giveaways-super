@@ -67,6 +67,10 @@ export class MessageUtils {
             strings[stringKey] = replaceGiveawayKeys(strings[stringKey], giveaway, winners)
         }
 
+        if (embedStrings.timestamp) {
+            embedStrings.timestamp = parseInt(embedStrings.timestamp as any)
+        }
+
         const {
             title, titleIcon, color,
             titleURL, description, footer,
@@ -97,7 +101,13 @@ export class MessageUtils {
             })
 
         if (timestamp) {
-            embed.setTimestamp(new Date(parseInt(timestamp.toString())))
+            const date = new Date(timestamp)
+
+            if (date.getFullYear() < 2000) {
+                embed.setTimestamp(timestamp * 1000)
+            } else {
+                embed.setTimestamp(timestamp)
+            }
         }
 
         return embed
@@ -270,7 +280,7 @@ export class MessageUtils {
             description: noWinnersEmbedStrings?.description || 'There are no winners in this giveaway!'
         }
 
-        const winnersCondition = winners?.length as number >= this._giveaways.options.minGiveawayEntries
+        const winnersCondition = winners!.length >= this._giveaways.options.minGiveawayEntries
         const defaultedEmbedStrings = winnersCondition ? finishDefaultedEmbedStrings : noWinnersDefaultedEmbedStrings
 
         const finishEmbed = this.buildGiveawayEmbed(giveaway, defaultedEmbedStrings, winners)
@@ -283,7 +293,7 @@ export class MessageUtils {
 
         const goToMessageButtonRow = this.buildGiveawayFinishedButtonsRowWithoutRerollButton(
             giveaway.messageProps?.buttons.goToMessageButton as ILinkButton,
-            giveaway.messageURL as string
+            giveaway.messageURL!
         )
 
         const rerollButtonRow = this.buildGiveawayRerollButtonRow(
@@ -291,7 +301,6 @@ export class MessageUtils {
         )
 
         const message = await channel.messages.fetch(giveaway.messageID)
-
         const giveawayMessageContent = defaultedEmbedStrings.messageContent
 
         const finishMessageContent =

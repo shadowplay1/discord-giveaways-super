@@ -1,5 +1,11 @@
+import { TypedObject } from '../classes/TypedObject'
+
+import {
+    IGiveawaysConfiguration,
+    IGiveawaysConfigCheckerConfiguration
+} from '../../../types/configurations'
+
 import { defaultConfig } from '../../../structures/defaultConfig'
-import { IGiveawaysConfiguration, IGiveawaysConfigCheckerConfiguration } from '../../../types/configurations'
 import { DatabaseType } from '../../../types/databaseType.enum'
 
 /**
@@ -44,8 +50,8 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
         checkerConfiguration.showProblems = true
     }
 
-    for (const key of Object.keys(configurationToCheck)) {
-        const config = configurationToCheck as Record<string, any>
+    for (const key of TypedObject.keys(configurationToCheck)) {
+        const config = configurationToCheck
 
         const defaultValue = defaultConfiguration[key]
         const value = config[key]
@@ -79,6 +85,7 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
         for (const key in defaultConfig) {
             const defaultValue = defaultConfig[key]
             const value = config[key]
+
             const fullKey = prefix ? `${prefix}.${key}` : key
 
             if (value == undefined) {
@@ -100,7 +107,6 @@ export const checkConfiguration = <TDatabaseType extends DatabaseType>(
             } else if (typeof value == 'object' && value !== null) {
                 checkNestedOptionsObjects(value, defaultValue, fullKey)
             }
-
         }
     }
 

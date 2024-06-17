@@ -8,7 +8,7 @@ import {
     GiveawayState, IGiveaway, IGiveawayMessageProps
 } from './giveaway.interface'
 
-import { ms } from './misc/ms'
+import { convertTimeToMilliseconds } from './util/functions/time.function'
 
 import { MessageUtils } from './util/classes/MessageUtils'
 import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
@@ -26,12 +26,12 @@ import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
  *
  * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
  *
- * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray'>}
+ * @implements {Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entries'>}
  * @template TDatabaseType The database type that is used.
  */
 export class Giveaway<
     TDatabaseType extends DatabaseType
-> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entriesArray' | 'participantsFilter'> {
+> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entries' | 'participantsFilter'> {
 
     /**
      * {@link Giveaways} instance.
@@ -79,7 +79,7 @@ export class Giveaway<
     public state: GiveawayState
 
     /**
-     * Number of possible winnerIDs in the giveaway.
+     * Number of possible winnersIDs in the giveaway.
      * @type {number}
      */
     public winnersCount: number
@@ -133,16 +133,24 @@ export class Giveaway<
     public channel: TextChannel
 
     /**
-     * Number of giveaway entries.
+     * Number of users who have joined the giveaway.
      * @type {number}
      */
     public entriesCount: number
 
     /**
-     * IDs of users that have entered the giveaway.
+     * Set of IDs of users who have joined the giveaway.
      * @type {Set<DiscordID<string>>}
      */
-    public entries: Set<DiscordID<string>>
+    public entries: Set<DiscordID<string>> = new Set()
+
+    /**
+     * Array of used ID who have won in the giveaway.
+     *
+     * Don't confuse this property with `winnersCount`, the setting that dertermines how many users can win in the giveaway.
+     * @type {Array<DiscordID<string>>}
+     */
+    public winners: Array<DiscordID<string>> = []
 
     /**
      * Determines if the giveaway was ended in database.
@@ -154,7 +162,7 @@ export class Giveaway<
      * An object with conditions for members to join the giveaway.
      * @type {?IParticipantsFilter}
      */
-    public participantsFilter?: Partial<IParticipantsFilter> = {}
+    public participantsFilter: Partial<IParticipantsFilter> = {}
 
     /**
      * Message data properties for embeds and buttons.
@@ -247,13 +255,13 @@ export class Giveaway<
          * Guild where the giveaway was created.
          * @type {Guild}
          */
-        this.guild = this._giveaways.client.guilds.cache.get(giveaway.guildID) as Guild
+        this.guild = this._giveaways.client.guilds.cache.get(giveaway.guildID)!
 
         /**
          * User who created the giveaway.
          * @type {User}
          */
-        this.host = this._giveaways.client.users.cache.get(giveaway.hostMemberID) as User
+        this.host = this._giveaways.client.users.cache.get(giveaway.hostMemberID)!
 
         /**
          * Channel where the giveaway was created.
@@ -274,16 +282,31 @@ export class Giveaway<
         this.isEnded = giveaway.isEnded || false
 
         /**
-         * IDs of users that have entered the giveaway.
+         * Set of IDs of users who have joined the giveaway.
          * @type {Set<DiscordID<string>>}
          */
-        this.entries = new Set<DiscordID<string>>(giveaway.entriesArray)
+        this.entries = new Set<DiscordID<string>>(giveaway.entries)
 
         /**
-         * Number of giveaway entries.
+         * Array of used ID who have won in the giveaway.
+         *
+         * Don't confuse this property with `winnersCount`,
+         * the setting that dertermines how many users can win in the giveaway.
+         * @type {Array<DiscordID<string>>}
+         */
+        this.winners = giveaway.winners || []
+
+        /**
+         * Number of users who have joined the giveaway.
          * @type {number}
          */
-        this.entriesCount = giveaway.entriesArray.length
+        this.entriesCount = giveaway.entries.length
+
+        /**
+         * An object with conditions for members to join the giveaway.
+         * @type {?IParticipantsFilter}
+         */
+        this.participantsFilter = giveaway.participantsFilter
 
         /**
          * Message data properties for embeds and buttons.
@@ -308,6 +331,12 @@ export class Giveaway<
                     onlyHostCanReroll: {},
                     rerollMessage: {},
                     successMessage: {}
+                },
+
+                restrictionsMessages: {
+                    hasNoRequiredRoles: {},
+                    hasRestrictedRoles: {},
+                    memberRestricted: {}
                 }
             },
 
@@ -332,9 +361,9 @@ export class Giveaway<
      * @type {IGiveaway}
      */
     public get raw(): IGiveaway {
-        const entriesArray = [...this.entries]
+        const entries = [...this.entries]
+        this._inputGiveaway.entries = entries
 
-        this._inputGiveaway.entriesArray = entriesArray
         return this._inputGiveaway
     }
 
@@ -373,8 +402,8 @@ export class Giveaway<
         this.isEnded = false
         this.raw.isEnded = false
 
-        this.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
-        this.raw.endTimestamp = Math.floor((Date.now() + ms(this.time)) / 1000)
+        this.endTimestamp = Math.floor((Date.now() + convertTimeToMilliseconds(this.time)!) / 1000)
+        this.raw.endTimestamp = Math.floor((Date.now() + convertTimeToMilliseconds(this.time)!) / 1000)
 
         const strings = this.messageProps
         const startEmbedStrings = strings?.embeds.start || {}
@@ -404,6 +433,7 @@ export class Giveaway<
      *
      * @param {string} extensionTime The time to extend the giveaway length by.
      * @returns {Promise<void>}
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -483,6 +513,7 @@ export class Giveaway<
      *
      * @param {string} reductionTime The time to reduce the giveaway length by.
      * @returns {Promise<void>}
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_TIME` - if invalid time string was specified,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -582,7 +613,7 @@ export class Giveaway<
      */
     public async end(): Promise<void> {
         const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
-        const winnerIDs = this._pickWinners(giveaway)
+        const winnersIDs = this._pickWinners(giveaway)
 
         if (this.isEnded) {
             throw new GiveawaysError(
@@ -596,6 +627,9 @@ export class Giveaway<
         this.isEnded = true
         this.raw.isEnded = true
 
+        this.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+        this.raw.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+
         this.endedTimestamp = endedTimestamp
         this.raw.endedTimestamp = endedTimestamp
 
@@ -603,7 +637,7 @@ export class Giveaway<
 
         this._messageUtils.editFinishGiveawayMessage(
             this.raw,
-            winnerIDs,
+            winnersIDs,
             this.messageProps?.embeds.finish?.newGiveawayMessage
         )
 
@@ -615,22 +649,27 @@ export class Giveaway<
      * @returns {Promise<string[]>} Rerolled winners users IDs.
      */
     public async reroll(): Promise<string[]> {
-        const { giveaway } = this._getFromCache(this.guild.id)
-        const winnerIDs = this._pickWinners(giveaway)
+        const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
+        const winnersIDs = this._pickWinners(giveaway)
 
         const rerollEmbedStrings = giveaway.messageProps?.embeds?.reroll
         const rerollMessage = rerollEmbedStrings?.rerollMessage as Record<string, any> || {}
 
         for (const key in rerollMessage) {
-            rerollMessage[key] = replaceGiveawayKeys(rerollMessage[key], this, winnerIDs)
+            rerollMessage[key] = replaceGiveawayKeys(rerollMessage[key], this, winnersIDs)
         }
 
-        const rerolledEmbed = this._messageUtils.buildGiveawayEmbed(this.raw, rerollMessage, winnerIDs)
+        const rerolledEmbed = this._messageUtils.buildGiveawayEmbed(this.raw, rerollMessage, winnersIDs)
         const giveawayMessage = await this.channel.messages.fetch(this.messageID)
+
+        this.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+        this.raw.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+
+        this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
 
         this._messageUtils.editFinishGiveawayMessage(
             this.raw,
-            winnerIDs,
+            winnersIDs,
             rerollEmbedStrings?.newGiveawayMessage,
             false,
             rerollEmbedStrings?.successMessage,
@@ -642,11 +681,11 @@ export class Giveaway<
         })
 
         this._giveaways.emit('giveawayReroll', {
-            newWinners: winnerIDs,
+            newWinners: winnersIDs,
             giveaway: this
         })
 
-        return winnerIDs
+        return winnersIDs
     }
 
     /**
@@ -654,6 +693,7 @@ export class Giveaway<
      * @param {DiscordID<string>} guildID The guild ID where the giveaway is hosted.
      * @param {DiscordID<string>} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -691,13 +731,13 @@ export class Giveaway<
         }
 
         const { giveaway, giveawayIndex } = this._getFromCache(guildID)
-        this.sync(giveaway)
 
         this.entries.add(userID)
+        giveaway.entries.push(userID)
+
         giveaway.entriesCount = this.entries.size
 
         this._giveaways.database.pull(`${guildID}.giveaways`, giveawayIndex, this.raw)
-
         return giveaway
     }
 
@@ -706,6 +746,7 @@ export class Giveaway<
      * @param {DiscordID<string>} guildID The guild ID where the giveaway is hosted.
      * @param {DiscordID<string>} userID The user ID to add.
      * @returns {IGiveaway} Updated giveaway object.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -727,7 +768,6 @@ export class Giveaway<
             )
         }
 
-
         if (typeof guildID !== 'string') {
             throw new GiveawaysError(
                 errorMessages.INVALID_TYPE('guildID', 'string', guildID),
@@ -743,9 +783,10 @@ export class Giveaway<
         }
 
         const { giveaway, giveawayIndex } = this._getFromCache(guildID)
-        this.sync(giveaway)
 
         this.entries.delete(userID)
+        giveaway.entries.splice(giveaway.entries.indexOf(userID), 1)
+
         giveaway.entriesCount = this.entries.size
 
         this.sync(giveaway)
@@ -763,6 +804,7 @@ export class Giveaway<
      *
      * @param {string} prize The new prize to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -810,6 +852,7 @@ export class Giveaway<
      *
      * @param {string} winnersCount The new winners count to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid, `INVALID_INPUT` - when the input value is bad or invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -868,6 +911,7 @@ export class Giveaway<
      *
      * @param {DiscordID<string>} hostMemberID The new host member ID to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -917,6 +961,7 @@ export class Giveaway<
      *
      * @param {string} time The new time to set.
      * @returns {Promise<Giveaway<TDatabaseType>>} Updated {@link Giveaway} instance.
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid,
      * `GIVEAWAY_ALREADY_ENDED` - if the target giveaway has already ended.
@@ -1035,7 +1080,7 @@ export class Giveaway<
 
         if (key == 'hostMemberID') {
             const newGiveawayHostUserID = value as string
-            const newGiveawayHost = this._giveaways.client.users.cache.get(newGiveawayHostUserID) as User
+            const newGiveawayHost = this._giveaways.client.users.cache.get(newGiveawayHostUserID)!
 
             if (!newGiveawayHost) {
                 throw new GiveawaysError(
@@ -1070,8 +1115,8 @@ export class Giveaway<
             this.time = time
             this.raw.time = time
 
-            this.endTimestamp = Math.floor((Date.now() + ms(time)) / 1000)
-            this.raw.endTimestamp = Math.floor((Date.now() + ms(time)) / 1000)
+            this.endTimestamp = Math.floor((Date.now() + convertTimeToMilliseconds(time)!) / 1000)
+            this.raw.endTimestamp = Math.floor((Date.now() + convertTimeToMilliseconds(time)!) / 1000)
         } else {
             const that = this as Record<string, any>
 
@@ -1152,21 +1197,29 @@ export class Giveaway<
 
         for (const key in giveaway) {
             that[key] = specifiedGiveaway[key]
+
+            if (key == 'entries') {
+                that[key] = new Set(specifiedGiveaway[key])
+            }
         }
 
         for (const key in giveaway) {
             that.raw[key] = specifiedGiveaway[key]
+
+            if (key == 'entries') {
+                that[key] = new Set(specifiedGiveaway[key])
+            }
         }
     }
 
     /**
      * Shuffles all the giveaway entries, randomly picks the winner user IDs and converts them into mentions.
      * @param {IGiveaway} [giveawayToSyncWith] The giveaway object to sync the {@link Giveaway} instance with.
-     * @returns {string[]} Array of mentions of users that were picked as the winners.
+     * @returns {string[]} Array of mentions of users who were picked as the winners.
      * @private
      */
     private _pickWinners(giveawayToSyncWith?: IGiveaway): string[] {
-        const winnerIDs: string[] = []
+        const winnersIDs: string[] = []
 
         if (giveawayToSyncWith) {
             this.sync(giveawayToSyncWith)
@@ -1183,19 +1236,19 @@ export class Giveaway<
                 const randomEntryIndex = Math.floor(Math.random() * shuffledEntries.length)
                 const winnerUserID = shuffledEntries[randomEntryIndex]
 
-                if (winnerIDs.includes(winnerUserID)) {
-                    if (winnerIDs.length !== this.entries.size) {
+                if (winnersIDs.includes(winnerUserID)) {
+                    if (winnersIDs.length !== this.entries.size) {
                         recursiveShuffle()
                     }
                 } else {
-                    winnerIDs.push(winnerUserID)
+                    winnersIDs.push(winnerUserID)
                 }
             }
 
             recursiveShuffle()
         }
 
-        return winnerIDs.map(winnerID => `<@${winnerID}>`)
+        return winnersIDs.map(winnerID => `<@${winnerID}>`)
     }
 
     /**
@@ -1245,6 +1298,7 @@ export class Giveaway<
      * @param {DiscordID<string>} guildID Guild ID to get the giveaways array from.
      * @returns {IDatabaseArrayGiveaway} Database giveaway object.
      * @private
+     *
      * @throws {GiveawaysError} `REQUIRED_ARGUMENT_MISSING` - when required argument is missing,
      * `INVALID_TYPE` - when argument type is invalid.
      */
@@ -1286,7 +1340,7 @@ export class Giveaway<
      */
     private _timeToSeconds(time: string): number {
         try {
-            const milliseconds = ms(time)
+            const milliseconds = convertTimeToMilliseconds(time)!
             return Math.floor(milliseconds / 1000 / 2)
         } catch {
             throw new GiveawaysError(GiveawaysErrorCodes.INVALID_TIME)

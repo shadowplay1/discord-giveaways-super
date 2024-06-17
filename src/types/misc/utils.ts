@@ -7,11 +7,11 @@
  * - `IfTrue` ({@link any}) - The type that will be returned if `T` is `true`.
  * - `IfFalse` ({@link any}) - The type that will be returned if `T` is `false`.
  *
- * @template T The boolean type to compare with.
- * @template IfTrue The type that will be returned if `T` is `true`.
- * @template IfFalse The type that will be returned if `T` is `false`.
+ * @template T - The boolean type to compare with.
+ * @template IfTrue - The type that will be returned if `T` is `true`.
+ * @template IfFalse - The type that will be returned if `T` is `false`.
  *
- * @typedef {IfTrue | IfFalse} If
+ * @typedef {any} If<T, IfTrue, IfFalse>
  */
 export type If<T extends boolean,
     IfTrue,
@@ -26,8 +26,8 @@ export type If<T extends boolean,
  * - `ToCompare` ({@link any}) - The type to compare.
  * - `CompareWith` ({@link any}) - The type to compare with.
  *
- * @template ToCompare The type to compare.
- * @template CompareWith The type to compare with.
+ * @template ToCompare - The type to compare.
+ * @template CompareWith - The type to compare with.
  *
  * @typedef {boolean} Equals<ToCompare, CompareWith>
  */
@@ -44,7 +44,7 @@ export type Equals<ToCompare, CompareWith> = ToCompare extends CompareWith ? tru
  * @template T - The object to get the properties from.
  * @template K - The properties to make optional.
  *
- * @typedef {object} Optional
+ * @typedef {object} OptionalProps<T, K>
  */
 export type OptionalProps<T extends object, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>
 
@@ -59,7 +59,7 @@ export type OptionalProps<T extends object, K extends keyof T> = Partial<Pick<T,
  * @template T - The object to get the properties from.
  * @template K - The properties to make required.
  *
- * @typedef {object} RequiredProps
+ * @typedef {object} RequiredProps<T, K>
  */
 export type RequiredProps<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
 
@@ -71,7 +71,7 @@ export type RequiredProps<T extends object, K extends keyof T> = Required<Pick<T
  *
  * - `T` ({@link any}) - The type of item to be passed to the callback function.
  *
- * @template T The type of item to be passed to the callback function.
+ * @template T - The type of item to be passed to the callback function.
  *
  * @callback FindCallback<T>
  * @param {T} item The item to be passed to the callback function.
@@ -87,8 +87,8 @@ export type FindCallback<T> = (item: T) => boolean
  * - `T` ({@link any}) - The type of item to be passed to the callback function.
  * - `TReturnType` - ({@link any}) The type of value returned by the callback function.
  *
- * @template T The type of item to be passed to the callback function.
- * @template TReturnType The type of value returned by the callback function.
+ * @template T - The type of item to be passed to the callback function.
+ * @template TReturnType - The type of value returned by the callback function.
  *
  * @callback MapCallback<T, TReturnType>
  * @param {T} item The item to be passed to the callback function.
@@ -103,10 +103,10 @@ export type MapCallback<T, TReturnType> = (item: T) => TReturnType
  *
  * - `T` ({@link any}) - The type to attach.
  *
- * @template T The type to attach.
+ * @template T - The type to attach.
  * @typedef {any} Maybe<T>
  */
-export type Maybe<T> = T | null
+export type Maybe<T> = Exclude<T | null, undefined>
 
 /**
  * Adds a prefix at the beginning of a string literal type.
@@ -116,8 +116,8 @@ export type Maybe<T> = T | null
  * - TWord ({@link string}) The string literal type or union type of them to add the prefix to.
  * - TPrefix ({@link string}) The string literal type of the prefix to use.
  *
- * @template TWord The string literal type or union type of them to add the prefix to.
- * @template TPrefix The string literal type of the prefix to use.
+ * @template TWord - The string literal type or union type of them to add the prefix to.
+ * @template TPrefix - The string literal type of the prefix to use.
  *
  * @typedef {string} AddPrefix<TWord, TPrefix>
  */
@@ -132,9 +132,9 @@ export type AddPrefix<TWord extends string, TPrefix extends string> = `${TPrefix
  * - TPrefix ({@link string}) The string literal type of the prefix to use.
  * - Value ({@link any}) Any value to assign as value of each property of the constructed object.
  *
- * @template TWords The union type of string literals to add the prefix to.
- * @template TPrefix The string literal type of the prefix to use.
- * @template Value Any value to assign as value of each property of the constructed object.
+ * @template TWords - The union type of string literals to add the prefix to.
+ * @template TPrefix - The string literal type of the prefix to use.
+ * @template Value - Any value to assign as value of each property of the constructed object.
  *
  * @typedef {string} PrefixedObject<TWords, TPrefix, Value>
  */
@@ -149,7 +149,7 @@ export type PrefixedObject<TWords extends string, TPrefix extends string, Value 
  *
  * - `S` ({@link string}) - The string to check the length of.
  *
- * @template S The string to check the length of.
+ * @template S - The string to check the length of.
  * @typedef {number} StringLength<S>
  */
 export type StringLength<S extends string, LettersArray extends 0[] = []> =
@@ -165,8 +165,8 @@ export type StringLength<S extends string, LettersArray extends 0[] = []> =
  * - `N` ({@link number}) - The string length to match to.
  * - `S` ({@link string}) - The string to check the length of.
  *
- * @template N The string length to match to.
- * @template S The string to check the length of.
+ * @template N - The string length to match to.
+ * @template S - The string to check the length of.
  * @typedef {number} ExactLengthString<N, S>
  */
 export type ExactLengthString<N extends number, S extends string> =
@@ -183,7 +183,7 @@ export type ExactLengthString<N extends number, S extends string> =
  *
  * - `S` ({@link string}) - The string to check the length of.
  *
- * @template S The string to check the length of.
+ * @template S - The string to check the length of.
  * @typedef {number} DiscordID<ID>
  */
 export type DiscordID<ID extends string> =
@@ -199,7 +199,7 @@ export type DiscordID<ID extends string> =
  *
  * - `P` ({@link Promise<any>}) - The Promise to extract the type from.
  *
- * @template P The Promise to extract the type from.
+ * @template P - The Promise to extract the type from.
  * @typedef {any} ExtractPromisedType<P>
  */
 export type ExtractPromisedType<P> = P extends Promise<infer T> ? T : never
