@@ -1,9 +1,9 @@
 {
-	"name": "discord-giveaways-super",
-	"version": "1.1.0",
+	"name": "@asayukiii/discord-giveaways-super",
+	"version": "1.1.1",
 	"description": "Create and manage giveaways in Discord.",
 	"types": "./types/src/index.d.ts",
-	"main": "dist/src/index.js",
+	"main": "./dist/src/index.js",
 	"scripts": {
 		"prep": "npx husky install && npm run commitlint:install",
 		"lint": "eslint ./src",
