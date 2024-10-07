@@ -5,7 +5,7 @@ node_modules/
 .vscode/
 
 # build files
-# dist/
+dist/
 
 # compiled types
 *.d.ts
