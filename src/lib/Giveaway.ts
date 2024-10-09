@@ -677,7 +677,7 @@ export class Giveaway<
 
         giveawayMessage.reply({
             content: rerollMessage?.messageContent,
-            embeds: Object.keys(rerollMessage).length && rerollMessage?.messageContent ? [] : [rerolledEmbed]
+            embeds: Object.keys(rerollMessage).length === 1 && rerollMessage?.messageContent ? [] : [rerolledEmbed]
         })
 
         this._giveaways.emit('giveawayReroll', {

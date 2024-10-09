@@ -268,7 +268,6 @@ export class MessageUtils {
 
         const finishDefaultedEmbedStrings: Partial<IGiveawayEmbedOptions> = {
             ...finishEmbedStrings,
-
             color: finishEmbedStrings?.color || '#d694ff',
             description: finishEmbedStrings?.description || 'Giveaway is over!'
         }
@@ -287,7 +286,7 @@ export class MessageUtils {
 
         const giveawayEndEmbed = this.buildGiveawayEmbed(
             giveaway,
-            winnersCondition ? finishDefaultedEmbedStrings : embedStrings?.noWinnersEndMessage,
+            winnersCondition ? (embedStrings?.endMessage || embedStrings?.newGiveawayMessage || {}) : embedStrings?.noWinnersEndMessage,
             winners
         )
 
