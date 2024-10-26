@@ -11,7 +11,11 @@ import {
 import { convertTimeToMilliseconds } from './util/functions/time.function'
 
 import { MessageUtils } from './util/classes/MessageUtils'
-import { GiveawaysError, GiveawaysErrorCodes, errorMessages } from './util/classes/GiveawaysError'
+import { TypedObject } from './util/classes/TypedObject'
+
+import {
+    GiveawaysError, GiveawaysErrorCodes, errorMessages
+} from './util/classes/GiveawaysError'
 
 import { AddPrefix, DiscordID, OptionalProps, RequiredProps } from '../types/misc/utils'
 import { IDatabaseArrayGiveaway } from '../types/databaseStructure.interface'
@@ -300,7 +304,7 @@ export class Giveaway<
          * Number of users who have joined the giveaway.
          * @type {number}
          */
-        this.entriesCount = giveaway.entries.length
+        this.entriesCount = giveaway.entries?.length || 0
 
         /**
          * An object with conditions for members to join the giveaway.
@@ -397,6 +401,8 @@ export class Giveaway<
      * @returns {Promise<void>}
      */
     public async restart(): Promise<void> {
+        await this._fetchUncached()
+
         const { giveawayIndex } = this._getFromCache(this.guild.id)
 
         this.isEnded = false
@@ -416,7 +422,7 @@ export class Giveaway<
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings).length == 1
+            embeds: TypedObject.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -455,6 +461,8 @@ export class Giveaway<
      * giveaway.extend('10s') // we know that giveaway is running - the method is safe to run
      */
     public async extend(extensionTime: string): Promise<void> {
+        await this._fetchUncached()
+
         const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
 
         if (!extensionTime) {
@@ -493,7 +501,7 @@ export class Giveaway<
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings).length == 1
+            embeds: TypedObject.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -535,6 +543,8 @@ export class Giveaway<
      * giveaway.reduce('10s') // we know that giveaway is running - the method is safe to run
      */
     public async reduce(reductionTime: string): Promise<void> {
+        await this._fetchUncached()
+
         const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
 
         if (!reductionTime) {
@@ -573,7 +583,7 @@ export class Giveaway<
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings).length == 1
+            embeds: TypedObject.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -612,6 +622,8 @@ export class Giveaway<
      * giveaway.end() // we know that giveaway is running - the method is safe to run
      */
     public async end(): Promise<void> {
+        await this._fetchUncached()
+
         const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
         const winnersIDs = this._pickWinners(giveaway)
 
@@ -649,6 +661,8 @@ export class Giveaway<
      * @returns {Promise<string[]>} Rerolled winners users IDs.
      */
     public async reroll(): Promise<string[]> {
+        await this._fetchUncached()
+
         const { giveaway, giveawayIndex } = this._getFromCache(this.guild.id)
         const winnersIDs = this._pickWinners(giveaway)
 
@@ -677,7 +691,7 @@ export class Giveaway<
 
         giveawayMessage.reply({
             content: rerollMessage?.messageContent,
-            embeds: Object.keys(rerollMessage).length === 1 && rerollMessage?.messageContent ? [] : [rerolledEmbed]
+            embeds: TypedObject.keys(rerollMessage).length === 1 && rerollMessage?.messageContent ? [] : [rerolledEmbed]
         })
 
         this._giveaways.emit('giveawayReroll', {
@@ -1132,7 +1146,7 @@ export class Giveaway<
 
         message.edit({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings).length == 1
+            embeds: TypedObject.keys(startEmbedStrings).length == 1
                 && startEmbedStrings?.messageContent ? [] : [embed],
             components: [buttonsRow]
         })
@@ -1152,16 +1166,20 @@ export class Giveaway<
      * @returns {Promise<Giveaway<DatabaseType>>} Deleted {@link Giveaway} instance.
      */
     public async delete(): Promise<Giveaway<DatabaseType>> {
-        const { giveawayIndex } = this._getFromCache(this.guild.id)
-        const giveawayMessage = await this.channel.messages.fetch(this.messageID)
+        const { giveawayIndex } = this._getFromCache(this.guild?.id || this.raw.guildID)
+        const giveawayMessage = await this.channel.messages.fetch(this.messageID || this.raw.messageID)
 
         if (giveawayMessage.deletable) {
-            giveawayMessage.delete()
+            giveawayMessage?.delete().catch(() => {
+                return
+            })
         } else {
-            giveawayMessage.edit({
+            giveawayMessage?.edit({
                 content: '',
                 embeds: [],
                 components: []
+            }).catch(() => {
+                return
             })
         }
 
@@ -1344,6 +1362,81 @@ export class Giveaway<
             return Math.floor(milliseconds / 1000 / 2)
         } catch {
             throw new GiveawaysError(GiveawaysErrorCodes.INVALID_TIME)
+        }
+    }
+
+    /**
+     * Fetches the objects of guild, host user and giveaway channel
+     * directly from Discord API if something is not present in the cache.
+     * @returns {Promise<void>}
+     * @private
+     */
+    private async _fetchUncached(): Promise<void> {
+        const { guildID, hostMemberID, channelID } = this.raw
+
+        const printErrorAndDeleteGiveaway = async (dataFailedToFetch: 'guild' | 'host member' | 'channel'): Promise<void> => {
+            this._giveaways.logger.error(
+                `Unable to fetch the giveaway ${dataFailedToFetch} info. Cannot proceed with operation!!`
+            )
+
+            this._giveaways.logger.info('Unprocessable Giveaway Info:')
+
+            this._giveaways.logger.info(`Giveaway ID: ${this.id}`)
+            this._giveaways.logger.info(`Giveaway prize: "${this.prize}", entries count: ${this.entriesCount}.`)
+            this._giveaways.logger.info(`Giveaway entries count: ${this.entriesCount}.`)
+            this._giveaways.logger.info()
+
+            this._giveaways.logger.info(`Giveaway Guild ID: ${guildID}`)
+            this._giveaways.logger.info(`Giveaway Host Memebr ID: ${hostMemberID}`)
+            this._giveaways.logger.info(`Giveaway Channel ID: ${channelID}`)
+
+            this._giveaways.logger.warn('Forcefully deleting the giveaway...')
+
+            await this.delete().catch((err: Error) => {
+                this._giveaways.logger.error(`Failed to delete the unprorcessable giveaway: ${err.name}: ${err.message}`)
+            })
+
+            this._giveaways.logger.warn()
+            this._giveaways.logger.warn('Unprocessable giveaway was deleted.')
+        }
+
+        if (!this.guild) {
+            const fetched = await this._giveaways.client.guilds.fetch(guildID).catch(() => {
+                return null
+            })
+
+            if (!fetched) {
+                await printErrorAndDeleteGiveaway('guild')
+                return
+            }
+
+            this.guild = fetched
+        }
+
+        if (!this.host) {
+            const fetched = await this._giveaways.client.users.fetch(hostMemberID).catch(() => {
+                return null
+            })
+
+            if (!fetched) {
+                await printErrorAndDeleteGiveaway('host member')
+                return
+            }
+
+            this.host = fetched
+        }
+
+        if (!this.channel) {
+            const fetched = await this._giveaways.client.channels.fetch(channelID).catch(() => {
+                return null
+            })
+
+            if (!fetched) {
+                await printErrorAndDeleteGiveaway('channel')
+                return
+            }
+
+            this.channel = fetched as TextChannel
         }
     }
 

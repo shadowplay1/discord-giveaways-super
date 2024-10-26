@@ -58,8 +58,8 @@ export class Logger {
      * @param {string} [color='red'] Message color to use.
      * @returns {void}
      */
-    public info(message: string, color: keyof ILoggerColors = 'cyan'): void {
-        console.log(`${this.colors[color]}[Giveaways] ${message}${this.colors.reset}`)
+    public info(message?: string, color: keyof ILoggerColors = 'cyan'): void {
+        console.log(`${this.colors[color]}[Giveaways] ${message || ''}${this.colors.reset}`)
     }
 
     /**
@@ -68,8 +68,8 @@ export class Logger {
      * @param {string} [color='red'] Message color to use.
      * @returns {void}
      */
-    public error(message: string, color: keyof ILoggerColors = 'red'): void {
-        console.error(`${this.colors[color]}[Giveaways - Error] ${message}${this.colors.reset}`)
+    public error(message?: string, color: keyof ILoggerColors = 'red'): void {
+        console.error(`${this.colors[color]}[Giveaways - Error] ${message || ''}${this.colors.reset}`)
     }
 
     /**
@@ -78,9 +78,9 @@ export class Logger {
      * @param {string} [color='yellow'] Message color to use.
      * @returns {void}
      */
-    public debug(message: string, color: keyof ILoggerColors = 'yellow'): void {
+    public debug(message?: string, color: keyof ILoggerColors = 'yellow'): void {
         if (!this.debugMode) return
-        console.log(`${this.colors[color]}[Giveaways] ${message}${this.colors.reset}`)
+        console.log(`${this.colors[color]}[Giveaways] ${message || ''}${this.colors.reset}`)
     }
 
     /**
@@ -89,8 +89,8 @@ export class Logger {
      * @param {string} [color='lightyellow'] Message color to use.
      * @returns {void}
      */
-    public warn(message: string, color: keyof ILoggerColors = 'lightyellow'): void {
-        console.log(`${this.colors[color]}[Giveaways - Warning] ${message}${this.colors.reset}`)
+    public warn(message?: string, color: keyof ILoggerColors = 'lightyellow'): void {
+        console.log(`${this.colors[color]}[Giveaways - Warning] ${message || ''}${this.colors.reset}`)
     }
 
     /**

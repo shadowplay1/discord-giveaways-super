@@ -1,3 +1,5 @@
+import { MaybeUndefined } from "../../../types/misc/utils"
+
 /**
  * Utility class for working with objects.
  *
@@ -19,7 +21,7 @@ export class TypedObject {
      * @returns {Array<ExtractObjectKeys<TObject>>}
      * Array of names of the enumerable string properties and methods of the specified object.
      */
-    public static keys<TObject extends Record<string, any>>(obj: TObject): ExtractObjectKeys<TObject>[] {
+    public static keys<TObject extends Record<string, any>>(obj: MaybeUndefined<TObject>): ExtractObjectKeys<TObject>[] {
         return Object.keys(obj || {})
     }
 

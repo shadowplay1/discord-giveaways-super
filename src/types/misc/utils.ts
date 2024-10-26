@@ -109,6 +109,18 @@ export type MapCallback<T, TReturnType> = (item: T) => TReturnType
 export type Maybe<T> = Exclude<T | null, undefined>
 
 /**
+ * A type that represents any value with "undefined" possible to be returned.
+ *
+ * Type parameters:
+ *
+ * - `T` ({@link any}) - The type to attach.
+ *
+ * @template T - The type to attach.
+ * @typedef {any} MaybeUndefined<T>
+ */
+ export type MaybeUndefined<T> = Exclude<T | undefined, null>
+
+/**
  * Adds a prefix at the beginning of a string literal type.
  *
  * Type parameters:

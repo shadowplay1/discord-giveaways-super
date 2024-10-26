@@ -156,7 +156,7 @@ client.on('messageCreate', async message => {
                         titleIcon: client.user?.displayAvatarURL({ size: 2048 }),
 
                         description: `Prize: **${giveaway.prize}**.\nWinners: **${giveaway.winnersCount}**\n` +
-                            `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>\n\n` + 
+                            `Entries: **${giveaway.entriesCount}**\nHost: **${host.username}**\nEnds at: <t:${giveaway.endTimestamp}:R>\n\n` +
                             `- Required roles: ${participantsFilters.requiredRoles?.join(', ') || 'none'}\n` +
                             `- Forbidden roles: ${participantsFilters.restrictedRoles?.join(', ') || 'none'}\n`,
 

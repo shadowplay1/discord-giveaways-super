@@ -9,6 +9,7 @@ import { IGiveaway } from '../../giveaway.interface'
 
 import { replaceGiveawayKeys } from '../../../structures/giveawayTemplate'
 import { Giveaways } from '../../../Giveaways'
+import { TypedObject } from './TypedObject'
 
 /**
  * Message utils class.
@@ -235,7 +236,7 @@ export class MessageUtils {
 
         await message.edit({
             content: embedStrings?.messageContent,
-            embeds: Object.keys(embedStrings).length == 1 &&
+            embeds: TypedObject.keys(embedStrings).length == 1 &&
                 embedStrings?.messageContent
                 ? [] : [embed],
             components: [buttonsRow]
@@ -286,7 +287,7 @@ export class MessageUtils {
 
         const giveawayEndEmbed = this.buildGiveawayEmbed(
             giveaway,
-            winnersCondition ? (embedStrings?.endMessage || embedStrings?.newGiveawayMessage || {}) : embedStrings?.noWinnersEndMessage,
+            winnersCondition ? (embedStrings?.endMessage || embedStrings?.newGiveawayMessage || {}) : embedStrings?.noWinnersEndMessage || {},
             winners
         )
 
@@ -305,19 +306,19 @@ export class MessageUtils {
         const finishMessageContent =
             replaceGiveawayKeys(
                 winnersCondition
-                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent as string
-                    : embedStrings?.noWinnersEndMessage?.messageContent as string,
+                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent!
+                    : embedStrings?.noWinnersEndMessage?.messageContent || 'There was no winners in this giveaway!',
                 giveaway,
                 winners
             )
 
         const finishInputObjectKeys = winnersCondition
-            ? Object.keys(embedStrings?.endMessage || {})
-            : Object.keys(embedStrings?.noWinnersEndMessage || {})
+            ? TypedObject.keys(embedStrings?.endMessage)
+            : TypedObject.keys(embedStrings?.noWinnersEndMessage)
 
         await message.edit({
             content: giveawayMessageContent,
-            embeds: Object.keys(defaultedEmbedStrings).length == 1 && giveawayMessageContent ? [] : [finishEmbed],
+            embeds: TypedObject.keys(defaultedEmbedStrings).length == 1 && giveawayMessageContent ? [] : [finishEmbed],
             components: winnersCondition ? [rerollButtonRow] : []
         })
 

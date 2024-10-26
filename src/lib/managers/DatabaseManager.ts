@@ -210,7 +210,7 @@ export class DatabaseManager<TDatabaseType extends DatabaseType, TKey extends st
             ? this.all<any>()
             : this.get<any>(key)
 
-        return Object.keys(database)
+        return Object.keys(database || {})
     }
 
     /**

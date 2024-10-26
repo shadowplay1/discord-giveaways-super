@@ -41,13 +41,14 @@ import { GiveawayState, IGiveaway } from './lib/giveaway.interface'
 import { giveawayTemplate } from './structures/giveawayTemplate'
 
 import { MessageUtils } from './lib/util/classes/MessageUtils'
+import { TypedObject } from './lib/util/classes/TypedObject'
+
 import { IDatabaseStructure } from './types/databaseStructure.interface'
 
 import {
     convertTimeToMilliseconds,
     isTimeStringValid
 } from './lib/util/functions/time.function'
-import { TypedObject } from './lib/util/classes/TypedObject'
 
 /**
  * Main Giveaways class.
@@ -113,9 +114,8 @@ export class Giveaways<
     /**
      * Giveaways logger.
      * @type {Logger}
-     * @private
      */
-    private readonly _logger: Logger
+    public readonly logger: Logger
 
     /**
      * Message generation utility methods.
@@ -159,17 +159,16 @@ export class Giveaways<
         /**
          * {@link Giveaways} logger.
          * @type {Logger}
-         * @private
          */
-        this._logger = new Logger(options.debug || false)
+        this.logger = new Logger(options.debug || false)
 
-        this._logger.debug('Giveaways version: ' + this.version, 'lightcyan')
-        this._logger.debug(`Database type is ${options.database}.`, 'lightcyan')
-        this._logger.debug('Debug mode is enabled.', 'lightcyan')
+        this.logger.debug('Giveaways version: ' + this.version, 'lightcyan')
+        this.logger.debug(`Database type is ${options.database}.`, 'lightcyan')
+        this.logger.debug('Debug mode is enabled.', 'lightcyan')
 
-        this._logger.sendDevVersionWarning()
+        this.logger.sendDevVersionWarning()
 
-        this._logger.debug('Checking the configuration...')
+        this.logger.debug('Checking the configuration...')
 
         /**
          * Completed, filled and fixed {@link Giveaways} configuration.
@@ -211,7 +210,7 @@ export class Giveaways<
      * @private
      */
     private async _init(): Promise<void> {
-        this._logger.debug('Giveaways starting process launched.', 'lightgreen')
+        this.logger.debug('Giveaways starting process launched.', 'lightgreen')
 
         if (!this.client) {
             throw new GiveawaysError(GiveawaysErrorCodes.NO_DISCORD_CLIENT)
@@ -273,7 +272,7 @@ export class Giveaways<
 
         switch (this.options.database) {
             case DatabaseType.JSON: {
-                this._logger.debug('Checking the database file...')
+                this.logger.debug('Checking the database file...')
 
                 const databaseOptions = this.options.connection as Required<DatabaseConnectionOptions<DatabaseType.JSON>>
                 const isFileExists = existsSync(databaseOptions.path)
@@ -321,7 +320,7 @@ export class Giveaways<
             }
 
             case DatabaseType.MONGODB: {
-                this._logger.debug('Connecting to MongoDB...')
+                this.logger.debug('Connecting to MongoDB...')
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.MONGODB>
 
@@ -331,14 +330,14 @@ export class Giveaways<
                 await mongo.connect()
 
                 this.db = mongo as Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
-                this._logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}ms`, 'lightgreen')
+                this.logger.debug(`MongoDB connection established in ${Date.now() - connectionStartDate}ms`, 'lightgreen')
 
                 this.emit('databaseConnect')
                 break
             }
 
             case DatabaseType.ENMAP: {
-                this._logger.debug('Initializing Enmap...')
+                this.logger.debug('Initializing Enmap...')
 
                 const databaseOptions = this.options.connection as DatabaseConnectionOptions<DatabaseType.ENMAP>
                 this.db = new Enmap(databaseOptions) as Database<TDatabaseType, TDatabaseKey, TDatabaseValue>
@@ -355,7 +354,7 @@ export class Giveaways<
         this.database = new DatabaseManager<TDatabaseType, TDatabaseKey, TDatabaseValue>(this)
         await this._sendUpdateMessage()
 
-        this._logger.debug('Waiting for client to be ready...')
+        this.logger.debug('Waiting for client to be ready...')
 
         const clientReadyInterval = setInterval(() => {
             if (this.client.isReady()) {
@@ -370,7 +369,7 @@ export class Giveaways<
                 this.ready = true
                 this.emit('ready', this)
 
-                this._logger.debug('Giveaways module is ready!', 'lightgreen')
+                this.logger.debug('Giveaways module is ready!', 'lightgreen')
             }
         }, 100)
 
@@ -386,13 +385,13 @@ export class Giveaways<
                         const isUserJoined = giveaway.entries.has(interaction.user.id)
                         const restrictedMessages = giveaway.messageProps?.embeds.restrictionsMessages
 
-                        for (const messageObjectName of TypedObject.keys(restrictedMessages || {})) {
+                        for (const messageObjectName of TypedObject.keys(restrictedMessages)) {
                             const messageObject = restrictedMessages![messageObjectName] as Omit<
                                 IGiveawayEmbedOptions,
                                 'color' | 'timestamp'
                             >
 
-                            for (const [key, value] of TypedObject.entries(messageObject || {})) {
+                            for (const [key, value] of TypedObject.entries(messageObject)) {
                                 messageObject[key] = value
                                     ?.toString()
                                     ?.replaceAll('{memberMention}', interaction.user.toString())
@@ -410,7 +409,7 @@ export class Giveaways<
                                 .map(role => role.replaceAll('<@', '').replaceAll('>', ''))
 
                             if (restrictedMembers.includes(interaction.user.id)) {
-                                if (!Object.keys(memberRestrictionMessage!).length) {
+                                if (!TypedObject.keys(memberRestrictionMessage!).length) {
                                     memberRestrictionMessage!.messageContent = 'You **cannot** participate in this giveaway.'
                                 }
 
@@ -419,7 +418,7 @@ export class Giveaways<
 
                                 interaction.reply({
                                     content: memberRestrictionMessage?.messageContent,
-                                    embeds: Object.keys(memberRestrictionMessage!).length == 1 &&
+                                    embeds: TypedObject.keys(memberRestrictionMessage!).length == 1 &&
                                         memberRestrictionMessage?.messageContent
                                         ? [] : [memberRestrictedEmbed],
                                     ephemeral: true
@@ -444,7 +443,7 @@ export class Giveaways<
                             }
 
                             if (!memberHasAtLeastOneRequiredRole) {
-                                if (!Object.keys(hasNoRequiredRolesMessage!).length) {
+                                if (!TypedObject.keys(hasNoRequiredRolesMessage!).length) {
                                     hasNoRequiredRolesMessage!.messageContent =
                                         'You **don\'t** have any of the **required** roles' +
                                         `to join this giveaway: ${giveaway.participantsFilter.requiredRoles.join(', ')}.`
@@ -455,7 +454,7 @@ export class Giveaways<
 
                                 interaction.reply({
                                     content: hasNoRequiredRolesMessage?.messageContent,
-                                    embeds: Object.keys(hasNoRequiredRolesMessage!).length == 1 &&
+                                    embeds: TypedObject.keys(hasNoRequiredRolesMessage!).length == 1 &&
                                         hasNoRequiredRolesMessage?.messageContent
                                         ? [] : [hasNoRequiredRolesEmbed],
                                     ephemeral: true
@@ -475,7 +474,7 @@ export class Giveaways<
                                 const memberHasRestrictedRole = interaction.member.roles.cache.has(restrictedRole)
 
                                 if (memberHasRestrictedRole) {
-                                    if (!Object.keys(hasRestrictedRolesMessage!).length) {
+                                    if (!TypedObject.keys(hasRestrictedRolesMessage!).length) {
                                         hasRestrictedRolesMessage!.messageContent =
                                             'You **cannot** have any of these roles to join this giveaway: ' +
                                             `${giveaway.participantsFilter.restrictedRoles.join(', ')}.`
@@ -486,7 +485,7 @@ export class Giveaways<
 
                                     interaction.reply({
                                         content: hasRestrictedRolesMessage?.messageContent,
-                                        embeds: Object.keys(hasRestrictedRolesMessage!).length == 1 &&
+                                        embeds: TypedObject.keys(hasRestrictedRolesMessage!).length == 1 &&
                                             hasRestrictedRolesMessage?.messageContent
                                             ? [] : [hasRestrictedRolesEmbed],
                                         ephemeral: true
@@ -508,13 +507,13 @@ export class Giveaways<
                                 interaction.user.id
                             )
 
-                            if (!Object.keys(giveawayJoinMessage).length) {
+                            if (!TypedObject.keys(giveawayJoinMessage).length) {
                                 giveawayJoinMessage.messageContent = 'You have joined the giveaway!'
                             }
 
                             interaction.reply({
                                 content: giveawayJoinMessage?.messageContent,
-                                embeds: Object.keys(giveawayJoinMessage).length == 1 &&
+                                embeds: TypedObject.keys(giveawayJoinMessage).length == 1 &&
                                     giveawayJoinMessage?.messageContent
                                     ? [] : [giveawayLeaveEmbed],
                                 ephemeral: true
@@ -592,7 +591,7 @@ export class Giveaways<
 
                             interaction.reply({
                                 content: rerollErroredMessageContent,
-                                embeds: Object.keys(
+                                embeds: TypedObject.keys(
                                     onlyHostCanReroll
                                 ).length == 1 && rerollErroredMessageContent ? [] : [errorEmbed],
                                 ephemeral: true
@@ -620,7 +619,7 @@ export class Giveaways<
 
                             interaction.reply({
                                 content: rerollSuccessfulMessageCreate,
-                                embeds: Object.keys(
+                                embeds: TypedObject.keys(
                                     rerollSuccess
                                 ).length == 1 && rerollSuccessfulMessageCreate ? [] : [successEmbed],
                                 ephemeral: true
@@ -659,31 +658,31 @@ export class Giveaways<
 
             if (!result.updated) {
                 console.log('\n\n')
-                console.log(this._logger.colors.green + '╔═════════════════════════════════════════════════════════════════════╗')
-                console.log(this._logger.colors.green + '║ @ discord-giveaways-super                                    - [] X ║')
-                console.log(this._logger.colors.green + '║═════════════════════════════════════════════════════════════════════║')
-                console.log(this._logger.colors.yellow + `║                      The module is ${this._logger.colors.red}out of date!${this._logger.colors.yellow}                     ║`)
-                console.log(this._logger.colors.magenta + '║                       New version is available!                     ║')
-                console.log(this._logger.colors.blue + `║                             ${result.installedVersion} --> ${result.availableVersion}                         ║`)
-                console.log(this._logger.colors.cyan + '║                Run "npm i discord-giveaways-super@latest"           ║')
-                console.log(this._logger.colors.cyan + '║                              to update!                             ║')
-                console.log(this._logger.colors.white + '║                     View the full changelog here:                   ║')
-                console.log(this._logger.colors.red + `║     https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog     ║`)
-                console.log(this._logger.colors.green + '╚═════════════════════════════════════════════════════════════════════╝\x1b[37m')
+                console.log(this.logger.colors.green + '╔═════════════════════════════════════════════════════════════════════╗')
+                console.log(this.logger.colors.green + '║ @ discord-giveaways-super                                    - [] X ║')
+                console.log(this.logger.colors.green + '║═════════════════════════════════════════════════════════════════════║')
+                console.log(this.logger.colors.yellow + `║                      The module is ${this.logger.colors.red}out of date!${this.logger.colors.yellow}                     ║`)
+                console.log(this.logger.colors.magenta + '║                       New version is available!                     ║')
+                console.log(this.logger.colors.blue + `║                             ${result.installedVersion} --> ${result.availableVersion}                         ║`)
+                console.log(this.logger.colors.cyan + '║                Run "npm i discord-giveaways-super@latest"           ║')
+                console.log(this.logger.colors.cyan + '║                              to update!                             ║')
+                console.log(this.logger.colors.white + '║                     View the full changelog here:                   ║')
+                console.log(this.logger.colors.red + `║     https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog     ║`)
+                console.log(this.logger.colors.green + '╚═════════════════════════════════════════════════════════════════════╝\x1b[37m')
                 console.log('\n\n')
             } else {
                 if (this.options.updatesChecker?.upToDateMessage) {
                     console.log('\n\n')
-                    console.log(this._logger.colors.green + '╔═════════════════════════════════════════════════════════════════╗')
-                    console.log(this._logger.colors.green + '║ @ discord-giveaways-super                                - [] X ║')
-                    console.log(this._logger.colors.green + '║═════════════════════════════════════════════════════════════════║')
-                    console.log(this._logger.colors.yellow + `║                      The module is ${this._logger.colors.cyan}up to date!${this._logger.colors.yellow}                  ║`)
-                    console.log(this._logger.colors.magenta + '║                      No updates are available.                  ║')
-                    console.log(this._logger.colors.blue + `║                      Current version is ${result.availableVersion}.                  ║`)
-                    console.log(this._logger.colors.cyan + '║                               Enjoy!                            ║')
-                    console.log(this._logger.colors.white + '║                   View the full changelog here:                 ║')
-                    console.log(this._logger.colors.red + `║   https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog   ║`)
-                    console.log(this._logger.colors.green + '╚═════════════════════════════════════════════════════════════════╝\x1b[37m')
+                    console.log(this.logger.colors.green + '╔═════════════════════════════════════════════════════════════════╗')
+                    console.log(this.logger.colors.green + '║ @ discord-giveaways-super                                - [] X ║')
+                    console.log(this.logger.colors.green + '║═════════════════════════════════════════════════════════════════║')
+                    console.log(this.logger.colors.yellow + `║                      The module is ${this.logger.colors.cyan}up to date!${this.logger.colors.yellow}                  ║`)
+                    console.log(this.logger.colors.magenta + '║                      No updates are available.                  ║')
+                    console.log(this.logger.colors.blue + `║                      Current version is ${result.availableVersion}.                  ║`)
+                    console.log(this.logger.colors.cyan + '║                               Enjoy!                            ║')
+                    console.log(this.logger.colors.white + '║                   View the full changelog here:                 ║')
+                    console.log(this.logger.colors.red + `║   https://dgs-docs.js.org/#/docs/main/${result.availableVersion}/general/changelog   ║`)
+                    console.log(this.logger.colors.green + '╚═════════════════════════════════════════════════════════════════╝\x1b[37m')
                     console.log('\n\n')
                 }
             }
@@ -861,7 +860,7 @@ export class Giveaways<
 
         const message = await channel.send({
             content: startEmbedStrings?.messageContent,
-            embeds: Object.keys(startEmbedStrings).length == 1 && startEmbedStrings?.messageContent ? [] : [giveawayEmbed],
+            embeds: TypedObject.keys(startEmbedStrings).length == 1 && startEmbedStrings?.messageContent ? [] : [giveawayEmbed],
             components: [buttonsRow]
         })
 
