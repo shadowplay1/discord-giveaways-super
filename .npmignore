@@ -53,3 +53,4 @@ package-lock.json
 
 # other
 src/src/*
+examples/

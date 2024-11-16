@@ -1,4 +1,4 @@
-import { MaybeUndefined } from "../../../types/misc/utils"
+import { MaybeUndefined } from '../../../types/misc/utils'
 
 /**
  * Utility class for working with objects.
@@ -16,7 +16,7 @@ export class TypedObject {
      *
      * - `TObject` (`Record<string, any>`) - The object to get the object keys types from.
      *
-     * @param {any} obj Object that contains the properties and methods.
+     * @param {TObject} obj Object that contains the properties and methods.
      *
      * @returns {Array<ExtractObjectKeys<TObject>>}
      * Array of names of the enumerable string properties and methods of the specified object.
@@ -32,7 +32,7 @@ export class TypedObject {
      *
      * - `TObject` (`Record<string, any>`) - The object to get the object values types from.
      *
-     * @param {any} obj Object that contains the properties and methods.
+     * @param {TObject} obj Object that contains the properties and methods.
      *
      * @returns {Array<ExtractObjectValues<TObject>>}
      * Array of values of the enumerable properties of the specified object.
@@ -48,7 +48,7 @@ export class TypedObject {
      *
      * - `TObject` (`Record<string, any>`) - The object to get the object key-value pairs types from.
      *
-     * @param {any} obj Object that contains the properties and methods.
+     * @param {TObject} obj Object that contains the properties and methods.
      * @returns {Array<any>} Array of key-value pairs of the enumerable properties of the specified object.
      */
     public static entries<

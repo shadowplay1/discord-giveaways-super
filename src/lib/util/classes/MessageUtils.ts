@@ -120,15 +120,18 @@ export class MessageUtils {
      * @returns {ActionRowBuilder<ButtonBuilder>} Generated buttons row.
      */
     public buildButtonsRow(joinGiveawayButton: IGiveawayButtonOptions): ActionRowBuilder<ButtonBuilder> {
+        const joinGiveawayButtonBuilder = new ButtonBuilder({
+            customId: 'joinGiveawayButton',
+            emoji: joinGiveawayButton?.emoji || '🎉',
+            style: joinGiveawayButton?.style || ButtonStyle.Primary
+        })
+
+        if (joinGiveawayButton?.text !== null) {
+            joinGiveawayButtonBuilder.setLabel(joinGiveawayButton?.text || 'Join the giveaway')
+        }
+
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-                new ButtonBuilder({
-                    customId: 'joinGiveawayButton',
-                    label: joinGiveawayButton?.text || 'Join the giveaway',
-                    emoji: joinGiveawayButton?.emoji || '🎉',
-                    style: joinGiveawayButton?.style || ButtonStyle.Primary
-                })
-            )
+            .addComponents(joinGiveawayButtonBuilder)
 
         return buttonsRow
     }
@@ -287,7 +290,9 @@ export class MessageUtils {
 
         const giveawayEndEmbed = this.buildGiveawayEmbed(
             giveaway,
-            winnersCondition ? (embedStrings?.endMessage || embedStrings?.newGiveawayMessage || {}) : embedStrings?.noWinnersEndMessage || {},
+            winnersCondition
+                ? (embedStrings?.endMessage || embedStrings?.newGiveawayMessage || {})
+                : embedStrings?.noWinnersEndMessage || {},
             winners
         )
 
@@ -306,7 +311,7 @@ export class MessageUtils {
         const finishMessageContent =
             replaceGiveawayKeys(
                 winnersCondition
-                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent!
+                    ? endEmbedStrings?.messageContent || embedStrings?.endMessage.messageContent || 'Giveaway is over!'
                     : embedStrings?.noWinnersEndMessage?.messageContent || 'There was no winners in this giveaway!',
                 giveaway,
                 winners

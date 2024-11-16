@@ -7,7 +7,7 @@
 <b>Discord Giveaways Super</b> - Create and manage giveaways in [Discord](https://old.discordjs.dev/#/).
 
 ## 🙋‍♂️ | Welcome!
-Welcome to the `discord-giveaways-super v1.0.0` documentation!
+Welcome to the `discord-giveaways-super v1.1.0` documentation!
 
 ## 📂 | Installation
 <b>Note:<b>
@@ -15,6 +15,7 @@ Welcome to the `discord-giveaways-super v1.0.0` documentation!
 <b>Node.js 16.9.0 or newer is required. Otherwise, the module won't work.</b><br>
 ```console
 $ npm i discord-giveaways-super
+$ bun i discord-giveaways-super
 $ yarn add discord-giveaways-super
 $ pnpm add discord-giveaways-super
 ```
