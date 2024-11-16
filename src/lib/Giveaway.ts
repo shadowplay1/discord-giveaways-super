@@ -1374,7 +1374,9 @@ export class Giveaway<
     private async _fetchUncached(): Promise<void> {
         const { guildID, hostMemberID, channelID } = this.raw
 
-        const printErrorAndDeleteGiveaway = async (dataFailedToFetch: 'guild' | 'host member' | 'channel'): Promise<void> => {
+        const printErrorAndDeleteGiveaway = async (
+            dataFailedToFetch: 'guild' | 'host member' | 'channel'
+        ): Promise<void> => {
             this._giveaways.logger.error(
                 `Unable to fetch the giveaway ${dataFailedToFetch} info. Cannot proceed with operation!!`
             )

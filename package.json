@@ -6,8 +6,8 @@
 	"main": "dist/src/index.js",
 	"scripts": {
 		"prep": "npx husky install && npm run commitlint:install",
-		"lint": "eslint ./src",
-		"lint:fix": "eslint ./src --fix",
+		"lint": "bash scripts/lint.sh",
+		"lint:fix": "bash scripts/lint.sh --fix",
 		"build": "tsc -p tsconfig.json",
 		"docs:generate": "bash ./scripts/docgen.sh",
 		"commitlint:install": "npm i -g @commitlint/cli @commitlint/config-conventional -f"

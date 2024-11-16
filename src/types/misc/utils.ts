@@ -118,7 +118,7 @@ export type Maybe<T> = Exclude<T | null, undefined>
  * @template T - The type to attach.
  * @typedef {any} MaybeUndefined<T>
  */
- export type MaybeUndefined<T> = Exclude<T | undefined, null>
+export type MaybeUndefined<T> = Exclude<T | undefined, null>
 
 /**
  * Adds a prefix at the beginning of a string literal type.

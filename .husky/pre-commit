@@ -8,5 +8,7 @@ cleanup() {
 
 cleanup
 
-npm run build
+bun run build
+bun run lint:fix
+
 git add .
