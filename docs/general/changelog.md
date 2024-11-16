@@ -8,6 +8,14 @@
 
 ## ⏰ | Changelog
 
+**v1.1.1**:
+- Minor JSDoc & types fixes.
+- Now the array of giveaway winners is being represented in a `Set` instead of an array.
+- Fixed the crash when giveaway guild/host member/channel **cannot** be fetched.
+- Fixed the `embedStrings.finish.endMessage` being **unused**.
+- Fixed the default giveaway button text being **forced** if it's not specified.
+- Minor bug fixes.
+
 **v1.1.0**:
 - Fixed `DiscordID` types bug in `Giveaways.start()` method.
 - Fixed the incorrect giveaway end timestamp being assigned on giveaway start.

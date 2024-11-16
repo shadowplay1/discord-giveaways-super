@@ -35,7 +35,10 @@ import { replaceGiveawayKeys } from '../structures/giveawayTemplate'
  */
 export class Giveaway<
     TDatabaseType extends DatabaseType
-> implements Omit<IGiveaway, 'hostMemberID' | 'channelID' | 'guildID' | 'entries' | 'participantsFilter'> {
+> implements Omit<
+    IGiveaway,
+    'hostMemberID' | 'channelID' | 'guildID' | 'entries' | 'winners' | 'participantsFilter'
+> {
 
     /**
      * {@link Giveaways} instance.
@@ -152,9 +155,9 @@ export class Giveaway<
      * Array of used ID who have won in the giveaway.
      *
      * Don't confuse this property with `winnersCount`, the setting that dertermines how many users can win in the giveaway.
-     * @type {Array<DiscordID<string>>}
+     * @type {Set<DiscordID<string>>}
      */
-    public winners: Array<DiscordID<string>> = []
+    public winners: Set<DiscordID<string>> = new Set()
 
     /**
      * Determines if the giveaway was ended in database.
@@ -292,13 +295,14 @@ export class Giveaway<
         this.entries = new Set<DiscordID<string>>(giveaway.entries)
 
         /**
-         * Array of used ID who have won in the giveaway.
+         * Set of used ID who have won in the giveaway.
          *
          * Don't confuse this property with `winnersCount`,
-         * the setting that dertermines how many users can win in the giveaway.
-         * @type {Array<DiscordID<string>>}
+         * the **giveaway configuration setting** that
+         * dertermines how many users can win in the giveaway.
+         * @type {Set<DiscordID<string>>}
          */
-        this.winners = giveaway.winners || []
+        this.winners = new Set<DiscordID<string>>(giveaway.winners)
 
         /**
          * Number of users who have joined the giveaway.
@@ -639,7 +643,7 @@ export class Giveaway<
         this.isEnded = true
         this.raw.isEnded = true
 
-        this.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+        this.winners = new Set(winnersIDs.map(winnerID => winnerID.slice(2, -1)))
         this.raw.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
 
         this.endedTimestamp = endedTimestamp
@@ -676,7 +680,7 @@ export class Giveaway<
         const rerolledEmbed = this._messageUtils.buildGiveawayEmbed(this.raw, rerollMessage, winnersIDs)
         const giveawayMessage = await this.channel.messages.fetch(this.messageID)
 
-        this.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
+        this.winners = new Set(winnersIDs.map(winnerID => winnerID.slice(2, -1)))
         this.raw.winners = winnersIDs.map(winnerID => winnerID.slice(2, -1))
 
         this._giveaways.database.pull(`${this.guild.id}.giveaways`, giveawayIndex, this.raw)
@@ -1109,13 +1113,13 @@ export class Giveaway<
                         .replaceAll(this.host.username, newGiveawayHost.username)
                         .replaceAll(this.host.discriminator, newGiveawayHost.discriminator)
                         .replaceAll(this.host.tag, newGiveawayHost.tag)
-                        .replaceAll(this.host.avatar, newGiveawayHost.avatar)
+                        .replaceAll(this.host.avatar!, newGiveawayHost.avatar!)
                         .replaceAll(this.host.defaultAvatarURL, newGiveawayHost.defaultAvatarURL)
-                        .replaceAll(this.host.bot, newGiveawayHost.bot)
-                        .replaceAll(this.host.system, newGiveawayHost.system)
-                        .replaceAll(this.host.banner, newGiveawayHost.banner)
-                        .replaceAll(this.host.createdAt, newGiveawayHost.createdAt)
-                        .replaceAll(this.host.createdTimestamp, newGiveawayHost.createdTimestamp)
+                        .replaceAll(this.host.bot.toString(), newGiveawayHost.bot.toString())
+                        .replaceAll(this.host.system.toString(), newGiveawayHost.system.toString())
+                        .replaceAll(this.host.banner!, newGiveawayHost.banner!)
+                        .replaceAll(this.host.createdAt.toString(), newGiveawayHost.createdAt.toString())
+                        .replaceAll(this.host.createdTimestamp.toString(), newGiveawayHost.createdTimestamp.toString())
                         .replaceAll(this.host.id, newGiveawayHost.id)
                 }
             }
